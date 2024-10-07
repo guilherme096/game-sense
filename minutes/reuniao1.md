@@ -1,35 +1,36 @@
 # Reunião 01
 
 #### Data: 07/10/2024
-#### Hora: 11:00  -  13:00
+
+#### Hora: 11:00 - 13:00
 
 #### Prensenças:
+
 - Guilherme Rosa
 - Rui Machado
 - João Roldão
 - Henrique Teixeira
 
-
 ## Ordem de Trabalhos
-1. Core User Stories (12, ver notas)
-2. BackLog (GitHub Projects (?))
-3. Fazer o Report (Parte A)
-    a. Como fazer ?
-    b. Product Concept
-    c. Project Abstarct
-4. GitRelease
-5. Reunião Semanal
 
+1. Reunião Semanal
+2. Definir roles;
+3. Product Concept;
+4. Product Abstract;
+5. Core User Stories;
+6. BackLog - GitHub Projects;
+7. GitRelease
 
 ## Apontamentos
-1. Fizemos na Reunião
-2. Guilherme dá Setup
-3. -
-    a. Docs
-    b. Fizemos na Reunião
-    c. Fizemos na Reunião
-4. 
-5. Terça-Feira, 16H
 
+1. Terça-Feira, 16H
+2. Começado na reunião e acabado pelo product owner;
+3. Definido na reunião;
+4. Definido na reunião;
+5. Começado na reunião e acabado pelo product owner;
+6. Assigned ao team manager;
+7. Assigned ao team manager;
 
 ### Próxima Reunião
+
+Terça 8/10 16:00
