@@ -9,6 +9,7 @@
     a. Como fazer ?
     b. Product Concept
     c. Project Abstarct
+4. GitRelease
 
 
 
@@ -16,5 +17,6 @@
 1. 
 2. 
 3. 
+4. 
 
 ### Próxima Reunião
