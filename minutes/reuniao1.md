@@ -1,6 +1,11 @@
 # Reunião 01
 #### Data: 07 / 10 / 2024
 #### Hora: 11 : 00  -  _ : _
+#### Prensenças:
+- Guilherme Rosa
+- Rui Machado
+- João Roldão
+- Henrique Teixeira
 
 ## Ordem de Trabalhos
 1. Core User Stories (12, ver notas)
