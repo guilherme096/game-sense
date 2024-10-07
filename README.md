@@ -2,28 +2,19 @@
 # GameSense
 
 ### Abstract:
-- Real time analysis of (simulated) football games
+A football analytics app designed for enthusiasts and professionals seeking deeper insights into the game. The app provides real-time analysis of team and players performances and statistics, allowing you to compare teams and players easily. Additionally, it can predict game outcomes based on real past statistics.
 
-- Capture detailed statistics of the game:
-    - Team performance
-    - Individual player metrics
-    - Additional Stats
-
-- Generate dynamic insights
-    - Create leaderboards and rankings based on data
-    - Allow users to compare teams and players
-
-- Simulation and prediction:
-    - Users can simulate matches using historical data
-    - Analyze team form, past performances, and player stats to predict outcomes and odds
-    - Help users explore match scenarios and prepare more effectively for upcoming games
 
 ### Team:
-- Team Manager: Guilherme Rosa - 113968
-- Product Owner: Rui Machado - 113765
-- Architect: João Roldão - 113920
-- DevOps: Henrique Teixeira - 114588
+| Role           | Name               | ID      |
+|----------------|--------------------|---------|
+| Team Manager   | Guilherme Rosa      | 113968  |
+| Product Owner  | Rui Machado         | 113765  |
+| Architect      | João Roldão         | 113920  |
+| DevOps         | Henrique Teixeira   | 114588  |
+
 
 ### Architecture Diagram:
 
 ### Project Bookmarks:
+https://docs.google.com/document/d/14iEpP1nA6GQlaKaBDCx4pxvmxFkPeFjIGneApi_osqo/edit
