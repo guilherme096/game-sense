@@ -24,3 +24,6 @@
 - Architect: João Roldão - 113920
 - DevOps: Henrique Teixeira - 114588
 
+### Architecture Diagram:
+
+### Project Bookmarks:
