@@ -5,10 +5,16 @@
 ## Ordem de Trabalhos
 1. Core User Stories (12, ver notas)
 2. BackLog (GitHub Projects (?))
+3. Fazer o Report (Parte A)
+    a. Como fazer ?
+    b. Product Concept
+    c. Project Abstarct
+
 
 
 ## Apontamentos
-1.
-2.
+1. 
+2. 
+3. 
 
 ### Próxima Reunião
