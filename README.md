@@ -14,6 +14,7 @@ A football analytics app designed for enthusiasts and professionals seeking deep
 
 
 ### Architecture Diagram:
+![Architecture Diagram](reports/architecture/ArquiteturaMicroService_GameSense.jpg)
 
 ### Project Bookmarks:
 - [Techinical Report](https://docs.google.com/document/d/14iEpP1nA6GQlaKaBDCx4pxvmxFkPeFjIGneApi_osqo/edit?usp=sharing)
