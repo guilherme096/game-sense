@@ -55,6 +55,10 @@ Here are the basic commands to follow Gitflow branching strategy:
    ```bash
    git checkout -b feature/your-feature-name
    ```
+   - if you want to change the branch name, you can use the following command:
+   ```bash
+    git branch -m feature/your-feature-name
+    ```
 3. Commit changes as you work:
    ```bash
    git add .
