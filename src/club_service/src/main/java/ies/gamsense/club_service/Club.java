@@ -18,49 +18,27 @@ public class Club {
     @NotBlank(message = "Country is mandatory")
     private String country;
 
-    // idk about this one; maybe put league id, not sure
-    @NotBlank(message = "League is mandatory")
-    private String league;
+    // idk about this one either; how to make connection between user and club?
+    private boolean isStarred;
 
-    public Club() {
-    }
+    public Club() {}
 
     public Club(String name, String country, String league) {
         this.name = name;
         this.country = country;
-        this.league = league;
     }
     
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public String getCountry() { return country; }
+    public boolean isStarred() { return isStarred; }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getLeague() {
-        return league;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public void setLeague(String league) {
-        this.league = league;
-    }
+    public void setName(String name) { this.name = name; }
+    public void setCountry(String country) { this.country = country; }
+    public void setStarred(boolean isStarred) { this.isStarred = isStarred; }
 
     @Override
     public String toString() {
-        return "Club [id=" + id + ", name=" + name + ", country=" + country + ", league=" + league + "]";
+        return "Club [id=" + id + ", name=" + name + ", country=" + country + "]";
     }
 }
