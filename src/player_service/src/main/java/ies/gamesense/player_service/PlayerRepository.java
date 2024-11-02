@@ -5,5 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Long> {
-
+    Iterable<Player> findByNameAndClub(String name, String club);
+    Iterable<Player> findByName(String name);
+    Iterable<Player> findByClub(String club);
 }
