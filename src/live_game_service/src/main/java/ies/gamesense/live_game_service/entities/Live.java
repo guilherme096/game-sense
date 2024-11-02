@@ -11,61 +11,21 @@ public class Live {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String homeName;
-    private String awayName;
-    private int homeScore;
-    private int awayScore;
-    private int time;
+    private GameTeam homeTeam;
+    private GameTeam awayTeam;
 
     // Getters and Setters
     public Long getId() {
         return id;
     }
 
-    public String getHomeName() {
-        return homeName;
+    // in the future this should receive and event of type GameEvent -> Goal
+    public void incrementTeamScore(int teamId) {
+        if (homeTeam.getId() == teamId) {
+            homeTeam.setScore(homeTeam.getScore() + 1);
+        } else if (awayTeam.getId() == teamId) {
+            awayTeam.setScore(awayTeam.getScore() + 1);
+        }
     }
 
-    public void setHomeName(String homeName) {
-        this.homeName = homeName;
-    }
-
-    public String getAwayName() {
-        return awayName;
-    }
-
-    public void setAwayName(String awayName) {
-        this.awayName = awayName;
-    }
-
-    public int getHomeScore() {
-        return homeScore;
-    }
-
-    public void setHomeScore(int homeScore) {
-        this.homeScore = homeScore;
-    }
-
-    public int getAwayScore() {
-        return awayScore;
-    }
-
-    public void setAwayScore(int awayScore) {
-        this.awayScore = awayScore;
-    }
-
-    public int getTime() {
-        return time;
-    }
-
-    public void setTime(int time) {
-        this.time = time;
-    }
-
-    // toString
-    @Override
-    public String toString() {
-        return "Live [awayName=" + awayName + ", awayScore=" + awayScore + ", homeName=" + homeName + ", homeScore="
-                + homeScore + ", id=" + id + ", time=" + time + "]";
-    }
 }
