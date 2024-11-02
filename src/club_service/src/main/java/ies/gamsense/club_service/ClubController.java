@@ -19,14 +19,12 @@ public class ClubController {
     @Autowired
     private ClubService clubService;
 
-    // GET endpoint para retornar todos os clubes
     @GetMapping("/clubs")
     public ResponseEntity<List<Club>> getAllClubs() {
         List<Club> clubs = clubService.getAllClubs();
         return ResponseEntity.ok(clubs);
     }
 
-    // GET endpoint para retornar um clube específico por ID
     @GetMapping("/{id}")
     public ResponseEntity<Club> getClubById(@PathVariable Long id) {
         return clubService.getClubById(id)
@@ -34,14 +32,12 @@ public class ClubController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // GET endpoint para pesquisar clubes por nome
     @GetMapping("/search")
     public ResponseEntity<List<Club>> getClubsByName(@RequestParam String name) {
         List<Club> clubs = clubService.getClubsByName(name);
         return ResponseEntity.ok(clubs);
     }
 
-    // POST endpoint para "estrelar" um clube
     @PostMapping("/star")
     public ResponseEntity<Club> starClub(@RequestBody Club club) {
         Club starredClub = clubService.starClub(club.getId());
