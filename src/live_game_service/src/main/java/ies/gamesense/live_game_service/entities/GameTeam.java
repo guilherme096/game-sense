@@ -1,22 +1,22 @@
 package ies.gamesense.live_game_service.entities;
 
 public class GameTeam {
-    private final String name;
-    private final int id;
+
+    private Long id;
+
+    private String name;
     private int score;
 
-    public GameTeam(String name, int id, int score) {
+    public GameTeam() {
+    }
+
+    public GameTeam(String name, int score) {
         this.name = name;
-        this.id = id;
         this.score = score;
     }
 
     public String getName() {
         return name;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public int getScore() {
@@ -25,6 +25,14 @@ public class GameTeam {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
     }
 
 }

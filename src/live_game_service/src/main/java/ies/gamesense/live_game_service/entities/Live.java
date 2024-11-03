@@ -1,18 +1,20 @@
 package ies.gamesense.live_game_service.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-@Entity
 public class Live {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private GameTeam homeTeam;
     private GameTeam awayTeam;
+    private GameStatistics gameStatistics;
+
+    public Live(GameTeam homeTeam, GameTeam awayTeam, GameStatistics gameStatistics) {
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
+        this.gameStatistics = gameStatistics;
+    }
+
+    public Live() {
+    }
 
     // Getters and Setters
     public Long getId() {
@@ -26,6 +28,34 @@ public class Live {
         } else if (awayTeam.getId() == teamId) {
             awayTeam.setScore(awayTeam.getScore() + 1);
         }
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public GameTeam getHomeTeam() {
+        return homeTeam;
+    }
+
+    public void setHomeTeam(GameTeam homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+
+    public GameTeam getAwayTeam() {
+        return awayTeam;
+    }
+
+    public void setAwayTeam(GameTeam awayTeam) {
+        this.awayTeam = awayTeam;
+    }
+
+    public GameStatistics getGameStatistics() {
+        return gameStatistics;
+    }
+
+    public void setGameStatistics(GameStatistics gameStatistics) {
+        this.gameStatistics = gameStatistics;
     }
 
 }
