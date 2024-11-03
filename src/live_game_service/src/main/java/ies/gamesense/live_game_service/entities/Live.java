@@ -1,71 +1,75 @@
 package ies.gamesense.live_game_service.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import java.util.List;
+import java.util.Map;
 
-@Entity
 public class Live {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String homeName;
-    private String awayName;
-    private int homeScore;
-    private int awayScore;
-    private int time;
+    private GameTeam homeTeam;
+    private GameTeam awayTeam;
+    private GameStatistics gameStatistics;
+
+    private List<Map<String, String>> events;
+
+    public Live(GameTeam homeTeam, GameTeam awayTeam, GameStatistics gameStatistics, List<Map<String, String>> events) {
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
+        this.gameStatistics = gameStatistics;
+        this.events = events;
+    }
+
+    public Live() {
+    }
 
     // Getters and Setters
     public Long getId() {
         return id;
     }
 
-    public String getHomeName() {
-        return homeName;
+    // in the future this should receive and event of type GameEvent -> Goal
+    public void incrementTeamScore(int teamId) {
+        if (homeTeam.getId() == teamId) {
+            homeTeam.setScore(homeTeam.getScore() + 1);
+        } else if (awayTeam.getId() == teamId) {
+            awayTeam.setScore(awayTeam.getScore() + 1);
+        }
     }
 
-    public void setHomeName(String homeName) {
-        this.homeName = homeName;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getAwayName() {
-        return awayName;
+    public GameTeam getHomeTeam() {
+        return homeTeam;
     }
 
-    public void setAwayName(String awayName) {
-        this.awayName = awayName;
+    public void setHomeTeam(GameTeam homeTeam) {
+        this.homeTeam = homeTeam;
     }
 
-    public int getHomeScore() {
-        return homeScore;
+    public GameTeam getAwayTeam() {
+        return awayTeam;
     }
 
-    public void setHomeScore(int homeScore) {
-        this.homeScore = homeScore;
+    public void setAwayTeam(GameTeam awayTeam) {
+        this.awayTeam = awayTeam;
     }
 
-    public int getAwayScore() {
-        return awayScore;
+    public GameStatistics getGameStatistics() {
+        return gameStatistics;
     }
 
-    public void setAwayScore(int awayScore) {
-        this.awayScore = awayScore;
+    public void setGameStatistics(GameStatistics gameStatistics) {
+        this.gameStatistics = gameStatistics;
     }
 
-    public int getTime() {
-        return time;
+    public List<Map<String, String>> getEvents() {
+        return events;
     }
 
-    public void setTime(int time) {
-        this.time = time;
+    public void setEvents(List<Map<String, String>> events) {
+        this.events = events;
     }
 
-    // toString
-    @Override
-    public String toString() {
-        return "Live [awayName=" + awayName + ", awayScore=" + awayScore + ", homeName=" + homeName + ", homeScore="
-                + homeScore + ", id=" + id + ", time=" + time + "]";
-    }
 }
