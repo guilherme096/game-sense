@@ -1,4 +1,4 @@
-package ies.gamesense.player_service;
+package ies.gamesense.player_service.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,10 +15,14 @@ public class Player {
     @NotBlank(message = "Name is mandatory")
     private String name;
 
+    @NotBlank(message = "Age is mandatory")
+    private int age;
+
     @NotBlank(message = "Country is mandatory")
     private String country;
 
     private String club;
+    private String position;
     private int goals;
     private int assists;
     private int fouls;
@@ -28,10 +32,12 @@ public class Player {
     public Player() {
     }
 
-    public Player(String name, String country, String club, int goals, int assists, int fouls, int yellowCards, int redCards) {
+    public Player(String name, int age, String country, String club, String position, int goals, int assists, int fouls, int yellowCards, int redCards) {
         this.name = name;
+        this.age = age;
         this.country = country;
         this.club = club;
+        this.position = position;
         this.goals = goals;
         this.assists = assists;
         this.fouls = fouls;
@@ -47,12 +53,20 @@ public class Player {
         return name;
     }
 
+    public int getAge() {
+        return age;
+    }
+
     public String getCountry() {
         return country;
     }
 
     public String getClub() {
         return club;
+    }
+
+    public String getPosition() {
+        return position;
     }
 
     public int getGoals() {
@@ -75,20 +89,16 @@ public class Player {
         return redCards;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
     public void setClub(String club) {
         this.club = club;
     }
 
     public void setGoals(int goals) {
         this.goals = goals;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     public void setAssists(int assists) {
@@ -112,8 +122,10 @@ public class Player {
         return "Player[" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", age=" + age + '\'' +
                 ", country='" + country + '\'' +
                 ", club='" + club + '\'' +
+                ", position='" + position + '\'' +
                 ", goals=" + goals + '\'' +
                 ", assists=" + assists + '\'' +
                 ", fouls=" + fouls + '\'' +

@@ -1,8 +1,10 @@
-package ies.gamesense.player_service;
+package ies.gamesense.player_service.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
+
+import ies.gamesense.player_service.model.Player;
 
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Long>, JpaSpecificationExecutor<Player>{
