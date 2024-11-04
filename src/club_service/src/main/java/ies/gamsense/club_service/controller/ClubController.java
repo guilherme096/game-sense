@@ -38,7 +38,7 @@ public class ClubController {
         return clubService.getClubById(id);
     }
 
-    @Operation(summary = "Search Clubs by Name (Autocomplete)")
+    @Operation(summary = "Search Clubs by Name")
     @GetMapping("/search")
     public List<Club> getClubsByName(@Parameter(description = "Name of the club") @RequestParam String name) {
         return clubService.getClubsByName(name);
