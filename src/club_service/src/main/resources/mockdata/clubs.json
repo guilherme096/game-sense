@@ -1,0 +1,21 @@
+[
+    {
+      "id": 1,
+      "name": "Real Madrid",
+      "country": "Spain",
+      "isStarred": false
+    },
+    {
+      "id": 2,
+      "name": "Manchester United",
+      "country": "United Kingdom",
+      "isStarred": true
+    },
+    {
+      "id": 3,
+      "name": "Paris Saint-Germain",
+      "country": "France",
+      "isStarred": false
+    }
+  ]
+  
