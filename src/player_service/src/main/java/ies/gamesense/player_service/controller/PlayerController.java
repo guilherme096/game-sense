@@ -5,8 +5,11 @@ import org.springframework.web.bind.annotation.*;
 
 import ies.gamesense.player_service.model.Player;
 import ies.gamesense.player_service.service.PlayerService;
+import io.swagger.v3.oas.annotations.Operation;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/player")
@@ -16,48 +19,31 @@ public class PlayerController {
     private PlayerService playerService;
 
     // GET /api/v1/player/players
+    @Operation(summary = "Get all players")
     @GetMapping("/players")
     public List<Player> getPlayers() {
         return playerService.getAllPlayers();
     }
 
     // GET /api/v1/player/{id}
+    @Operation(summary = "Get player by id")
     @GetMapping("/{id}")
     public Player getPlayer(@PathVariable Long id) {
         return playerService.getPlayerById(id);
     }
 
-    // GET /api/v1/player/{id}/goals
-    @GetMapping("/{id}/goals")
-    public int getPlayerGoals(@PathVariable Long id) {
-        return playerService.getPlayerGoals(id);
-    }
-
-    // GET /api/v1/player/{id}/assists
-    @GetMapping("/{id}/assists")
-    public int getPlayerAssists(@PathVariable Long id) {
-        return playerService.getPlayerAssists(id);
-    }
-
-    // GET /api/v1/player/{id}/fouls
-    @GetMapping("/{id}/fouls")
-    public int getPlayerFouls(@PathVariable Long id) {
-        return playerService.getPlayerFouls(id);
-    }
-
-    // GET /api/v1/player/{id}/yellow-cards
-    @GetMapping("/{id}/yellow-cards")
-    public int getPlayerYellowCards(@PathVariable Long id) {
-        return playerService.getPlayerYellowCards(id);
-    }
-
-    // GET /api/v1/player/{id}/red-cards
-    @GetMapping("/{id}/red-cards")
-    public int getPlayerRedCards(@PathVariable Long id) {
-        return playerService.getPlayerRedCards(id);
+    // GET /api/v1/player/{id}/{statistics}
+    @Operation(summary = "Get statistic by player id")
+    @GetMapping("/{id}/{statistics}")
+    public Map<String, Object> getPlayerStatistics(@PathVariable Long id, @PathVariable String statistics) {
+        Object result = playerService.getPlayerStatistics(id, statistics);
+        Map<String, Object> response = new HashMap<>();
+        response.put(statistics, result);
+        return response;
     }
 
     // GET /api/v1/player/search
+    @Operation(summary = "Search players")
     @GetMapping("/search")
     public List<Player> searchPlayers(
             @RequestParam(required = false) String name,

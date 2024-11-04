@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ies.gamesense.player_service.util.PlayerStatiscticHelper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -52,33 +53,13 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public int getPlayerGoals(Long id) {
-        Player player = this.getPlayerById(id);
-        return (player != null) ? player.getGoals() : -1;
-    }
+    public Object getPlayerStatistics(Long id, String statistics) {
+        Player player = this.players.get(id);
+        if (player == null) {
+            return null;
+        }
 
-    @Override
-    public int getPlayerAssists(Long id) {
-        Player player = this.getPlayerById(id);
-        return (player != null) ? player.getAssists() : -1;
-    }
-
-    @Override
-    public int getPlayerFouls(Long id) {
-        Player player = this.getPlayerById(id);
-        return (player != null) ? player.getFouls() : -1;
-    }
-
-    @Override
-    public int getPlayerYellowCards(Long id) {
-        Player player = this.getPlayerById(id);
-        return (player != null) ? player.getYellowCards() : -1;
-    }
-
-    @Override
-    public int getPlayerRedCards(Long id) {
-        Player player = this.getPlayerById(id);
-        return (player != null) ? player.getRedCards() : -1;
+        return PlayerStatiscticHelper.getStatistic(player, statistics);
     }
 
     @Override
