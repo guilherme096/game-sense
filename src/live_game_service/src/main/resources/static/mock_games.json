@@ -1,0 +1,97 @@
+[
+  {
+    "id": 0,
+    "homeTeam": {
+      "id": 101,
+      "name": "Team A",
+      "score": 2
+    },
+    "awayTeam": {
+      "id": 102,
+      "name": "Team B",
+      "score": 1
+    },
+    "gameStatistics": {
+      "discreeteStats": {
+        "shots": 15,
+        "fouls": 5,
+        "corners": 3,
+        "interceptions": 0
+      },
+      "realStats": {
+        "possession": 58.5,
+        "passAccuracy": 82.3
+      }
+    },
+    "events": [
+      {
+        "id": "1",
+        "type": "goal",
+        "minute": "12",
+        "team": "home",
+        "player": "Player 1"
+      },
+      {
+        "id": "2",
+        "type": "foul",
+        "minute": "34",
+        "team": "away",
+        "player": "Player 5"
+      },
+      {
+        "id": "3",
+        "type": "goal",
+        "minute": "67",
+        "team": "away",
+        "player": "Player 3"
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "homeTeam": {
+      "id": 103,
+      "name": "Team C",
+      "score": 0
+    },
+    "awayTeam": {
+      "id": 104,
+      "name": "Team D",
+      "score": 3
+    },
+    "gameStatistics": {
+      "discreeteStats": {
+        "shots": 10,
+        "fouls": 7,
+        "corners": 2
+      },
+      "realStats": {
+        "possession": 45.5,
+        "passAccuracy": 78.3
+      }
+    },
+    "events": [
+      {
+        "id": "1",
+        "type": "goal",
+        "minute": "23",
+        "team": "away",
+        "player": "Player 4"
+      },
+      {
+        "id": "2",
+        "type": "foul",
+        "minute": "45",
+        "team": "home",
+        "player": "Player 7"
+      },
+      {
+        "id": "3",
+        "type": "goal",
+        "minute": "78",
+        "team": "away",
+        "player": "Player 8"
+      }
+    ]
+  }
+]
