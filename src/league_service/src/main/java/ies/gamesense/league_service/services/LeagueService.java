@@ -18,6 +18,5 @@ public interface LeagueService {
     List<Club> getAllClubs(Long id);
     void addClub( Long id, Club club, int points, int matchesPlayed, int goalsScored, int goalsConceded);
     void removeClub(Long id, Long clubId);
-    Iterable<League> getLeagues();
     List<LeagueStanding> getLeagueStandings(Long leagueId);
 }

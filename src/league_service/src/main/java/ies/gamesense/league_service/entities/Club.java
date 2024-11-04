@@ -1,49 +1,56 @@
 package ies.gamesense.league_service.entities;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import java.util.List;
-
-@Entity
 public class Club {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "Name is mandatory")
     private String name;
-
-    @NotBlank(message = "Country is mandatory")
     private String country;
+    private boolean starred;
 
-    private boolean isStarred;
+    // Getters, Setters, Constructors, and toString methods
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LeagueStanding> leagueStandings;
+    public Club() {
+    }
 
-    public Club() {}
-
-    public Club(String name, String country) {
+    public Club(String name, String country, boolean starred) {
         this.name = name;
+        this.country = country;
+        this.starred = starred;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
         this.country = country;
     }
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public String getCountry() { return country; }
-    public boolean isStarred() { return isStarred; }
-    public List<LeagueStanding> getLeagueStandings() { return leagueStandings; }
+    public boolean isStarred() {
+        return starred;
+    }
 
-    public void setName(String name) { this.name = name; }
-    public void setCountry(String country) { this.country = country; }
-    public void setStarred(boolean isStarred) { this.isStarred = isStarred; }
-    public void setLeagueStandings(List<LeagueStanding> leagueStandings) { this.leagueStandings = leagueStandings; }
+    public void setStarred(boolean starred) {
+        this.starred = starred;
+    }
 
     @Override
     public String toString() {
-        return "Club [id=" + id + ", name=" + name + ", country=" + country + "]";
-    }
-
-    public void setId(long id) { this.id = id;
+        return "Club [id=" + id + ", name=" + name + ", country=" + country + ", starred=" + starred + "]";
     }
 }
