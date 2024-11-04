@@ -28,14 +28,14 @@ services:
     networks:
       - app-network
 
-  #league_service:
-   # image: league_service-image
-    #build:
-     # context: ./league_service
-    #ports:
-     # - "8084:8080"
-    #networks:
-    #  - app-network
+  league_service:
+    image: league_service-image
+    build:
+      context: ./src/league_service
+    ports:
+      - "8084:8080"
+    networks:
+      - app-network
 
 networks:
   app-network:
