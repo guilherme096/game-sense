@@ -1,4 +1,6 @@
-package ies.gamsense.club_service;
+package ies.gamsense.club_service.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,11 +21,12 @@ public class Club {
     private String country;
 
     // idk about this one either; how to make connection between user and club?
-    private boolean isStarred;
+    @JsonProperty("isStarred")
+    private boolean starred;
 
     public Club() {}
 
-    public Club(String name, String country, String league) {
+    public Club(String name, String country) {
         this.name = name;
         this.country = country;
     }
@@ -31,11 +34,11 @@ public class Club {
     public Long getId() { return id; }
     public String getName() { return name; }
     public String getCountry() { return country; }
-    public boolean isStarred() { return isStarred; }
+    public boolean isStarred() { return starred; }
 
     public void setName(String name) { this.name = name; }
     public void setCountry(String country) { this.country = country; }
-    public void setStarred(boolean isStarred) { this.isStarred = isStarred; }
+    public void setStarred(boolean starred) { this.starred = starred; }
 
     @Override
     public String toString() {
