@@ -18,5 +18,7 @@ public interface LeagueService {
     List<Club> getAllClubs(Long id);
     void addClub( Long id, Club club, int points, int matchesPlayed, int goalsScored, int goalsConceded);
     void removeClub(Long id, Long clubId);
-    List<LeagueStanding> getLeagueStandings(Long leagueId);
+    List<LeagueStanding> getLeagueStandingsWithDetails(Long leagueId);
+    void setFavoriteTeam(Long userId, Long teamId);
+    Club getFavoriteTeam(Long userId);
 }

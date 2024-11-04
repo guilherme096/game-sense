@@ -22,6 +22,7 @@ public class LeagueServiceImpl implements LeagueService {
     private Resource jsonLeagues;
 
     private final Map<Long, League> leagues = new HashMap<>();
+    private Map<Long, Club> userFavoriteTeams = new HashMap<>(); // Mock storage for user favorite teams
 
     @PostConstruct
     public void init() {
@@ -71,6 +72,8 @@ public class LeagueServiceImpl implements LeagueService {
         }
     }
 
+
+
     @Override
     public League getLeagueById(Long id) {
         return leagues.get(id);
@@ -115,7 +118,12 @@ public class LeagueServiceImpl implements LeagueService {
     public void addClub(Long leagueId, Club club, int points, int matchesPlayed, int goalsScored, int goalsConceded) {
         League league = leagues.get(leagueId);
         if (league != null) {
-            LeagueStanding standing = new LeagueStanding(club, points, matchesPlayed, goalsScored, goalsConceded);
+            LeagueStanding standing = new LeagueStanding();
+            standing.setClub(club);
+            standing.setPoints(points);
+            standing.setMatchesPlayed(matchesPlayed);
+            standing.setGoalsScored(goalsScored);
+            standing.setGoalsConceded(goalsConceded);
             league.getStandings().add(standing);
         }
     }
@@ -129,11 +137,35 @@ public class LeagueServiceImpl implements LeagueService {
     }
 
     @Override
-    public List<LeagueStanding> getLeagueStandings(Long leagueId) {
+    public List<LeagueStanding> getLeagueStandingsWithDetails(Long leagueId) {
         League league = leagues.get(leagueId);
         if (league != null) {
             return league.getStandings();
         }
         return null;
+    }
+
+    @Override
+    public void setFavoriteTeam(Long userId, Long teamId) {
+        Club favoriteTeam = null;
+        for (League league : leagues.values()) {
+            for (LeagueStanding standing : league.getStandings()) {
+                if (standing.getClub().getId().equals(teamId)) {
+                    favoriteTeam = standing.getClub();
+                    break;
+                }
+            }
+        }
+        if (favoriteTeam != null) {
+            userFavoriteTeams.put(userId, favoriteTeam);
+        }
+        else {
+            System.out.println("Club not found: " + teamId);
+        }
+    }
+
+    @Override
+    public Club getFavoriteTeam(Long userId) {
+        return userFavoriteTeams.get(userId);
     }
 }

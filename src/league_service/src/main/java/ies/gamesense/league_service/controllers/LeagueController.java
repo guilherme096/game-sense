@@ -28,6 +28,30 @@ public class LeagueController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/{id}/detailed-standings")
+    public ResponseEntity<List<LeagueStanding>> getLeagueStandingsWithDetails(@PathVariable Long id) {
+        List<LeagueStanding> standings = leagueService.getLeagueStandingsWithDetails(id);
+        if (standings != null) {
+            return new ResponseEntity<>(standings, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/user/{userId}/favorite")
+    public ResponseEntity<Club> getFavoriteTeam(@PathVariable Long userId) {
+        Club favoriteTeam = leagueService.getFavoriteTeam(userId);
+        if (favoriteTeam != null) {
+            return new ResponseEntity<>(favoriteTeam, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/user/{userId}/favorite/{teamId}")
+    public ResponseEntity<Void> setFavoriteTeam(@PathVariable Long userId, @PathVariable Long teamId) {
+        leagueService.setFavoriteTeam(userId, teamId);
+        return ResponseEntity.ok().build();
+    }
+
     // Create a new league
     @PostMapping
     public ResponseEntity<League> createLeague(@RequestBody League league) {
@@ -96,7 +120,7 @@ public class LeagueController {
     // Get league standings
     @GetMapping("/{id}/standings")
     public ResponseEntity<List<LeagueStanding>> getLeagueStandings(@PathVariable Long id) {
-        List<LeagueStanding> standings = leagueService.getLeagueStandings(id);
+        List<LeagueStanding> standings = leagueService.getLeagueStandingsWithDetails(id);
         if (standings != null) {
             return new ResponseEntity<>(standings, HttpStatus.OK);
         }

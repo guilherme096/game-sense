@@ -6,19 +6,54 @@ public class LeagueStanding {
     private int matchesPlayed;
     private int goalsScored;
     private int goalsConceded;
+    private int wins;
+    private int draws;
+    private int losses;
 
     // Getters, Setters, Constructors, and toString methods
 
     public LeagueStanding() {
     }
 
-    public LeagueStanding(Club club, int points, int matchesPlayed, int goalsScored, int goalsConceded) {
+    public LeagueStanding(Club club, int points, int matchesPlayed, int goalsScored, int goalsConceded, int wins, int draws, int losses) {
         this.club = club;
         this.points = points;
         this.matchesPlayed = matchesPlayed;
         this.goalsScored = goalsScored;
         this.goalsConceded = goalsConceded;
+        this.wins = wins;
+        this.draws = draws;
+        this.losses = losses;
     }
+
+    public int getGoalDifference() {
+        return goalsScored - goalsConceded;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
+
+    public int getDraws() {
+        return draws;
+    }
+
+    public void setDraws(int draws) {
+        this.draws = draws;
+    }
+
+    public int getLosses() {
+        return losses;
+    }
+
+    public void setLosses(int losses) {
+        this.losses = losses;
+    }
+
 
     public Club getClub() {
         return club;
