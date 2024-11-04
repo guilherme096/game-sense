@@ -15,7 +15,8 @@
       "discreeteStats": {
         "shots": 15,
         "fouls": 5,
-        "corners": 3
+        "corners": 3,
+        "interceptions": 0
       },
       "realStats": {
         "possession": 58.5,
@@ -28,24 +29,21 @@
         "type": "goal",
         "minute": "12",
         "team": "home",
-        "player": "Player 1",
-        "relevant": "assist by Player 2"
+        "player": "Player 1"
       },
       {
         "id": "2",
         "type": "foul",
         "minute": "34",
         "team": "away",
-        "player": "Player 5",
-        "relevant": "yellow card"
+        "player": "Player 5"
       },
       {
         "id": "3",
         "type": "goal",
         "minute": "67",
         "team": "away",
-        "player": "Player 3",
-        "relevant": "no assist"
+        "player": "Player 3"
       }
     ]
   },
@@ -78,24 +76,21 @@
         "type": "goal",
         "minute": "23",
         "team": "away",
-        "player": "Player 4",
-        "relevant": "assist by Player 6"
+        "player": "Player 4"
       },
       {
         "id": "2",
         "type": "foul",
         "minute": "45",
         "team": "home",
-        "player": "Player 7",
-        "relevant": "yellow card"
+        "player": "Player 7"
       },
       {
         "id": "3",
         "type": "goal",
         "minute": "78",
         "team": "away",
-        "player": "Player 8",
-        "relevant": "no assist"
+        "player": "Player 8"
       }
     ]
   }
