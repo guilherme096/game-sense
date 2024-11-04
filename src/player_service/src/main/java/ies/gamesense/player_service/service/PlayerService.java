@@ -10,15 +10,7 @@ public interface PlayerService {
 
     Player getPlayerById(Long id);
 
-    int getPlayerGoals(Long id);
-
-    int getPlayerAssists(Long id);
-
-    int getPlayerFouls(Long id);
-
-    int getPlayerYellowCards(Long id);
-
-    int getPlayerRedCards(Long id);
+    Object getPlayerStatistics(Long id, String statistics);
 
     List<Player> searchPlayers(String name, Integer age, String club, String position, Integer goals,
                                Integer assists, Integer fouls, Integer yellowCards, Integer redCards);
