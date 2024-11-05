@@ -6,36 +6,44 @@ services:
     build:
       context: club_service
     ports:
-      - "8081:8080"
+      - "${CLUB_SERVICE_PORT}:8080"
     networks:
       - app-network
+    env_file:
+      - .env
 
   live_game_service:
     image: live_game_service-image
     build:
       context: live_game_service
     ports:
-      - "8082:8080"
+      - "${LIVE_GAME_SERVICE_PORT}:8080"
     networks:
       - app-network
+    env_file:
+      - .env
 
   player_service:
     image: player_service-image
     build:
       context: player_service
     ports:
-      - "8083:8080"
+      - "${PLAYER_SERVICE_PORT}:8080"
     networks:
       - app-network
+    env_file:
+      - .env
 
   league_service:
     image: league_service-image
     build:
       context: league_service
     ports:
-      - "8084:8080"
+      - "${LEAGUE_SERVICE_PORT}:8080"
     networks:
       - app-network
+    env_file:
+      - .env
 
 networks:
   app-network:
