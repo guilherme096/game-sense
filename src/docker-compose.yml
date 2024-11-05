@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  club_service:
+    image: club_service-image
+    build:
+      context: club_service
+    ports:
+      - "8081:8080"
+    networks:
+      - app-network
+
+  live_game_service:
+    image: live_game_service-image
+    build:
+      context: live_game_service
+    ports:
+      - "8082:8080"
+    networks:
+      - app-network
+
+  player_service:
+    image: player_service-image
+    build:
+      context: player_service
+    ports:
+      - "8083:8080"
+    networks:
+      - app-network
+
+  league_service:
+    image: league_service-image
+    build:
+      context: league_service
+    ports:
+      - "8084:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
