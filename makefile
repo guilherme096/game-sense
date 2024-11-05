@@ -16,12 +16,13 @@ build:
 # Rule to start Docker Compose
 .PHONY: docker-up
 docker-up:
-	docker-compose up --build -d
+	docker-compose -f src/docker-compose.yml up --build -d
 
 # Rule to stop Docker Compose
 .PHONY: docker-down
 docker-down:
-	docker-compose down
+	docker-compose -f src/docker-compose.yml down
+
 
 # Rule to build and then start Docker Compose
 .PHONY: run

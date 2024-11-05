@@ -4,7 +4,7 @@ services:
   club_service:
     image: club_service-image
     build:
-      context: ./src/club_service
+      context: club_service
     ports:
       - "8081:8080"
     networks:
@@ -13,7 +13,7 @@ services:
   live_game_service:
     image: live_game_service-image
     build:
-      context: ./src/live_game_service
+      context: live_game_service
     ports:
       - "8082:8080"
     networks:
@@ -22,7 +22,7 @@ services:
   player_service:
     image: player_service-image
     build:
-      context: ./src/player_service
+      context: player_service
     ports:
       - "8083:8080"
     networks:
@@ -31,7 +31,7 @@ services:
   league_service:
     image: league_service-image
     build:
-      context: ./src/league_service
+      context: league_service
     ports:
       - "8084:8080"
     networks:
