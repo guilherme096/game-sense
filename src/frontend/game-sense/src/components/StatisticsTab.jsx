@@ -86,9 +86,9 @@ const StatisticsTab = () => {
     });
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center bg-gray-100">
       <div
-        className="p-4 bg-white shadow-lg rounded-lg w-full max-w-[500px]" // Increased max-width here
+        className="p-4 bg-white w-full max-w-[500px]" // Increased max-width here
         style={{
           height: "auto",
         }}
