@@ -1,14 +1,14 @@
 import Navbar from "../components/Navbar/Navbar";
 import Header from "../components/Header";
 
-function PageTemplate() {
+function PageTemplate({ children }) {
     return (
-      <>
-        <Header></Header>
-        <Navbar></Navbar>
-      </>
+        <>
+            <Header />
+            {children}
+            <Navbar />
+        </>
     );
-  }
-  
-  export default PageTemplate;
-  
+}
+
+export default PageTemplate;
