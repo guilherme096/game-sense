@@ -1,12 +1,14 @@
 import Navbar from "../components/Navbar/Navbar";
 import Header from "../components/Header";
-import EntityBox from "../components/EntityBox.jsx"
+import EntityCard from "../components/cards/EntityCard.jsx"
+import Standings from "../components/standings/Standings.jsx"
 
 function LeaguePageBase({ children }) {
     return (
         <>
             <Header />
-                <EntityBox image='/premier-league-icon-lion-png-large-size.png' name='Premier' surname='League'/>
+                <EntityCard image='/pl.png' name='Premier'/>
+                <Standings />
             <Navbar/>
         </>
     );
