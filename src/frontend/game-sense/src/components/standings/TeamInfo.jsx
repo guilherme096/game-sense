@@ -1,28 +1,45 @@
-export default function TeamInfo({ clubStanding }) {
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+
+
+export default function TeamInfo({ team }) {
     return (
-        <>
-            <div>
-                <h1>Team Info</h1>
-                <h2>{clubStanding.position}</h2>
-                <h2>{clubStanding.club.name}</h2>
-                <h2>{clubStanding.played}</h2>
-                <h2>{clubStanding.points}</h2>
-                <h2>{(clubStanding.gs - clubStanding.gc)}</h2>
-                <h2>{clubStanding.won}</h2>
-                <h2>{clubStanding.drawn}</h2>
-                <h2>{clubStanding.lost}</h2>
-            </div>
-            <div style={{width: '100%', height: '100%', paddingLeft: 10, paddingRight: 10, paddingTop: 8, paddingBottom: 8, background: '#F3F3F3', justifyContent: 'space-between', alignItems: 'center', display: 'inline-flex'}}>
-                <div style={{height: 15}}>
-                    <div style={{color: 'white', fontSize: 12, fontWeight: '700', wordWrap: 'break-word'}}>1</div>
-                    <div style={{color: 'black', fontSize: 12, fontWeight: '700'}}>{clubStanding.club.name}</div>
+        <tr className={`border-b ${team.position % 2 !== 0 ? 'bg-gray-50' : 'bg-white'} ${team.club.stared ? ' bg-yellow-300' : ''}`}>
+            <td className="px-2 py-2 text-center">
+                <div
+                    className="flex justify-center items-center rounded-full mx-auto"
+                    style={{
+                        background:
+                            team.position === 1
+                                ? '#FFD700'
+                                : team.position === 2
+                                    ? '#C0C0C0'
+                                    : team.position === 3
+                                        ? '#cd7f32'
+                                        : 'transparent',
+                        color: team.position <= 3 ? 'white' : 'black',
+                        width: 20,
+                        height: 20,
+                    }}
+                >
+                    {team.position}
                 </div>
-                <div style={{width: 157.09, height: 15.12, position: 'relative'}}>
-                    <div style={{width: 22.14, left: 0, top: 1.12, position: 'absolute', color: 'black', fontSize: 12,  fontWeight: '700', wordWrap: 'break-word'}}>5</div>
-                    <div style={{width: 24, left: 64.09, top: 0, position: 'absolute', color: 'black', fontSize: 12,  fontWeight: '700', wordWrap: 'break-word'}}>13:4</div>
-                    <div style={{width: 14.09, left: 143, top: 1, position: 'absolute', color: 'black', fontSize: 12,  fontWeight: '700', wordWrap: 'break-word'}}>15</div>
-                </div>
-            </div>
-        </>
-    )
+            </td>
+
+            {/* Club Name */}
+            <td className="px-2 mr-10 py-2 ">
+                {team.club.name} {team.club.stared ? <FontAwesomeIcon icon={faStar} className=' text-white ml-2 ' /> : ''}
+            </td>
+
+
+            {/* Other Stats */}
+            <td className="px-0 py-2 text-center">{team.played}</td>
+            <td className="px-0 py-2 text-center">{team.points}</td>
+            <td className="px-0 py-2 text-center">{team.gs - team.gc}</td>
+            <td className="px-0 py-2 text-center">{team.won}</td>
+            <td className="px-0 py-2 text-center">{team.drawn}</td>
+            <td className="px-0 py-2 text-center">{team.lost}</td>
+        </tr>
+    );
 }
