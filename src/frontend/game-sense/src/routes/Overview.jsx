@@ -9,6 +9,7 @@ import {
   mostSomethingCategories,
   gameEvents,
 } from "../static/game.js";
+
 export default function Overview() {
   return (
     <>
