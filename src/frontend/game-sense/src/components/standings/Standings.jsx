@@ -1,4 +1,3 @@
-import React from 'react';
 import TeamTable from './TeamTable';
 import mockTeams from './mockTeams';
 import GeneralCard from '../cards/GeneralCard';
@@ -8,17 +7,9 @@ export default function Standings() {
 
     // Define the button as JSX
     const changeTeam = (
-        <div
-            style={{
-                color: '#989898',
-                fontSize: 18,
-                fontWeight: '400',
-                wordWrap: 'break-word',
-                cursor: 'pointer', // Make it look clickable
-            }}
-        >
+        <button className='text-gray-400 font-medium text-base'>
             Change Favorite Team
-        </div>
+        </button>
     );
 
     return (

@@ -2,35 +2,22 @@
 export default function EntityCard({ image, name }) {
     return (
         <>
-            <div
-                className="card card-side bg-base-100 shadow-xl m-4 items-center relative overflow-hidden"
-            >
+            <div className="card card-side bg-base-100 shadow-xl m-4 items-center relative overflow-hidden">
                 {/* Background Div */}
-                <div
+                <div className="bg-gray-700"
                     style={{
                         position: 'absolute',
-                        top: '70%',
+                        top: '80%',
                         left: '-20%',
-                        width: '150%', // Ensures it covers more than the parent width
-                        height: '200%', // Ensures it covers vertically
-                        transform: 'rotate(160deg)',
-                        background: '#333D4D',
+                        width: '150%', 
+                        height: '200%', 
+                        transform: 'rotate(165deg)',
                         zIndex: 1, // Ensures it stays behind the content
                     }}
                 />
 
                 {/* Title */}
-                <div
-                    className="card-body"
-                    style={{
-                        color: 'black',
-                        fontSize: 24,
-                        fontWeight: '700',
-                        wordWrap: 'break-word',
-                        zIndex: 2,
-                        position: 'relative',
-                    }}
-                >
+                <div className="card-body text-black font-bold text-2xl">
                     Premier<br />League
                 </div>
 

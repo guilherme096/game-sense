@@ -1,17 +1,18 @@
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/react";
 
-export default function HorizontalTab({ categories }) {
+export default function HorizontalTab({ categories, color_back="bg-base-300" }) {
   return (
     <TabGroup>
-      <TabList className="mx-4 bg-base-300 rounded-lg text-white font-semibold flex flex-row justify-between">
+      <TabList
+        className={`mx-4 my-4 ${color_back} rounded-lg text-white font-semibold flex flex-row overflow-x-auto no-scrollbar`}>
         {categories.map(({ name }) => {
           return (
             <Tab
               key={name}
               className={({ selected }) =>
                 selected
-                  ? "rounded-lg bg-primary h-full flex-1 p-1"
-                  : "rounded-lg h-full flex-1 p-1"
+                  ? "rounded-lg bg-primary h-full flex-1 p-1 px-3 whitespace-nowrap"
+                  : "rounded-lg h-full flex-1 p-1 px-3 whitespace-nowrap"
               }
             >
               {name}

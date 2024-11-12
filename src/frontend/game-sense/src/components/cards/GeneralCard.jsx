@@ -5,19 +5,9 @@ export default function GeneralCard({ title, button, children }) {
         <div className="bg-white shadow-lg rounded-t-lg rounded-b-none">
             {/* Card Header */}
             <div
-                className="text-white  flex justify-between items-center p-2 rounded-t-2xl"
-                style={{
-                    background: '#333D4D',
-                }}
+                className="text-white bg-gray-700 flex justify-between items-center p-2 rounded-t-2xl"
             >
-                {/* Title */}
-                <div
-                    style={{
-                        color: 'white',
-                        fontSize: 18,
-                        fontWeight: '700',
-                    }}
-                >
+                <div className='text-white font-bold text-base'>
                     {title}
                 </div>
                 {button}
