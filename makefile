@@ -1,5 +1,5 @@
 # Define the names of your services
-SERVICES = ./src/club_service live_game_service player_service league_service
+SERVICES = ./src/backend/club_service live_game_service player_service league_service
 
 # Define the default goal
 .PHONY: all
