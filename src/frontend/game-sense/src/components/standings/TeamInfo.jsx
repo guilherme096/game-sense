@@ -8,7 +8,7 @@ export default function TeamInfo({ team }) {
         <tr className={`border-b ${team.position % 2 !== 0 ? 'bg-gray-50' : 'bg-white'} ${team.club.stared ? ' bg-yellow-300' : ''}`}>
             <td className="px-2 py-2 text-center">
                 <div
-                    className="flex justify-center items-center rounded-full mx-auto"
+                    className="flex justify-center items-center rounded-full mx-auto font-medium"
                     style={{
                         background:
                             team.position === 1
@@ -28,7 +28,7 @@ export default function TeamInfo({ team }) {
             </td>
 
             {/* Club Name */}
-            <td className="px-2 mr-10 py-2 ">
+            <td className="px-2 mr-10 py-2 font-medium">
                 {team.club.name} {team.club.stared ? <FontAwesomeIcon icon={faStar} className=' text-white ml-2 ' /> : ''}
             </td>
 

@@ -10,14 +10,7 @@ export default function GeneralCard({ title, button, children }) {
                     background: '#333D4D',
                 }}
             >
-                {/* Title */}
-                <div
-                    style={{
-                        color: 'white',
-                        fontSize: 18,
-                        fontWeight: '700',
-                    }}
-                >
+                <div className='text-white font-bold text-base'>
                     {title}
                 </div>
                 {button}
