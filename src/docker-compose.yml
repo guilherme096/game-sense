@@ -1,10 +1,8 @@
-version: '3.8'
-
 services:
   club_service:
     image: club_service-image
     build:
-      context: club_service
+      context: backend/club_service
     ports:
       - "${CLUB_SERVICE_PORT}:8080"
     networks:
@@ -15,7 +13,7 @@ services:
   live_game_service:
     image: live_game_service-image
     build:
-      context: live_game_service
+      context: backend/live_game_service
     ports:
       - "${LIVE_GAME_SERVICE_PORT}:8080"
     networks:
@@ -26,7 +24,7 @@ services:
   player_service:
     image: player_service-image
     build:
-      context: player_service
+      context: backend/player_service
     ports:
       - "${PLAYER_SERVICE_PORT}:8080"
     networks:
@@ -37,13 +35,22 @@ services:
   league_service:
     image: league_service-image
     build:
-      context: league_service
+      context: backend/league_service
     ports:
       - "${LEAGUE_SERVICE_PORT}:8080"
     networks:
       - app-network
     env_file:
       - .env
+
+  frontend:
+    image: frontend-image
+    build:
+      context: frontend/game-sense
+    ports:
+      - "3000:80" 
+    networks:
+      - app-network
 
 networks:
   app-network:
