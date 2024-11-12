@@ -8,8 +8,7 @@ function LeaguePageBase({ children }) {
         <>
             <PageTemplate>
                 <EntityCard image='/pl.png' name='Premier'/>
-                <HorizontalTab categories={[ { name: 'Overview' , content: <Standings /> }, {name:'Next Games'}, {name:'Results'}, {name:'Statistics'} ]} />
-                <Standings />
+                <HorizontalTab color_back="bg-gray-700" categories={[ { name: 'Overview' , content: <Standings /> }, {name:'Next Games'}, {name:'Results'}, {name:'Statistics'} ]} />
             </PageTemplate>
         </>
     );

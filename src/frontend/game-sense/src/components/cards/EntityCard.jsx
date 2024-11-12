@@ -4,15 +4,14 @@ export default function EntityCard({ image, name }) {
         <>
             <div className="card card-side bg-base-100 shadow-xl m-4 items-center relative overflow-hidden">
                 {/* Background Div */}
-                <div
+                <div className="bg-gray-700"
                     style={{
                         position: 'absolute',
-                        top: '70%',
+                        top: '80%',
                         left: '-20%',
                         width: '150%', 
                         height: '200%', 
-                        transform: 'rotate(160deg)',
-                        background: '#333D4D',
+                        transform: 'rotate(165deg)',
                         zIndex: 1, // Ensures it stays behind the content
                     }}
                 />
