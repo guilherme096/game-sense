@@ -2,15 +2,18 @@ import GameTimeline from "../components/GamePage/GameTimeLine.jsx";
 import MatchInformationCard from "../components/GamePage/MatchInformationCard.jsx";
 import MvpCard from "../components/GamePage/MvpCard.jsx";
 import MostSomethingCard from "../components/GamePage/MostSomethingCard.jsx";
+import { useQuery, useQueryClient } from "react-query";
+import axios from "axios";
 
-import {
-  matchInformation,
-  mvp,
-  mostSomethingCategories,
-  gameEvents,
-} from "../static/game.js";
+import { mvp, mostSomethingCategories, gameEvents } from "../static/game.js";
+
+const fetchGame = async () => {
+  const res = await axios.get("http://localhost:8082/api/v1/live/0");
+  return res.data;
+};
 
 export default function Overview() {
+  const { data: game, error, isLoading } = useQuery("game", fetchGame);
   return (
     <>
       <div className="p-4">
@@ -19,11 +22,17 @@ export default function Overview() {
       <div className="row flex space-x-3">
         {/* Left Side - Match Information */}
         <div className="col w-1/2 pl-4">
-          <MatchInformationCard
-            kickoff={matchInformation.kickoff}
-            referee={matchInformation.referee}
-            stadium={matchInformation.stadium}
-          />
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : error ? (
+            <p>Error: {error.message}</p>
+          ) : (
+            <MatchInformationCard
+              kickoff={game.kickoffTime}
+              referee={game.referee}
+              stadium={game.stadium}
+            />
+          )}
         </div>
 
         {/* Right Side - MVP and Carousel */}

@@ -3,25 +3,24 @@ import Template from "./routes/PageTemplate";
 import LeaguePageBase from "./routes/LeaguePageBase";
 import Game from "./routes/Game";
 
-
 export const routesList = [
   {
     path: "/",
-    element: <Home />, 
+    element: <Game />,
   },
-  
+
   {
     path: "/template",
     element: <Template />,
   },
-  
+
   {
     path: "/leaguePage",
     element: <LeaguePageBase />,
   },
-  
+
   {
     path: "/game",
     element: <Game />,
-  }
+  },
 ];
