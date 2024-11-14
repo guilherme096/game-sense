@@ -2,7 +2,7 @@
 
 #### Date: 13/11/2024
 
-#### Time: 20:00 -
+#### Time: 20:00 - 20:30
 
 #### Attendees:
 
@@ -13,8 +13,5 @@
    1. Creation of 2 people teams - frontend/backend
 3. Define priorities for the next sprint and set estimated time for each task
 
-## Notes
-
-1.
-
 **Next meeting:**
+16/11/2024 21:00
