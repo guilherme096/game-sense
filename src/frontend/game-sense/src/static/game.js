@@ -31,6 +31,7 @@ export const scoreBoardInfo = {
     },
     team2: {
         name: "Sporting CP",
+        image: "https://sportingdamadeira.pt/wp-content/uploads/2024/01/logo_contorno_leao_branco-1.png",
         stared: false
     },
     score1: 1,
