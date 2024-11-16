@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import ies.gamesense.live_game_service.entities.GameStatistics;
 import ies.gamesense.live_game_service.entities.Live;
@@ -22,6 +23,7 @@ import io.swagger.v3.oas.annotations.Operation;
  */
 @RestController
 @RequestMapping("/api/v1/live")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 public class LiveController {
 
     @Autowired
