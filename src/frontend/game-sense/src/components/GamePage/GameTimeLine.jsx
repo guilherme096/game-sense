@@ -5,7 +5,7 @@ import { faFutbol, faRightLeft, faSquare } from "@fortawesome/free-solid-svg-ico
 
 const GameTimeline = ({ events }) => {
   const timelineRef = useRef(null);
-  const [lineStyles, setLineStyles] = useState({ top: 0, height: 0 });
+  const [lineStyles, setLineStyles] = useState({ top: "100px", height: 0 });
 
   useEffect(() => {
     if (timelineRef.current && events.length > 0) {
@@ -28,7 +28,7 @@ const GameTimeline = ({ events }) => {
 
     return (
       <div
-        className={`flex items-center w-1/2 ${isLeft ? "pr-7 justify-end text-right" : "pl-7 justify-start text-left"
+        className={`flex items-center w-1/2 transition-all ${isLeft ? "pr-7 justify-end text-right" : "pl-7 justify-start text-left"
           }`}
       >
         {isLeft && (
@@ -76,7 +76,7 @@ const GameTimeline = ({ events }) => {
       {/* Conditional rendering of vertical line */}
       {events.length > 0 && (
         <div
-          className="absolute left-1/2 w-1 bg-white transform -translate-x-1/2 rounded-lg transition-all duration-300"
+          className="absolute left-1/2 w-1 bg-white transform -translate-x-1/2 rounded-lg transition-all duration-500"
           style={{
             top: `${lineStyles.top}px`,
             height: `${lineStyles.height}px`,
