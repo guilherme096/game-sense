@@ -2,10 +2,10 @@ import GameTimeline from "../components/GamePage/GameTimeLine.jsx";
 import MatchInformationCard from "../components/GamePage/MatchInformationCard.jsx";
 import MvpCard from "../components/GamePage/MvpCard.jsx";
 import MostSomethingCard from "../components/GamePage/MostSomethingCard.jsx";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import axios from "axios";
 
-import { mvp, mostSomethingCategories, gameEvents } from "../static/game.js";
+import { mvp, mostSomethingCategories } from "../static/game.js";
 
 const fetchGame = async () => {
   const res = await axios.get("http://localhost:8082/api/v1/live/0");
@@ -17,7 +17,7 @@ export default function Overview() {
   return (
     <>
       <div className="p-4">
-        <GameTimeline events={gameEvents} />
+        <GameTimeline />
       </div>
       <div className="row flex space-x-3">
         {/* Left Side - Match Information */}

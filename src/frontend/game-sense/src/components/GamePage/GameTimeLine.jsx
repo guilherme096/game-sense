@@ -1,9 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFutbol, faRightLeft, faSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFutbol,
+  faRightLeft,
+  faSquare,
+} from "@fortawesome/free-solid-svg-icons";
 
-const GameTimeline = ({ events }) => {
+const GameTimeline = () => {
+  const events = [];
   const timelineRef = useRef(null);
   const [lineStyles, setLineStyles] = useState({ top: 0, height: 0 });
 
@@ -28,17 +33,22 @@ const GameTimeline = ({ events }) => {
 
     return (
       <div
-        className={`flex items-center w-1/2 ${isLeft ? "pr-7 justify-end text-right" : "pl-7 justify-start text-left"
-          }`}
+        className={`flex items-center w-1/2 ${
+          isLeft
+            ? "pr-7 justify-end text-right"
+            : "pl-7 justify-start text-left"
+        }`}
       >
         {isLeft && (
           <div className="mr-4">
-            <span className="font-bold">{event.minute}'</span> {event.description}
+            <span className="font-bold">{event.minute}'</span>{" "}
+            {event.description}
           </div>
         )}
 
         <div
-          className={`flex items-center justify-center ${event.type === "goal"
+          className={`flex items-center justify-center ${
+            event.type === "goal"
               ? "text-green-200"
               : event.type === "red-card"
                 ? "text-red-500"
@@ -49,18 +59,29 @@ const GameTimeline = ({ events }) => {
                     : event.type === "auto-goal"
                       ? "text-red-300"
                       : ""
-            }`}
+          }`}
         >
-          {event.type === "goal" && <FontAwesomeIcon icon={faFutbol} className="h-5" />}
-          {event.type === "substitution" && <FontAwesomeIcon icon={faRightLeft} className="h-5" />}
-          {event.type === "red-card" && <FontAwesomeIcon icon={faSquare} className="h-5" />}
-          {event.type === "yellow-card" && <FontAwesomeIcon icon={faSquare} className="h-5" />}
-          {event.type === "auto-goal" && <FontAwesomeIcon icon={faFutbol} className="h-5" />}
+          {event.type === "goal" && (
+            <FontAwesomeIcon icon={faFutbol} className="h-5" />
+          )}
+          {event.type === "substitution" && (
+            <FontAwesomeIcon icon={faRightLeft} className="h-5" />
+          )}
+          {event.type === "red-card" && (
+            <FontAwesomeIcon icon={faSquare} className="h-5" />
+          )}
+          {event.type === "yellow-card" && (
+            <FontAwesomeIcon icon={faSquare} className="h-5" />
+          )}
+          {event.type === "auto-goal" && (
+            <FontAwesomeIcon icon={faFutbol} className="h-5" />
+          )}
         </div>
 
         {!isLeft && (
           <div className="ml-5">
-            <span className="font-bold">{event.minute}'</span> {event.description}
+            <span className="font-bold">{event.minute}'</span>{" "}
+            {event.description}
           </div>
         )}
       </div>
@@ -69,8 +90,9 @@ const GameTimeline = ({ events }) => {
 
   return (
     <div
-      className={`relative w-full bg-[#196146] text-white p-6 rounded-md ${events.length > 0 ? "min-h-[100px]" : "min-h-[70px]"
-        }`}
+      className={`relative w-full bg-[#196146] text-white p-6 rounded-md ${
+        events.length > 0 ? "min-h-[100px]" : "min-h-[70px]"
+      }`}
       ref={timelineRef}
     >
       {/* Conditional rendering of vertical line */}
@@ -91,8 +113,9 @@ const GameTimeline = ({ events }) => {
         events.map((event, index) => (
           <div
             key={index}
-            className={`relative flex w-full items-center my-8 ${event.team === "left" ? "justify-start" : "justify-end"
-              }`}
+            className={`relative flex w-full items-center my-8 ${
+              event.team === "left" ? "justify-start" : "justify-end"
+            }`}
           >
             {renderEventBlock(event, event.team)}
             <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center">
