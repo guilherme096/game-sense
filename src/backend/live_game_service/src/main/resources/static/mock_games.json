@@ -6,13 +6,17 @@
     "stadium": "Stadium 1",
     "homeTeam": {
       "id": 101,
-      "name": "Team A",
-      "score": 2
+      "name": "FC Porto",
+      "score": 2,
+      "stared": true,
+      "image": "https://upload.wikimedia.org/wikipedia/pt/c/c5/F.C._Porto_logo.png"
     },
     "awayTeam": {
       "id": 102,
-      "name": "Team B",
-      "score": 1
+      "name": "Sporting CM",
+      "score": 1,
+      "stared": true,
+      "image": "https://sportingdamadeira.pt/wp-content/uploads/2024/01/logo_contorno_leao_branco-1.png"
     },
     "gameStatistics": {
       "discreeteStats": {
@@ -23,11 +27,16 @@
       },
       "realStats": {
         "possession": 58.5,
-        "passAccuracy": 82.3
+        "passAccuracy": 82.3,
+        "minute": 35
       }
     },
     "currentMVP": "Player 1",
-    "topStats": ["Player 1: 23 Passes", "Player 2: 12 shots", "Player 3: 12 tackles"],
+    "topStats": [
+      "Player 1: 23 Passes",
+      "Player 2: 12 shots",
+      "Player 3: 12 tackles"
+    ],
     "events": [
       {
         "id": "1",

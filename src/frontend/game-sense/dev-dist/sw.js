@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * Copyright 2018 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -90,3 +91,5 @@ define(['./workbox-54d0af47'], (function (workbox) { 'use strict';
   }));
 
 }));
+=======
+>>>>>>> 85ba0d401cb040475b1758815725a79c402c881f
