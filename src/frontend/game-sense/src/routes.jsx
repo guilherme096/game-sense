@@ -5,6 +5,7 @@ import PlayerPageBase from "./routes/PlayerPageBase";
 import Game from "./routes/Game";
 import Login from "./routes/Login";
 import Register from "./routes/Register"; 
+import Profile from "./routes/Profile";
 
 
 export const routesList = [
@@ -41,5 +42,11 @@ export const routesList = [
   {
     path: "/register",
     element: <Register />
+  },
+
+  {
+    path: "/profile",
+    element: <Profile />
   }
+
 ];
