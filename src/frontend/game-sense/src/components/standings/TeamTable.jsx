@@ -2,6 +2,7 @@ import React from 'react';
 import TeamInfo from './TeamInfo';
 
 export default function TeamTable({ standings }) {
+  console.log(standings);
   return (
       <div className="overflow-x-auto">
         <table className="table-auto w-full text-sm text-left" style={{ tableLayout: 'fixed' }}>

@@ -5,14 +5,16 @@ import java.util.List;
 public class League {
     private Long id;
     private String name;
+    private String logo;
     private List<LeagueStanding> standings;
 
     // Getters, Setters, Constructors, and toString methods
     public League() {
     }
 
-    public League(String name, List<LeagueStanding> standings) {
+    public League(String name, String logo, List<LeagueStanding> standings) {
         this.name = name;
+        this.logo = logo;
         this.standings = standings;
     }
 
@@ -32,6 +34,14 @@ public class League {
         this.name = name;
     }
 
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
     public List<LeagueStanding> getStandings() {
         return standings;
     }
@@ -42,6 +52,6 @@ public class League {
 
     @Override
     public String toString() {
-        return "League [id=" + id + ", name=" + name + ", standings=" + standings + "]";
+        return "League [id=" + id + ", name=" + name + ", logo=" + logo + ", standings=" + standings + "]";
     }
 }

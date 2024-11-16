@@ -39,6 +39,7 @@ public class LeagueServiceImpl implements LeagueService {
             League league = new League();
             league.setId(rootNode.get("id").asLong());
             league.setName(rootNode.get("name").asText());
+            league.setLogo(rootNode.get("logo").asText());
 
             List<LeagueStanding> standings = new ArrayList<>();
 
@@ -52,10 +53,12 @@ public class LeagueServiceImpl implements LeagueService {
 
                 LeagueStanding standing = new LeagueStanding();
                 standing.setClub(club);
-                standing.setPoints(standingNode.get("points").asInt());
                 standing.setMatchesPlayed(standingNode.get("matchesPlayed").asInt());
                 standing.setGoalsScored(standingNode.get("goalsScored").asInt());
                 standing.setGoalsConceded(standingNode.get("goalsConceded").asInt());
+                standing.setWins(standingNode.get("wins").asInt());
+                standing.setDraws(standingNode.get("draws").asInt());
+                standing.setLosses(standingNode.get("losses").asInt());
 
                 standings.add(standing);
             }
@@ -115,15 +118,17 @@ public class LeagueServiceImpl implements LeagueService {
     }
 
     @Override
-    public void addClub(Long leagueId, Club club, int points, int matchesPlayed, int goalsScored, int goalsConceded) {
+    public void addClub(Long leagueId, Club club, int points, int matchesPlayed, int goalsScored, int goalsConceded, int wins, int draws, int losses) {
         League league = leagues.get(leagueId);
         if (league != null) {
             LeagueStanding standing = new LeagueStanding();
             standing.setClub(club);
-            standing.setPoints(points);
             standing.setMatchesPlayed(matchesPlayed);
             standing.setGoalsScored(goalsScored);
             standing.setGoalsConceded(goalsConceded);
+            standing.setWins(wins);
+            standing.setDraws(draws);
+            standing.setLosses(losses);
             league.getStandings().add(standing);
         }
     }

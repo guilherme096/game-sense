@@ -1,9 +1,7 @@
 import TeamTable from './TeamTable';
-import mockTeams from './mockTeams';
 import GeneralCard from '../cards/GeneralCard';
 
-export default function Standings() {
-    const sortedStandings = mockTeams.sort((a, b) => a.position - b.position); // Sort by position
+export default function Standings({sortedStandings}) {
 
     // Define the button as JSX
     const changeTeam = (
