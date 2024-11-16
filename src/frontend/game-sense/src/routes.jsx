@@ -3,7 +3,7 @@ import Template from "./routes/PageTemplate";
 import LeaguePageBase from "./routes/LeaguePageBase";
 import Game from "./routes/Game";
 import Login from "./routes/Login";
-import Register from "./routes/Register"; 
+import Register from "./routes/Register";
 
 export const routesList = [
   {
@@ -25,9 +25,6 @@ export const routesList = [
     path: "/game",
     element: <Game />,
   },
-<<<<<<< HEAD
-=======
-
   {
     path: "/login",
     element: <Login />,
@@ -36,6 +33,5 @@ export const routesList = [
   {
     path: "/register",
     element: <Register />,
-  }
->>>>>>> 85ba0d401cb040475b1758815725a79c402c881f
+  },
 ];
