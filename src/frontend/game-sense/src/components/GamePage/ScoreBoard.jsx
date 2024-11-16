@@ -1,13 +1,38 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from 'prop-types';
-import {faShareNodes} from "@fortawesome/free-solid-svg-icons/faShareNodes";
+import {useQuery, useQueryClient} from "react-query";
+import axios from "axios";
+
+const fetchGame = async () => {
+    const response = await axios.get("http://localhost:8082/api/v1/live/0");
+    return response.data;
+}
 
 
-export default function ScoreBoard({ team1, team2, score1, score2, minute }) {
+export default function ScoreBoard() {
+    const {data: game, error, isLoading} = useQuery("game", fetchGame);
+    console.log(game);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
+    const team1 = game.homeTeam;
+    const team2 = game.awayTeam;
+    const minute = game.gameStatistics.realStats.minute;
+    const score1 = team1.score;
+    const score2 = team2.score;
+
     return(
         <>
-            <div className="w-full text-center font-semibold">{minute <= 45 ? '1st Half' : (minute >= 46 && minute < 90 ? '2nd Half' : 'Full Time')}</div>
+            <div className="w-full text-center font-semibold">
+                {minute <= 45 ? '1st Half' : (minute >= 46 && minute < 90 ? '2nd Half' : 'Full Time')}
+            </div>
             <div className="w-full h-fit flex flex-row justify-between align-middle items-center">
                 <div>
                     <div className="flex flex-row items-center">
@@ -38,7 +63,7 @@ export default function ScoreBoard({ team1, team2, score1, score2, minute }) {
                         <div className="w-fit h-fit text-sm text-center">{minute}'</div>
                     </div>
                     <button className="text-center text-sm flex justify-center font-extralight items-center">
-                        <img src='public/icons8-share-256 1.png' alt="Share Icon"/>
+                        <img src='/public/icons8-share-256 1.png' alt="Share Icon"/>
                     </button>
                 </div>
                 <div>
@@ -67,12 +92,4 @@ export default function ScoreBoard({ team1, team2, score1, score2, minute }) {
             </div>
         </>
     );
-}
-
-ScoreBoard.propTypes = {
-    team1: PropTypes.object,
-    team2: PropTypes.object,
-    score1: PropTypes.number,
-    score2: PropTypes.number,
-    minute: PropTypes.number
 }

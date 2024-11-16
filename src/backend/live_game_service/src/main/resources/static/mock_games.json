@@ -3,13 +3,17 @@
     "id": 0,
     "homeTeam": {
       "id": 101,
-      "name": "Team A",
-      "score": 2
+      "name": "FC Porto",
+      "score": 2,
+      "stared": true,
+      "image": "/static/fcporto.png"
     },
     "awayTeam": {
       "id": 102,
-      "name": "Team B",
-      "score": 1
+      "name": "Sporting CM",
+      "score": 1,
+      "stared": true,
+      "image": "/static/sporting.png"
     },
     "gameStatistics": {
       "discreeteStats": {
@@ -20,7 +24,8 @@
       },
       "realStats": {
         "possession": 58.5,
-        "passAccuracy": 82.3
+        "passAccuracy": 82.3,
+        "minute": 35
       }
     },
     "events": [
@@ -52,12 +57,16 @@
     "homeTeam": {
       "id": 103,
       "name": "Team C",
-      "score": 0
+      "score": 0,
+      "stared": false,
+      "image": "/static/fcporto.png"
     },
     "awayTeam": {
       "id": 104,
       "name": "Team D",
-      "score": 3
+      "score": 3,
+        "stared": false,
+        "image": "/static/sporting.png"
     },
     "gameStatistics": {
       "discreeteStats": {
