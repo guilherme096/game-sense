@@ -1,7 +1,7 @@
 import TeamTable from './TeamTable';
 import GeneralCard from '../cards/GeneralCard';
 
-export default function Standings(sortedStandings) {
+export default function Standings({sortedStandings}) {
 
     // Define the button as JSX
     const changeTeam = (

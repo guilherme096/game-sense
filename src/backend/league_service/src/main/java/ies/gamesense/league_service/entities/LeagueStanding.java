@@ -24,10 +24,6 @@ public class LeagueStanding {
         this.losses = losses;
     }
 
-    public int getGoalDifference() {
-        return goalsScored - goalsConceded;
-    }
-
     public int getWins() {
         return wins;
     }

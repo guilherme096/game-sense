@@ -16,7 +16,7 @@ public interface LeagueService {
     void deleteLeague(Long id);
     boolean existsLeague(Long id);
     List<Club> getAllClubs(Long id);
-    void addClub( Long id, Club club, int points, int matchesPlayed, int goalsScored, int goalsConceded);
+    void addClub( Long id, Club club, int points, int matchesPlayed, int goalsScored, int goalsConceded, int wins, int draws, int losses);
     void removeClub(Long id, Long clubId);
     List<LeagueStanding> getLeagueStandingsWithDetails(Long leagueId);
     void setFavoriteTeam(Long userId, Long teamId);
