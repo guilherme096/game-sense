@@ -58,7 +58,7 @@ const GameTimeline = () => {
         className={`flex items-center w-1/2 ${
           isLeft ? "pr-7 justify-end text-right" : "pl-7 justify-start text-left"
         }`}
-      >
+        >
         {isLeft && (
           <div className="mr-4">
             <span className="font-bold">{event.minute}'</span> {event.player}
