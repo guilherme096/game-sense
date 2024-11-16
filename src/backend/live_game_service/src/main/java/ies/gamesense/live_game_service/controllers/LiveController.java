@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import ies.gamesense.live_game_service.entities.GameStatistics;
 import ies.gamesense.live_game_service.entities.Live;
@@ -22,6 +23,7 @@ import io.swagger.v3.oas.annotations.Operation;
  */
 @RestController
 @RequestMapping("/api/v1/live")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 public class LiveController {
 
     @Autowired
@@ -52,6 +54,19 @@ public class LiveController {
             response = liveService.getNewEvents(id, lastEventId);
         }
         return new ResponseEntity<>(response, response != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    }    
+
+    @Operation(summary = "Get current MVP of the game")
+    @GetMapping("/{id}/currentMVP")
+    public ResponseEntity<String> getCurrentMVP(@PathVariable("id") long id) {
+        String currentMVP = liveService.getCurrentMVP(id);
+        return new ResponseEntity<>(currentMVP, currentMVP != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
+    @Operation(summary = "Get top stats of the game")
+    @GetMapping("/{id}/topStats")
+    public ResponseEntity<List<String>> getTopStats(@PathVariable("id") long id) {
+        List<String> topStats = liveService.getTopStats(id);
+        return new ResponseEntity<>(topStats, topStats != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    }
 }

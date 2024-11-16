@@ -16,7 +16,6 @@ const fetchGame = async () => {
     return response.data;
 }
 
-
 function LeaguePageBase({ children }) {
     const {data: league, isLoading, error} = useQuery('league', fetchGame);
     if (isLoading) {

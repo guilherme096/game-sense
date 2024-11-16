@@ -17,4 +17,7 @@ public interface LiveService {
 
     List<Map<String, String>> getNewEvents(Long id, Long lastEventId);
 
+    String getCurrentMVP(Long id);
+
+    List<String> getTopStats(Long id);
 }

@@ -6,13 +6,17 @@ public class GameTeam {
 
     private String name;
     private int score;
+    private boolean stared;
+    private String image;
 
     public GameTeam() {
     }
 
-    public GameTeam(String name, int score) {
+    public GameTeam(String name, int score, String image) {
         this.name = name;
         this.score = score;
+        this.stared = false;
+        this.image = "";
     }
 
     public String getName() {
@@ -35,4 +39,19 @@ public class GameTeam {
         return id;
     }
 
+    public void setStared (boolean stared) {
+        this.stared = stared;
+    }
+
+    public boolean getStared() {
+        return stared;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getImage() {
+        return image;
+    }
 }

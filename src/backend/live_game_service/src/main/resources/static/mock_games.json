@@ -1,15 +1,22 @@
 [
   {
     "id": 0,
+    "referee": "Referee 1",
+    "kickoffTime": "2022-03-01T20:00:00",
+    "stadium": "Stadium 1",
     "homeTeam": {
       "id": 101,
-      "name": "Team A",
-      "score": 2
+      "name": "FC Porto",
+      "score": 2,
+      "stared": true,
+      "image": "https://upload.wikimedia.org/wikipedia/pt/c/c5/F.C._Porto_logo.png"
     },
     "awayTeam": {
       "id": 102,
-      "name": "Team B",
-      "score": 1
+      "name": "Sporting CM",
+      "score": 1,
+      "stared": true,
+      "image": "https://sportingdamadeira.pt/wp-content/uploads/2024/01/logo_contorno_leao_branco-1.png"
     },
     "gameStatistics": {
       "discreeteStats": {
@@ -20,9 +27,16 @@
       },
       "realStats": {
         "possession": 58.5,
-        "passAccuracy": 82.3
+        "passAccuracy": 82.3,
+        "minute": 35
       }
     },
+    "currentMVP": "Player 1",
+    "topStats": [
+      "Player 1: 23 Passes",
+      "Player 2: 12 shots",
+      "Player 3: 12 tackles"
+    ],
     "events": [
       {
         "id": "1",
@@ -33,7 +47,7 @@
       },
       {
         "id": "2",
-        "type": "foul",
+        "type": "yellow-card",
         "minute": "34",
         "team": "away",
         "player": "Player 5"
@@ -44,53 +58,6 @@
         "minute": "67",
         "team": "away",
         "player": "Player 3"
-      }
-    ]
-  },
-  {
-    "id": 1,
-    "homeTeam": {
-      "id": 103,
-      "name": "Team C",
-      "score": 0
-    },
-    "awayTeam": {
-      "id": 104,
-      "name": "Team D",
-      "score": 3
-    },
-    "gameStatistics": {
-      "discreeteStats": {
-        "shots": 10,
-        "fouls": 7,
-        "corners": 2
-      },
-      "realStats": {
-        "possession": 45.5,
-        "passAccuracy": 78.3
-      }
-    },
-    "events": [
-      {
-        "id": "1",
-        "type": "goal",
-        "minute": "23",
-        "team": "away",
-        "player": "Player 4"
-      },
-      {
-        "id": "2",
-        "type": "foul",
-        "minute": "45",
-        "team": "home",
-        "player": "Player 7"
-      },
-      {
-        "id": "3",
-        "type": "goal",
-        "minute": "78",
-        "team": "away",
-        "player": "Player 8"
       }
     ]
   }

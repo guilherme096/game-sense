@@ -8,15 +8,26 @@ public class Live {
 
     private GameTeam homeTeam;
     private GameTeam awayTeam;
+    private String referee;
+    private String kickoffTime;
+    private String stadium;
     private GameStatistics gameStatistics;
+    private String currentMVP;
+    private List<String> topStats;
 
     private List<Map<String, String>> events;
 
-    public Live(GameTeam homeTeam, GameTeam awayTeam, GameStatistics gameStatistics, List<Map<String, String>> events) {
+    public Live(GameTeam homeTeam, GameTeam awayTeam, GameStatistics gameStatistics, List<Map<String, String>> events,
+            String referee, String kickoffTime, String stadium, String currentMVP, List<String> topStats) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
+        this.referee = referee;
+        this.kickoffTime = kickoffTime;
         this.gameStatistics = gameStatistics;
+        this.stadium = stadium;
         this.events = events;
+        this.currentMVP = currentMVP;
+        this.topStats = topStats;
     }
 
     public Live() {
@@ -72,4 +83,43 @@ public class Live {
         this.events = events;
     }
 
+    public String getReferee() {
+        return referee;
+    }
+
+    public void setReferee(String referee) {
+        this.referee = referee;
+    }
+
+    public String getKickoffTime() {
+        return kickoffTime;
+    }
+
+    public void setKickoffTime(String kickoffTime) {
+        this.kickoffTime = kickoffTime;
+    }
+
+    public String getStadium() {
+        return stadium;
+    }
+
+    public void setStadium(String stadium) {
+        this.stadium = stadium;
+    }
+
+    public String getCurrentMVP() {
+        return currentMVP;
+    }
+
+    public void setCurrentMVP(String currentMVP) {
+        this.currentMVP = currentMVP;
+    }
+
+    public List<String> getTopStats() {
+        return topStats;
+    }
+
+    public void setTopStats(List<String> topStats) {
+        this.topStats = topStats;
+    }
 }
