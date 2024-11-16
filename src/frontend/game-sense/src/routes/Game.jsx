@@ -3,7 +3,6 @@ import Header from "../components/Header";
 import Overview from "./Overview.jsx";
 import HorizontalTab from "../components/HorizontalTab.jsx";
 import ScoreBoard from "../components/GamePage/ScoreBoard.jsx";
-import {scoreBoardInfo} from "../static/game.js";
 
 const tabs = [
   { name: "Overview", content: <Overview /> },
@@ -15,7 +14,7 @@ function Game() {
     <>
       <Header />
       <div className="p-4 font-semibold pt-0">
-        <ScoreBoard {...scoreBoardInfo} />
+        <ScoreBoard />
       </div>
       <HorizontalTab categories={tabs} />
       <Navbar />
