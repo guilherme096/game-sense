@@ -1,5 +1,5 @@
 # Define the names of your services
-SERVICES = ./src/backend/club_service live_game_service player_service league_service
+SERVICES = ./src/club_service live_game_service player_service league_service
 
 # Define the default goal
 .PHONY: all
@@ -16,13 +16,12 @@ build:
 # Rule to start Docker Compose
 .PHONY: docker-up
 docker-up:
-	docker-compose -f src/docker-compose.yml up --build -d
+	docker-compose up --build -d
 
 # Rule to stop Docker Compose
 .PHONY: docker-down
 docker-down:
-	docker-compose -f src/docker-compose.yml down
-
+	docker-compose down
 
 # Rule to build and then start Docker Compose
 .PHONY: run
