@@ -1,6 +1,7 @@
 import Home from "./routes/Home";
 import Template from "./routes/PageTemplate";
 import LeaguePageBase from "./routes/LeaguePageBase";
+import PlayerPageBase from "./routes/PlayerPageBase";
 import Game from "./routes/Game";
 import Login from "./routes/Login";
 import Register from "./routes/Register"; 
@@ -26,6 +27,10 @@ export const routesList = [
     path: "/game",
     element: <Game />,
   },
+    
+  {
+    path: "/playerPage",
+    element: <PlayerPageBase />,
 
   {
     path: "/login",
@@ -34,6 +39,6 @@ export const routesList = [
 
   {
     path: "/register",
-    element: <Register />,
+    element: <Register />
   }
 ];

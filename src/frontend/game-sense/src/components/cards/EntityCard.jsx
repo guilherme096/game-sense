@@ -1,5 +1,5 @@
 
-export default function EntityCard({ image, name }) {
+export default function EntityCard({ image, name1, name2 }) {
     return (
         <>
             <div className="card card-side bg-base-100 shadow-xl m-4 items-center relative overflow-hidden">
@@ -17,13 +17,16 @@ export default function EntityCard({ image, name }) {
                 />
 
                 {/* Title */}
-                <div className="card-body text-black font-bold text-2xl">
-                    Premier<br />League
+                <div className="card-body text-black text-2xl">
+                    {name1}
+                    <div className="font-bold -mt-2">
+                        {name2}
+                    </div>
                 </div>
 
                 {/* Image */}
                 <div
-                    className="card-body w-14 p-1"
+                    className="card-body w-14 p-4"
                     style={{
                         zIndex: 2,
                         position: 'relative',
