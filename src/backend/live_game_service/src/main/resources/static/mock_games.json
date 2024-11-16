@@ -26,6 +26,8 @@
         "passAccuracy": 82.3
       }
     },
+    "currentMVP": "Player 1",
+    "topStats": ["Player 1: 23 Passes", "Player 2: 12 shots", "Player 3: 12 tackles"],
     "events": [
       {
         "id": "1",
