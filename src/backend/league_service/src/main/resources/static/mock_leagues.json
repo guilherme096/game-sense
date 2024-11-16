@@ -1,30 +1,97 @@
 {
   "id": 1,
   "name": "Premier League",
+  "logo": "https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg",
   "standings": [
     {
-      "club": {
-        "id": 1,
-        "name": "Manchester United",
-        "country": "England",
-        "starred": true
-      },
-      "points": 65,
-      "matchesPlayed": 30,
-      "goalsScored": 50,
-      "goalsConceded": 30
+      "club": { "name": "Lixa", "starred": true },
+      "played": 38,
+      "won": 30,
+      "drawn": 8,
+      "lost": 0,
+      "gs": 100,
+      "gc": 30
     },
     {
-      "club": {
-        "id": 2,
-        "name": "Liverpool FC",
-        "country": "England",
-        "starred": false
-      },
-      "points": 60,
-      "matchesPlayed": 30,
-      "goalsScored": 55,
-      "goalsConceded": 25
+      "club": { "name": "Man City", "starred": false },
+      "played": 38,
+      "won": 26,
+      "drawn": 8,
+      "lost": 4,
+      "gs": 90,
+      "gc": 30
+    },
+    {
+      "club": { "name": "Arsenal", "starred": false },
+      "played": 38,
+      "won": 25,
+      "drawn": 10,
+      "lost": 3,
+      "gs": 80,
+      "gc": 25
+    },
+    {
+      "club": { "name": "Chelsea", "starred": false },
+      "played": 38,
+      "won": 24,
+      "drawn": 9,
+      "lost": 5,
+      "gs": 75,
+      "gc": 35
+    },
+    {
+      "club": { "name": "Liverpool", "starred": false },
+      "played": 38,
+      "won": 22,
+      "drawn": 8,
+      "lost": 8,
+      "gs": 70,
+      "gc": 40
+    },
+    {
+      "club": { "name": "Tottenham", "starred": false },
+      "played": 38,
+      "won": 20,
+      "drawn": 8,
+      "lost": 10,
+      "gs": 65,
+      "gc": 50
+    },
+    {
+      "club": { "name": "Newcastle", "starred": false },
+      "played": 38,
+      "won": 18,
+      "drawn": 10,
+      "lost": 10,
+      "gs": 60,
+      "gc": 45
+    },
+    {
+      "club": { "name": "Everton", "starred": false },
+      "played": 38,
+      "won": 15,
+      "drawn": 8,
+      "lost": 15,
+      "gs": 55,
+      "gc": 55
+    },
+    {
+      "club": { "name": "West Ham", "starred": false },
+      "played": 38,
+      "won": 12,
+      "drawn": 8,
+      "lost": 18,
+      "gs": 45,
+      "gc": 60
+    },
+    {
+      "club": { "name": "Leicester", "starred": false },
+      "played": 38,
+      "won": 10,
+      "drawn": 10,
+      "lost": 18,
+      "gs": 40,
+      "gc": 65
     }
   ]
 }
