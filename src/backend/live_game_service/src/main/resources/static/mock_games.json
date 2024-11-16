@@ -36,7 +36,7 @@
       },
       {
         "id": "2",
-        "type": "foul",
+        "type": "yellow-card",
         "minute": "34",
         "team": "away",
         "player": "Player 5"
