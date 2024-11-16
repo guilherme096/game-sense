@@ -4,7 +4,7 @@
   "logo": "https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg",
   "standings": [
     {
-      "club": { "name": "Lixa", "starred": true },
+      "club": { "name": "Lixa", "country": "Portugal", "starred": true },
       "played": 38,
       "won": 30,
       "drawn": 8,
@@ -13,7 +13,7 @@
       "gc": 30
     },
     {
-      "club": { "name": "Man City", "starred": false },
+      "club": { "name": "Man City", "country": "England", "starred": false },
       "played": 38,
       "won": 26,
       "drawn": 8,
@@ -22,7 +22,7 @@
       "gc": 30
     },
     {
-      "club": { "name": "Arsenal", "starred": false },
+      "club": { "name": "Arsenal", "country": "England", "starred": false },
       "played": 38,
       "won": 25,
       "drawn": 10,
@@ -31,7 +31,7 @@
       "gc": 25
     },
     {
-      "club": { "name": "Chelsea", "starred": false },
+      "club": { "name": "Chelsea", "country": "England", "starred": false },
       "played": 38,
       "won": 24,
       "drawn": 9,
@@ -40,7 +40,7 @@
       "gc": 35
     },
     {
-      "club": { "name": "Liverpool", "starred": false },
+      "club": { "name": "Liverpool", "country": "England", "starred": false },
       "played": 38,
       "won": 22,
       "drawn": 8,
@@ -49,7 +49,7 @@
       "gc": 40
     },
     {
-      "club": { "name": "Tottenham", "starred": false },
+      "club": { "name": "Tottenham", "country": "England", "starred": false },
       "played": 38,
       "won": 20,
       "drawn": 8,
@@ -58,7 +58,7 @@
       "gc": 50
     },
     {
-      "club": { "name": "Newcastle", "starred": false },
+      "club": { "name": "Newcastle", "country": "England", "starred": false },
       "played": 38,
       "won": 18,
       "drawn": 10,
@@ -67,7 +67,7 @@
       "gc": 45
     },
     {
-      "club": { "name": "Everton", "starred": false },
+      "club": { "name": "Everton", "country": "England", "starred": false },
       "played": 38,
       "won": 15,
       "drawn": 8,
@@ -76,7 +76,7 @@
       "gc": 55
     },
     {
-      "club": { "name": "West Ham", "starred": false },
+      "club": { "name": "West Ham", "country": "England", "starred": false },
       "played": 38,
       "won": 12,
       "drawn": 8,
@@ -85,7 +85,7 @@
       "gc": 60
     },
     {
-      "club": { "name": "Leicester", "starred": false },
+      "club": { "name": "Leicester", "country": "England", "starred": false },
       "played": 38,
       "won": 10,
       "drawn": 10,

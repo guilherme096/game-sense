@@ -52,7 +52,6 @@ public class LeagueServiceImpl implements LeagueService {
 
                 LeagueStanding standing = new LeagueStanding();
                 standing.setClub(club);
-                standing.setPoints(standingNode.get("points").asInt());
                 standing.setMatchesPlayed(standingNode.get("matchesPlayed").asInt());
                 standing.setGoalsScored(standingNode.get("goalsScored").asInt());
                 standing.setGoalsConceded(standingNode.get("goalsConceded").asInt());
@@ -120,7 +119,6 @@ public class LeagueServiceImpl implements LeagueService {
         if (league != null) {
             LeagueStanding standing = new LeagueStanding();
             standing.setClub(club);
-            standing.setPoints(points);
             standing.setMatchesPlayed(matchesPlayed);
             standing.setGoalsScored(goalsScored);
             standing.setGoalsConceded(goalsConceded);

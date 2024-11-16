@@ -2,7 +2,6 @@ package ies.gamesense.league_service.entities;
 
 public class LeagueStanding {
     private Club club;
-    private int points;
     private int matchesPlayed;
     private int goalsScored;
     private int goalsConceded;
@@ -15,9 +14,8 @@ public class LeagueStanding {
     public LeagueStanding() {
     }
 
-    public LeagueStanding(Club club, int points, int matchesPlayed, int goalsScored, int goalsConceded, int wins, int draws, int losses) {
+    public LeagueStanding(Club club, int matchesPlayed, int goalsScored, int goalsConceded, int wins, int draws, int losses) {
         this.club = club;
-        this.points = points;
         this.matchesPlayed = matchesPlayed;
         this.goalsScored = goalsScored;
         this.goalsConceded = goalsConceded;
@@ -63,14 +61,6 @@ public class LeagueStanding {
         this.club = club;
     }
 
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
     public int getMatchesPlayed() {
         return matchesPlayed;
     }
@@ -97,7 +87,7 @@ public class LeagueStanding {
 
     @Override
     public String toString() {
-        return "LeagueStanding [club=" + club + ", points=" + points + ", matchesPlayed=" + matchesPlayed + ", goalsScored=" + goalsScored + ", goalsConceded=" + goalsConceded + "]";
+        return "LeagueStanding [club=" + club + ", matchesPlayed=" + matchesPlayed + ", goalsScored=" + goalsScored + ", goalsConceded=" + goalsConceded + "]";
     }
 
 }
