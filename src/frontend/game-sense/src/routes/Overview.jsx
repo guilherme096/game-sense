@@ -5,15 +5,23 @@ import MostSomethingCard from "../components/GamePage/MostSomethingCard.jsx";
 import { useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 
-import { mvp, mostSomethingCategories, gameEvents } from "../static/game.js";
+import { gameEvents } from "../static/game.js";
 
 const fetchGame = async () => {
   const res = await axios.get("http://localhost:8082/api/v1/live/0");
-  return res.data;
+    return res.data;
 };
-
 export default function Overview() {
   const { data: game, error, isLoading } = useQuery("game", fetchGame);
+
+  const parsedTopStats =
+    game?.topStats?.map((stat) => {
+      const [name, rest] = stat.split(": ");
+      const [value, ...categoryWords] = rest.split(" ");
+      const category = categoryWords.join(" ");
+      return { name, value, category };
+    }) || [];
+
   return (
     <>
       <div className="p-4">
@@ -38,10 +46,22 @@ export default function Overview() {
         {/* Right Side - MVP and Carousel */}
         <div className="col flex-col w-1/2 space-y-3 pr-4">
           <div className="row">
-            <MvpCard name={mvp.name} score={mvp.score} />
+            {isLoading ? (
+              <p>Loading MVP...</p>
+            ) : error ? (
+              <p>Error loading MVP: {error.message}</p>
+            ) : (
+              <MvpCard name={game.currentMVP} score={9.1} />
+            )}
           </div>
           <div className="row pb-3">
-            <MostSomethingCard categories={mostSomethingCategories} />
+            {isLoading ? (
+              <p>Loading Top Stats...</p>
+            ) : error ? (
+              <p>Error loading Top Stats: {error.message}</p>
+            ) : (
+              <MostSomethingCard categories={parsedTopStats} />
+            )}
           </div>
         </div>
       </div>

@@ -12,11 +12,13 @@ public class Live {
     private String kickoffTime;
     private String stadium;
     private GameStatistics gameStatistics;
+    private String currentMVP;
+    private List<String> topStats;
 
     private List<Map<String, String>> events;
 
     public Live(GameTeam homeTeam, GameTeam awayTeam, GameStatistics gameStatistics, List<Map<String, String>> events,
-            String referee, String kickoffTime, String stadium) {
+            String referee, String kickoffTime, String stadium, String currentMVP, List<String> topStats) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.referee = referee;
@@ -24,6 +26,8 @@ public class Live {
         this.gameStatistics = gameStatistics;
         this.stadium = stadium;
         this.events = events;
+        this.currentMVP = currentMVP;
+        this.topStats = topStats;
     }
 
     public Live() {
@@ -103,4 +107,19 @@ public class Live {
         this.stadium = stadium;
     }
 
+    public String getCurrentMVP() {
+        return currentMVP;
+    }
+
+    public void setCurrentMVP(String currentMVP) {
+        this.currentMVP = currentMVP;
+    }
+
+    public List<String> getTopStats() {
+        return topStats;
+    }
+
+    public void setTopStats(List<String> topStats) {
+        this.topStats = topStats;
+    }
 }

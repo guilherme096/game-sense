@@ -80,4 +80,16 @@ public class LiveServiceImpl implements LiveService {
         this.liveGames.put(live.getId(), live);
     }
 
+    @Override
+    public String getCurrentMVP(Long id) {
+        Live game = getLiveById(id);
+        return (game != null) ? game.getCurrentMVP() : null;
+    }
+
+    @Override
+    public List<String> getTopStats(Long id) {
+        Live game = getLiveById(id);
+        return (game != null) ? game.getTopStats() : null;
+    }
+
 }
