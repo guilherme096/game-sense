@@ -5,7 +5,13 @@ import {useQuery, useQueryClient} from "react-query";
 import axios from "axios";
 
 const fetchGame = async () => {
-    const response = await axios.get("http://localhost:8082/api/v1/live/0");
+    const response = await axios.get("http://localhost:8082/api/v1/live/0", {
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            'Accept': 'application/json'
+        }
+    });
     return response.data;
 }
 
