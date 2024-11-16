@@ -54,6 +54,19 @@ public class LiveController {
             response = liveService.getNewEvents(id, lastEventId);
         }
         return new ResponseEntity<>(response, response != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    }    
+
+    @Operation(summary = "Get current MVP of the game")
+    @GetMapping("/{id}/currentMVP")
+    public ResponseEntity<String> getCurrentMVP(@PathVariable("id") long id) {
+        String currentMVP = liveService.getCurrentMVP(id);
+        return new ResponseEntity<>(currentMVP, currentMVP != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
+    @Operation(summary = "Get top stats of the game")
+    @GetMapping("/{id}/topStats")
+    public ResponseEntity<List<String>> getTopStats(@PathVariable("id") long id) {
+        List<String> topStats = liveService.getTopStats(id);
+        return new ResponseEntity<>(topStats, topStats != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    }
 }
