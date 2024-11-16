@@ -31,7 +31,8 @@ export const routesList = [
   {
     path: "/playerPage",
     element: <PlayerPageBase />,
-
+  },
+  
   {
     path: "/login",
     element: <Login />,
