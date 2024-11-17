@@ -86,12 +86,7 @@ const StatisticsTab = () => {
 
   return (
     <div className="flex items-center justify-center bg-gray-100">
-      <div
-        className="p-4 bg-white w-full max-w-[500px]" // Increased max-width here
-        style={{
-          height: "auto",
-        }}
-      >
+      <div className="p-4 bg-white w-full max-w-md mx-auto">
         {/* Tab Navigation */}
         <div
           className="relative flex justify-center items-center bg-[#333D4D] rounded-md mb-3 shadow-sm"
@@ -115,14 +110,7 @@ const StatisticsTab = () => {
         </div>
 
         {/* Tab Content */}
-        <div
-          className="mt-2"
-          style={{
-            width: "100%",
-          }}
-        >
-          {renderStatBars()}
-        </div>
+        <div className="mt-2">{renderStatBars()}</div>
       </div>
     </div>
   );
