@@ -19,8 +19,6 @@ import jakarta.annotation.PostConstruct;
 @Service
 public class LiveServiceImpl implements LiveService {
 
-    // temporarlly using a json file to store the games
-    // demonstration purposes only
     @Value("classpath:static/mock_games.json")
     private Resource jsonLiveGames;
 
@@ -29,49 +27,72 @@ public class LiveServiceImpl implements LiveService {
     @PostConstruct
     public void init() {
         this.liveGames = new HashMap<>();
-
         ObjectMapper mapper = new ObjectMapper();
-        List<Live> games = new ArrayList<>();
-
-        // parse the json file and populate the liveGames map
         try {
-            games = mapper.readValue(jsonLiveGames.getInputStream(),
+            // Parse the JSON file into a List<Live>
+            List<Live> games = mapper.readValue(jsonLiveGames.getInputStream(),
                     mapper.getTypeFactory().constructCollectionType(List.class, Live.class));
-            games.forEach(game -> this.liveGames.put(game.getId(), game));
+    
+            // Check if the parsed list is null or empty
+            if (games == null || games.isEmpty()) {
+                System.err.println("No games found in the JSON file: " + jsonLiveGames.getFilename());
+                return;
+            }
+    
+            // Populate the liveGames map
+            games.forEach(game -> {
+                if (game.getId() == null) {
+                    System.err.println("Game with missing ID detected. Skipping: " + game);
+                } else {
+                    this.liveGames.put(game.getId(), game);
+                }
+            });
+    
+            // Log success
+            System.out.println("Loaded " + liveGames.size() + " live games from " + jsonLiveGames.getFilename());
         } catch (IOException e) {
+            // Handle and log specific error
+            System.err.println("Error reading or parsing the JSON file: " + jsonLiveGames.getFilename());
             e.printStackTrace();
         }
-
     }
+    
 
     @Override
     public Live getLiveById(Long id) {
-        return this.liveGames.get(id);
+        Live game = this.liveGames.get(id);
+        if (game == null) {
+            System.err.println("Live game not found for ID: " + id);
+        }
+        return game;
     }
 
     @Override
     public GameStatistics getGameStatistics(Long id) {
-        return this.getLiveById(id).getGameStatistics();
+        Live game = getLiveById(id);
+        return (game != null) ? game.getGameStatistics() : null;
     }
 
     @Override
     public boolean existsNewEvent(Long id, Long lastEventId) {
-        return true;
+        Live game = getLiveById(id);
+        if (game == null) return false;
+        List<Map<String, String>> events = game.getEvents();
+        return events.stream().anyMatch(event -> Long.parseLong(event.get("id")) > lastEventId);
     }
 
-    // returns the new events since the lastEventId
     @Override
     public List<Map<String, String>> getNewEvents(Long id, Long lastEventId) {
-        List<Map<String, String>> events = this.getLiveById(id).getEvents();
-        List<Map<String, String>> newEvents = new ArrayList<>();
+        Live game = getLiveById(id);
+        if (game == null) return null;
 
-        for (Map<String, String> event : events) {
+        List<Map<String, String>> newEvents = new ArrayList<>();
+        for (Map<String, String> event : game.getEvents()) {
             Long eventId = Long.parseLong(event.get("id"));
             if (eventId > lastEventId) {
                 newEvents.add(event);
             }
         }
-
         return newEvents;
     }
 
@@ -91,5 +112,4 @@ public class LiveServiceImpl implements LiveService {
         Live game = getLiveById(id);
         return (game != null) ? game.getTopStats() : null;
     }
-
 }

@@ -91,14 +91,6 @@ function Header() {
                     >
                         <FontAwesomeIcon icon={faCrown} className="h-5 w-5 text-white" />
                     </div>
-                    {/* Profile Icon */}
-                    <div
-                        role="button"
-                        className="btn btn-sm btn-ghost btn-circle"
-                    >
-                        <FontAwesomeIcon icon={faUser} className="h-6 text-gray-700 " />
-
-                    </div>
                 </div>
             </div>
         </>
