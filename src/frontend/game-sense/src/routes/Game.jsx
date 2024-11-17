@@ -3,10 +3,11 @@ import Header from "../components/Header";
 import Overview from "./Overview.jsx";
 import HorizontalTab from "../components/HorizontalTab.jsx";
 import ScoreBoard from "../components/GamePage/ScoreBoard.jsx";
+import StatisticsTab from "../components/StatisticsTab.jsx";
 
 const tabs = [
   { name: "Overview", content: <Overview /> },
-  { name: "Stats", content: <div></div> },
+  { name: "Stats", content: <StatisticsTab /> },
 ];
 
 function Game() {
