@@ -1,118 +1,120 @@
-{
-  "id": 0,
-  "referee": "Referee 1",
-  "kickoffTime": "2022-03-01T20:00:00",
-  "stadium": "Stadium 1",
-  "minutePlayed": 70,
-  "homeTeam": {
-    "id": 101,
-    "name": "FC Porto",
-    "score": 2,
-    "stared": true,
-    "image": "https://upload.wikimedia.org/wikipedia/pt/c/c5/F.C._Porto_logo.png"
-  },
-  "awayTeam": {
-    "id": 102,
-    "name": "Sporting CM",
-    "score": 1,
-    "stared": true,
-    "image": "https://sportingdamadeira.pt/wp-content/uploads/2024/01/logo_contorno_leao_branco-1.png"
-  },
-  "gameStatistics": {
-    "1stHalf": {
-      "home": {
-        "possession": 60,
-        "shots": 5,
-        "passesAcc": 80,
-        "tackles": 10,
-        "fouls": 5,
-        "corners": 2,
-        "offsides": 1,
-        "interceptions": 3
+[
+  {
+    "id": 0,
+    "referee": "Referee 1",
+    "kickoffTime": "2022-03-01T20:00:00",
+    "stadium": "Stadium 1",
+    "minutePlayed": 70,
+    "homeTeam": {
+      "id": 101,
+      "name": "FC Porto",
+      "score": 2,
+      "stared": true,
+      "image": "https://upload.wikimedia.org/wikipedia/pt/c/c5/F.C._Porto_logo.png"
+    },
+    "awayTeam": {
+      "id": 102,
+      "name": "Sporting CM",
+      "score": 1,
+      "stared": true,
+      "image": "https://sportingdamadeira.pt/wp-content/uploads/2024/01/logo_contorno_leao_branco-1.png"
+    },
+    "gameStatistics": {
+      "first_Half": {
+        "home": {
+          "possession": 60,
+          "shots": 5,
+          "passesAcc": 80,
+          "tackles": 10,
+          "fouls": 5,
+          "corners": 2,
+          "offsides": 1,
+          "interceptions": 3
+        },
+        "away": {
+          "possession": 40,
+          "shots": 3,
+          "passesAcc": 70,
+          "tackles": 8,
+          "fouls": 3,
+          "corners": 1,
+          "offsides": 0,
+          "interceptions": 2
+        }
       },
-      "away": {
-        "possession": 40,
-        "shots": 3,
-        "passesAcc": 70,
-        "tackles": 8,
-        "fouls": 3,
-        "corners": 1,
-        "offsides": 0,
-        "interceptions": 2
+      "2ndHalf": {
+        "home": {
+          "possession": 55,
+          "shots": 3,
+          "passesAcc": 75,
+          "tackles": 8,
+          "fouls": 3,
+          "corners": 1,
+          "offsides": 0,
+          "interceptions": 2
+        },
+        "away": {
+          "possession": 45,
+          "shots": 5,
+          "passesAcc": 70,
+          "tackles": 10,
+          "fouls": 5,
+          "corners": 2,
+          "offsides": 1,
+          "interceptions": 3
+        }
+      },
+      "overall": {
+        "home": {
+          "possession": 57,
+          "shots": 8,
+          "passesAcc": 77,
+          "tackles": 9,
+          "fouls": 4,
+          "corners": 1,
+          "offsides": 0,
+          "interceptions": 2
+        },
+        "away": {
+          "possession": 42,
+          "shots": 8,
+          "passesAcc": 70,
+          "tackles": 9,
+          "fouls": 4,
+          "corners": 1,
+          "offsides": 1,
+          "interceptions": 2
+        }
       }
     },
-    "2ndHalf": {
-      "home": {
-        "possession": 55,
-        "shots": 3,
-        "passesAcc": 75,
-        "tackles": 8,
-        "fouls": 3,
-        "corners": 1,
-        "offsides": 0,
-        "interceptions": 2
+    "currentMVP": "Player 1",
+    "topStats": [
+      "Player 1: 23 Passes",
+      "Player 2: 12 shots",
+      "Player 3: 12 tackles"
+    ],
+    "events": [
+      {
+        "id": "1",
+        "type": "goal",
+        "minute": "12",
+        "team": "home",
+        "player": "Player 1"
       },
-      "away": {
-        "possession": 45,
-        "shots": 5,
-        "passesAcc": 70,
-        "tackles": 10,
-        "fouls": 5,
-        "corners": 2,
-        "offsides": 1,
-        "interceptions": 3
-      }
-    },
-    "overall": {
-      "home": {
-        "possession": 57,
-        "shots": 8,
-        "passesAcc": 77,
-        "tackles": 9,
-        "fouls": 4,
-        "corners": 1,
-        "offsides": 0,
-        "interceptions": 2
+      {
+        "id": "2",
+        "type": "yellow-card",
+        "minute": "34",
+        "team": "away",
+        "player": "Player 5"
       },
-      "away": {
-        "possession": 42,
-        "shots": 8,
-        "passesAcc": 70,
-        "tackles": 9,
-        "fouls": 4,
-        "corners": 1,
-        "offsides": 1,
-        "interceptions": 2
+      {
+        "id": "3",
+        "type": "goal",
+        "minute": "67",
+        "team": "away",
+        "player": "Player 3"
       }
-    }
-  },
-  "currentMVP": "Player 1",
-  "topStats": [
-    "Player 1: 23 Passes",
-    "Player 2: 12 shots",
-    "Player 3: 12 tackles"
-  ],
-  "events": [
-    {
-      "id": "1",
-      "type": "goal",
-      "minute": "12",
-      "team": "home",
-      "player": "Player 1"
-    },
-    {
-      "id": "2",
-      "type": "yellow-card",
-      "minute": "34",
-      "team": "away",
-      "player": "Player 5"
-    },
-    {
-      "id": "3",
-      "type": "goal",
-      "minute": "67",
-      "team": "away",
-      "player": "Player 3"
-    }
-  ]
-}
+    ]
+  }
+]

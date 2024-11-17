@@ -3,20 +3,21 @@ package ies.gamesense.live_game_service.entities;
 import java.util.Map;
 
 public class GameStatistics {
-    private Map<String, Map<String, Map<String, Integer>>> gameStatistics;
+    private Map<String, Map<String, Integer>> first_Half;
 
     public GameStatistics() {
     }
 
-    public GameStatistics(Map<String, Map<String, Map<String, Integer>>> gameStatistics) {
-        this.gameStatistics = gameStatistics;
+    public GameStatistics(Map<String,Map<String, Integer>> first_Half) {
+        this.first_Half = first_Half;
     }
 
-    public Map<String, Map<String, Map<String, Integer>>> getGameStatistics() {
-        return gameStatistics;
+
+    public Map<String, Map<String, Integer>> getFirst_Half() {
+        return first_Half;
     }
 
-    public void setGameStatistics(Map<String, Map<String, Map<String, Integer>>> gameStatistics) {
-        this.gameStatistics = gameStatistics;
+    public void setFirst_Half(Map<String,Map<String, Integer>> first_Half) {
+        this.first_Half = first_Half;
     }
 }

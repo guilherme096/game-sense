@@ -122,4 +122,5 @@ public class Live {
     public void setEvents(List<Map<String, String>> events) {
         this.events = events;
     }
+
 }
