@@ -10,7 +10,7 @@ import Profile from "./routes/Profile";
 export const routesList = [
   {
     path: "/",
-    element: <Game />,
+    element: <Home />,
   },
 
   {
@@ -27,7 +27,7 @@ export const routesList = [
     path: "/game",
     element: <Game />,
   },
-    
+
   {
     path: "/playerPage",
     element: <PlayerPageBase />,
@@ -43,6 +43,6 @@ export const routesList = [
   },
   {
     path: "/profile",
-    element: <Profile />
-  }
+    element: <Profile />,
+  },
 ];
