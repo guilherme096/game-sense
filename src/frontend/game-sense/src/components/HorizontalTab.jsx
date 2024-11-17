@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function HorizontalTab({ categories, color_back = "bg-base-300" }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  
+
   return (
     <TabGroup onChange={(index) => setSelectedIndex(index)}>
       <TabList
@@ -26,11 +26,11 @@ export default function HorizontalTab({ categories, color_back = "bg-base-300" }
         {categories.map(({ name, content }, index) => (
           <div
             key={name}
-            className={`absolute w-full transition-all duration-500 ease-in-out ${
-              selectedIndex === index
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-full pointer-events-none"
-            }`}
+            className={`absolute w-full transition-opacity duration-300 ease-in-out ${selectedIndex === index
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
+              }`}
+
           >
             {content}
           </div>
