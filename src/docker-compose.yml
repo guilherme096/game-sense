@@ -7,7 +7,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./frontend/game-sense/build:/usr/share/nginx/html
+      - ./frontend/game-sense/dist:/usr/share/nginx/html
       - ./frontend/game-sense/nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - club_service
