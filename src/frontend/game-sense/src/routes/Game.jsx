@@ -9,7 +9,7 @@ import PageTemplate from "./PageTemplate.jsx";
 const tabs = [
   { name: "Overview", content: <Overview /> },
   { name: "Stats", content: <div></div> },
-  { name: "Standings", content: <div><Standings /></div> },
+  { name: "Standings", content: <div><Standings showHeader={false} /></div> },
 ];
 
 function Game() {
