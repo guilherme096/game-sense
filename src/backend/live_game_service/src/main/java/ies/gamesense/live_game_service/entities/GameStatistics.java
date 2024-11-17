@@ -1,57 +1,50 @@
 package ies.gamesense.live_game_service.entities;
 
-import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
 public class GameStatistics {
-    private Map<String, Integer> discreeteStats = new HashMap<>();
-    private Map<String, Double> realStats = new HashMap<>();
+
+    @JsonProperty("first_half")
+    private Map<String, Map<String, Integer>> firstHalf;
+
+    @JsonProperty("second_half")
+    private Map<String, Map<String, Integer>> secondHalf;
+
+    @JsonProperty("overall")
+    private Map<String, Map<String, Integer>> overall;
 
     public GameStatistics() {
     }
 
-    public GameStatistics(Map<String, Integer> discreeteStats, Map<String, Double> realStats) {
-        this.discreeteStats = discreeteStats;
-        this.realStats = realStats;
+    public GameStatistics(Map<String, Map<String, Integer>> firstHalf, Map<String, Map<String, Integer>> secondHalf, Map<String, Map<String, Integer>> overall) {
+        this.firstHalf = firstHalf;
+        this.secondHalf = secondHalf;
+        this.overall = overall;
     }
 
-    public void addDiscreeteStat(String key, Integer value) {
-        discreeteStats.put(key, value);
+    public Map<String, Map<String, Integer>> getFirstHalf() {
+        return firstHalf;
     }
 
-    public void addRealStat(String key, Double value) {
-        realStats.put(key, value);
+    public void setFirstHalf(Map<String, Map<String, Integer>> firstHalf) {
+        this.firstHalf = firstHalf;
     }
 
-    public Map<String, Integer> getDiscreeteStats() {
-        return discreeteStats;
+    public Map<String, Map<String, Integer>> getSecondHalf() {
+        return secondHalf;
     }
 
-    public Map<String, Double> getRealStats() {
-        return realStats;
+    public void setSecondHalf(Map<String, Map<String, Integer>> secondHalf) {
+        this.secondHalf = secondHalf;
     }
 
-    public void setDiscreeteStats(Map<String, Integer> discreeteStats) {
-        this.discreeteStats = discreeteStats;
+    public Map<String, Map<String, Integer>> getOverall() {
+        return overall;
     }
 
-    public void setRealStats(Map<String, Double> realStats) {
-        this.realStats = realStats;
-    }
-
-    public Integer getDiscreeteStat(String key) {
-        return discreeteStats.get(key);
-    }
-
-    public Double getRealStat(String key) {
-        return realStats.get(key);
-    }
-
-    public void setDiscreeteStat(String key, Integer value) {
-        discreeteStats.put(key, value);
-    }
-
-    public void setRealStat(String key, Double value) {
-        realStats.put(key, value);
+    public void setOverall(Map<String, Map<String, Integer>> overall) {
+        this.overall = overall;
     }
 }

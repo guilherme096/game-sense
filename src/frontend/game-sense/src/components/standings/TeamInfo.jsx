@@ -9,14 +9,7 @@ export default function TeamInfo({ team, index }) {
                 <div
                     className="flex justify-center items-center rounded-full mx-auto font-medium"
                     style={{
-                        background:
-                            index === 0
-                                ? '#FFD700'
-                                : index === 1
-                                    ? '#C0C0C0'
-                                    : index === 2
-                                        ? '#cd7f32'
-                                        : 'transparent',
+                        background: index === 0 ? '#FFD700': index === 1 ? '#C0C0C0' : index === 2 ? '#cd7f32' : 'transparent',
                         color: index <= 2 ? 'white' : 'black',
                         width: 20,
                         height: 20,
@@ -33,11 +26,11 @@ export default function TeamInfo({ team, index }) {
 
             {/* Other Stats */}
             <td className="px-0 py-2 text-center">{team.matchesPlayed}</td>
-            <td className="px-0 py-2 text-center">{team.points}</td>
-            <td className="px-0 py-2 text-center">{team.goalsScored - team.goalsConceded}</td>
             <td className="px-0 py-2 text-center">{team.wins}</td>
             <td className="px-0 py-2 text-center">{team.draws}</td>
             <td className="px-0 py-2 text-center">{team.losses}</td>
+            <td className="px-0 py-2 text-center">{team.goalsScored - team.goalsConceded}</td>
+            <td className="px-0 py-2 text-center font-extrabold">{team.points}</td>
         </tr>
     );
 }

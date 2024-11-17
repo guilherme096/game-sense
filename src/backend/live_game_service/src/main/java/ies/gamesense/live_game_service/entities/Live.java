@@ -5,46 +5,38 @@ import java.util.Map;
 
 public class Live {
     private Long id;
-
     private GameTeam homeTeam;
     private GameTeam awayTeam;
     private String referee;
     private String kickoffTime;
     private String stadium;
+    private Integer minutePlayed;
     private GameStatistics gameStatistics;
     private String currentMVP;
     private List<String> topStats;
-
     private List<Map<String, String>> events;
-
-    public Live(GameTeam homeTeam, GameTeam awayTeam, GameStatistics gameStatistics, List<Map<String, String>> events,
-            String referee, String kickoffTime, String stadium, String currentMVP, List<String> topStats) {
-        this.homeTeam = homeTeam;
-        this.awayTeam = awayTeam;
-        this.referee = referee;
-        this.kickoffTime = kickoffTime;
-        this.gameStatistics = gameStatistics;
-        this.stadium = stadium;
-        this.events = events;
-        this.currentMVP = currentMVP;
-        this.topStats = topStats;
-    }
 
     public Live() {
     }
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
+    public Live(Long id, GameTeam homeTeam, GameTeam awayTeam, String referee, String kickoffTime, String stadium,
+                Integer minutePlayed, GameStatistics gameStatistics, String currentMVP, List<String> topStats,
+                List<Map<String, String>> events) {
+        this.id = id;
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
+        this.referee = referee;
+        this.kickoffTime = kickoffTime;
+        this.stadium = stadium;
+        this.minutePlayed = minutePlayed;
+        this.gameStatistics = gameStatistics;
+        this.currentMVP = currentMVP;
+        this.topStats = topStats;
+        this.events = events;
     }
 
-    // in the future this should receive and event of type GameEvent -> Goal
-    public void incrementTeamScore(int teamId) {
-        if (homeTeam.getId() == teamId) {
-            homeTeam.setScore(homeTeam.getScore() + 1);
-        } else if (awayTeam.getId() == teamId) {
-            awayTeam.setScore(awayTeam.getScore() + 1);
-        }
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
@@ -65,22 +57,6 @@ public class Live {
 
     public void setAwayTeam(GameTeam awayTeam) {
         this.awayTeam = awayTeam;
-    }
-
-    public GameStatistics getGameStatistics() {
-        return gameStatistics;
-    }
-
-    public void setGameStatistics(GameStatistics gameStatistics) {
-        this.gameStatistics = gameStatistics;
-    }
-
-    public List<Map<String, String>> getEvents() {
-        return events;
-    }
-
-    public void setEvents(List<Map<String, String>> events) {
-        this.events = events;
     }
 
     public String getReferee() {
@@ -107,6 +83,22 @@ public class Live {
         this.stadium = stadium;
     }
 
+    public Integer getMinutePlayed() {
+        return minutePlayed;
+    }
+
+    public void setMinutePlayed(Integer minutePlayed) {
+        this.minutePlayed = minutePlayed;
+    }
+
+    public GameStatistics getGameStatistics() {
+        return gameStatistics;
+    }
+
+    public void setGameStatistics(GameStatistics gameStatistics) {
+        this.gameStatistics = gameStatistics;
+    }
+
     public String getCurrentMVP() {
         return currentMVP;
     }
@@ -122,4 +114,13 @@ public class Live {
     public void setTopStats(List<String> topStats) {
         this.topStats = topStats;
     }
+
+    public List<Map<String, String>> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Map<String, String>> events) {
+        this.events = events;
+    }
+
 }

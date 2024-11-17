@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function HorizontalTab({ categories, color_back = "bg-base-300" }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-
+  
   return (
     <TabGroup onChange={(index) => setSelectedIndex(index)}>
       <TabList

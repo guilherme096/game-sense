@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons";
-import { faFutbol } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 
 export default function Navbar() {
@@ -15,7 +15,7 @@ export default function Navbar() {
     setActiveIndex(index);
   };
 
-  const descriptions = ["Home", "League", "Simulation"];
+  const descriptions = ["Home", "League", "Profile"];
 
   return (
     <div className="floating-navbar">
@@ -46,7 +46,7 @@ export default function Navbar() {
         description={descriptions[2]}
         onClick={() => handleIconClick(2)}
       >
-        <FontAwesomeIcon icon={faFutbol} className="h-7" />
+        <FontAwesomeIcon icon={faUser} className="h-7" />
       </CustomLink>
     </div>
   );
