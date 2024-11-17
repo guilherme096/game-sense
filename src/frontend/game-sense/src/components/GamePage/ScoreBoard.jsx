@@ -30,7 +30,7 @@ export default function ScoreBoard() {
 
     const team1 = game.homeTeam;
     const team2 = game.awayTeam;
-    const minute = game.gameStatistics.realStats.minute;
+    const minute = game.minutesPlayed;
     const score1 = team1.score;
     const score2 = team2.score;
 
