@@ -12,8 +12,8 @@ public class SwaggerConfig {
     public OpenAPI openAPIConfig() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Player Service API")
-                        .description("API for managing players")
+                        .title("Live Game Service API")
+                        .description("API for managing live games")
                         .version("1.0.0"));
     }
 }
