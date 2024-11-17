@@ -1,97 +1,187 @@
 {
   "id": 1,
   "name": "Premier League",
-  "logo": "https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg",
+  "logo": "https://www.edigitalagency.com.au/wp-content/uploads/premier-league-icon-lion-png-large-size.png",
   "standings": [
-    {
-      "club": { "id": 1, "name": "Man City", "country": "England", "starred": false },
-      "matchesPlayed": 38,
-      "goalsScored": 90,
-      "goalsConceded": 30,
-      "wins": 26,
-      "draws": 8,
-      "losses": 4
-    },
-    {
-      "club": { "id": 2, "name": "Arsenal", "country": "England", "starred": false },
-      "matchesPlayed": 38,
-      "goalsScored": 80,
-      "goalsConceded": 25,
-      "wins": 25,
-      "draws": 10,
-      "losses": 3
-    },
-    {
-      "club": { "id": 3, "name": "Chelsea", "country": "England", "starred": false },
-      "matchesPlayed": 38,
-      "goalsScored": 75,
-      "goalsConceded": 35,
-      "wins": 24,
-      "draws": 9,
-      "losses": 5
-    },
-    {
-      "club": { "id": 4, "name": "Liverpool", "country": "England", "starred": false },
-      "matchesPlayed": 38,
-      "goalsScored": 70,
-      "goalsConceded": 40,
-      "wins": 22,
-      "draws": 8,
-      "losses": 8
-    },
-    {
-      "club": { "id": 5, "name": "Tottenham", "country": "England", "starred": false },
-      "matchesPlayed": 38,
-      "goalsScored": 65,
-      "goalsConceded": 50,
-      "wins": 20,
-      "draws": 8,
-      "losses": 10
-    },
-    {
-      "club": { "id": 6, "name": "Newcastle", "country": "England", "starred": false },
-      "matchesPlayed": 38,
-      "goalsScored": 60,
-      "goalsConceded": 45,
-      "wins": 18,
-      "draws": 10,
-      "losses": 10
-    },
-    {
-      "club": { "id": 7, "name": "Everton", "country": "England", "starred": false },
-      "matchesPlayed": 38,
-      "goalsScored": 55,
-      "goalsConceded": 55,
-      "wins": 15,
-      "draws": 8,
-      "losses": 15
-    },
-    {
-      "club": { "id": 8, "name": "West Ham", "country": "England", "starred": false },
-      "matchesPlayed": 38,
-      "goalsScored": 45,
-      "goalsConceded": 60,
-      "wins": 12,
-      "draws": 8,
-      "losses": 18
-    },
-    {
-      "club": { "id": 9, "name": "Leicester", "country": "England", "starred": false },
-      "matchesPlayed": 38,
-      "goalsScored": 40,
-      "goalsConceded": 65,
-      "wins": 10,
-      "draws": 10,
-      "losses": 18
-    },
-    {
-      "club": { "id": 10, "name": "Lixa", "country": "Portugal", "starred": true },
-      "matchesPlayed": 38,
-      "goalsScored": 100,
-      "goalsConceded": 30,
-      "wins": 30,
-      "draws": 8,
-      "losses": 0
-    }
-  ]
+        {
+          "club": { "id": 1, "name": "Man City", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 90,
+          "goalsConceded": 30,
+          "wins": 26,
+          "draws": 8,
+          "losses": 4
+        },
+        {
+          "club": { "id": 2, "name": "Vizela", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 80,
+          "goalsConceded": 25,
+          "wins": 25,
+          "draws": 10,
+          "losses": 3
+        },
+        {
+          "club": { "id": 3, "name": "Chelsea", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 75,
+          "goalsConceded": 35,
+          "wins": 24,
+          "draws": 9,
+          "losses": 5
+        },
+        {
+          "club": { "id": 4, "name": "V Santarém", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 70,
+          "goalsConceded": 40,
+          "wins": 22,
+          "draws": 8,
+          "losses": 8
+        },
+        {
+          "club": { "id": 5, "name": "Tottenham", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 65,
+          "goalsConceded": 50,
+          "wins": 20,
+          "draws": 8,
+          "losses": 10
+        },
+        {
+          "club": { "id": 6, "name": "Newcastle", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 60,
+          "goalsConceded": 45,
+          "wins": 18,
+          "draws": 10,
+          "losses": 10
+        },
+        {
+          "club": { "id": 7, "name": "Everton", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 55,
+          "goalsConceded": 55,
+          "wins": 15,
+          "draws": 8,
+          "losses": 15
+        },
+        {
+          "club": { "id": 8, "name": "West Ham", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 45,
+          "goalsConceded": 60,
+          "wins": 12,
+          "draws": 8,
+          "losses": 18
+        },
+        {
+          "club": { "id": 9, "name": "Leicester", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 40,
+          "goalsConceded": 65,
+          "wins": 10,
+          "draws": 10,
+          "losses": 18
+        },
+        {
+          "club": { "id": 10, "name": "Lixa", "country": "Portugal", "starred": true },
+          "matchesPlayed": 38,
+          "goalsScored": 100,
+          "goalsConceded": 30,
+          "wins": 30,
+          "draws": 8,
+          "losses": 0
+        },
+        {
+          "club": { "id": 11, "name": "Aston Villa", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 50,
+          "goalsConceded": 60,
+          "wins": 13,
+          "draws": 8,
+          "losses": 17
+        },
+        {
+          "club": { "id": 12, "name": "Brighton", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 55,
+          "goalsConceded": 58,
+          "wins": 14,
+          "draws": 9,
+          "losses": 15
+        },
+        {
+          "club": { "id": 13, "name": "Wolves", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 40,
+          "goalsConceded": 55,
+          "wins": 10,
+          "draws": 12,
+          "losses": 16
+        },
+        {
+          "club": { "id": 14, "name": "Leeds United", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 45,
+          "goalsConceded": 70,
+          "wins": 11,
+          "draws": 7,
+          "losses": 20
+        },
+        {
+          "club": { "id": 15, "name": "Crystal Palace", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 38,
+          "goalsConceded": 65,
+          "wins": 9,
+          "draws": 10,
+          "losses": 19
+        },
+        {
+          "club": { "id": 16, "name": "Southampton", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 37,
+          "goalsConceded": 70,
+          "wins": 8,
+          "draws": 11,
+          "losses": 19
+        },
+        {
+          "club": { "id": 17, "name": "Burnley", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 33,
+          "goalsConceded": 65,
+          "wins": 7,
+          "draws": 12,
+          "losses": 19
+        },
+        {
+          "club": { "id": 18, "name": "Sporting CP", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 25,
+          "goalsConceded": 75,
+          "wins": 5,
+          "draws": 6,
+          "losses": 27
+        },
+        {
+          "club": { "id": 19, "name": "FC Porto", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 30,
+          "goalsConceded": 80,
+          "wins": 6,
+          "draws": 8,
+          "losses": 24
+        },
+        {
+          "club": { "id": 20, "name": "UD Leiria", "country": "England", "starred": false },
+          "matchesPlayed": 38,
+          "goalsScored": 20,
+          "goalsConceded": 85,
+          "wins": 3,
+          "draws": 6,
+          "losses": 29
+        }
+      ]
 }

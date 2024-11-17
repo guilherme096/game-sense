@@ -4,7 +4,7 @@ import Header from "../components/Header";
 function PageTemplate({ children }) {
     return (
         <>
-            <div className=" pb-24">
+            <div className=" pb-20">
                 <Header />
                 {children}
                 <Navbar />

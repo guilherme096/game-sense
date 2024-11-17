@@ -1,6 +1,6 @@
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/react";
 
-export default function HorizontalTab({ categories, color_back="bg-base-300" }) {
+export default function HorizontalTab({ categories, color_back="bg-gray-700" }) {
   return (
     <TabGroup>
       <TabList

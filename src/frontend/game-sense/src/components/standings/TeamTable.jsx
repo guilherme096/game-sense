@@ -24,11 +24,11 @@ export default function TeamTable({ standings }) {
             <th className="px-2 py-2 text-center">#</th>
             <th className="px-2 py-2">Club</th>
             <th className="px-2 py-2 text-center">MP</th>
-            <th className="px-2 py-2 text-center">P</th>
-            <th className="px-2 py-2 text-center">GD</th>
             <th className="px-2 py-2 text-center">W</th>
             <th className="px-2 py-2 text-center">D</th>
             <th className="px-2 py-2 text-center">L</th>
+            <th className="px-2 py-2 text-center">GD</th>
+            <th className="px-2 py-2 text-center">P</th>
           </tr>
           </thead>
 
