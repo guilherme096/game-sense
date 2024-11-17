@@ -4,7 +4,7 @@ services:
     build:
       context: backend/club_service
     ports:
-      - "${CLUB_SERVICE_PORT}:8080"
+      - "${CLUB_SERVICE_PORT}:${INTERNAL_SPRING_PORT}"
     networks:
       - app-network
     env_file:
@@ -15,7 +15,7 @@ services:
     build:
       context: backend/live_game_service
     ports:
-      - "${LIVE_GAME_SERVICE_PORT}:8080"
+      - "${LIVE_GAME_SERVICE_PORT}:${INTERNAL_SPRING_PORT}"
     networks:
       - app-network
     env_file:
@@ -26,7 +26,7 @@ services:
     build:
       context: backend/player_service
     ports:
-      - "${PLAYER_SERVICE_PORT}:8080"
+      - "${PLAYER_SERVICE_PORT}:${INTERNAL_SPRING_PORT}"
     networks:
       - app-network
     env_file:
@@ -37,7 +37,7 @@ services:
     build:
       context: backend/league_service
     ports:
-      - "${LEAGUE_SERVICE_PORT}:8080"
+      - "${LEAGUE_SERVICE_PORT}:${INTERNAL_SPRING_PORT}"
     networks:
       - app-network
     env_file:
@@ -48,7 +48,7 @@ services:
     build:
       context: frontend/game-sense
     ports:
-      - "3000:80" 
+      - "${FRONTEND_PORT}:${FRONTEND_INTERNAL_PORT}"
     networks:
       - app-network
 
