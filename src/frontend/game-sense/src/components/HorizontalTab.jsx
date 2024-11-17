@@ -1,30 +1,41 @@
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/react";
+import { useState } from "react";
 
-export default function HorizontalTab({ categories, color_back="bg-gray-700" }) {
+export default function HorizontalTab({ categories, color_back = "bg-base-300" }) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  
   return (
-    <TabGroup>
+    <TabGroup onChange={(index) => setSelectedIndex(index)}>
       <TabList
-        className={`mx-4 my-4 ${color_back} rounded-lg text-white font-semibold flex flex-row overflow-x-auto no-scrollbar`}>
-        {categories.map(({ name }) => {
-          return (
-            <Tab
-              key={name}
-              className={({ selected }) =>
-                selected
-                  ? "rounded-lg bg-primary h-full flex-1 p-1 px-3 whitespace-nowrap"
-                  : "rounded-lg h-full flex-1 p-1 px-3 whitespace-nowrap"
-              }
-            >
-              {name}
-            </Tab>
-          );
-        })}
-      </TabList>
-      <TabPanels>
-        {categories.map(({ name, content }) => (
-          <TabPanel key={name}>{content}</TabPanel>
+        className={`mx-4 my-4 ${color_back} rounded-lg text-white font-semibold flex flex-row overflow-x-auto no-scrollbar`}
+      >
+        {categories.map(({ name }, index) => (
+          <Tab
+            key={name}
+            className={({ selected }) =>
+              selected
+                ? "rounded-lg bg-primary h-full flex-1 p-1 px-3 whitespace-nowrap"
+                : "rounded-lg h-full flex-1 p-1 px-3 whitespace-nowrap"
+            }
+          >
+            {name}
+          </Tab>
         ))}
-      </TabPanels>
+      </TabList>
+      <div className="relative">
+        {categories.map(({ name, content }, index) => (
+          <div
+            key={name}
+            className={`absolute w-full transition-all duration-500 ease-in-out ${
+              selectedIndex === index
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 -translate-x-full pointer-events-none"
+            }`}
+          >
+            {content}
+          </div>
+        ))}
+      </div>
     </TabGroup>
   );
 }
