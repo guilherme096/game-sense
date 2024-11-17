@@ -52,7 +52,7 @@ export default function ScoreBoard() {
                         <div className="w-24 h-24 bg-base-200 rounded-lg flex items-center justify-center overflow-hidden">
                             {team1.image ? (
                                 <img
-                                    className="w-full h-full object-contain"
+                                    className="w-full h-full object-contain p-2"
                                     src={team1.image}
                                     alt={team1.name}
                                 />
@@ -77,7 +77,7 @@ export default function ScoreBoard() {
                         <div className="w-24 h-24 bg-base-200 rounded-lg flex items-center justify-center overflow-hidden">
                         {team2.image ? (
                                 <img
-                                    className="w-full h-full object-contain"
+                                    className="w-full h-full object-contain p-2"
                                     src={team2.image}
                                     alt={team2.name}
                                 />

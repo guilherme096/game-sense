@@ -22,7 +22,7 @@ export default function Overview() {
 
   return (
     <>
-      <div className="p-4">
+      <div className="p-4 pt-0">
         <GameTimeline />
       </div>
       <div className="row flex space-x-3">
