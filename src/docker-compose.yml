@@ -1,54 +1,47 @@
+version: '3.8'
+
 services:
-  club_service:
-    image: club_service-image
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend/game-sense/dist:/usr/share/nginx/html
+      - ./frontend/game-sense/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - club-service
+      - live-game-service
+      - player-service
+      - league-service
+    networks:
+      - app-network
+
+  club-service:
     build:
       context: backend/club_service
-    ports:
-      - "${CLUB_SERVICE_PORT}:${INTERNAL_SPRING_PORT}"
+    image: club_service-image
     networks:
       - app-network
-    env_file:
-      - .env
 
-  live_game_service:
-    image: live_game_service-image
+  live-game-service:
     build:
       context: backend/live_game_service
-    ports:
-      - "${LIVE_GAME_SERVICE_PORT}:${INTERNAL_SPRING_PORT}"
+    image: live_game_service-image
     networks:
       - app-network
-    env_file:
-      - .env
 
-  player_service:
-    image: player_service-image
+  player-service:
     build:
       context: backend/player_service
-    ports:
-      - "${PLAYER_SERVICE_PORT}:${INTERNAL_SPRING_PORT}"
+    image: player_service-image
     networks:
       - app-network
-    env_file:
-      - .env
 
-  league_service:
-    image: league_service-image
+  league-service:
     build:
       context: backend/league_service
-    ports:
-      - "${LEAGUE_SERVICE_PORT}:${INTERNAL_SPRING_PORT}"
-    networks:
-      - app-network
-    env_file:
-      - .env
-
-  frontend:
-    image: frontend-image
-    build:
-      context: frontend/game-sense
-    ports:
-      - "${FRONTEND_PORT}:${FRONTEND_INTERNAL_PORT}"
+    image: league_service-image
     networks:
       - app-network
 

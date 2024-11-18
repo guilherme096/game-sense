@@ -5,7 +5,7 @@ import axios from 'axios';
 
 export default function Standings({ showHeader = true }) {
     const fetchGame = async () => {
-        const response = await axios.get("http://localhost:8084/api/v1/league/1", {
+        const response = await axios.get("/api/v1/league/1", {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",

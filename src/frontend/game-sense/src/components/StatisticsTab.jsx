@@ -3,16 +3,13 @@ import { useQuery } from "react-query";
 import axios from "axios";
 
 const fetchGameStatistics = async (id) => {
-    const response = await axios.get(
-        "http://localhost:8082/api/v1/live/" + id + "/statistics",
-        {
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-        },
-    );
-    return response.data;
+  const response = await axios.get("/api/v1/live/" + id + "/statistics", {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  return response.data;
 };
 
 const StatisticsTab = ({ id }) => {
@@ -123,7 +120,39 @@ const StatisticsTab = ({ id }) => {
                 <div className="mt-4">{renderStatBars()}</div>
             </div>
         </div>
-    );
+      );
+    });
+
+  return (
+    <div className="flex items-center justify-center bg-gray-100">
+      <div className="p-4 bg-white w-full max-w-md mx-auto">
+        {/* Tab Navigation */}
+        <div
+          className="relative flex justify-center items-center bg-[#333D4D] rounded-md mb-3 shadow-sm"
+          style={{
+            width: "168px", // Unchanged selector width
+            height: "24px",
+            margin: "0 auto",
+          }}
+        >
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              className={`flex-1 h-full text-white text-[10px] font-semibold ${
+                selectedTab === tab ? "bg-[#0C8557] rounded-md" : ""
+              }`}
+              onClick={() => setSelectedTab(tab)}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Tab Content */}
+        <div className="mt-2">{renderStatBars()}</div>
+      </div>
+    </div>
+  );
 };
 
 export default StatisticsTab;
