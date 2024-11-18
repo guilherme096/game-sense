@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 
 const fetchEvents = async () => {
-  const res = await axios.get("http://localhost:8082/api/v1/live/0/ping?lastEventId=0");
+  const res = await axios.get("/api/v1/live/0/ping?lastEventId=0");
   return res.data;
 };
 

@@ -1,11 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import PropTypes from 'prop-types';
 import {useQuery, useQueryClient} from "react-query";
 import axios from "axios";
 
 const fetchGame = async () => {
-    const response = await axios.get("http://localhost:8082/api/v1/live/0", {
+    const response = await axios.get("api/v1/live/0", {
         headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",

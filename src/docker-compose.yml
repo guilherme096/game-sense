@@ -10,35 +10,35 @@ services:
       - ./frontend/game-sense/dist:/usr/share/nginx/html
       - ./frontend/game-sense/nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-      - club_service
-      - live_game_service
-      - player_service
-      - league_service
+      - club-service
+      - live-game-service
+      - player-service
+      - league-service
     networks:
       - app-network
 
-  club_service:
+  club-service:
     build:
       context: backend/club_service
     image: club_service-image
     networks:
       - app-network
 
-  live_game_service:
+  live-game-service:
     build:
       context: backend/live_game_service
     image: live_game_service-image
     networks:
       - app-network
 
-  player_service:
+  player-service:
     build:
       context: backend/player_service
     image: player_service-image
     networks:
       - app-network
 
-  league_service:
+  league-service:
     build:
       context: backend/league_service
     image: league_service-image

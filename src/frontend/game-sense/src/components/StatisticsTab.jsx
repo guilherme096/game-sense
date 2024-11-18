@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 
 const fetchGameStatistics = async () => {
-  const response = await axios.get("http://localhost:8082/api/v1/live/0/statistics", {
+  const response = await axios.get("/api/v1/live/0/statistics", {
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
