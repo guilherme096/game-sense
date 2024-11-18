@@ -4,9 +4,9 @@ import Header from "../components/Header";
 function PageTemplate({ children }) {
     return (
         <>
-            <div className=" pb-20">
+            <div className="h-screen">
                 <Header />
-                {children}
+                        <div className="h-full overflow-scroll">{children}<div className="h-20 w-full"></div></div>    
                 <Navbar />
             </div>
         </>

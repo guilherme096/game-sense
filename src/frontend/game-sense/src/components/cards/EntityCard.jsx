@@ -26,7 +26,7 @@ export default function EntityCard({ image, name1, name2 }) {
 
                 {/* Image */}
                 <div
-                    className="card-body w-14 p-4"
+                    className="card-body w-8 p-4"
                     style={{
                         zIndex: 2,
                         position: 'relative',

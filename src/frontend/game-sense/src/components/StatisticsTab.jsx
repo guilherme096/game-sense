@@ -39,8 +39,8 @@ const StatisticsTab = ({ id }) => {
         selectedTab === "Overall"
             ? gameStatistics.overall
             : selectedTab === "1st Half"
-                ? gameStatistics.first_half
-                : gameStatistics.second_half;
+            ? gameStatistics.first_half
+            : gameStatistics.second_half;
 
     const renderStatBars = () =>
         Object.entries(selectedStats.home).map(([statName, homeValue]) => {
@@ -59,18 +59,20 @@ const StatisticsTab = ({ id }) => {
             const teamBNumberColor = isTeamAWinner ? "#333D4D" : "#0C8557";
 
             return (
-                <div key={statName} className="mb-3">
+                <div key={statName} className="mb-2">
                     {/* Numbers and Stat Name */}
-                    <div className="flex justify-between items-center text-xs sm:text-sm font-semibold mb-1">
+                    <div className="flex justify-between items-center text-sm sm:text-base font-semibold mb-1">
                         <span style={{ color: teamANumberColor }}>{homeValue}</span>
-                        <span className="text-[#0C8557]">
+                        <span
+                            className="text-[#0C8557] text-base"
+                        >
                             {statName.replace(/([A-Z])/g, " $1")}
                         </span>
                         <span style={{ color: teamBNumberColor }}>{awayValue}</span>
                     </div>
 
                     {/* Bars */}
-                    <div className="relative w-full h-2 bg-[#333D4D] rounded-full shadow-sm">
+                    <div className="relative w-full h-3 bg-[#333D4D] rounded-full shadow-sm">
                         {/* Left Bar (Home Team) */}
                         <div
                             className="absolute left-1/2 h-full rounded-l-full transition-all duration-500"
@@ -95,20 +97,20 @@ const StatisticsTab = ({ id }) => {
 
     return (
         <div className="flex items-center justify-center bg-gray-100">
-            <div className="p-4 bg-white w-full max-w-md mx-auto">
+            <div className="pl-6 pr-6 bg-white w-full max-w-2xl mx-auto rounded-lg shadow-lg">
                 {/* Tab Navigation */}
                 <div
-                    className="relative flex justify-center items-center bg-[#333D4D] rounded-md mb-3 shadow-sm"
+                    className="relative flex justify-center items-center bg-[#333D4D] rounded-md mb-5 shadow-sm"
                     style={{
-                        width: "168px", // Unchanged selector width
-                        height: "24px",
+                        width: "200px",
+                        height: "36px",
                         margin: "0 auto",
                     }}
                 >
                     {tabs.map((tab) => (
                         <button
                             key={tab}
-                            className={`flex-1 h-full text-white text-[10px] font-semibold ${selectedTab === tab ? "bg-[#0C8557] rounded-md" : ""
+                            className={`flex-1 h-full text-white text-sm font-bold ${selectedTab === tab ? "bg-[#0C8557] rounded-md" : ""
                                 }`}
                             onClick={() => setSelectedTab(tab)}
                         >
@@ -118,7 +120,7 @@ const StatisticsTab = ({ id }) => {
                 </div>
 
                 {/* Tab Content */}
-                <div className="mt-2">{renderStatBars()}</div>
+                <div className="mt-4">{renderStatBars()}</div>
             </div>
         </div>
     );

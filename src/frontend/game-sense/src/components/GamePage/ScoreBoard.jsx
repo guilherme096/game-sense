@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
+import { useState } from "react";
 import axios from "axios";
 
 const fetchGame = async (id) => {
@@ -16,6 +17,9 @@ const fetchGame = async (id) => {
 };
 
 export default function ScoreBoard({ id }) {
+    const [team1Stared, setTeam1Stared] = useState(false); // State for Team 1 star
+    const [team2Stared, setTeam2Stared] = useState(false); // State for Team 2 star
+
     const {
         data: game,
         error,
@@ -42,16 +46,19 @@ export default function ScoreBoard({ id }) {
                 {minute <= 45
                     ? "1st Half"
                     : minute >= 46 && minute < 90
-                        ? "2nd Half"
-                        : "Full Time"}
+                    ? "2nd Half"
+                    : "Full Time"}
             </div>
             <div className="w-full h-fit flex flex-row justify-between align-middle items-center">
+                {/* Team 1 Section */}
                 <div>
                     <div className="flex flex-row items-center">
-                        <button>
+                        <button onClick={() => setTeam1Stared(!team1Stared)}>
                             <FontAwesomeIcon
                                 icon={faStar}
-                                style={{ color: team1.stared ? "#FFD43B" : "#D1D5DB" }}
+                                style={{
+                                    color: team1Stared ? "#FFD43B" : "#D1D5DB", // Toggle color
+                                }}
                                 className="w-6 h-6 mr-2"
                             />
                         </button>
@@ -69,6 +76,8 @@ export default function ScoreBoard({ id }) {
                     </div>
                     <div className="text-center my-2 ml-8">{team1.name}</div>
                 </div>
+
+                {/* Score and Minute Section */}
                 <div className="h-fit flex flex-col align-middle items-center">
                     <div className="h-24 flex-col items-center align-middle flex justify-center">
                         <div className="w-fit h-fit text-4xl">
@@ -80,6 +89,8 @@ export default function ScoreBoard({ id }) {
                         <img src="/public/icons8-share-256 1.png" alt="Share Icon" />
                     </button>
                 </div>
+
+                {/* Team 2 Section */}
                 <div>
                     <div className="flex flex-row items-center">
                         <div className="w-24 h-24 bg-base-200 rounded-lg flex items-center justify-center overflow-hidden">
@@ -93,10 +104,12 @@ export default function ScoreBoard({ id }) {
                                 <span className="text-sm text-gray-500">{team2.name}</span>
                             )}
                         </div>
-                        <button>
+                        <button onClick={() => setTeam2Stared(!team2Stared)}>
                             <FontAwesomeIcon
                                 icon={faStar}
-                                style={{ color: team2.stared ? "#FFD43B" : "#D1D5DB" }}
+                                style={{
+                                    color: team2Stared ? "#FFD43B" : "#D1D5DB", // Toggle color
+                                }}
                                 className="w-6 h-6 ml-2"
                             />
                         </button>

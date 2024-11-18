@@ -4,7 +4,7 @@ import TeamInfo from './TeamInfo';
 export default function TeamTable({ standings }) {
   console.log(standings);
   return (
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-xl">
         <table className="table-auto w-full text-sm text-left" style={{ tableLayout: 'fixed' }}>
           {/* Column Group to Define Widths */}
           <colgroup>
