@@ -2,20 +2,24 @@ import React, { useState } from "react";
 import { useQuery } from "react-query";
 import axios from "axios";
 
-const fetchGameStatistics = async () => {
-  const response = await axios.get("/api/v1/live/0/statistics", {
+const fetchGameStatistics = async (id) => {
+  const response = await axios.get("/api/v1/live/" + id + "/statistics", {
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json",
+      Accept: "application/json",
     },
   });
   return response.data;
 };
 
-const StatisticsTab = () => {
+const StatisticsTab = ({ id }) => {
   const [selectedTab, setSelectedTab] = useState("overall");
 
-  const { data: gameStatistics, error, isLoading } = useQuery("gameStatistics", fetchGameStatistics);
+  const {
+    data: gameStatistics,
+    error,
+    isLoading,
+  } = useQuery("gameStatistics", () => fetchGameStatistics(id));
 
   const tabs = ["Overall", "1st Half", "2nd Half"];
 
@@ -32,8 +36,8 @@ const StatisticsTab = () => {
     selectedTab === "Overall"
       ? gameStatistics.overall
       : selectedTab === "1st Half"
-      ? gameStatistics.first_half
-      : gameStatistics.second_half;
+        ? gameStatistics.first_half
+        : gameStatistics.second_half;
 
   const renderStatBars = () =>
     Object.entries(selectedStats.home).map(([statName, homeValue]) => {
@@ -56,7 +60,9 @@ const StatisticsTab = () => {
           {/* Numbers and Stat Name */}
           <div className="flex justify-between items-center text-xs sm:text-sm font-semibold mb-1">
             <span style={{ color: teamANumberColor }}>{homeValue}</span>
-            <span className="text-[#0C8557]">{statName.replace(/([A-Z])/g, " $1")}</span>
+            <span className="text-[#0C8557]">
+              {statName.replace(/([A-Z])/g, " $1")}
+            </span>
             <span style={{ color: teamBNumberColor }}>{awayValue}</span>
           </div>
 
@@ -86,12 +92,7 @@ const StatisticsTab = () => {
 
   return (
     <div className="flex items-center justify-center bg-gray-100">
-      <div
-        className="p-4 bg-white w-full max-w-[500px]" // Increased max-width here
-        style={{
-          height: "auto",
-        }}
-      >
+      <div className="p-4 bg-white w-full max-w-md mx-auto">
         {/* Tab Navigation */}
         <div
           className="relative flex justify-center items-center bg-[#333D4D] rounded-md mb-3 shadow-sm"
@@ -115,14 +116,7 @@ const StatisticsTab = () => {
         </div>
 
         {/* Tab Content */}
-        <div
-          className="mt-2"
-          style={{
-            width: "100%",
-          }}
-        >
-          {renderStatBars()}
-        </div>
+        <div className="mt-2">{renderStatBars()}</div>
       </div>
     </div>
   );

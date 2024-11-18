@@ -7,6 +7,7 @@ import ies.gamesense.live_game_service.entities.GameStatistics;
 import ies.gamesense.live_game_service.entities.Live;
 
 public interface LiveService {
+    List<Live> getLiveGames();
     Live getLiveById(Long id);
 
     void createLive(Live live);

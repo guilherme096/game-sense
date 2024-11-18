@@ -5,12 +5,16 @@ import MostSomethingCard from "../components/GamePage/MostSomethingCard.jsx";
 import { useQuery } from "react-query";
 import axios from "axios";
 
-const fetchGame = async () => {
-  const res = await axios.get("/api/v1/live/0");
+const fetchGame = async (id) => {
+  const res = await axios.get("/api/v1/live/" + id);
   return res.data;
 };
-export default function Overview() {
-  const { data: game, error, isLoading } = useQuery("game", fetchGame);
+export default function Overview({ id }) {
+  const {
+    data: game,
+    error,
+    isLoading,
+  } = useQuery("game", () => fetchGame(id));
 
   const parsedTopStats =
     game?.topStats?.map((stat) => {
@@ -22,8 +26,8 @@ export default function Overview() {
 
   return (
     <>
-      <div className="p-4">
-        <GameTimeline />
+      <div className="p-4 pt-0">
+        <GameTimeline id={id} />
       </div>
       <div className="row flex space-x-3">
         {/* Left Side - Match Information */}

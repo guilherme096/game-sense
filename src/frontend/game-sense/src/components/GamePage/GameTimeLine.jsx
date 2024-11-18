@@ -1,20 +1,28 @@
 import React, { useRef, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFutbol, faRightLeft, faSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFutbol,
+  faRightLeft,
+  faSquare,
+} from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "react-query";
 import axios from "axios";
 
-const fetchEvents = async () => {
-  const res = await axios.get("/api/v1/live/0/ping?lastEventId=0");
+const fetchEvents = async (id) => {
+  const res = await axios.get("/api/v1/live/" + id + "/ping?lastEventId=0");
   return res.data;
 };
 
-const GameTimeline = () => {
+const GameTimeline = ({ id }) => {
   const timelineRef = useRef(null);
   const [lineStyles, setLineStyles] = useState({ top: "100px", height: 0 });
   const [visibleEvents, setVisibleEvents] = useState([]); // Track which events are visible
 
-  const { data: events = [], isLoading, error } = useQuery("events", fetchEvents, {
+  const {
+    data: events = [],
+    isLoading,
+    error,
+  } = useQuery("events", () => fetchEvents(id), {
     refetchInterval: 10000,
   });
 
@@ -56,9 +64,11 @@ const GameTimeline = () => {
     return (
       <div
         className={`flex items-center w-1/2 ${
-          isLeft ? "pr-7 justify-end text-right" : "pl-7 justify-start text-left"
+          isLeft
+            ? "pr-7 justify-end text-right"
+            : "pl-7 justify-start text-left"
         }`}
-        >
+      >
         {isLeft && (
           <div className="mr-4">
             <span className="font-bold">{event.minute}'</span> {event.player}
@@ -70,21 +80,31 @@ const GameTimeline = () => {
             event.type === "goal"
               ? "text-green-200"
               : event.type === "red-card"
-              ? "text-red-500"
-              : event.type === "yellow-card"
-              ? "text-yellow-400"
-              : event.type === "substitution"
-              ? "text-blue-400"
-              : event.type === "auto-goal"
-              ? "text-red-300"
-              : ""
+                ? "text-red-500"
+                : event.type === "yellow-card"
+                  ? "text-yellow-400"
+                  : event.type === "substitution"
+                    ? "text-blue-400"
+                    : event.type === "auto-goal"
+                      ? "text-red-300"
+                      : ""
           }`}
         >
-          {event.type === "goal" && <FontAwesomeIcon icon={faFutbol} className="h-5" />}
-          {event.type === "substitution" && <FontAwesomeIcon icon={faRightLeft} className="h-5" />}
-          {event.type === "red-card" && <FontAwesomeIcon icon={faSquare} className="h-5" />}
-          {event.type === "yellow-card" && <FontAwesomeIcon icon={faSquare} className="h-5" />}
-          {event.type === "auto-goal" && <FontAwesomeIcon icon={faFutbol} className="h-5" />}
+          {event.type === "goal" && (
+            <FontAwesomeIcon icon={faFutbol} className="h-5" />
+          )}
+          {event.type === "substitution" && (
+            <FontAwesomeIcon icon={faRightLeft} className="h-5" />
+          )}
+          {event.type === "red-card" && (
+            <FontAwesomeIcon icon={faSquare} className="h-5" />
+          )}
+          {event.type === "yellow-card" && (
+            <FontAwesomeIcon icon={faSquare} className="h-5" />
+          )}
+          {event.type === "auto-goal" && (
+            <FontAwesomeIcon icon={faFutbol} className="h-5" />
+          )}
         </div>
 
         {!isLeft && (
