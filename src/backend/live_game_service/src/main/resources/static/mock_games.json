@@ -1,9 +1,9 @@
 [
   {
     "id": 0,
-    "referee": "Referee 1",
-    "kickoffTime": "2022-03-01T20:00:00",
-    "stadium": "Stadium 1",
+    "referee": "Pedro Proença",
+    "kickoffTime": "18/11/24 20:00",
+    "stadium": "Estádio do Dragão",
     "minutePlayed": 70,
     "homeTeam": {
       "id": 101,
@@ -14,10 +14,10 @@
     },
     "awayTeam": {
       "id": 102,
-      "name": "Sporting CM",
-      "score": 1,
+      "name": "Sporting CP",
+      "score": 3,
       "stared": true,
-      "image": "https://sportingdamadeira.pt/wp-content/uploads/2024/01/logo_contorno_leao_branco-1.png"
+      "image": "https://upload.wikimedia.org/wikipedia/pt/3/3e/Sporting_Clube_de_Portugal.png"
     },
     "gameStatistics": {
       "first_half": {
@@ -87,11 +87,11 @@
         }
       }
     },
-    "currentMVP": "Player 1",
+    "currentMVP": "Viktor Gyökeres",
     "topStats": [
-      "Player 1: 23 Passes",
-      "Player 2: 12 shots",
-      "Player 3: 12 tackles"
+      "Morten Hjulmand: 23 Passes",
+      "Samu: 12 shots",
+      "Gonçalo Inácio: 12 tackles"
     ],
     "events": [
       {
@@ -99,21 +99,42 @@
         "type": "goal",
         "minute": "12",
         "team": "home",
-        "player": "Player 1"
+        "player": "Samu"
       },
       {
         "id": "2",
         "type": "yellow-card",
         "minute": "34",
         "team": "away",
-        "player": "Player 5"
+        "player": "Nuno Santos"
       },
       {
         "id": "3",
         "type": "goal",
         "minute": "67",
         "team": "away",
-        "player": "Player 3"
+        "player": "Viktor Gyökeres"
+      },
+      {
+        "id": "4",
+        "type": "goal",
+        "minute": "68",
+        "team": "home",
+        "player": "Samu"
+      },
+      {
+        "id": "5",
+        "type": "goal",
+        "minute": "72",
+        "team": "away",
+        "player": "Viktor Gyökeres"
+      },
+      {
+        "id": "6",
+        "type": "goal",
+        "minute": "75",
+        "team": "away",
+        "player": "Pedro Gonçalves"
       }
     ]
   }
