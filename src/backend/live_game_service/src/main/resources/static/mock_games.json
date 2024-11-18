@@ -137,5 +137,145 @@
         "player": "Pedro Gonçalves"
       }
     ]
+  },
+
+  {
+    "id": 1,
+    "referee": "Pedro Proença",
+    "kickoffTime": "18/11/24 20:00",
+    "stadium": "Estádio do Dragão",
+    "minutePlayed": 70,
+    "homeTeam": {
+      "id": 101,
+      "name": "FC Porto",
+      "score": 2,
+      "stared": true,
+      "image": "https://upload.wikimedia.org/wikipedia/pt/c/c5/F.C._Porto_logo.png"
+    },
+    "awayTeam": {
+      "id": 102,
+      "name": "Sporting CP",
+      "score": 3,
+      "stared": true,
+      "image": "https://upload.wikimedia.org/wikipedia/pt/3/3e/Sporting_Clube_de_Portugal.png"
+    },
+    "gameStatistics": {
+      "first_half": {
+        "home": {
+          "possession": 60,
+          "shots": 5,
+          "passesAcc": 80,
+          "tackles": 10,
+          "fouls": 5,
+          "corners": 2,
+          "offsides": 1,
+          "interceptions": 3
+        },
+        "away": {
+          "possession": 40,
+          "shots": 3,
+          "passesAcc": 70,
+          "tackles": 8,
+          "fouls": 3,
+          "corners": 1,
+          "offsides": 0,
+          "interceptions": 2
+        }
+      },
+      "second_half": {
+        "home": {
+          "possession": 55,
+          "shots": 3,
+          "passesAcc": 75,
+          "tackles": 8,
+          "fouls": 3,
+          "corners": 1,
+          "offsides": 0,
+          "interceptions": 2
+        },
+        "away": {
+          "possession": 45,
+          "shots": 5,
+          "passesAcc": 70,
+          "tackles": 10,
+          "fouls": 5,
+          "corners": 2,
+          "offsides": 1,
+          "interceptions": 3
+        }
+      },
+      "overall": {
+        "home": {
+          "possession": 57,
+          "shots": 8,
+          "passesAcc": 77,
+          "tackles": 9,
+          "fouls": 4,
+          "corners": 1,
+          "offsides": 0,
+          "interceptions": 2
+        },
+        "away": {
+          "possession": 42,
+          "shots": 8,
+          "passesAcc": 70,
+          "tackles": 9,
+          "fouls": 4,
+          "corners": 1,
+          "offsides": 1,
+          "interceptions": 2
+        }
+      }
+    },
+    "currentMVP": "Viktor Gyökeres",
+    "topStats": [
+      "Morten Hjulmand: 23 Passes",
+      "Samu: 12 shots",
+      "Gonçalo Inácio: 12 tackles"
+    ],
+    "events": [
+      {
+        "id": "1",
+        "type": "goal",
+        "minute": "12",
+        "team": "home",
+        "player": "Samu"
+      },
+      {
+        "id": "2",
+        "type": "yellow-card",
+        "minute": "34",
+        "team": "away",
+        "player": "Nuno Santos"
+      },
+      {
+        "id": "3",
+        "type": "goal",
+        "minute": "67",
+        "team": "away",
+        "player": "Viktor Gyökeres"
+      },
+      {
+        "id": "4",
+        "type": "goal",
+        "minute": "68",
+        "team": "home",
+        "player": "Samu"
+      },
+      {
+        "id": "5",
+        "type": "goal",
+        "minute": "72",
+        "team": "away",
+        "player": "Viktor Gyökeres"
+      },
+      {
+        "id": "6",
+        "type": "goal",
+        "minute": "75",
+        "team": "away",
+        "player": "Pedro Gonçalves"
+      }
+    ]
   }
 ]

@@ -21,6 +21,13 @@ public class LiveController {
     @Autowired
     private LiveService liveService;
 
+    @Operation(summary = "Get all live games")
+    @GetMapping("/")
+    public List<Live> getLiveGames() {
+        return liveService.getLiveGames();
+
+    }
+
     @Operation(summary = "Get live game by id")
     @GetMapping("/{id}")
     public ResponseEntity<Live> getLiveGame(@PathVariable("id") long id) {
