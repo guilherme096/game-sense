@@ -137,5 +137,246 @@
         "player": "Pedro Gonçalves"
       }
     ]
+  },
+  {
+    "id": 1,
+    "referee": "Carlos Del Cerro",
+    "kickoffTime": "20/11/24 21:00",
+    "stadium": "Santiago Bernabéu",
+    "minutePlayed": 90,
+    "homeTeam": {
+      "id": 201,
+      "name": "Real Madrid",
+      "score": 4,
+      "stared": false,
+      "image": "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg"
+    },
+    "awayTeam": {
+      "id": 202,
+      "name": "Barcelona",
+      "score": 2,
+      "stared": false,
+      "image": "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg"
+    },
+    "gameStatistics": {
+      "first_half": {
+        "home": {
+          "possession": 65,
+          "shots": 10,
+          "passesAcc": 85,
+          "tackles": 8,
+          "fouls": 3,
+          "corners": 5,
+          "offsides": 2,
+          "interceptions": 4
+        },
+        "away": {
+          "possession": 35,
+          "shots": 5,
+          "passesAcc": 75,
+          "tackles": 7,
+          "fouls": 4,
+          "corners": 2,
+          "offsides": 1,
+          "interceptions": 3
+        }
+      },
+      "second_half": {
+        "home": {
+          "possession": 60,
+          "shots": 8,
+          "passesAcc": 82,
+          "tackles": 9,
+          "fouls": 5,
+          "corners": 4,
+          "offsides": 1,
+          "interceptions": 3
+        },
+        "away": {
+          "possession": 40,
+          "shots": 7,
+          "passesAcc": 78,
+          "tackles": 8,
+          "fouls": 6,
+          "corners": 3,
+          "offsides": 2,
+          "interceptions": 2
+        }
+      }
+    },
+    "currentMVP": "Vinícius Júnior",
+    "topStats": [
+      "Toni Kroos: 30 Passes",
+      "Karim Benzema: 8 shots",
+      "Dani Carvajal: 10 tackles"
+    ],
+    "events": [
+      {
+        "id": "1",
+        "type": "goal",
+        "minute": "15",
+        "team": "home",
+        "player": "Karim Benzema"
+      },
+      {
+        "id": "2",
+        "type": "goal",
+        "minute": "32",
+        "team": "home",
+        "player": "Vinícius Júnior"
+      },
+      {
+        "id": "3",
+        "type": "yellow-card",
+        "minute": "45",
+        "team": "away",
+        "player": "Gavi"
+      },
+      {
+        "id": "4",
+        "type": "goal",
+        "minute": "60",
+        "team": "away",
+        "player": "Robert Lewandowski"
+      },
+      {
+        "id": "5",
+        "type": "goal",
+        "minute": "75",
+        "team": "home",
+        "player": "Rodrygo"
+      },
+      {
+        "id": "6",
+        "type": "goal",
+        "minute": "85",
+        "team": "away",
+        "player": "Pedri"
+      },
+      {
+        "id": "7",
+        "type": "goal",
+        "minute": "90",
+        "team": "home",
+        "player": "Luka Modrić"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "referee": "Anthony Taylor",
+    "kickoffTime": "21/11/24 19:45",
+    "stadium": "Old Trafford",
+    "minutePlayed": 75,
+    "homeTeam": {
+      "id": 301,
+      "name": "Manchester United",
+      "score": 3,
+      "stared": false,
+      "image": "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg"
+    },
+    "awayTeam": {
+      "id": 302,
+      "name": "Liverpool",
+      "score": 2,
+      "stared": false,
+      "image": "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg"
+    },
+    "gameStatistics": {
+      "first_half": {
+        "home": {
+          "possession": 55,
+          "shots": 7,
+          "passesAcc": 80,
+          "tackles": 6,
+          "fouls": 4,
+          "corners": 3,
+          "offsides": 1,
+          "interceptions": 2
+        },
+        "away": {
+          "possession": 45,
+          "shots": 5,
+          "passesAcc": 75,
+          "tackles": 7,
+          "fouls": 3,
+          "corners": 2,
+          "offsides": 2,
+          "interceptions": 1
+        }
+      },
+      "second_half": {
+        "home": {
+          "possession": 50,
+          "shots": 5,
+          "passesAcc": 78,
+          "tackles": 8,
+          "fouls": 3,
+          "corners": 2,
+          "offsides": 0,
+          "interceptions": 1
+        },
+        "away": {
+          "possession": 50,
+          "shots": 6,
+          "passesAcc": 78,
+          "tackles": 8,
+          "fouls": 2,
+          "corners": 3,
+          "offsides": 1,
+          "interceptions": 1
+        }
+      }
+    },
+    "currentMVP": "Marcus Rashford",
+    "topStats": [
+      "Bruno Fernandes: 25 Passes",
+      "Mohamed Salah: 9 shots",
+      "Lisandro Martínez: 11 tackles"
+    ],
+    "events": [
+      {
+        "id": "1",
+        "type": "goal",
+        "minute": "18",
+        "team": "home",
+        "player": "Marcus Rashford"
+      },
+      {
+        "id": "2",
+        "type": "goal",
+        "minute": "34",
+        "team": "away",
+        "player": "Darwin Núñez"
+      },
+      {
+        "id": "3",
+        "type": "yellow-card",
+        "minute": "40",
+        "team": "home",
+        "player": "Casemiro"
+      },
+      {
+        "id": "4",
+        "type": "goal",
+        "minute": "50",
+        "team": "home",
+        "player": "Bruno Fernandes"
+      },
+      {
+        "id": "5",
+        "type": "goal",
+        "minute": "67",
+        "team": "away",
+        "player": "Mohamed Salah"
+      },
+      {
+        "id": "6",
+        "type": "goal",
+        "minute": "74",
+        "team": "home",
+        "player": "Jadon Sancho"
+      }
+    ]
   }
 ]

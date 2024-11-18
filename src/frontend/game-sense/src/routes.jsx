@@ -8,41 +8,41 @@ import Register from "./routes/Register";
 import Profile from "./routes/Profile";
 
 export const routesList = [
-  {
-    path: "/",
-    element: <Home />,
-  },
+    {
+        path: "/",
+        element: <Home />,
+    },
 
-  {
-    path: "/template",
-    element: <Template />,
-  },
+    {
+        path: "/template",
+        element: <Template />,
+    },
 
-  {
-    path: "/leaguePage",
-    element: <LeaguePageBase />,
-  },
+    {
+        path: "/leaguePage",
+        element: <LeaguePageBase />,
+    },
 
-  {
-    path: "/game",
-    element: <Game />,
-  },
+    {
+        path: "/game/:id",
+        element: <Game />,
+    },
 
-  {
-    path: "/playerPage",
-    element: <PlayerPageBase />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
+    {
+        path: "/playerPage",
+        element: <PlayerPageBase />,
+    },
+    {
+        path: "/login",
+        element: <Login />,
+    },
 
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/profile",
-    element: <Profile />,
-  },
+    {
+        path: "/register",
+        element: <Register />,
+    },
+    {
+        path: "/profile",
+        element: <Profile />,
+    },
 ];

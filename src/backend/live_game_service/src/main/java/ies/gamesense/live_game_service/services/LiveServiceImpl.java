@@ -56,6 +56,11 @@ public class LiveServiceImpl implements LiveService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public List<Live> getLiveGames() {
+        return new ArrayList<>(this.liveGames.values());
+    }
     
 
     @Override
