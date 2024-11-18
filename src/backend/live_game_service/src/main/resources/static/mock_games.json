@@ -202,6 +202,28 @@
           "offsides": 2,
           "interceptions": 2
         }
+      },
+      "overall": {
+        "home": {
+          "possession": 62,
+          "shots": 18,
+          "passesAcc": 83,
+          "tackles": 9,
+          "fouls": 4,
+          "corners": 4,
+          "offsides": 1,
+          "interceptions": 3
+        },
+        "away": {
+          "possession": 38,
+          "shots": 12,
+          "passesAcc": 76,
+          "tackles": 7,
+          "fouls": 5,
+          "corners": 2,
+          "offsides": 1,
+          "interceptions": 3
+        }
       }
     },
     "currentMVP": "Vinícius Júnior",
@@ -270,7 +292,7 @@
     "minutePlayed": 75,
     "homeTeam": {
       "id": 301,
-      "name": "Manchester United",
+      "name": "Man. United",
       "score": 3,
       "stared": false,
       "image": "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg"
@@ -323,6 +345,28 @@
           "tackles": 8,
           "fouls": 2,
           "corners": 3,
+          "offsides": 1,
+          "interceptions": 1
+        }
+      },
+      "overall": {
+        "home": {
+          "possession": 53,
+          "shots": 12,
+          "passesAcc": 79,
+          "tackles": 7,
+          "fouls": 3,
+          "corners": 2,
+          "offsides": 0,
+          "interceptions": 1
+        },
+        "away": {
+          "possession": 47,
+          "shots": 11,
+          "passesAcc": 76,
+          "tackles": 7,
+          "fouls": 3,
+          "corners": 2,
           "offsides": 1,
           "interceptions": 1
         }
