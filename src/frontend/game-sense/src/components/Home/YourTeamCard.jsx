@@ -7,7 +7,7 @@ function GameCard({ game }) {
                 {game.schedule}
             </div>
             <div className="flex flex-row w-full text-neutral-300 items-center justify-between px-10">
-                <div className="w-20 h-fit  flex flex-col items-center justify-center overflow-hidden">
+                <div className="w-20 h-fit  flex flex-col items-center justify-center overflow-show">
                     <div className="w-20 h-20 rounded-lg flex items-center justify-center overflow-hidden">
                         {game.homeTeam.image ? (
                             <img
@@ -19,30 +19,27 @@ function GameCard({ game }) {
                             <span className="text-sm text-gray-500">{homeTeam.name}</span>
                         )}
                     </div>
-                    <div className="font-bold mt-2 text-xl text-gray-400">
-                        {game.homeTeam.score}
+                    <div className="text-md font-bold mt-2 text-white text-nowrap">
+                        {game.homeTeam.name}
                     </div>
-                    {game.events.map((event, index) => {
-                        if (event.team === "home" && event.type === "goal") {
-                            return (
-                                <div className="flex flex-row">
-                                    <div className="text-green-200">
-                                        <FontAwesomeIcon icon={faFutbol} className="h-5" />
-                                    </div>
-                                    <span className="font-bold text-sm">{event.minute}'</span>{" "}
-                                    {event.player}
-                                </div>
-                            );
-                        }
-                    })}
                 </div>
-                <div className="flex flex-col mt-4">
-                    <div className="text-white font-bold text-lg">VS</div>
+                <div className="flex flex-col mt-4 items-center">
+                    <div className="row flex">
+                        <div className="text-white font-bold text-xl pr-2">
+                            {game.homeTeam.score}
+                        </div>
+
+                        <div className="text-white font-bold text-xl">:</div>
+
+                        <div className="text-white font-bold text-xl pl-3">
+                            {game.awayTeam.score}
+                        </div>
+                    </div>
                     <div className="text-green-500 font-bold text-lg mt-2">
                         {game.minutePlayed}'
                     </div>
                 </div>
-                <div className="w-20 h-fit  flex flex-col items-center justify-center overflow-hidden">
+                <div className="w-20 h-fit  flex flex-col items-center justify-center overflow-show">
                     <div className="w-20 h-20 rounded-lg flex items-center justify-center overflow-hidden">
                         {game.awayTeam.image ? (
                             <img
@@ -54,8 +51,8 @@ function GameCard({ game }) {
                             <span className="text-sm text-gray-500">{awayTeam.name}</span>
                         )}
                     </div>
-                    <div className="font-bold mt-2 text-xl text-gray-400">
-                        {game.awayTeam.score}
+                    <div className="text-md font-bold mt-2 text-white text-nowrap">
+                        {game.awayTeam.name}
                     </div>
                 </div>
             </div>
