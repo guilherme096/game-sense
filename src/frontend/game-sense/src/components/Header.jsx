@@ -1,10 +1,10 @@
 import Logo from '../../public/icon-logo.png';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCrown } from "@fortawesome/free-solid-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -37,9 +37,11 @@ function Header() {
         <>
             <div className="navbar bg-base-100">
                 <div className="flex-1 flex items-center">
+                    <Link to="/">
                     <div className="w-16">
                         <img src={Logo} alt="Logo" className="h-full w-full object-contain" />
                     </div>
+                    </Link>
                 </div>
 
                 <div className="flex items-center relative">

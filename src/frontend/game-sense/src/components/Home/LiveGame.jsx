@@ -1,6 +1,6 @@
 function LiveGame({ game }) {
     return (
-        <div className="flex flex-row w-full p-5 bg-neutral-300 rounded-lg drop-shadow-lg my-4 items-center">
+        <div className="flex flex-row w-full p-5 bg-neutral-100 rounded-lg drop-shadow-lg my-4 items-center">
             <div className="flex flex-col w-full">
                 <div className="flex flex-col w-full text-neutral-300 mb-3">
                     <div className="w-full flex-row flex items-center align-middle">
@@ -17,7 +17,7 @@ function LiveGame({ game }) {
                                 </div>
                             )}
                         </div>
-                        <div className="text-xs font-bold ml-3 text-black">
+                        <div className="text-s font-bold ml-3 text-black">
                             {game.homeTeam.name}
                         </div>
                         <div className="font-extrabold text-black ml-auto">
@@ -40,10 +40,10 @@ function LiveGame({ game }) {
                                 </div>
                             )}
                         </div>
-                        <div className="text-xs font-bold ml-3 text-black">
+                        <div className="text-s font-bold ml-3 text-black">
                             {game.awayTeam.name}
                         </div>
-                        <div className="font-extrabold text-black ml-auto">
+                        <div className="font-extrabold  text-black ml-auto">
                             {game.awayTeam.score}
                         </div>
                     </div>

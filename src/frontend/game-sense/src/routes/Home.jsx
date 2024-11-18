@@ -42,7 +42,9 @@ function Home() {
                         if (!g.homeTeam.stared && !g.awayTeam.stared) {
                             return (
                                 <Link to={"/game/" + g.id} key={key}>
-                                    <LiveGame key={g.id} game={g} />
+                                    <div className="-mt-3">
+                                    <LiveGame key={g.id} game={g}/>
+                                    </div>
                                 </Link>
                             );
                         }
