@@ -25,17 +25,17 @@ function GameCard({ game }) {
                 </div>
                 <div className="flex flex-col mt-4 items-center">
                     <div className="row flex">
-                        <div className="text-white font-bold text-xl pr-2">
+                        <div className="text-white font-bold text-2xl pr-2">
                             {game.homeTeam.score}
                         </div>
 
-                        <div className="text-white font-bold text-xl">:</div>
+                        <div className="text-white font-bold text-2xl">:</div>
 
-                        <div className="text-white font-bold text-xl pl-3">
+                        <div className="text-white font-bold text-2xl pl-3">
                             {game.awayTeam.score}
                         </div>
                     </div>
-                    <div className="text-green-500 font-bold text-lg mt-2">
+                    <div className="text-green-500 font-bold text-md mt-2">
                         {game.minutePlayed}'
                     </div>
                 </div>
