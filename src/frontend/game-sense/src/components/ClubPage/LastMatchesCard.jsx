@@ -1,13 +1,16 @@
 import React from "react";
 
-export default function LastMatchesCard() {
-  const matches = [
-    { score: "0-4", logo: "/scbraga.png", opponent: "SC Braga", result: "L" },
-    { score: "8-1", logo: "/fcporto.png", opponent: "FC Porto", result: "W" },
-    { score: "2-2", logo: "/manunited.png", opponent: "Man United", result: "D" },
-    { score: "1-8", logo: "/sporting.png", opponent: "Sporting CP", result: "W" },
-    { score: "5-3", logo: "/brentford.png", opponent: "Brentford", result: "L" },
-  ];
+export default function LastMatchesCard({ matches = [] }) {
+  if (!matches.length) {
+    return (
+      <div className="bg-white shadow-lg rounded-lg m-5">
+        <div className="bg-gray-700 text-white font-bold text-lg pl-3 p-2 rounded-t-lg">
+          Last Matches
+        </div>
+        <div className="p-4 text-gray-500 text-center">No match data available.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white shadow-lg rounded-lg m-5">
@@ -15,7 +18,6 @@ export default function LastMatchesCard() {
       <div className="bg-gray-700 text-white font-bold text-lg pl-3 p-2 rounded-t-lg">
         Last Matches
       </div>
-
       {/* Matches List */}
       <div className="flex flex-row justify-around items-center p-4">
         {matches.map((match, index) => (
@@ -32,18 +34,14 @@ export default function LastMatchesCard() {
             >
               {match.score}
             </div>
-
             {/* Opponent Logo */}
-            <div
-              className="w-[3rem] h-[3rem] flex items-center justify-center rounded-lg my-2 p-1"
-            >
+            <div className="w-[3rem] h-[3rem] flex items-center justify-center rounded-lg my-2 p-1">
               <img
                 src={match.logo}
                 alt={match.opponent}
                 className="max-w-full max-h-full object-contain"
               />
             </div>
-
             {/* Opponent Name */}
             <div className="text-xs text-gray-700 font-medium">{match.opponent}</div>
           </div>
