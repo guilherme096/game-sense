@@ -6,6 +6,7 @@ import Game from "./routes/Game";
 import Login from "./routes/Login";
 import Register from "./routes/Register";
 import Profile from "./routes/Profile";
+import Club from "./routes/Club";
 
 export const routesList = [
     {
@@ -44,5 +45,9 @@ export const routesList = [
     {
         path: "/profile",
         element: <Profile />,
+    },
+    {
+        path: "/club",
+        element: <Club />,
     },
 ];
