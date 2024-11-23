@@ -18,7 +18,7 @@ export default function ClubCard({ clubData }) {
           top: "65%",
           left: "-5%",
           width: "200%",
-          height: "250%",
+          height: "400%",
           transform: "rotate(160deg)",
           backgroundColor: "#333D4D",
           zIndex: 1,
@@ -45,18 +45,15 @@ export default function ClubCard({ clubData }) {
             )}
           </span>
         </div>
-        <div className="flex items-center mr-2 pt-28">
+        <div className="flex items-center mr-3 pt-28">
           <button
-            className="flex items-center px-2 py-1 rounded-lg text-xs font-medium shadow bg-gray-100 text-gray-700"
+            className="flex items-center px-2 py-1 rounded-lg text-xs font-medium shadow bg-gray-100 text-gray-700 w-[90px]"
             onClick={handleFollowClick}
-            style={{ width: "90px" }}
           >
             <FontAwesomeIcon
               icon={isFollowed ? solidStar : regularStar}
-              className="mr-1"
-              style={{
-                color: "#FFD700",
-              }}
+              className="mr-1 text-[#FFD700]"
+              
             />
             <span>{isFollowed ? "Following" : "Follow"}</span>
           </button>
