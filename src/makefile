@@ -36,18 +36,11 @@ build-frontend:
 	@echo "Building Frontend..."
 	@cd $(FRONTEND) && npm install && npm run build
 
-# Rebuild and restart the frontend
-.PHONY: rebuild-frontend
-rebuild-frontend:
-	@echo "Rebuilding Frontend..."
-	@$(MAKE) build-frontend
-	@docker-compose up --build -d nginx
-
-# Start Docker Compose
+# Start Docker Compose without rebuilding
 .PHONY: docker-up
 docker-up:
 	@echo "Starting all services..."
-	@docker-compose up --build -d
+	@docker-compose up -d
 	@echo "All services are up!"
 
 # Stop Docker Compose
@@ -57,28 +50,52 @@ docker-down:
 	@docker-compose down
 	@echo "All services stopped!"
 
-# Run everything
-.PHONY: run
-run: build docker-up
+# Restart all services
+.PHONY: restart
+restart:
+	@echo "Restarting all services..."
+	@docker-compose restart
+	@echo "All services restarted!"
 
-# Rebuild everything
-.PHONY: rebuild
-rebuild: build docker-down docker-up
-
-# Rebuild and restart a specific service
-.PHONY: rebuild-club rebuild-live-game rebuild-player rebuild-league
+# Build and restart specific services
+.PHONY: rebuild-club rebuild-live-game rebuild-player rebuild-league rebuild-frontend rebuild-databases
 rebuild-club:
 	$(MAKE) build-club
-	@docker-compose up --build -d club_service
+	@docker-compose up --build -d club-service
 rebuild-live-game:
 	$(MAKE) build-live-game
-	@docker-compose up --build -d live_game_service
+	@docker-compose up --build -d live-game-service
 rebuild-player:
 	$(MAKE) build-player
-	@docker-compose up --build -d player_service
+	@docker-compose up --build -d player-service
 rebuild-league:
 	$(MAKE) build-league
-	@docker-compose up --build -d league_service
+	@docker-compose up --build -d league-service
+rebuild-frontend:
+	$(MAKE) build-frontend
+	@docker-compose up --build -d nginx
+rebuild-databases:
+	@echo "Rebuilding Databases (MySQL and Redis)..."
+	@docker-compose up --build -d sql_db redis_db
+
+# Restart database services
+.PHONY: restart-sql restart-redis
+restart-sql:
+	@echo "Restarting MySQL..."
+	@docker-compose restart sql_db
+	@echo "MySQL restarted!"
+restart-redis:
+	@echo "Restarting Redis..."
+	@docker-compose restart redis_db
+	@echo "Redis restarted!"
+
+
+# Build and restart all services
+.PHONY: rebuild
+rebuild:
+	$(MAKE) build
+	@docker-compose up --build -d
+	@echo "Rebuilt and restarted all services."
 
 # Clean target directories
 .PHONY: clean
@@ -93,3 +110,11 @@ clean:
 	@cd $(LEAGUE_SERVICE) && ./mvnw clean || exit 1
 	@echo "Cleaning Frontend..."
 	@cd $(FRONTEND) && rm -rf node_modules dist || exit 1
+	@echo "Stopping Docker Compose..."
+	docker-compose down
+	@echo "All services stopped."
+
+# Run everything
+.PHONY: run
+run: build docker-up
+
