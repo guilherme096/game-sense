@@ -132,9 +132,12 @@ def generate_stats(winner: Team, loser: Team, winner_score: int, loser_score: in
 
     w_activations = [max(random.randrange(4, 10) * activations[0], 1)
                      for _ in range(8)]
+    l_activations = [max(random.randrange(4, 10) * activations[1], 1)
+                     for _ in range(8)]
 
+    w_possession = max(round(w_activations[0] * 10), 30)
     w_stats = Stats(
-        max(round(w_activations[0] * 10), 30),  # possession
+        w_possession,  # possession
         round(w_activations[1] + winner_score * 1.2),  # shots
         max(round(w_activations[2] * 10), 50),  # passes_acc
         round(w_activations[3]),  # tackles
@@ -143,8 +146,18 @@ def generate_stats(winner: Team, loser: Team, winner_score: int, loser_score: in
         round(w_activations[6]),  # offsides
         round(w_activations[7]),  # interceptions
     )
+    l_stats = Stats(
+        100 - w_possession,  # possession
+        round(l_activations[1] + loser_score),  # shots
+        max(round(l_activations[2] * 10), 50),  # passes_acc
+        round(l_activations[3]),  # tackles
+        round(l_activations[4]),  # fouls
+        round(l_activations[5]),  # corners
+        round(l_activations[6]),  # offsides
+        round(l_activations[7]),  # interceptions
+    )
 
-    print(w_stats)
+    return w_stats, l_stats
 
 
 def generate_game(home_team: Team, away_team: Team, seed: int):
@@ -159,10 +172,19 @@ def generate_game(home_team: Team, away_team: Team, seed: int):
     game.home_score = home_goals
     game.away_score = away_goals
 
-    generate_stats(home_team, away_team, home_goals, away_goals)
+    w_stats, l_stats = generate_stats(
+        home_team, away_team, home_goals, away_goals)
+
+    home_team.set_stats(w_stats)
+    away_team.set_stats(l_stats)
+
+    logging.debug(f"Game: {game}")
+    logging.debug(f"Home team: {home_team}")
+    logging.debug(f"Away team: {away_team}")
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
     team1 = Team("1", "SCP", 3, 5, [], 9, 9, 8)
     team2 = Team("2", "SLB", 3, 4, [], 9, 8, 8)
 

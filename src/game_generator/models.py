@@ -57,6 +57,9 @@ class Team:
     def set_stats(self, stats: Stats):
         self.stats = stats
 
+    def __str__(self):
+        return f"Team: {self.name}\n Bias: {self.bias}\n Form: {self.form}\n Squad: {self.squad}\n Squad Quality: {self.squad_quality}\n Attack Strength: {self.attack_strength}\n Defense Strength: {self.defense_strength}\n Stats: {self.stats}"
+
 
 class Game:
     def __init__(self, seed: int, home_team: Team, away_team: Team):
@@ -68,8 +71,5 @@ class Game:
         self.home_score: int = 0
         self.away_score: int = 0
 
-        self.home_stats = {}
-        self.away_stats = {}
-
     def __str__(self):
-        return f"{self.home_team} vs {self.away_team}"
+        return f"Game:\n Seed: {self.seed}\n Home Team: {self.home_team}\n Away Team: {self.away_team}\n Winner: {self.winner}\n Home Score: {self.home_score}\n Away Score: {self.away_score}\n Home Stats: {self.home_stats}\n Away Stats: {self.away_stats}"
