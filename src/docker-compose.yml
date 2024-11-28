@@ -43,9 +43,9 @@ services:
     networks:
       - app-network
 
-  db:
+  sql_db:
     image: mysql:8.0
-    container_name: gamesense_db
+    container_name: sql_db
     environment:
         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -53,6 +53,12 @@ services:
         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db-data:/var/lib/mysql
+    networks:
+        - app-network
+
+  redis_db:
+    image: redis:latest
+    container_name: redis_db
     networks:
         - app-network
 
