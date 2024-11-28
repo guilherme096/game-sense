@@ -8,6 +8,31 @@ class Winner(Enum):
     NONE = 4
 
 
+class Stats:
+    def __init__(
+        self,
+        possession,
+        shots,
+        passes_acc,
+        tackles,
+        fouls,
+        corners,
+        offsides,
+        interceptions,
+    ):
+        self.possession = possession
+        self.shots = shots
+        self.passes_acc = passes_acc
+        self.tackles = tackles
+        self.fouls = fouls
+        self.corners = corners
+        self.offsides = offsides
+        self.interceptions = interceptions
+
+    def __str__(self):
+        return f"Stats:\n Possession: {self.possession}\n Shots: {self.shots}\n Passes Acc: {self.passes_acc}\n Tackles: {self.tackles}\n Fouls: {self.fouls}\n Corners: {self.corners}\n Offsides: {self.offsides}\n Interceptions: {self.interceptions}"
+
+
 class Team:
     def __init__(
         self,
@@ -28,6 +53,9 @@ class Team:
         self.squad_quality = squad_quality
         self.attack_strength = attack_strength
         self.defense_strength = defense_strength
+
+    def set_stats(self, stats: Stats):
+        self.stats = stats
 
 
 class Game:

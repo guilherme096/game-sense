@@ -118,6 +118,35 @@ def generate_goals(home_team: Team, away_team: Team, seed: int, winner: Winner):
     return goals
 
 
+def generate_stats(winner: Team, loser: Team, winner_score: int, loser_score: int):
+    random.seed(seed)
+    activations = [random.randrange(5, 10) * 0.1, random.randrange(3, 8) * 0.1]
+
+    w_attack_strength = (winner.attack_strength / 10) * \
+        ((winner.form / 5) * 0.5)
+
+    l_attack_strength = (loser.attack_strength / 10) * ((loser.form / 5) * 0.5)
+
+    activations[0] = (w_attack_strength * activations[0]) / 0.4
+    activations[1] = (l_attack_strength * activations[1]) / 0.8
+
+    w_activations = [max(random.randrange(4, 10) * activations[0], 1)
+                     for _ in range(8)]
+
+    w_stats = Stats(
+        max(round(w_activations[0] * 10), 30),  # possession
+        round(w_activations[1] + winner_score * 1.2),  # shots
+        max(round(w_activations[2] * 10), 50),  # passes_acc
+        round(w_activations[3]),  # tackles
+        round(w_activations[4]),  # fouls
+        round(w_activations[5]),  # corners
+        round(w_activations[6]),  # offsides
+        round(w_activations[7]),  # interceptions
+    )
+
+    print(w_stats)
+
+
 def generate_game(home_team: Team, away_team: Team, seed: int):
     game = Game(seed, home_team, away_team)
     winner = generate_winner(home_team, away_team, seed)
@@ -126,9 +155,11 @@ def generate_game(home_team: Team, away_team: Team, seed: int):
     game.winner = winner
 
     home_goals, away_goals = generate_goals(home_team, away_team, seed, winner)
-    print("Result:")
-    print(f"{home_team.name}: {home_goals}")
-    print(f"{away_team.name} - {away_goals}")
+
+    game.home_score = home_goals
+    game.away_score = away_goals
+
+    generate_stats(home_team, away_team, home_goals, away_goals)
 
 
 if __name__ == "__main__":
