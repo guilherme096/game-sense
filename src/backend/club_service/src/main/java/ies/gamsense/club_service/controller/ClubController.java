@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Tag(name = "Club Service API", description = "API for Club Service operations")
 @RestController
-@RequestMapping("/api/v1/club")
+@RequestMapping("/api/v1/clubs")
 public class ClubController {
 
     @Autowired
