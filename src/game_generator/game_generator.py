@@ -1,5 +1,7 @@
 import random
-from models import Game, Stats, Team, Winner
+from event_generator import generate_events
+from models import Game, Stats, Team, Winner, Player
+from game_serializator import save_game_to_file
 import logging
 from math import log
 
@@ -133,6 +135,8 @@ def generate_stats(winner: Team, loser: Team, winner_score: int, loser_score: in
     l_activations = [max(random.randrange(4, 10) * activations[1], 1) for _ in range(8)]
 
     w_possession = max(round(w_activations[0] * 10), 30)
+
+    # overall 90min stats
     w_stats = Stats(
         w_possession,  # possession
         round(w_activations[1] + winner_score * 1.2),  # shots
@@ -154,7 +158,71 @@ def generate_stats(winner: Team, loser: Team, winner_score: int, loser_score: in
         round(l_activations[7]),  # interceptions
     )
 
-    return w_stats, l_stats
+    stat_sepration_activation = random.randrange(6, 9) * 0.1
+
+    # first half stats
+    w_stats_first_half = Stats(
+        max(0, min(round(w_possession * stat_sepration_activation), 100)),  # possession
+        max(0, round(w_stats.shots * stat_sepration_activation)),  # shots
+        # passes_acc
+        max(0, min(round(w_stats.passes_acc * stat_sepration_activation), 100)),
+        max(0, round(w_stats.tackles * stat_sepration_activation)),  # tackles
+        max(0, round(w_stats.fouls * stat_sepration_activation)),  # fouls
+        max(0, round(w_stats.corners * stat_sepration_activation)),  # corners
+        max(0, round(w_stats.offsides * stat_sepration_activation)),  # offsides
+        # interceptions
+        max(0, round(w_stats.interceptions * stat_sepration_activation)),
+    )
+
+    l_stats_first_half = Stats(
+        max(0, 100 - w_stats_first_half.possession),  # possession
+        max(0, round(l_stats.shots * stat_sepration_activation)),  # shots
+        # passes_acc
+        max(0, min(round(l_stats.passes_acc * stat_sepration_activation), 100)),
+        max(0, round(l_stats.tackles * stat_sepration_activation)),  # tackles
+        max(0, round(l_stats.fouls * stat_sepration_activation)),  # fouls
+        max(0, round(l_stats.corners * stat_sepration_activation)),  # corners
+        max(0, round(l_stats.offsides * stat_sepration_activation)),  # offsides
+        # interceptions
+        max(0, round(l_stats.interceptions * stat_sepration_activation)),
+    )
+
+    # second half stats
+    w_stats_second_half = Stats(
+        # possession
+        max(0, round(w_possession * (1 + abs(1 - stat_sepration_activation)))),
+        max(0, w_stats.shots - w_stats_first_half.shots),  # shots
+        round(
+            w_stats.passes_acc * (1 + abs(1 - stat_sepration_activation))
+        ),  # passes_acc
+        max(0, w_stats.tackles - w_stats_first_half.tackles),  # tackles
+        max(0, w_stats.fouls - w_stats_first_half.fouls),  # fouls
+        max(0, w_stats.corners - w_stats_first_half.corners),  # corners
+        max(0, w_stats.offsides - w_stats_first_half.offsides),  # offsides
+        max(
+            0, w_stats.interceptions - w_stats_first_half.interceptions
+        ),  # interceptions
+    )
+
+    l_stats_second_half = Stats(
+        max(0, 100 - w_stats_second_half.possession),  # possession
+        max(0, l_stats.shots - l_stats_first_half.shots),  # shots
+        # passes_acc
+        max(0, round(l_stats.passes_acc * abs(1 - stat_sepration_activation))),
+        max(0, l_stats.tackles - l_stats_first_half.tackles),  # tackles
+        max(0, l_stats.fouls - l_stats_first_half.fouls),  # fouls
+        max(0, l_stats.corners - l_stats_first_half.corners),  # corners
+        max(0, l_stats.offsides - l_stats_first_half.offsides),  # offsides
+        max(
+            0, l_stats.interceptions - l_stats_first_half.interceptions
+        ),  # interceptions
+    )
+
+    return [w_stats, w_stats_first_half, w_stats_second_half], [
+        l_stats,
+        l_stats_first_half,
+        l_stats_second_half,
+    ]
 
 
 def generate_game(home_team: Team, away_team: Team, seed: int):
@@ -174,15 +242,70 @@ def generate_game(home_team: Team, away_team: Team, seed: int):
     home_team.set_stats(w_stats)
     away_team.set_stats(l_stats)
 
+    game.home_team = home_team
+    game.away_team = away_team
+
     logging.debug(f"Game: {game}")
     logging.debug(f"Home team: {home_team}")
     logging.debug(f"Away team: {away_team}")
 
+    return game
+
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
-    team1 = Team("1", "SCP", 3, 5, [], 9, 9, 8)
-    team2 = Team("2", "SLB", 3, 4, [], 9, 8, 8)
+    team1 = Team("1", "SCP", 3, 5, [], [], 9, 9, 8)
+    team2 = Team("2", "SLB", 3, 4, [], [], 9, 8, 8)
+
+    team1.starting_squad = [
+        Player("Adan", 1, 1),
+        Player("Coates", [4, 5], 2),
+        Player("Neto", [4, 5], 3),
+        Player("Porro", 3, 4),
+        Player("Palhinha", 6, 5),
+        Player("Nuno Santos", 11, 6),
+        Player("Pote", 6, 7),
+        Player("Jovane", 7, 8),
+        Player("Paulinho", 9, 9),
+        Player("Matheus Nunes", 11, 10),
+        Player("Feddal", [4, 5], 11),
+    ]
+
+    team1.subs_squad = [
+        Player("Max", 1, 12),
+        Player("Inacio", [4, 5], 13),
+        Player("Tabata", 6, 14),
+        Player("Vietto", 7, 15),
+        Player("Sporar", 9, 16),
+        Player("João Pereira", 2, 17),
+        Player("Antunes", 3, 18),
+    ]
+
+    team2.starting_squad = [
+        Player("Vlachodimos", 1, 1),
+        Player("Lucas Verissimo", [4, 5], 2),
+        Player("Otamendi", [4, 5], 3),
+        Player("Gilberto", 3, 4),
+        Player("Weigl", 6, 5),
+        Player("Rafa", 11, 6),
+        Player("Everton", 11, 7),
+        Player("Waldschmidt", 7, 8),
+        Player("Darwin", 9, 9),
+        Player("Grimaldo", 3, 10),
+        Player("Diogo", 11, 11),
+    ]
+
+    team2.subs_squad = [
+        Player("Helton", 1, 12),
+        Player("Vertonghen", [4, 5], 13),
+        Player("Pizzi", 6, 14),
+        Player("Chiquinho", 7, 15),
+        Player("Seferovic", 9, 16),
+        Player("Nuno Tavares", 3, 17),
+        Player("Gabriel", 6, 18),
+    ]
 
     seed = generate_seed(team1, team2)
-    generate_game(team1, team2, seed)
+    game = generate_game(team1, team2, seed)
+    events = generate_events(game)
+
+    save_game_to_file(game, events)
