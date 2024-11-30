@@ -18,9 +18,9 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    // GET /api/v1/player/players
+    // GET /api/v1/player
     @Operation(summary = "Get all players")
-    @GetMapping("/players")
+    @GetMapping
     public List<Player> getPlayers() {
         return playerService.getAllPlayers();
     }
