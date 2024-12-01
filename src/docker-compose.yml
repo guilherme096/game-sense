@@ -64,20 +64,20 @@ services:
     image: mysql:8.0
     container_name: sql_db
     environment:
-        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-        MYSQL_DATABASE: ${MYSQL_DATABASE}
-        MYSQL_USER: ${MYSQL_USER}
-        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db-data:/var/lib/mysql
     networks:
-        - app-network
+      - app-network
 
   redis_db:
     image: redis:latest
     container_name: redis_db
     networks:
-        - app-network
+      - app-network
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.4
@@ -100,10 +100,27 @@ services:
       - zookeeper
     networks:
       - app-network
+  kafdrop:
+    image: obsidiandynamics/kafdrop:4.0.2
+    ports:
+      - "9009:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:9092" # Kafka Broker Network Addresses (host:port,host:port)
+      SERVER_SERVLET_CONTEXTPATH: "/"
+    networks:
+      - app-network
 
+  game-generator:
+    build:
+      context: game_generator
+    image: game_generator-image
+    depends_on:
+      - kafka
+    networks:
+      - app-network
 
 volumes:
-    db-data:
+  db-data:
 
 networks:
   app-network:
