@@ -46,8 +46,41 @@ CREATE TABLE IF NOT EXISTS player (
     yellow_cards INT NOT NULL,
     red_cards INT NOT NULL,
     saves INT NOT NULL,
-    penalties INT NOT NULL,
+    is_injured BOOLEAN NOT NULL,
     FOREIGN KEY (club_id) REFERENCES club(id)
+);
+
+CREATE TABLE IF NOT EXISTS team_stats (
+    team_stat_id INT NOT NULL,
+    club_id INT NOT NULL,
+    possession INT NOT NULL,
+    shots INT NOT NULL,
+    passes_acc INT NOT NULL,
+    tackles INT NOT NULL,
+    fouls INT NOT NULL,
+    corners INT NOT NULL,
+    offsides INT NOT NULL,
+    interceptions INT NOT NULL,
+    total_goals INT NOT NULL,
+    PRIMARY KEY (team_stat_id),
+    FOREIGN KEY (club_id) REFERENCES club(id)
+);
+
+CREATE TABLE IF NOT EXISTS half (
+    half_id INT AUTO_INCREMENT PRIMARY KEY,
+    home_club_stats INT NOT NULL,
+    away_club_stats INT NOT NULL,
+    FOREIGN KEY (home_club_stats) REFERENCES team_stats(team_stat_id),
+    FOREIGN KEY (away_club_stats) REFERENCES team_stats(team_stat_id)
+);
+
+CREATE TABLE IF NOT EXISTS top_stats (
+    stat_id INT NOT NULL,
+    player_id INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    value INT NOT NULL,
+    PRIMARY KEY (stat_id),
+    FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS game (
@@ -56,41 +89,19 @@ CREATE TABLE IF NOT EXISTS game (
     kickoff_time TIMESTAMP NOT NULL,
     stadium VARCHAR(50) NOT NULL,
     minute_played INT NOT NULL,
-    home_team_id INT NOT NULL,
-    away_team_id INT NOT NULL,
-    mvp VARCHAR(50) NOT NULL,
-    FOREIGN KEY (away_team_id) REFERENCES club(id),
-    FOREIGN KEY (home_team_id) REFERENCES club(id)
+    home_club_id INT NOT NULL,
+    away_club_id INT NOT NULL,
+    mvp INT NOT NULL,
+    1st_half INT,
+    2nd_half INT,
+    top_stat INT,
+    FOREIGN KEY (1st_half) REFERENCES half(half_id),
+    FOREIGN KEY (2nd_half) REFERENCES half(half_id),
+    FOREIGN KEY (top_stat) REFERENCES top_stats(stat_id),
+    FOREIGN KEY (mvp) REFERENCES player(id),
+    FOREIGN KEY (away_club_id) REFERENCES club(id),
+    FOREIGN KEY (home_club_id) REFERENCES club(id)
 );
-
-
-CREATE TABLE IF NOT EXISTS top_stats (
-    game_id INT NOT NULL,
-    player_id INT NOT NULL,
-    stat VARCHAR(50) NOT NULL,
-    value INT NOT NULL,
-    PRIMARY KEY (game_id, stat),
-    FOREIGN KEY (game_id) REFERENCES game(id) ON DELETE CASCADE,
-    FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
-);
-
-
-CREATE TABLE IF NOT EXISTS half (
-    id INT AUTO_INCREMENT PRIMARY KEY,  
-    game_id INT NOT NULL,
-    team_id INT NOT NULL,
-    minute_played INT NOT NULL,
-    possession INT NOT NULL,
-    shots INT NOT NULL,
-    passes_acc INT NOT NULL,
-    tackles INT NOT NULL,
-    fouls INT NOT NULL,
-    corners INT NOT NULL,
-    FOREIGN KEY (game_id) REFERENCES game(id),
-    FOREIGN KEY (team_id) REFERENCES club(id)
-);
-
-
 
 CREATE TABLE IF NOT EXISTS injury (
     player_id INT NOT NULL,
@@ -101,19 +112,3 @@ CREATE TABLE IF NOT EXISTS injury (
     FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
 );
 
-
-CREATE TABLE IF NOT EXISTS team_stats (
-    game_id INT NOT NULL,
-    half_id INT NOT NULL,
-    club_id INT NOT NULL,
-    possession INT NOT NULL,
-    shots INT NOT NULL,
-    passes_acc INT NOT NULL,
-    tackles INT NOT NULL,
-    fouls INT NOT NULL,
-    corners INT NOT NULL,
-    offsides INT NOT NULL,
-    FOREIGN KEY (game_id) REFERENCES game(id),
-    FOREIGN KEY (half_id) REFERENCES half(id),
-    FOREIGN KEY (club_id) REFERENCES club(id)
-);
