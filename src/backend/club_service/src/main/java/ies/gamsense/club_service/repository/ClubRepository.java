@@ -5,9 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import ies.gamsense.club_service.model.Club;
 
-import java.util.List;
-
 @Repository
 public interface ClubRepository extends JpaRepository<Club, Long> {
-    List<Club> findByName(String name);
+
+    Club findByName(String name);
+    
 }
