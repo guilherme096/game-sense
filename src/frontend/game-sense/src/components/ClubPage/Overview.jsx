@@ -1,15 +1,16 @@
-import React from "react";
 import MatchCard from "./MatchCard";
 import LastMatchesCard from "./LastMatchesCard";
 import InjuryStatusCard from "./InjuryStatusCard";
 
 export default function Overview({ clubData }) {
+  const injuredPlayers = clubData.players.filter(player => player.injured);
   return (
     <>
-      <MatchCard matchData={clubData.nextMatch} />
-      <LastMatchesCard matches={clubData.lastMatches} />
-      <InjuryStatusCard injuries={clubData.injuries} /> 
+      <MatchCard matchData={clubData.nextGame} />
+      <LastMatchesCard matches={clubData.lastGames} />
+      <InjuryStatusCard injuredPlayers={injuredPlayers} />
       <br /><br /> <br /> <br />
     </>
   );
 }
+

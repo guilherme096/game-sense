@@ -4,7 +4,7 @@ import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 
 export default function ClubCard({ clubData }) {
-  const [isFollowed, setIsFollowed] = useState(clubData.isFollowed);
+  const [isFollowed, setIsFollowed] = useState(clubData.isStarred);
 
   const handleFollowClick = () => {
     setIsFollowed((prev) => !prev);
@@ -35,7 +35,7 @@ export default function ClubCard({ clubData }) {
         <div className="flex flex-col text-black ml-4">
           <span className="text-xl font-bold">{clubData.name}</span>
           <span className="text-sm text-gray-700">
-            {clubData.rank}º {clubData.league}{" "}
+            {clubData.league_position}º {clubData.league}{" "}
             {clubData.countryFlag && (
               <img
                 src={clubData.countryFlag}
