@@ -77,8 +77,7 @@ def publish_game_info(game):
 
 
 def main():
-    game_file_path = os.path.join(
-        "games", "match_SCP_vs_SLB_20241201_193951.json")
+    game_file_path = os.path.join("games", "match_SCP_vs_SLB_20241202_213705.json")
 
     game_data = read_game_from_file(game_file_path)
     print(game_data)
@@ -88,6 +87,7 @@ def main():
         "match_id": game_data.get("match_id"),
         "home_team": game_data.get("home_team"),
         "away_team": game_data.get("away_team"),
+        "match_start_time": game_data.get("match_start_time"),
     }
 
     publish_game_info(match_info)

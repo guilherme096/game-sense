@@ -8,12 +8,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ies.gamesense.live_game_service.entities.GameStatistics;
 import ies.gamesense.live_game_service.entities.Live;
+import ies.gamesense.live_game_service.entities.Match;
 import jakarta.annotation.PostConstruct;
 
 @Service
@@ -23,22 +25,24 @@ public class LiveServiceImpl implements LiveService {
     private Resource jsonLiveGames;
 
     private Map<Long, Live> liveGames;
+    private Map<String, Match> matches;
 
     @PostConstruct
     public void init() {
+        this.matches = new HashMap<>();
         this.liveGames = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         try {
             // Parse the JSON file into a List<Live>
             List<Live> games = mapper.readValue(jsonLiveGames.getInputStream(),
                     mapper.getTypeFactory().constructCollectionType(List.class, Live.class));
-    
+
             // Check if the parsed list is null or empty
             if (games == null || games.isEmpty()) {
                 System.err.println("No games found in the JSON file: " + jsonLiveGames.getFilename());
                 return;
             }
-    
+
             // Populate the liveGames map
             games.forEach(game -> {
                 if (game.getId() == null) {
@@ -47,7 +51,7 @@ public class LiveServiceImpl implements LiveService {
                     this.liveGames.put(game.getId(), game);
                 }
             });
-    
+
             // Log success
             System.out.println("Loaded " + liveGames.size() + " live games from " + jsonLiveGames.getFilename());
         } catch (IOException e) {
@@ -57,15 +61,28 @@ public class LiveServiceImpl implements LiveService {
         }
     }
 
-    @Override
-    public List<Live> getLiveGames() {
-        return new ArrayList<>(this.liveGames.values());
+    @KafkaListener(id = "games", topics = "games")
+    public void listen(Match match) {
+        System.out.println("Hello from Kafka!");
+        System.out.println("Received Match: " + match.toString());
+
+        match.getHomeTeam().setStared(false);
+        match.getAwayTeam().setStared(false);
+
+        match.getHomeTeam().setScore(0);
+        match.getAwayTeam().setScore(0);
+
+        this.matches.put(match.getMatchId(), match);
     }
-    
 
     @Override
-    public Live getLiveById(Long id) {
-        Live game = this.liveGames.get(id);
+    public List<Match> getLiveGames() {
+        return new ArrayList<>(this.matches.values());
+    }
+
+    @Override
+    public Match getLiveById(String id) {
+        Match game = this.matches.get(id);
         if (game == null) {
             System.err.println("Live game not found for ID: " + id);
         }
@@ -73,23 +90,25 @@ public class LiveServiceImpl implements LiveService {
     }
 
     @Override
-    public GameStatistics getGameStatistics(Long id) {
-        Live game = getLiveById(id);
+    public GameStatistics getGameStatistics(String id) {
+        Match game = getLiveById(id);
         return (game != null) ? game.getGameStatistics() : null;
     }
 
     @Override
-    public boolean existsNewEvent(Long id, Long lastEventId) {
-        Live game = getLiveById(id);
-        if (game == null) return false;
+    public boolean existsNewEvent(String id, Long lastEventId) {
+        Match game = getLiveById(id);
+        if (game == null)
+            return false;
         List<Map<String, String>> events = game.getEvents();
         return events.stream().anyMatch(event -> Long.parseLong(event.get("id")) > lastEventId);
     }
 
     @Override
-    public List<Map<String, String>> getNewEvents(Long id, Long lastEventId) {
-        Live game = getLiveById(id);
-        if (game == null) return null;
+    public List<Map<String, String>> getNewEvents(String id, Long lastEventId) {
+        Match game = getLiveById(id);
+        if (game == null)
+            return null;
 
         List<Map<String, String>> newEvents = new ArrayList<>();
         for (Map<String, String> event : game.getEvents()) {
@@ -102,19 +121,19 @@ public class LiveServiceImpl implements LiveService {
     }
 
     @Override
-    public void createLive(Live live) {
-        this.liveGames.put(live.getId(), live);
+    public void createLive(Match live) {
+        this.matches.put(live.getMatchId(), live);
     }
 
     @Override
-    public String getCurrentMVP(Long id) {
-        Live game = getLiveById(id);
-        return (game != null) ? game.getCurrentMVP() : null;
+    public String getCurrentMVP(String id) {
+        Match game = getLiveById(id);
+        return (game != null) ? game.getCurrentMvp() : null;
     }
 
     @Override
-    public List<String> getTopStats(Long id) {
-        Live game = getLiveById(id);
+    public List<String> getTopStats(String id) {
+        Match game = getLiveById(id);
         return (game != null) ? game.getTopStats() : null;
     }
 }

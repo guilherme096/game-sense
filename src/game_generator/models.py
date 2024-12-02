@@ -24,9 +24,7 @@ class Player:
         self.quality = quality
 
     def __str__(self):
-        return (
-            f"Player: {self.name}\n Position: {self.positions}\n Quality: {self.quality}"
-        )
+        return f"Player: {self.name}\n Position: {self.positions}\n Quality: {self.quality}"
 
 
 class Stats:
@@ -66,6 +64,7 @@ class Team:
         squad_quality: float,
         attack_strength: int,
         defense_strength: int,
+        image: str,
     ):
         self.id = id
         self.name = name
@@ -77,6 +76,7 @@ class Team:
         self.squad_quality = squad_quality
         self.attack_strength = attack_strength
         self.defense_strength = defense_strength
+        self.image = image
 
     def set_stats(self, stats: list[Stats]):
         self.stats = stats

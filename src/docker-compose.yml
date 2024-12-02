@@ -116,6 +116,7 @@ services:
     image: game_generator-image
     depends_on:
       - kafka
+      - live-game-service
     networks:
       - app-network
 

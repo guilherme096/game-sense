@@ -4,35 +4,37 @@ function GameCard({ game }) {
     return (
         <div className="flex flex-col w-full p-5 py-6 bg-[#333D4D] rounded-lg drop-shadow-lg justify-center items-center">
             <div className="w-full text-center text-xs text-neutral-300">
-                {game.schedule}
+                {game.match_start_time}
             </div>
             <div className="flex flex-row w-full text-neutral-300 items-center justify-between px-10">
                 <div className="w-20 h-fit  flex flex-col items-center justify-center overflow-show">
                     <div className="w-20 h-20 rounded-lg flex items-center justify-center overflow-hidden">
-                        {game.homeTeam.image ? (
+                        {game.home_team.image ? (
                             <img
                                 className="w-full h-full object-contain"
-                                src={game.homeTeam.image}
-                                alt={game.homeTeam.name}
+                                src={game.home_team.image}
+                                alt={game.home_team.name}
                             />
                         ) : (
-                            <span className="text-sm text-gray-500">{homeTeam.name}</span>
+                            <span className="text-sm text-gray-500">
+                                {game.home_team.name}
+                            </span>
                         )}
                     </div>
                     <div className="text-md font-bold mt-2 text-white text-nowrap">
-                        {game.homeTeam.name}
+                        {game.home_team.name}
                     </div>
                 </div>
                 <div className="flex flex-col mt-4 items-center">
                     <div className="row flex">
                         <div className="text-white font-bold text-2xl pr-2">
-                            {game.homeTeam.score}
+                            {game.home_team.score}
                         </div>
 
                         <div className="text-white font-bold text-2xl">:</div>
 
                         <div className="text-white font-bold text-2xl pl-3">
-                            {game.awayTeam.score}
+                            {game.away_team.score}
                         </div>
                     </div>
                     <div className="text-green-500 font-bold text-md mt-2">
@@ -41,18 +43,18 @@ function GameCard({ game }) {
                 </div>
                 <div className="w-20 h-fit  flex flex-col items-center justify-center overflow-show">
                     <div className="w-20 h-20 rounded-lg flex items-center justify-center overflow-hidden">
-                        {game.awayTeam.image ? (
+                        {game.away_team.image ? (
                             <img
                                 className="w-full h-full object-contain"
-                                src={game.awayTeam.image}
-                                alt={game.awayTeam.name}
+                                src={game.away_team.image}
+                                alt={game.away_team.name}
                             />
                         ) : (
-                            <span className="text-sm text-gray-500">{awayTeam.name}</span>
+                            <span className="text-sm text-gray-500">{away_team.name}</span>
                         )}
                     </div>
                     <div className="text-md font-bold mt-2 text-white text-nowrap">
-                        {game.awayTeam.name}
+                        {game.away_team.name}
                     </div>
                 </div>
             </div>
