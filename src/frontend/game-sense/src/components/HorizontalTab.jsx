@@ -1,5 +1,6 @@
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/react";
+import { TabGroup, TabList, Tab} from "@headlessui/react";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 export default function HorizontalTab({ categories, color_back = "bg-gray-700" }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -10,7 +11,7 @@ export default function HorizontalTab({ categories, color_back = "bg-gray-700" }
         <TabList
           className={`mx-4 my-4 ${color_back} rounded-lg text-white font-semibold flex flex-row overflow-x-auto no-scrollbar`}
         >
-          {categories.map(({ name }, index) => (
+          {categories.map(({ name }) => (
             <Tab
               key={name}
               className={({ selected }) =>
@@ -41,3 +42,13 @@ export default function HorizontalTab({ categories, color_back = "bg-gray-700" }
     </div>
   );
 }
+
+HorizontalTab.propTypes = {
+  categories: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        content: PropTypes.node.isRequired,
+      })
+  ).isRequired,
+  color_back: PropTypes.string,
+};

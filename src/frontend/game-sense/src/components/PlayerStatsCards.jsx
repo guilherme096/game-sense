@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const StatCard = ({ stats }) => {
     const StatItem = ({ label, value }) => {
@@ -10,8 +10,13 @@ const StatCard = ({ stats }) => {
         );
     };
 
+    StatItem.propTypes = {
+        label: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired,
+    };
+
     return (
-        <div className="bg-white shadow-lg rounded-lg p-6 mx-auto ">
+        <div className="bg-white shadow-lg rounded-lg p-6 mx-auto">
             <div className="grid grid-cols-3 gap-8">
                 {stats.map((stat, index) => (
                     <div key={index} className="flex flex-col items-center">
@@ -21,6 +26,15 @@ const StatCard = ({ stats }) => {
             </div>
         </div>
     );
+};
+
+StatCard.propTypes = {
+    stats: PropTypes.arrayOf(
+        PropTypes.shape({
+            label: PropTypes.string.isRequired,
+            value: PropTypes.string.isRequired,
+        })
+    ).isRequired,
 };
 
 export default StatCard;

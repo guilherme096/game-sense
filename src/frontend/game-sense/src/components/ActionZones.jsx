@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const ActionZones = () => {
   // Constants for teams and their respective maps

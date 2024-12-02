@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const MostSomethingCard = ({ categories }) => {
   return (
@@ -38,6 +38,12 @@ const MostSomethingCard = ({ categories }) => {
       </div>
     </div>
   );
-};
+}
+
+MostSomethingCard.propTypes = {
+    categories: PropTypes.array.isRequired,
+}
+
+;
 
 export default MostSomethingCard;

@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export default function InjuryStatusCard({ injuredPlayers }) {
   if (!injuredPlayers.length) {
     return <div>No players are currently injured.</div>;
@@ -55,3 +57,15 @@ export default function InjuryStatusCard({ injuredPlayers }) {
     </div>
   );
 }
+
+InjuryStatusCard.propTypes = {
+  injuredPlayers: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      injury: PropTypes.shape({
+        gamesOut: PropTypes.number.isRequired,
+        gamesIn: PropTypes.number.isRequired,
+      }).isRequired,
+    })
+  ).isRequired,
+};
