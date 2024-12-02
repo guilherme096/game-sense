@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export default function MatchCard({ matchData }) {
   // Define the onButtonClick function
   const onButtonClick = () => {
@@ -51,4 +53,15 @@ export default function MatchCard({ matchData }) {
       </button>
     </div>
   );
+}
+
+MatchCard.propTypes = {
+    matchData: PropTypes.shape({
+      league: PropTypes.string.isRequired,
+      homeTeam: PropTypes.string.isRequired,
+      homeTeamLogo: PropTypes.string.isRequired,
+      awayTeam: PropTypes.string.isRequired,
+      awayTeamLogo: PropTypes.string.isRequired,
+      date: PropTypes.string.isRequired,
+    }).isRequired,
 }

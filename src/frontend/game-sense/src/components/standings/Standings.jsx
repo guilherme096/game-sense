@@ -2,6 +2,7 @@ import TeamTable from './TeamTable';
 import GeneralCard from '../cards/GeneralCard';
 import { useQuery } from 'react-query';
 import axios from 'axios';
+import PropTypes from "prop-types";
 
 export default function Standings({ showHeader = true }) {
     const fetchGame = async () => {
@@ -67,3 +68,7 @@ export default function Standings({ showHeader = true }) {
         </div>
     );
 }
+
+Standings.propTypes = {
+    showHeader: PropTypes.bool
+};

@@ -1,4 +1,5 @@
 import TeamInfo from './TeamInfo';
+import PropTypes from "prop-types";
 
 export default function TeamTable({ standings }) {
   console.log(standings);
@@ -40,4 +41,9 @@ export default function TeamTable({ standings }) {
         </table>
       </div>
   );
+
 }
+
+TeamTable.propTypes = {
+    standings: PropTypes.array.isRequired,
+};

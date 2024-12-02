@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 const fetchGameStatistics = async (id) => {
   const response = await axios.get(`/api/v1/live/${id}/statistics`, {
@@ -110,6 +111,12 @@ const StatisticsTab = ({ id }) => {
       </div>
     </div>
   );
-};
+}
+
+StatisticsTab.propTypes = {
+    id: PropTypes.string.isRequired,
+}
+
+;
 
 export default StatisticsTab;

@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function GeneralCard({ title, button, children }) {
     return (
@@ -17,4 +17,14 @@ export default function GeneralCard({ title, button, children }) {
             {children}
         </div>
     );
+}
+
+GeneralCard.propTypes = {
+    title: PropTypes.string.isRequired,
+    button: PropTypes.element,
+    children: PropTypes.element.isRequired,
+};
+
+GeneralCard.defaultProps = {
+    button: null,
 }

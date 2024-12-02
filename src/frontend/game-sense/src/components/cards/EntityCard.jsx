@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 
 export default function EntityCard({ image, name1, name2 }) {
     return (
@@ -39,3 +40,9 @@ export default function EntityCard({ image, name1, name2 }) {
         </>
     );
 }
+
+EntityCard.propTypes = {
+    image: PropTypes.string.isRequired,
+    name1: PropTypes.string.isRequired,
+    name2: PropTypes.string.isRequired,
+};

@@ -1,4 +1,5 @@
-import React from "react";
+import PropTypes from "prop-types";
+
 
 export default function LastMatchesCard({ matches = [] }) {
   if (!matches.length) {
@@ -50,3 +51,16 @@ export default function LastMatchesCard({ matches = [] }) {
     </div>
   );
 }
+
+LastMatchesCard.propTypes = {
+  matches: PropTypes.arrayOf(
+    PropTypes.shape({
+      awayTeam: PropTypes.string.isRequired,
+      awayTeamLogo: PropTypes.string.isRequired,
+      homeTeam: PropTypes.string.isRequired,
+      homeTeamLogo: PropTypes.string.isRequired,
+      score: PropTypes.string.isRequired,
+      result: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
