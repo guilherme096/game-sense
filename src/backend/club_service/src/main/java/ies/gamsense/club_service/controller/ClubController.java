@@ -22,7 +22,7 @@ public class ClubController {
     @Autowired
     private ClubService clubService;
 
-    @GetMapping
+    @GetMapping("/")
     @Operation(summary = "Get all Clubs")
     public ResponseEntity<List<Club>> getAllClubs() {
         List<Club> clubs = clubService.getAllClubs();

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function InjuryStatusCard({ injuries }) {
+export default function InjuryStatusCard() {
   return (
     <div className="bg-white shadow-lg rounded-lg m-5">
       {/* Card Header */}

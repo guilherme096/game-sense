@@ -1,4 +1,3 @@
-import React from 'react';
 import TeamInfo from './TeamInfo';
 
 export default function TeamTable({ standings }) {

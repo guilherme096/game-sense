@@ -1,4 +1,3 @@
-import React from "react";
 import PageTemplate from "./PageTemplate";
 import HorizontalTab from "../components/HorizontalTab";
 import Overview from "../components/ClubPage/Overview";
@@ -6,20 +5,24 @@ import ClubCard from "../components/cards/ClubCard";
 import axios from "axios";
 import { useQuery } from "react-query";
 
-const fetchGame = async () => {
-  const response = await axios.get("/api/v1/club/1", {
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      Accept: "application/json",
-    },
-  });
-  return response.data;
-};
 
 function Club() {
-  const { data: club, isLoading, error } = useQuery("club", fetchGame);
 
+    const fetchGame = async () => {
+        console.log("fetching club");
+        const response = await axios.get("/api/v1/club/1", {
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Accept": "application/json",
+            },
+        });
+        return response.data;
+    }
+
+  const { data: club, isLoading, error } = useQuery("club", fetchGame);
+    console.log("club");
+    console.log(club);
   if (isLoading) {
     return <div>Loading...</div>;
   }
