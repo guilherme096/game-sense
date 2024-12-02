@@ -5,9 +5,7 @@ import ClubCard from "../components/cards/ClubCard";
 import axios from "axios";
 import { useQuery } from "react-query";
 
-
 function Club() {
-
     const fetchGame = async () => {
         console.log("fetching club");
         const response = await axios.get("/api/v1/club/1", {

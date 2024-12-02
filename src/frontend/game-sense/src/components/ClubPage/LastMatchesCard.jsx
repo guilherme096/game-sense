@@ -37,13 +37,13 @@ export default function LastMatchesCard({ matches = [] }) {
             {/* Opponent Logo */}
             <div className="w-[3rem] h-[3rem] flex items-center justify-center rounded-lg my-2 p-1">
               <img
-                src={match.logo}
-                alt={match.opponent}
+                src={match.awayTeamLogo}
+                alt={match.awayTeam}
                 className="max-w-full max-h-full object-contain"
               />
             </div>
             {/* Opponent Name */}
-            <div className="text-xs text-gray-700 font-medium">{match.opponent}</div>
+            <div className="text-xs text-gray-700 font-medium">{match.awayTeam}</div>
           </div>
         ))}
       </div>
