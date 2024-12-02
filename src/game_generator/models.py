@@ -25,8 +25,7 @@ class Player:
 
     def __str__(self):
         return (
-            f"Player: {self.name}\n Position: {
-                self.positions}\n Quality: {self.quality}"
+            f"Player: {self.name}\n Position: {self.positions}\n Quality: {self.quality}"
         )
 
 

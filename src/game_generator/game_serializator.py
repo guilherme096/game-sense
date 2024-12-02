@@ -43,12 +43,24 @@ def serialize_game_for_kafka(game: Game, events: List[Event], start_time: dateti
 
     sorted_events = sorted(events, key=lambda x: x.minute)
 
+    event_time = start_time + \
+        timedelta(minutes=0)
+    start_event = {
+        "game_id": match_id,
+        "event_type": "START",
+        "minute": 0,
+        "publish_timestamp": event_time.isoformat()
+    }
+
+    match_info["events"].append(start_event)
+
     for event in sorted_events:
         event_time = start_time + \
             timedelta(minutes=(event.minute - 1) * GAME_REAL_DURATION / 90)
 
         if isinstance(event, Goal):
             event_data = {
+                "game_id": match_id,
                 "event_type": "GOAL",
                 "minute": event.minute,
                 "team": event.team.name,
@@ -58,6 +70,7 @@ def serialize_game_for_kafka(game: Game, events: List[Event], start_time: dateti
             }
         elif isinstance(event, YellowCard):
             event_data = {
+                "game_id": match_id,
                 "event_type": "YELLOW_CARD",
                 "minute": event.minute,
                 "team": event.team.name,
@@ -66,6 +79,7 @@ def serialize_game_for_kafka(game: Game, events: List[Event], start_time: dateti
             }
         elif isinstance(event, RedCard):
             event_data = {
+                "game_id": match_id,
                 "event_type": "RED_CARD",
                 "minute": event.minute,
                 "team": event.team.name,
@@ -74,6 +88,7 @@ def serialize_game_for_kafka(game: Game, events: List[Event], start_time: dateti
             }
         elif isinstance(event, Substitution):
             event_data = {
+                "game_id": match_id,
                 "event_type": "SUBSTITUTION",
                 "minute": event.minute,
                 "team": event.team.name,
@@ -91,8 +106,7 @@ def serialize_game_for_kafka(game: Game, events: List[Event], start_time: dateti
 
 def save_game_to_file(game: Game, events: List[Event], filename: str = None, start_time: datetime = None):
     if filename is None:
-        filename = f"match_{game.home_team.name}_vs_{game.away_team.name}_{
-            datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        filename = f"match_{game.home_team.name}_vs_{game.away_team.name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
 
     filename = GAMES_DIR + filename
 
