@@ -3,6 +3,7 @@ package ies.gamsense.club_service.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +24,8 @@ import java.util.HashMap;
 @Service
 public class ClubServiceImpl implements ClubService {
 
-    private final ClubRepository clubRepository;
+    @Autowired
+    private ClubRepository clubRepository;
 
     @Value("classpath:mockdata/clubs.json")
     private Resource jsonClubs; // Path to the mock clubs JSON file
