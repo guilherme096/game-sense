@@ -46,7 +46,7 @@ public class Club {
     private List<Game> lastGames; 
 
     @Transient
-    private List<Players> players;
+    private List<Player> players;
 
     public Club() {}
 
@@ -100,7 +100,7 @@ public class Club {
         return lastGames;
     }
 
-    public List<Players> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
@@ -144,7 +144,7 @@ public class Club {
         this.lastGames = lastGames;
     }
 
-    public void setPlayers(List<Players> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 
@@ -158,6 +158,10 @@ public class Club {
                 ", league='" + league + '\'' +
                 ", leaguePosition=" + leaguePosition +
                 ", starred=" + starred +
+                ", nextGame=" + (nextGame != null ? nextGame.toString() : "null") +
+                ", lastGames=" + lastGames +
+                ", players=" + players +
                 '}';
     }
+    
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Players {
+public class Player {
     private Long id;
     private String name;
     private Boolean injured;
@@ -12,9 +12,9 @@ public class Players {
     @JsonProperty("injury_history")
     private List<Injury> injuries;
 
-    public Players() {}
+    public Player() {}
 
-    public Players(Long id, String name, Boolean injured, List<Injury> injuries) {
+    public Player(Long id, String name, Boolean injured, List<Injury> injuries) {
         this.id = id;
         this.name = name;
         this.injured = injured;
@@ -55,11 +55,12 @@ public class Players {
 
     @Override
     public String toString() {
-        return "Players{" +
+        return "Player{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", injured=" + injured +
-                ", injuries=" + injuries +
+                ", injuries=" + (injuries != null ? injuries.toString() : "[]") +
                 '}';
     }
+    
 }

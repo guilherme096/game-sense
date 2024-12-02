@@ -46,4 +46,14 @@ public class Injury {
     public void setGamesOut(Integer gamesOut) {
         this.gamesOut = gamesOut;
     }
+
+    @Override
+    public String toString() {
+        return "Injury{" +
+                "date='" + date + '\'' +
+                ", description='" + description + '\'' +
+                ", severity='" + severity + '\'' +
+                ", gamesOut=" + gamesOut +
+                '}';
+    }
 }

@@ -86,5 +86,21 @@ public class Game {
     public void setResult(String result) {
         this.result = result;
     }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", homeTeam='" + homeTeam + '\'' +
+                ", homeTeamLogo='" + homeTeamLogo + '\'' +
+                ", awayTeam='" + awayTeam + '\'' +
+                ", awayTeamLogo='" + awayTeamLogo + '\'' +
+                ", date='" + date + '\'' +
+                ", league='" + league + '\'' +
+                ", score='" + score + '\'' +
+                ", result='" + result + '\'' +
+                '}';
+    }
+
 }
 
