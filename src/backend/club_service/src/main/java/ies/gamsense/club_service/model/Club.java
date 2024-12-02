@@ -2,10 +2,12 @@ package ies.gamsense.club_service.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,29 +16,37 @@ import java.util.List;
 
 
 @Entity
+@Table(name = "club")
 public class Club {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name is mandatory")
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @NotNull
+    @Column(name = "logo", nullable = false)
     private String logo; // URL for the club's logo
 
-    @NotBlank(message = "Country is mandatory")
+    @NotNull
+    @Column(name = "country", nullable = false)
     private String country;
 
+    @NotNull
+    @Column(name = "country_flag", nullable = false)
     private String countryFlag; // URL for country's flag
 
     @NotBlank(message = "League is mandatory")
     private String league;
 
     @JsonProperty("league_position")
-    @NotNull(message = "League Position is mandatory")
+    @NotBlank(message = "League Position is mandatory")
     private Integer leaguePosition;
 
-    @JsonProperty("isStarred")
+    @NotNull
+    @Column(name = "starred", nullable = false)
     private boolean starred;
 
     @Transient
@@ -50,11 +60,11 @@ public class Club {
 
     public Club() {}
 
-    public Club(String name, String country, String logo, String coutryFlag, String league, Integer leaguePosition, boolean starred) {
+    public Club(String name, String country, String logo, String countryFlag, String league, Integer leaguePosition, boolean starred) {
         this.name = name;
         this.country = country;
         this.logo = logo;
-        this.countryFlag = coutryFlag;
+        this.countryFlag = countryFlag;
         this.league = league;
         this.leaguePosition = leaguePosition;
         this.starred = starred;
