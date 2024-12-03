@@ -1,8 +1,7 @@
 package ies.gamesense.league_service.services;
 
-import ies.gamesense.league_service.entities.Club;
 import ies.gamesense.league_service.entities.League;
-import ies.gamesense.league_service.entities.LeagueStanding;
+import ies.gamesense.league_service.entities.League_Club;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,15 +9,14 @@ import java.util.List;
 @Service
 public interface LeagueService {
 
-    League getLeagueById(Long id);
-    void createLeague(League league);
-    void updateLeague(League league);
-    void deleteLeague(Long id);
-    boolean existsLeague(Long id);
-    List<Club> getAllClubs(Long id);
-    void addClub( Long id, Club club, int points, int matchesPlayed, int goalsScored, int goalsConceded, int wins, int draws, int losses);
-    void removeClub(Long id, Long clubId);
-    List<LeagueStanding> getLeagueStandingsWithDetails(Long leagueId);
-    void setFavoriteTeam(Long userId, Long teamId);
-    Club getFavoriteTeam(Long userId);
+    League getLeagueById(int id);
+
+    League createLeague(League league);
+
+    League updateLeague(League league);
+
+    List<League_Club> getLeagueStandings(int leagueId);
+
+    League_Club createLeagueClub(int leagueId, League_Club leagueClub);
+
 }
