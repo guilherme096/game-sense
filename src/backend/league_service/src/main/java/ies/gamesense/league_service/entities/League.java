@@ -1,28 +1,37 @@
 package ies.gamesense.league_service.entities;
 
-import java.util.List;
+import jakarta.persistence.*;
+import java.util.Set;
 
+@Entity
+@Table(name = "league")
 public class League {
-    private Long id;
-    private String name;
-    private String logo;
-    private List<LeagueStanding> standings;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    // Getters, Setters, Constructors, and toString methods
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "logo", nullable = false)
+    private String logo;
+
+    @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<League_Club> leagueClubs;
+
     public League() {
     }
 
-    public League(String name, String logo, List<LeagueStanding> standings) {
+    public League(String name, String logo) {
         this.name = name;
         this.logo = logo;
-        this.standings = standings;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -42,16 +51,16 @@ public class League {
         this.logo = logo;
     }
 
-    public List<LeagueStanding> getStandings() {
-        return standings;
+    public Set<League_Club> getLeagueClubs() {
+        return leagueClubs;
     }
 
-    public void setStandings(List<LeagueStanding> standings) {
-        this.standings = standings;
+    public void setLeagueClubs(Set<League_Club> leagueClubs) {
+        this.leagueClubs = leagueClubs;
     }
 
     @Override
     public String toString() {
-        return "League [id=" + id + ", name=" + name + ", logo=" + logo + ", standings=" + standings + "]";
+        return "League [id=" + id + ", name=" + name + ", logo=" + logo + "]";
     }
 }

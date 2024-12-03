@@ -1,5 +1,4 @@
-import React from "react";
-
+import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo, faFlagCheckered, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
@@ -39,6 +38,14 @@ const MatchInformationCard = ({ kickoff, referee, stadium }) => {
             </div>
         </div>
     );
-};
+}
+
+MatchInformationCard.propTypes = {
+    kickoff: PropTypes.string.isRequired,
+    referee: PropTypes.string.isRequired,
+    stadium: PropTypes.string.isRequired,
+}
+
+;
 
 export default MatchInformationCard;

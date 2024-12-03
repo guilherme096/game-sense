@@ -1,176 +1,70 @@
 package ies.gamesense.league_service.services;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import ies.gamesense.league_service.entities.Club;
+
 import ies.gamesense.league_service.entities.League;
-import ies.gamesense.league_service.entities.LeagueStanding;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
+import ies.gamesense.league_service.entities.League_Club;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import ies.gamesense.league_service.repositories.LeagueClubRepository;
+import ies.gamesense.league_service.repositories.LeagueRepository;
+
+import java.util.*;
 
 @Service
 public class LeagueServiceImpl implements LeagueService {
 
-    @Value("classpath:static/mock_leagues.json")
-    private Resource jsonLeagues;
+    @Autowired
+    private LeagueRepository leagueRepository;
 
-    private final Map<Long, League> leagues = new HashMap<>();
-    private Map<Long, Club> userFavoriteTeams = new HashMap<>(); // Mock storage for user favorite teams
-
-    @PostConstruct
-    public void init() {
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            // Load JSON data and check if file exists
-            if (!jsonLeagues.exists()) {
-                throw new IOException("JSON file not found: " + jsonLeagues.getFilename());
-            }
-
-            JsonNode rootNode = mapper.readTree(jsonLeagues.getInputStream());
-
-            League league = new League();
-            league.setId(rootNode.get("id").asLong());
-            league.setName(rootNode.get("name").asText());
-            league.setLogo(rootNode.get("logo").asText());
-
-            List<LeagueStanding> standings = new ArrayList<>();
-
-            for (JsonNode standingNode : rootNode.get("standings")) {
-                Club club = new Club();
-                JsonNode clubNode = standingNode.get("club");
-                club.setId(clubNode.get("id").asLong());
-                club.setName(clubNode.get("name").asText());
-                club.setCountry(clubNode.get("country").asText());
-                club.setStarred(clubNode.get("starred").asBoolean());
-
-                LeagueStanding standing = new LeagueStanding();
-                standing.setClub(club);
-                standing.setMatchesPlayed(standingNode.get("matchesPlayed").asInt());
-                standing.setGoalsScored(standingNode.get("goalsScored").asInt());
-                standing.setGoalsConceded(standingNode.get("goalsConceded").asInt());
-                standing.setWins(standingNode.get("wins").asInt());
-                standing.setDraws(standingNode.get("draws").asInt());
-                standing.setLosses(standingNode.get("losses").asInt());
-
-                standings.add(standing);
-            }
-
-            league.setStandings(standings);
-            leagues.put(league.getId(), league);
-
-        } catch (IOException e) {
-            System.err.println("Failed to load or parse mock_leagues.json: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("Unexpected error during initialization: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
+    @Autowired
+    private LeagueClubRepository leagueClubRepository;
 
 
+    private final Map<Integer, League> leagues = new HashMap<>();
+    private final Map<Integer, List<League_Club>> leagueClubs = new HashMap<>();
 
     @Override
-    public League getLeagueById(Long id) {
-        return leagues.get(id);
+    public League getLeagueById(int id) {
+        return leagueRepository.findById(id).orElse(null);
     }
 
     @Override
-    public void createLeague(League league) {
+    public League createLeague(League league) {
+        league.setId(leagues.size() + 1); 
         leagues.put(league.getId(), league);
+        return leagueRepository.save(league);
     }
 
     @Override
-    public void updateLeague(League league) {
+    public League updateLeague(League league) {
         if (leagues.containsKey(league.getId())) {
-            leagues.put(league.getId(), league);
+            leagues.put(league.getId(), league);    
+            return leagueRepository.save(league);
         }
+        throw new IllegalArgumentException("League not found: " + league.getId());
     }
 
     @Override
-    public void deleteLeague(Long id) {
-        leagues.remove(id);
+    public List<League_Club> getLeagueStandings(int leagueId) {
+        return leagueClubRepository.findByLeagueId(leagueId);
     }
 
+    
     @Override
-    public boolean existsLeague(Long id) {
-        return leagues.containsKey(id);
+    public League_Club createLeagueClub(int leagueId, League_Club leagueClub) {
+        // Fetch the league entity from the database
+        League league = leagueRepository.findById(leagueId)
+                .orElseThrow(() -> new IllegalArgumentException("League not found: " + leagueId));
+        
+        // Set the league for the leagueClub entity
+        leagueClub.setLeague(league);
+        
+        // Save the League_Club entity
+        return leagueClubRepository.save(leagueClub);
     }
 
-    @Override
-    public List<Club> getAllClubs(Long leagueId) {
-        League league = leagues.get(leagueId);
-        if (league != null) {
-            List<Club> clubs = new ArrayList<>();
-            for (LeagueStanding standing : league.getStandings()) {
-                clubs.add(standing.getClub());
-            }
-            return clubs;
-        }
-        return null;
-    }
 
-    @Override
-    public void addClub(Long leagueId, Club club, int points, int matchesPlayed, int goalsScored, int goalsConceded, int wins, int draws, int losses) {
-        League league = leagues.get(leagueId);
-        if (league != null) {
-            LeagueStanding standing = new LeagueStanding();
-            standing.setClub(club);
-            standing.setMatchesPlayed(matchesPlayed);
-            standing.setGoalsScored(goalsScored);
-            standing.setGoalsConceded(goalsConceded);
-            standing.setWins(wins);
-            standing.setDraws(draws);
-            standing.setLosses(losses);
-            league.getStandings().add(standing);
-        }
-    }
 
-    @Override
-    public void removeClub(Long leagueId, Long clubId) {
-        League league = leagues.get(leagueId);
-        if (league != null) {
-            league.getStandings().removeIf(standing -> standing.getClub().getId().equals(clubId));
-        }
-    }
 
-    @Override
-    public List<LeagueStanding> getLeagueStandingsWithDetails(Long leagueId) {
-        League league = leagues.get(leagueId);
-        if (league != null) {
-            return league.getStandings();
-        }
-        return null;
-    }
-
-    @Override
-    public void setFavoriteTeam(Long userId, Long teamId) {
-        Club favoriteTeam = null;
-        for (League league : leagues.values()) {
-            for (LeagueStanding standing : league.getStandings()) {
-                if (standing.getClub().getId().equals(teamId)) {
-                    favoriteTeam = standing.getClub();
-                    break;
-                }
-            }
-        }
-        if (favoriteTeam != null) {
-            userFavoriteTeams.put(userId, favoriteTeam);
-        }
-        else {
-            System.out.println("Club not found: " + teamId);
-        }
-    }
-
-    @Override
-    public Club getFavoriteTeam(Long userId) {
-        return userFavoriteTeams.get(userId);
-    }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ies.gamesense.live_game_service.entities.GameStatistics;
-import ies.gamesense.live_game_service.entities.Live;
+import ies.gamesense.live_game_service.entities.Match;
 import ies.gamesense.live_game_service.services.LiveService;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -26,15 +26,15 @@ public class LiveController {
 
     @Operation(summary = "Get all live games")
     @GetMapping("/")
-    public List<Live> getLiveGames() {
+    public List<Match> getLiveGames() {
         return liveService.getLiveGames();
 
     }
 
     @Operation(summary = "Get live game by id")
     @GetMapping("/{id}")
-    public ResponseEntity<Live> getLiveGame(@PathVariable("id") long id) {
-        Live game = liveService.getLiveById(id);
+    public ResponseEntity<Match> getLiveGame(@PathVariable("id") String id) {
+        Match game = liveService.getLiveById(id);
         if (game == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -43,7 +43,7 @@ public class LiveController {
 
     @Operation(summary = "Get game statistics by game id")
     @GetMapping("/{id}/statistics")
-    public ResponseEntity<GameStatistics> getGameStatistics(@PathVariable("id") long id) {
+    public ResponseEntity<GameStatistics> getGameStatistics(@PathVariable("id") String id) {
         GameStatistics stats = liveService.getGameStatistics(id);
         if (stats == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -54,18 +54,18 @@ public class LiveController {
     @Operation(summary = "Get new events for live game")
     @GetMapping("/{id}/ping")
     public ResponseEntity<List<Map<String, String>>> getNewEvents(
-            @PathVariable("id") long id,
+            @PathVariable("id") String id,
             @RequestParam("lastEventId") long lastEventId) {
         List<Map<String, String>> events = liveService.getNewEvents(id, lastEventId);
         if (events == null || events.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
         }
         return ResponseEntity.ok(events);
     }
 
     @Operation(summary = "Get current MVP of the game")
     @GetMapping("/{id}/currentMVP")
-    public ResponseEntity<String> getCurrentMVP(@PathVariable("id") long id) {
+    public ResponseEntity<String> getCurrentMVP(@PathVariable("id") String id) {
         String mvp = liveService.getCurrentMVP(id);
         if (mvp == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No MVP found.");
@@ -75,7 +75,7 @@ public class LiveController {
 
     @Operation(summary = "Get top stats of the game")
     @GetMapping("/{id}/topStats")
-    public ResponseEntity<List<String>> getTopStats(@PathVariable("id") long id) {
+    public ResponseEntity<List<String>> getTopStats(@PathVariable("id") String id) {
         List<String> topStats = liveService.getTopStats(id);
         if (topStats == null || topStats.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
