@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 export default function Standings({ showHeader = true }) {
     const fetchGame = async () => {
-        const response = await axios.get("/api/v1/league/1", {
+        const response = await axios.get(`/api/v1/league/1/clubs`, {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
@@ -15,6 +15,7 @@ export default function Standings({ showHeader = true }) {
         });
         return response.data;
     };
+    
 
     const { data: league, isLoading, error } = useQuery('league', fetchGame);
 

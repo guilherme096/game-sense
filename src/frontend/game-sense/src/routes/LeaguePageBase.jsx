@@ -8,7 +8,7 @@ import axios from 'axios';
 function LeaguePageBase() {
 
     const fetchGame = async () => {
-        const response = await axios.get("/api/v1/league/1", {
+        const response = await axios.get("/api/v1/league/2", {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
@@ -24,11 +24,11 @@ function LeaguePageBase() {
     }
     if (error) {
         return <div>An error has occurred: {error.message}</div>
-    }
-
-    const name = league.name;
-    const name1 = name.split(' ')[0];
-    const name2 = name.split(' ')[1];
+    }    
+    const name = league.name.split(' ');
+    console.log(name);
+    const name1 = name[0];
+    const name2 = name[1];
     const image = league.logo;
 
     return (
