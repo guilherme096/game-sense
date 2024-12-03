@@ -2,10 +2,10 @@ import EntityCard from "../components/cards/EntityCard.jsx"
 import PageTemplate from "./PageTemplate.jsx";
 import Standings from "../components/standings/Standings.jsx"
 import HorizontalTab from "../components/HorizontalTab.jsx";
-import {useQuery, useQueryClient} from 'react-query';
+import {useQuery} from 'react-query';
 import axios from 'axios';
 
-function LeaguePageBase({ children }) {
+function LeaguePageBase() {
 
     const fetchGame = async () => {
         const response = await axios.get("/api/v1/league/2", {

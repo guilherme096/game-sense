@@ -1,6 +1,5 @@
 import textLogo from '/text-logo.png';
 import iconLogo from '/icon-logo.png';
-import { Link } from 'react-router-dom';
 
 export default function Register() {
     return (
