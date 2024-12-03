@@ -6,11 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ies.gamesense.live_game_service.entities.GameStatistics;
@@ -20,6 +22,7 @@ import jakarta.annotation.PostConstruct;
 
 @Service
 public class LiveServiceImpl implements LiveService {
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("classpath:static/mock_games.json")
     private Resource jsonLiveGames;
@@ -75,6 +78,33 @@ public class LiveServiceImpl implements LiveService {
         this.matches.put(match.getMatchId(), match);
     }
 
+    @KafkaListener(id = "events", topics = "events", containerFactory = "customKafkaListenerContainerFactory")
+    public void listen(ConsumerRecord<String, String> record) {
+        System.out.println("Hello from Kafka!");
+        Map<String, String> event = null;
+        try {
+            // Parse the JSON payload into a Map<String, String>
+            event = objectMapper.readValue(
+                    record.value(),
+                    new TypeReference<Map<String, String>>() {
+                    });
+            System.out.println("Received Event: " + event.toString());
+        } catch (Exception e) {
+            throw new RuntimeException("Error parsing event JSON: " + record.value(), e);
+        }
+
+        String matchId = event.get("game_id");
+
+        Match match = this.matches.get(matchId);
+
+        if (match == null) {
+            System.err.println("Match not found for ID: " + matchId);
+            return;
+        }
+
+        match.getEvents().add(event);
+    }
+
     @Override
     public List<Match> getLiveGames() {
         return new ArrayList<>(this.matches.values());
@@ -101,7 +131,9 @@ public class LiveServiceImpl implements LiveService {
         if (game == null)
             return false;
         List<Map<String, String>> events = game.getEvents();
-        return events.stream().anyMatch(event -> Long.parseLong(event.get("id")) > lastEventId);
+        System.out.println("Checking for new events in game: " + id);
+        System.out.println(events);
+        return events.stream().anyMatch(event -> event.get("id").compareTo(lastEventId.toString()) > 0);
     }
 
     @Override
@@ -112,8 +144,9 @@ public class LiveServiceImpl implements LiveService {
 
         List<Map<String, String>> newEvents = new ArrayList<>();
         for (Map<String, String> event : game.getEvents()) {
-            Long eventId = Long.parseLong(event.get("id"));
-            if (eventId > lastEventId) {
+            System.out.println("Checking event: " + event);
+            String eventId = event.get("id");
+            if (eventId.compareTo(lastEventId.toString()) > 0) {
                 newEvents.add(event);
             }
         }

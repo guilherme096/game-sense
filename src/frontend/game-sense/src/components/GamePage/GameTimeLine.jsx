@@ -69,90 +69,111 @@ const GameTimeline = ({ id }) => {
             : "pl-7 justify-start text-left"
         }`}
       >
-        {isLeft && (
-          <div className="mr-4">
-            <span className="font-bold">{event.minute}'</span> {event.player}
-          </div>
-        )}
+        <>
+          {isLeft &&
+            (event.event_type === "SUBSTITUTION" ? (
+              <div className="mr-4">
+                <span className="font-bold">{event.minute}'</span>{" "}
+                {event.player_out} - {event.player_in}
+              </div>
+            ) : (
+              <div className="mr-4">
+                <span className="font-bold">{event.minute}'</span>{" "}
+                {event.player}
+              </div>
+            ))}
+        </>
 
         <div
           className={`flex items-center justify-center ${
-            event.type === "goal"
+            event.event_type === "GOAL"
               ? "text-green-200"
-              : event.type === "red-card"
+              : event.event_type === "RED_CARD"
                 ? "text-red-500"
-                : event.type === "yellow-card"
+                : event.event_type === "YELLOW_CARD"
                   ? "text-yellow-400"
-                  : event.type === "substitution"
+                  : event.event_type === "SUBSTITUTION"
                     ? "text-blue-400"
-                    : event.type === "auto-goal"
+                    : event.event_type === "auto-goal"
                       ? "text-red-300"
                       : ""
           }`}
         >
-          {event.type === "goal" && (
+          {event.event_type === "GOAL" && (
             <FontAwesomeIcon icon={faFutbol} className="h-5" />
           )}
-          {event.type === "substitution" && (
+          {event.event_type === "SUBSTITUTION" && (
             <FontAwesomeIcon icon={faRightLeft} className="h-5" />
           )}
-          {event.type === "red-card" && (
+          {event.event_type === "RED_CARD" && (
             <FontAwesomeIcon icon={faSquare} className="h-5" />
           )}
-          {event.type === "yellow-card" && (
+          {event.event_type === "YELLOW_CARD" && (
             <FontAwesomeIcon icon={faSquare} className="h-5" />
           )}
-          {event.type === "auto-goal" && (
+          {event.event_type === "AUTO-GOAL" && (
             <FontAwesomeIcon icon={faFutbol} className="h-5" />
           )}
         </div>
 
-        {!isLeft && (
-          <div className="ml-5">
-            <span className="font-bold">{event.minute}'</span> {event.player}
-          </div>
-        )}
+        {!isLeft &&
+          (event.event_type === "SUBSTITUTION" ? (
+            <div className="mr-4">
+              <span className="font-bold">{event.minute}'</span>{" "}
+              {event.player_out} - {event.player_in}
+            </div>
+          ) : (
+            <div className="mr-4">
+              <span className="font-bold">{event.minute}'</span> {event.player}
+            </div>
+          ))}
       </div>
     );
   };
 
   return (
-    <div
-      className={`relative w-full bg-[#196146] text-white p-6 rounded-md ${
-        events.length > 0 ? "min-h-[100px]" : "min-h-[70px]"
-      }`}
-      ref={timelineRef}
-    >
-      {/* Vertical Line */}
-      {events.length > 0 && (
+    <>
+      {events.length > 0 ? (
         <div
-          className="absolute left-1/2 w-1 bg-white transform -translate-x-1/2 rounded-lg transition-all duration-500"
-          style={{
-            top: `${lineStyles.top}px`,
-            height: `${lineStyles.height}px`,
-          }}
-        ></div>
-      )}
+          className={`relative w-full bg-[#196146] text-white p-6 rounded-md ${
+            events.length > 0 ? "min-h-[100px]" : "min-h-[70px]"
+          }`}
+          ref={timelineRef}
+        >
+          {/* Vertical Line */}
+          {events.length > 0 && (
+            <div
+              className="absolute left-1/2 w-1 bg-white transform -translate-x-1/2 rounded-lg transition-all duration-500"
+              style={{
+                top: `${lineStyles.top}px`,
+                height: `${lineStyles.height}px`,
+              }}
+            ></div>
+          )}
 
-      {/* Events */}
-      {events.length === 0 ? (
-        <p className="text-center text-white">No events to display.</p>
+          {/* Events */}
+          {events.length === 0 ? (
+            <p className="text-center text-white">No events to display.</p>
+          ) : (
+            events.map((event, index) => (
+              <div
+                key={index}
+                className={`relative flex w-full items-center my-8 transition-opacity duration-300 ease-in-out ${
+                  visibleEvents.includes(index) ? "opacity-100" : "opacity-0"
+                } ${event.team === "home" ? "justify-start" : "justify-end"}`}
+              >
+                {renderEventBlock(event, event.team)}
+                <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center">
+                  <div className="w-4 h-4 bg-white rounded-full event-dot"></div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       ) : (
-        events.map((event, index) => (
-          <div
-            key={index}
-            className={`relative flex w-full items-center my-8 transition-opacity duration-300 ease-in-out ${
-              visibleEvents.includes(index) ? "opacity-100" : "opacity-0"
-            } ${event.team === "home" ? "justify-start" : "justify-end"}`}
-          >
-            {renderEventBlock(event, event.team)}
-            <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center">
-              <div className="w-4 h-4 bg-white rounded-full event-dot"></div>
-            </div>
-          </div>
-        ))
+        <p className="text-center text-white">Waiting for match to start</p>
       )}
-    </div>
+    </>
   );
 };
 

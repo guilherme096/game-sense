@@ -5,7 +5,7 @@ import uuid
 from models import Game, Event, Goal, YellowCard, RedCard, Substitution
 
 GAMES_DIR = "./games/"
-GAME_REAL_DURATION = 5
+GAME_REAL_DURATION = 1
 
 
 def serialize_game_for_kafka(
@@ -14,7 +14,7 @@ def serialize_game_for_kafka(
     match_id = str(uuid.uuid4())
 
     if start_time is None:
-        start_time = datetime.now() + timedelta(minutes=10)
+        start_time = datetime.now() + timedelta(minutes=0)
 
     match_info = {
         "match_id": match_id,
@@ -53,10 +53,12 @@ def serialize_game_for_kafka(
         "event_type": "START",
         "minute": 0,
         "publish_timestamp": event_time.isoformat(),
+        "id":0
     }
 
     match_info["events"].append(start_event)
 
+    id = 1
     for event in sorted_events:
         event_time = start_time + timedelta(
             minutes=(event.minute - 1) * GAME_REAL_DURATION / 90
@@ -66,43 +68,47 @@ def serialize_game_for_kafka(
             event_data = {
                 "game_id": match_id,
                 "event_type": "GOAL",
-                "minute": event.minute,
+                "minute": str(event.minute),
                 "team": event.team.name,
                 "scorer": event.scorer.name,
                 "assist": event.assist.name,
-                "publish_timestamp": event_time.isoformat(),
+                "publish_timestamp": str(event_time.isoformat()),
+                "id": str(id)
             }
         elif isinstance(event, YellowCard):
             event_data = {
-                "game_id": match_id,
+                "game_id": str(match_id),
                 "event_type": "YELLOW_CARD",
-                "minute": event.minute,
+                "minute": str(event.minute),
                 "team": event.team.name,
                 "player": event.player.name,
-                "publish_timestamp": event_time.isoformat(),
+                "publish_timestamp": str(event_time.isoformat()),
+                "id": str(id)
             }
         elif isinstance(event, RedCard):
             event_data = {
-                "game_id": match_id,
+                "game_id": str(match_id),
                 "event_type": "RED_CARD",
-                "minute": event.minute,
+                "minute": str(event.minute),
                 "team": event.team.name,
                 "player": event.player.name,
-                "publish_timestamp": event_time.isoformat(),
+                "publish_timestamp": str(event_time.isoformat()),
+                "id": str(id)
             }
         elif isinstance(event, Substitution):
             event_data = {
-                "game_id": match_id,
+                "game_id": str(match_id),
                 "event_type": "SUBSTITUTION",
-                "minute": event.minute,
+                "minute": str(event.minute),
                 "team": event.team.name,
                 "player_out": event.player_out.name,
                 "player_in": event.player_in.name,
-                "publish_timestamp": event_time.isoformat(),
+                "publish_timestamp": str(event_time.isoformat()),
+                "id": str(id)
             }
         else:
             continue
-
+        id += 1
         match_info["events"].append(event_data)
 
     return match_info
@@ -121,4 +127,7 @@ def save_game_to_file(
     with open(filename, "w") as f:
         json.dump(match_info, f, indent=2)
 
+    return filename
+    return filename
+    return filename
     return filename

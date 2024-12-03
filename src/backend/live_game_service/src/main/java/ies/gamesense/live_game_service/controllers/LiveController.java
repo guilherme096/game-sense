@@ -58,7 +58,7 @@ public class LiveController {
             @RequestParam("lastEventId") long lastEventId) {
         List<Map<String, String>> events = liveService.getNewEvents(id, lastEventId);
         if (events == null || events.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
         }
         return ResponseEntity.ok(events);
     }
