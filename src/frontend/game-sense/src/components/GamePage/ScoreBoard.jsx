@@ -26,7 +26,9 @@ export default function ScoreBoard({ id }) {
         data: game,
         error,
         isLoading,
-    } = useQuery("game", () => fetchGame(id));
+    } = useQuery("game", () => fetchGame(id), {
+        refetchInterval: 10000,
+    });
 
     if (isLoading) {
         return <div>Loading...</div>;

@@ -102,6 +102,15 @@ public class LiveServiceImpl implements LiveService {
             return;
         }
 
+        if (event.get("event_type").equals("GOAL")) {
+            String team = event.get("team");
+            if (team.equals("home")) {
+                match.getHomeTeam().setScore(match.getHomeTeam().getScore() + 1);
+            } else {
+                match.getAwayTeam().setScore(match.getAwayTeam().getScore() + 1);
+            }
+        }
+
         match.getEvents().add(event);
     }
 
