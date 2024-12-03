@@ -4,6 +4,7 @@ from kafka import KafkaProducer
 from datetime import datetime
 import pytz
 import os
+from time import sleep
 
 # Kafka configuration
 KAFKA_BROKER = "kafka:9092"  # Adjust to your Kafka broker
@@ -62,6 +63,7 @@ def process_events(events):
 
         # Publish the event
         print(f"Publishing event: {event}")
+        sleep(20)
         publish_game_event(event)
         current_time = datetime.now(pytz.utc)  # Update current time
 
@@ -77,8 +79,7 @@ def publish_game_info(game):
 
 
 def main():
-    game_file_path = os.path.join(
-        "games", "match_SCP_vs_SLB_20241201_193951.json")
+    game_file_path = os.path.join("games", "match_SCP_vs_SLB_20241202_234819.json")
 
     game_data = read_game_from_file(game_file_path)
     print(game_data)
@@ -88,8 +89,10 @@ def main():
         "match_id": game_data.get("match_id"),
         "home_team": game_data.get("home_team"),
         "away_team": game_data.get("away_team"),
+        "match_start_time": game_data.get("match_start_time"),
     }
 
+    sleep(10)
     publish_game_info(match_info)
 
     if events:

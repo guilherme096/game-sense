@@ -7,54 +7,52 @@ function LiveGame({ game }) {
                 <div className="flex flex-col w-full text-neutral-300 mb-3">
                     <div className="w-full flex-row flex items-center align-middle">
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden">
-                            {game.homeTeam.image ? (
+                            {game.home_team.image ? (
                                 <img
                                     className="w-full h-full object-contain"
-                                    src={game.homeTeam.image}
-                                    alt={game.homeTeam.name}
+                                    src={game.home_team.image}
+                                    alt={game.home_team.name}
                                 />
                             ) : (
                                 <div className="text-xs font-semibold text-black">
-                                    {game.homeTeam.name}
+                                    {game.home_team.name}
                                 </div>
                             )}
                         </div>
                         <div className="text-s font-bold ml-3 text-black">
-                            {game.homeTeam.name}
+                            {game.home_team.name}
                         </div>
                         <div className="font-extrabold text-black ml-auto">
-                            {game.homeTeam.score}
+                            {game.home_team.score}
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-col w-full text-neutral-300">
                     <div className="w-full flex-row flex items-center align-middle">
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden">
-                            {game.awayTeam.image ? (
+                            {game.away_team.image ? (
                                 <img
                                     className="w-full h-full object-contain"
-                                    src={game.awayTeam.image}
-                                    alt={game.awayTeam.name}
+                                    src={game.away_team.image}
+                                    alt={game.away_team.name}
                                 />
                             ) : (
                                 <div className="text-xs font-semibold text-black">
-                                    {game.awayTeam.name}
+                                    {game.away_team.name}
                                 </div>
                             )}
                         </div>
                         <div className="text-s font-bold ml-3 text-black">
-                            {game.awayTeam.name}
+                            {game.away_team.name}
                         </div>
                         <div className="font-extrabold  text-black ml-auto">
-                            {game.awayTeam.score}
+                            {game.away_team.score}
                         </div>
                     </div>
                 </div>
             </div>
             <div className="divider divider-horizontal"></div>
-            <div className="text-lg text-green-600 font-bold">
-                {game.minutePlayed}'
-            </div>
+            <div className="text-lg text-green-600 font-bold">{game.minute}'</div>
         </div>
     );
 }

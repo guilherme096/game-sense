@@ -4,21 +4,22 @@ import java.util.List;
 import java.util.Map;
 
 import ies.gamesense.live_game_service.entities.GameStatistics;
-import ies.gamesense.live_game_service.entities.Live;
+import ies.gamesense.live_game_service.entities.Match;
 
 public interface LiveService {
-    List<Live> getLiveGames();
-    Live getLiveById(Long id);
+    List<Match> getLiveGames();
 
-    void createLive(Live live);
+    Match getLiveById(String id);
 
-    GameStatistics getGameStatistics(Long id);
+    void createLive(Match live);
 
-    boolean existsNewEvent(Long id, Long lastEventId);
+    GameStatistics getGameStatistics(String id);
 
-    List<Map<String, String>> getNewEvents(Long id, Long lastEventId);
+    boolean existsNewEvent(String id, Long lastEventId);
 
-    String getCurrentMVP(Long id);
+    List<Map<String, String>> getNewEvents(String id, Long lastEventId);
 
-    List<String> getTopStats(Long id);
+    String getCurrentMVP(String id);
+
+    List<String> getTopStats(String id);
 }
