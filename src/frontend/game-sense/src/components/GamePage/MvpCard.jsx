@@ -1,6 +1,6 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import PropTypes from "prop-types";
 
 const MvpCard = ({ name, score }) => {
   return (
@@ -26,6 +26,13 @@ const MvpCard = ({ name, score }) => {
       </div>
     </div>
   );
-};
+}
+
+MvpCard.propTypes = {
+    name: PropTypes.string.isRequired,
+    score: PropTypes.number.isRequired,
+}
+
+;
 
 export default MvpCard;

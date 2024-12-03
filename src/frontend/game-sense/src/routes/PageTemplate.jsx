@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar/Navbar";
 import Header from "../components/Header";
+import PropTypes from "prop-types";
 
 function PageTemplate({ children }) {
     return (
@@ -12,5 +13,9 @@ function PageTemplate({ children }) {
         </>
     );
 }
+
+PageTemplate.propTypes = {
+    children: PropTypes.node,
+};
 
 export default PageTemplate;

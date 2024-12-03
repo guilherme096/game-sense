@@ -1,6 +1,6 @@
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import PropTypes from "prop-types";
 
 export default function TeamInfo({ team, index }) {
     return (
@@ -34,3 +34,8 @@ export default function TeamInfo({ team, index }) {
         </tr>
     );
 }
+
+TeamInfo.propTypes = {
+    team: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired
+};

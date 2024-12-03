@@ -1,4 +1,5 @@
-import React from "react";
+import PropTypes from "prop-types";
+
 
 export default function LastMatchesCard({ matches = [] }) {
   if (!matches.length) {
@@ -37,16 +38,29 @@ export default function LastMatchesCard({ matches = [] }) {
             {/* Opponent Logo */}
             <div className="w-[3rem] h-[3rem] flex items-center justify-center rounded-lg my-2 p-1">
               <img
-                src={match.logo}
-                alt={match.opponent}
+                src={match.awayTeamLogo}
+                alt={match.awayTeam}
                 className="max-w-full max-h-full object-contain"
               />
             </div>
             {/* Opponent Name */}
-            <div className="text-xs text-gray-700 font-medium">{match.opponent}</div>
+            <div className="text-xs text-gray-700 font-medium">{match.awayTeam}</div>
           </div>
         ))}
       </div>
     </div>
   );
 }
+
+LastMatchesCard.propTypes = {
+  matches: PropTypes.arrayOf(
+    PropTypes.shape({
+      awayTeam: PropTypes.string.isRequired,
+      awayTeamLogo: PropTypes.string.isRequired,
+      homeTeam: PropTypes.string.isRequired,
+      homeTeamLogo: PropTypes.string.isRequired,
+      score: PropTypes.string.isRequired,
+      result: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};

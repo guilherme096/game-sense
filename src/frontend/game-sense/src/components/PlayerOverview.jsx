@@ -1,11 +1,8 @@
-import PageTemplate from "../routes/PageTemplate.jsx";
-import EntityCard from "../components/cards/EntityCard.jsx";
-import HorizontalTab from "../components/HorizontalTab.jsx";
 import PlayerStatsCard from "../components/PlayerStatsCards.jsx";
 import GeneralCard from "../components/cards/GeneralCard.jsx";
 import player from "../static/player.js";
 
-function PlayerOverview({ children }) {
+function PlayerOverview() {
     const { leagueStats, mainStats, statCard } = player;
 
     return (

@@ -24,6 +24,11 @@ services:
       - sql_db
       - redis_db
       - kafka
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - app-network
 
@@ -100,13 +105,13 @@ services:
       - zookeeper
     networks:
       - app-network
+
   kafdrop:
     image: obsidiandynamics/kafdrop:4.0.2
-    ports:
-      - "9009:9000"
     environment:
-      KAFKA_BROKERCONNECT: "kafka:9092" # Kafka Broker Network Addresses (host:port,host:port)
-      SERVER_SERVLET_CONTEXTPATH: "/"
+      KAFKA_BROKERCONNECT: kafka:${KAFKA_INTERNAL_PORT}
+    ports:
+      - ${KAFDROP_EXTERNAL_PORT}:${KAFDROP_EXTERNAL_PORT}
     networks:
       - app-network
 

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
+import PropTypes from "prop-types";
 
 export default function ClubCard({ clubData }) {
-  const [isFollowed, setIsFollowed] = useState(clubData.isFollowed);
+  const [isFollowed, setIsFollowed] = useState(clubData.isStarred);
 
   const handleFollowClick = () => {
     setIsFollowed((prev) => !prev);
@@ -35,7 +36,7 @@ export default function ClubCard({ clubData }) {
         <div className="flex flex-col text-black ml-4">
           <span className="text-xl font-bold">{clubData.name}</span>
           <span className="text-sm text-gray-700">
-            {clubData.rank}º {clubData.league}{" "}
+            {clubData.league_position}º {clubData.league}{" "}
             {clubData.countryFlag && (
               <img
                 src={clubData.countryFlag}
@@ -62,3 +63,14 @@ export default function ClubCard({ clubData }) {
     </div>
   );
 }
+
+ClubCard.propTypes = {
+  clubData: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    logo: PropTypes.string.isRequired,
+    league: PropTypes.string.isRequired,
+    league_position: PropTypes.number.isRequired,
+    countryFlag: PropTypes.string,
+    isStarred: PropTypes.bool.isRequired,
+  }).isRequired,
+};

@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 function LiveGame({ game }) {
     return (
         <div className="flex flex-row w-full p-5 bg-neutral-100 rounded-lg drop-shadow-lg my-4 items-center">
@@ -13,7 +15,7 @@ function LiveGame({ game }) {
                                 />
                             ) : (
                                 <div className="text-xs font-semibold text-black">
-                                    {home_team.name}
+                                    {game.home_team.name}
                                 </div>
                             )}
                         </div>
@@ -53,6 +55,10 @@ function LiveGame({ game }) {
             <div className="text-lg text-green-600 font-bold">{game.minute}'</div>
         </div>
     );
+}
+
+LiveGame.propTypes = {
+    game: PropTypes.object.isRequired,
 }
 
 export default LiveGame;
