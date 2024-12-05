@@ -4,17 +4,25 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { routesList } from "./routes.jsx";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { AuthProvider } from "react-auth-kit"; // Import AuthProvider
 
 const router = createBrowserRouter(routesList);
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <QueryClientProvider client={queryClient}>
-    <RouterProvider
-      router={router}
-      future={{
-        v7_startTransition: true, // Enables the feature
-      }}
-    />
-  </QueryClientProvider>,
+  <AuthProvider
+    authType="cookie" 
+    authName="jwt" 
+    cookieDomain={window.location.hostname} 
+    cookieSecure={false} 
+  >
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider
+        router={router}
+        future={{
+          v7_startTransition: true, // Enables the feature
+        }}
+      />
+    </QueryClientProvider>
+  </AuthProvider>
 );
