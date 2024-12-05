@@ -54,9 +54,7 @@ public class ClubServiceImpl implements ClubService {
                 for (JsonNode clubNode : rootNode) {
                     Club club = new Club();
                     club.setId(clubNode.get("id").asLong());
-                    club.setLeague(clubNode.get("league").asText());
-                    club.setLeaguePosition(clubNode.get("league_position").asInt());
-    
+
                     // Parse nextGame
                     JsonNode nextGameNode = clubNode.get("nextGame");
                     if (nextGameNode != null && !nextGameNode.isNull()) {
@@ -138,8 +136,6 @@ public class ClubServiceImpl implements ClubService {
         for (Club club : clubsFromDb) {
             Club jsonClub = clubsFromJson.get(club.getId());
             if (jsonClub != null) {
-                club.setLeague(jsonClub.getLeague());
-                club.setLeaguePosition(jsonClub.getLeaguePosition());
                 club.setNextGame(jsonClub.getNextGame());
                 club.setLastGames(jsonClub.getLastGames());
                 club.setPlayers(jsonClub.getPlayers());
@@ -157,8 +153,6 @@ public class ClubServiceImpl implements ClubService {
             Club club = clubFromDb.get();
             Club jsonClub = clubsFromJson.get(id);
             if (jsonClub != null) {
-                club.setLeague(jsonClub.getLeague());
-                club.setLeaguePosition(jsonClub.getLeaguePosition());
                 club.setNextGame(jsonClub.getNextGame());
                 club.setLastGames(jsonClub.getLastGames());
                 club.setPlayers(jsonClub.getPlayers());

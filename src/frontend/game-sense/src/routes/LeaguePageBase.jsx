@@ -8,7 +8,7 @@ import axios from 'axios';
 function LeaguePageBase() {
 
     const fetchGame = async () => {
-        const response = await axios.get("/api/v1/league/2", {
+        const response = await axios.get("/api/v1/league/1", {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
@@ -30,7 +30,7 @@ function LeaguePageBase() {
     const name1 = name[0];
     const name2 = name[1];
     const image = league.logo;
-
+    console.log(league);
     return (
         <>
             <PageTemplate>

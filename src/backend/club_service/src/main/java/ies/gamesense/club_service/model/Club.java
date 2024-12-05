@@ -38,13 +38,6 @@ public class Club {
     @Column(name = "country_flag", nullable = false)
     private String countryFlag; // URL for country's flag
 
-    @NotBlank(message = "League is mandatory")
-    private String league;
-
-    @JsonProperty("league_position")
-    @NotBlank(message = "League Position is mandatory")
-    private Integer leaguePosition;
-
     @NotNull
     @Column(name = "starred", nullable = false)
     private boolean starred;
@@ -60,13 +53,11 @@ public class Club {
 
     public Club() {}
 
-    public Club(String name, String country, String logo, String countryFlag, String league, Integer leaguePosition, boolean starred) {
+    public Club(String name, String country, String logo, String countryFlag, String league, boolean starred) {
         this.name = name;
         this.country = country;
         this.logo = logo;
         this.countryFlag = countryFlag;
-        this.league = league;
-        this.leaguePosition = leaguePosition;
         this.starred = starred;
     }
 
@@ -88,14 +79,6 @@ public class Club {
 
     public String getCountryFlag() {
         return countryFlag;
-    }
-
-    public String getLeague() {
-        return league;
-    }
-
-    public Integer getLeaguePosition() {
-        return leaguePosition;
     }
 
     public boolean isStarred() {
@@ -134,14 +117,6 @@ public class Club {
         this.countryFlag = countryFlag;
     }
 
-    public void setLeague(String league) {
-        this.league = league;
-    }
-
-    public void setLeaguePosition(Integer leaguePosition) {
-        this.leaguePosition = leaguePosition;
-    }
-
     public void setStarred(boolean starred) {
         this.starred = starred;
     }
@@ -165,8 +140,6 @@ public class Club {
                 ", name='" + name + '\'' +
                 ", logo='" + logo + '\'' +
                 ", country='" + country + '\'' +
-                ", league='" + league + '\'' +
-                ", leaguePosition=" + leaguePosition +
                 ", starred=" + starred +
                 ", nextGame=" + (nextGame != null ? nextGame.toString() : "null") +
                 ", lastGames=" + lastGames +
