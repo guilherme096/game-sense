@@ -10,6 +10,7 @@ from time import sleep
 KAFKA_BROKER = "kafka:9092"  # Adjust to your Kafka broker
 EVENTS_TOPIC = "events"  # Topic to publish to
 GAMES_TOPIC = "games"  # Topic to publish to
+STATS_TOPIC = "stats"  # Topic to publish to
 
 # Initialize Kafka producer
 producer = KafkaProducer(
@@ -30,6 +31,16 @@ def publish_game_event(event):
         print(f"Published event: {event}")
     except Exception as e:
         print(f"Failed to publish event: {e}")
+
+
+def publish_game_stat(stat):
+    try:
+        # Send the event to Kafka
+        producer.send(STATS_TOPIC, value=stat)
+        producer.flush()  # Ensure all messages are sent
+        print(f"Published stat: {stat}")
+    except Exception as e:
+        print(f"Failed to publish stat: {e}")
 
 
 # Function to read game data from a JSON file

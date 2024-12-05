@@ -1,24 +1,21 @@
 package ies.gamesense.live_game_service.services;
 
+import ies.gamesense.live_game_service.entities.GameStatistics;
+import ies.gamesense.live_game_service.entities.Live;
+import ies.gamesense.live_game_service.entities.Match;
+import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.aot.hint.TypeReference;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ies.gamesense.live_game_service.entities.GameStatistics;
-import ies.gamesense.live_game_service.entities.Live;
-import ies.gamesense.live_game_service.entities.Match;
-import jakarta.annotation.PostConstruct;
 
 @Service
 public class LiveServiceImpl implements LiveService {
@@ -87,6 +84,7 @@ public class LiveServiceImpl implements LiveService {
             event = objectMapper.readValue(
                     record.value(),
                     new TypeReference<Map<String, String>>() {
+
                     });
             System.out.println("Received Event: " + event.toString());
         } catch (Exception e) {
