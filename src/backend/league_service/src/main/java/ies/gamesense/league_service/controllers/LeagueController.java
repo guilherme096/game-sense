@@ -61,4 +61,5 @@ public class LeagueController {
         League updatedLeague = leagueService.updateLeague(league);
         return new ResponseEntity<>(updatedLeague, HttpStatus.OK);
     }
+
 }
