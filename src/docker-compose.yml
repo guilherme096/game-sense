@@ -21,6 +21,13 @@ services:
     networks:
       - app-network
 
+  management-service:
+    build:
+      context: backend/management_service
+    image: management_service-image    
+    networks:
+      - app-network
+
   club-service:
     build:
       context: backend/club_service
