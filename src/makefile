@@ -36,7 +36,6 @@ build-league:
 	@cd $(LEAGUE_SERVICE) && ./mvnw clean package -DskipTests
 build-frontend:
 	@echo "Building Frontend..."
-	@cd $(FRONTEND) && npm install && npm run build
 build-databases:
 	@echo "Building Databases (MySQL and Redis)..."
 	@docker-compose build sql_db redis_db
@@ -66,19 +65,14 @@ restart:
 # Rebuild specific services
 .PHONY: rebuild-club rebuild-live-game rebuild-player rebuild-league rebuild-frontend rebuild-databases rebuild-sql rebuild-redis
 rebuild-club:
-	$(MAKE) build-club
 	@docker-compose up --build -d club-service
 rebuild-live-game:
-	$(MAKE) build-live-game
 	@docker-compose up --build -d live-game-service
 rebuild-player:
-	$(MAKE) build-player
 	@docker-compose up --build -d player-service
 rebuild-league:
-	$(MAKE) build-league
 	@docker-compose up --build -d league-service
 rebuild-frontend:
-	$(MAKE) build-frontend
 	@docker-compose up --build -d nginx
 rebuild-databases:
 	@echo "Rebuilding Databases (MySQL and Redis)..."
