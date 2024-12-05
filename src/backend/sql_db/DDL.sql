@@ -35,20 +35,32 @@ CREATE TABLE IF NOT EXISTS player (
     club_id INT NOT NULL,
     name VARCHAR(50) NOT NULL,
     surname VARCHAR(50) NOT NULL,
-    birth_date DATE NOT NULL,
+    age INT NOT NULL,
     height FLOAT NOT NULL,
     weight FLOAT NOT NULL,
     position VARCHAR(50) NOT NULL,
     country VARCHAR(50) NOT NULL,
+    country_flag VARCHAR(254) NOT NULL,
+    jersey_number INT NOT NULL,
+    is_injured BOOLEAN NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (club_id) REFERENCES club(id)
+);
+
+CREATE TABLE IF NOT EXISTS player_game_stats (
+    player_id INT NOT NULL,
+    game_id INT NOT NULL,
+    rating INT NOT NULL,
+    minutes_played INT NOT NULL,
     goals INT NOT NULL,
     assists INT NOT NULL,
-    minutes INT NOT NULL,
     fouls INT NOT NULL,
     yellow_cards INT NOT NULL,
     red_cards INT NOT NULL,
     saves INT NOT NULL,
-    is_injured BOOLEAN NOT NULL,
-    FOREIGN KEY (club_id) REFERENCES club(id)
+    PRIMARY KEY (player_id, game_id),
+    FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE,
+    FOREIGN KEY (game_id) REFERENCES game(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS team_stats (
@@ -107,9 +119,10 @@ CREATE TABLE IF NOT EXISTS game (
 CREATE TABLE IF NOT EXISTS injury (
     player_id INT NOT NULL,
     date DATE NOT NULL,
-    name VARCHAR(50) NOT NULL,
-    duration INT NOT NULL,
-    PRIMARY KEY (player_id, date),
+    description VARCHAR(100) NOT NULL,
+    severity VARCHAR(50) NOT NULL,
+    games_out INT NOT NULL,
+    PRIMARY KEY (player_id),
     FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
 );
 
