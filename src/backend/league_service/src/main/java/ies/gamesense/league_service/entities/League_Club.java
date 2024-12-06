@@ -1,5 +1,6 @@
 package ies.gamesense.league_service.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,6 +10,7 @@ public class League_Club {
     @Id
     @ManyToOne
     @JoinColumn(name = "league_id", nullable = false)
+    @JsonBackReference
     private League league;
 
     @Id

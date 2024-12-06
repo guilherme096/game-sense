@@ -1,8 +1,8 @@
-package ies.gamsense.club_service.service;
+package ies.gamesense.club_service.service;
 
-import ies.gamsense.club_service.model.Club;
-import ies.gamsense.club_service.model.Player;
-import ies.gamsense.club_service.model.Game;
+import ies.gamesense.club_service.model.Club;
+import ies.gamesense.club_service.model.Player;
+import ies.gamesense.club_service.model.Game;
 
 import java.util.List;
 import java.util.Optional;

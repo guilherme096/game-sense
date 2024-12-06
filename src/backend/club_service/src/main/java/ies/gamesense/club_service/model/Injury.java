@@ -1,10 +1,10 @@
-package ies.gamsense.club_service.model;
+package ies.gamesense.club_service.model;
 
 public class Injury {
-    private String date; 
-    private String description; 
-    private String severity; 
-    private Integer gamesOut; 
+    private String date;
+    private String description;
+    private String severity;
+    private Integer gamesOut;
 
     public Injury() {}
 
@@ -14,7 +14,7 @@ public class Injury {
         this.severity = severity;
         this.gamesOut = gamesOut;
     }
-    
+
     public String getDate() {
         return date;
     }

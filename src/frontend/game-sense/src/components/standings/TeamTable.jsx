@@ -2,7 +2,7 @@ import TeamInfo from './TeamInfo';
 import PropTypes from "prop-types";
 
 export default function TeamTable({ standings }) {
-  console.log(standings);
+  console.log("team table component");
   return (
       <div className="overflow-x-auto rounded-xl">
         <table className="table-auto w-full text-sm text-left" style={{ tableLayout: 'fixed' }}>
@@ -46,4 +46,6 @@ export default function TeamTable({ standings }) {
 
 TeamTable.propTypes = {
     standings: PropTypes.array.isRequired,
+    showHeader: PropTypes.bool,
+
 };
