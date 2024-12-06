@@ -18,15 +18,16 @@ export default function Login() {
     setError(null); 
 
     try {
-      const response = await axios.post("http://localhost:8080/authenticate", {
-        username,
-        password,
-      });
+      const response = await axios.post("http://localhost:8080/authenticate", 
+        {username, password},
+        {headers: {"Content-Type": "application/json"}}
+      );
 
       if (response.status === 200) {
         signIn({
-          token: "", 
+          token: 'dummy-token', 
           expiresIn: 10 * 60 * 60, 
+          tokenType: 'Bearer',
           authState: { username }, 
         });
 
