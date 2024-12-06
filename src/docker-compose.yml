@@ -1,12 +1,11 @@
 services:
   nginx:
+    build:
+      context: ./frontend/game-sense/
     image: nginx:latest
     container_name: nginx
     ports:
       - "${HOST_PORT}:${CONTAINER_PORT}"
-    volumes:
-      - ${NGINX_HTML_PATH}
-      - ${NGINX_CONF_PATH}
     depends_on:
       - club-service
       - live-game-service

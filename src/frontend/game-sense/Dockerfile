@@ -1,14 +1,15 @@
 # Stage 1: Build
 FROM node:18 AS build
-WORKDIR /app
+WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
-RUN npm install
+COPY ./nginx.conf ./
+RUN npm install || cat /usr/src/app/npm-error.log
 COPY . ./
-RUN npm run build
+RUN npm run build || cat /usr/src/app/build-error.log
 
 # Stage 2: Serve
 FROM nginx:stable-alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-COPY ../../nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+COPY --from=build /usr/src/app/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
