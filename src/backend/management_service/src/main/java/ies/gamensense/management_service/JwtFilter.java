@@ -1,10 +1,26 @@
-package main.java.ies.gamensense.management_service;
+package ies.gamensense.management_service;
 
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.stereotype.Component;
+
 @Component
 public class JwtFilter extends OncePerRequestFilter {
+
+    // Intercept requests, extract JWT from cookies, validate JWT tokens
+
     @Autowired
     private JwtUtil jwtUtil;
 
