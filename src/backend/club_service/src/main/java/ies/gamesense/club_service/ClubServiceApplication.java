@@ -1,4 +1,4 @@
-package ies.gamsense.club_service;
+package ies.gamesense.club_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

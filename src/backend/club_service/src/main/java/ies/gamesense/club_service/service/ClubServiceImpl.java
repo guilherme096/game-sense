@@ -1,4 +1,4 @@
-package ies.gamsense.club_service.service;
+package ies.gamesense.club_service.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ies.gamsense.club_service.model.Club;
-import ies.gamsense.club_service.model.Game;
-import ies.gamsense.club_service.model.Injury;
-import ies.gamsense.club_service.model.Player;
-import ies.gamsense.club_service.repository.ClubRepository;
+import ies.gamesense.club_service.model.Club;
+import ies.gamesense.club_service.model.Game;
+import ies.gamesense.club_service.model.Injury;
+import ies.gamesense.club_service.model.Player;
+import ies.gamesense.club_service.repository.ClubRepository;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.List;
@@ -54,9 +54,7 @@ public class ClubServiceImpl implements ClubService {
                 for (JsonNode clubNode : rootNode) {
                     Club club = new Club();
                     club.setId(clubNode.get("id").asLong());
-                    club.setLeague(clubNode.get("league").asText());
-                    club.setLeaguePosition(clubNode.get("league_position").asInt());
-    
+
                     // Parse nextGame
                     JsonNode nextGameNode = clubNode.get("nextGame");
                     if (nextGameNode != null && !nextGameNode.isNull()) {
@@ -138,8 +136,6 @@ public class ClubServiceImpl implements ClubService {
         for (Club club : clubsFromDb) {
             Club jsonClub = clubsFromJson.get(club.getId());
             if (jsonClub != null) {
-                club.setLeague(jsonClub.getLeague());
-                club.setLeaguePosition(jsonClub.getLeaguePosition());
                 club.setNextGame(jsonClub.getNextGame());
                 club.setLastGames(jsonClub.getLastGames());
                 club.setPlayers(jsonClub.getPlayers());
@@ -157,8 +153,6 @@ public class ClubServiceImpl implements ClubService {
             Club club = clubFromDb.get();
             Club jsonClub = clubsFromJson.get(id);
             if (jsonClub != null) {
-                club.setLeague(jsonClub.getLeague());
-                club.setLeaguePosition(jsonClub.getLeaguePosition());
                 club.setNextGame(jsonClub.getNextGame());
                 club.setLastGames(jsonClub.getLastGames());
                 club.setPlayers(jsonClub.getPlayers());

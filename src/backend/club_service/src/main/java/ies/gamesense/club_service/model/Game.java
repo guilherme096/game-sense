@@ -1,4 +1,4 @@
-package ies.gamsense.club_service.model;
+package ies.gamesense.club_service.model;
 
 public class Game {
     private Long id;
@@ -103,4 +103,3 @@ public class Game {
     }
 
 }
-

@@ -1,20 +1,22 @@
 -- Club Table
-INSERT INTO club (name, country, starred, image)
+INSERT INTO club (name, logo, country, country_flag, starred)
 VALUES
-('Manchester United', 'England', TRUE, 'man_utd_logo.png'),
-('Liverpool', 'England', TRUE, 'liverpool_logo.png'),
-('Chelsea', 'England', FALSE, 'chelsea_logo.png');
+    ('Chelsea', 'https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg', 'England', 'https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg', 1),
+    ('Arsenal', 'https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg', 'England', 'https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg', 1);
+
+SELECT id, name FROM club WHERE name IN ('Chelsea', 'Arsenal');
 
 -- League Table
 INSERT INTO league (name, logo)
 VALUES 
-('Premier League', 'premier_league_logo.png');
+('Premier League', 'https://img.chelseafc.com/image/upload/f_auto,w_1440,c_fill,g_faces,q_90/club-chelsea/football-competition-logos/Premier_League_logo_transparent.png');
+
+SELECT id, name FROM league;
 
 -- League_Club Table
-INSERT INTO league_club (
-    league_id, club_id, matches_played, points, wins, draws, losses, goals_scored, goals_conceded, goal_difference, place
-)
+INSERT INTO league_club (league_id, club_id, matches_played, points, wins, draws, losses, goals_scored, goals_conceded, goal_difference, place)
 VALUES
-(1, 1, 38, 75, 23, 6, 9, 65, 40, 25, 1), 
-(1, 2, 38, 72, 21, 9, 8, 70, 45, 25, 2), 
-(1, 3, 38, 68, 20, 8, 10, 60, 38, 22, 3);
+(1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+SELECT * FROM league_club;
