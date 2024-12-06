@@ -26,7 +26,7 @@ export default function Login() {
       if (response.status === 200) {
         signIn({
           token: 'dummy-token', 
-          expiresIn: 10 * 60 * 60, 
+          expiresIn: 36000, 
           tokenType: 'Bearer',
           authState: { username }, 
         });

@@ -10,12 +10,13 @@ const router = createBrowserRouter(routesList);
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <AuthProvider
-    authType="cookie" 
-    authName="jwt" 
-    cookieDomain={window.location.hostname} 
-    cookieSecure={false} // for now
-  >
+  // <AuthProvider
+  //   authType="cookie" 
+  //   authName="jwt" 
+  //   cookieDomain={window.location.hostname} 
+  //   cookieSecure={false} // for now
+  //   cookiePath="/"
+  // >
     <QueryClientProvider client={queryClient}>
       <RouterProvider
         router={router}
@@ -24,5 +25,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         }}
       />
     </QueryClientProvider>
-  </AuthProvider>
+  // </AuthProvider>
 );
