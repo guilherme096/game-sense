@@ -1,5 +1,6 @@
 package ies.gamesense.league_service.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.Set;
 
@@ -17,6 +18,7 @@ public class League {
     private String logo;
 
     @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<League_Club> leagueClubs;
 
     public League() {

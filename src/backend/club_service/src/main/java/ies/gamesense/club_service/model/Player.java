@@ -1,4 +1,4 @@
-package ies.gamsense.club_service.model;
+package ies.gamesense.club_service.model;
 
 import java.util.List;
 
@@ -62,5 +62,5 @@ public class Player {
                 ", injuries=" + (injuries != null ? injuries.toString() : "[]") +
                 '}';
     }
-    
+
 }

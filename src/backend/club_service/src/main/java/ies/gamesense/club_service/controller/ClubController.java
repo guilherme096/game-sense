@@ -1,14 +1,14 @@
-package ies.gamsense.club_service.controller;
+package ies.gamesense.club_service.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import ies.gamsense.club_service.model.Club;
-import ies.gamsense.club_service.model.Player;
-import ies.gamsense.club_service.model.Game;
-import ies.gamsense.club_service.service.ClubService;
+import ies.gamesense.club_service.model.Club;
+import ies.gamesense.club_service.model.Player;
+import ies.gamesense.club_service.model.Game;
+import ies.gamesense.club_service.service.ClubService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
