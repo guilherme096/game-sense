@@ -3,7 +3,7 @@ import iconLogo from "/icon-logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import useSignIn from 'react-auth-kit/hooks/useSignIn';
+import useSignIn from "react-auth-kit/hooks/useSignIn";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -15,29 +15,34 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(null);
+    setError(null); 
+
+    const formData = {
+      username,
+      password,
+    };
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/authenticate",
-        { username, password },
-        { 
-          withCredentials: true ,
+        "/api/v1/authenticate", 
+        formData,
+        {
+          withCredentials: true,
           headers: {
-            'Content-Type': 'application/json',
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
 
       if (response.status === 200) {
-        const result = signIn({
-          token: response.data.token || 'authenticated',  // Use actual token from response
-          expiresIn: 36000,
-          tokenType: "Bearer",
-          authState: { username: response.data.username || username }
-        });
-
-        if (result) {
+        if (signIn({
+          auth: {
+            token: response.data.token,
+            type: 'Bearer'
+          },
+          refresh: response.data.refreshToken,
+          userState: { username: response.data.username || username }
+        })) {
           navigate("/home");
         } else {
           setError("Failed to sign in. Please try again.");
@@ -46,17 +51,13 @@ export default function Login() {
     } catch (err) {
       console.error("Login failed", err);
       if (err.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
         console.error("Response data:", err.response.data);
         console.error("Response status:", err.response.status);
         setError(err.response.data || "Authentication failed");
-      } else if (err.request) {
-        // The request was made but no response was received
+      } else if (err.request == null) {
         console.error("No response received");
         setError("No response from server. Please try again.");
       } else {
-        // Something happened in setting up the request that triggered an Error
         console.error("Error setting up request:", err.message);
         setError("An error occurred. Please try again.");
       }
