@@ -23,8 +23,9 @@ export default function Login() {
     };
 
     try {
+      console.log("Sending authentication request...");
       const response = await axios.post(
-        "/api/v1/authenticate", 
+        "/api/v1/management/authenticate", 
         formData,
         {
           withCredentials: true,
@@ -34,27 +35,34 @@ export default function Login() {
         }
       );
 
-      if (response.status === 200) {
+      console.log("Response received:", response);
+
+      if (response.status === 200 && response.data.token) {
+        console.log("Token received:", response.data.token);
         if (signIn({
           auth: {
             token: response.data.token,
             type: 'Bearer'
           },
-          refresh: response.data.refreshToken,
-          userState: { username: response.data.username || username }
+          userState: { username: response.data.username }
         })) {
+          console.log("Sign in successful, navigating to /home");
           navigate("/home");
         } else {
+          console.error("Sign in failed");
           setError("Failed to sign in. Please try again.");
         }
+      } else {
+        console.error("Unexpected response:", response);
+        setError("Unexpected response from server. Please try again.");
       }
     } catch (err) {
       console.error("Login failed", err);
       if (err.response) {
         console.error("Response data:", err.response.data);
         console.error("Response status:", err.response.status);
-        setError(err.response.data || "Authentication failed");
-      } else if (err.request == null) {
+        setError(err.response.data.message || "Authentication failed");
+      } else if (err.request) {
         console.error("No response received");
         setError("No response from server. Please try again.");
       } else {

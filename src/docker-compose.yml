@@ -24,7 +24,9 @@ services:
   management-service:
     build:
       context: backend/management_service
-    image: management_service-image    
+    image: management_service-image  
+    ports: 
+      - 8080:8080  
     networks:
       - app-network
 
