@@ -25,16 +25,15 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(String username, Map<String, Object> claims) {
+    public String generateToken(String username) {
         return Jwts.builder()
-                   .setClaims(claims)
                    .setSubject(username)
                    .setIssuedAt(new Date())
-                   .setExpiration(new Date(System.currentTimeMillis() + 36000000))
+                   .setExpiration(new Date(System.currentTimeMillis() + 36000000)) // Valid for 10 hours
                    .signWith(getSigningKey())
                    .compact();
     }
-
+    
     public String validateToken(String token) {
         return Jwts.parserBuilder()
                    .setSigningKey(getSigningKey())
@@ -43,4 +42,5 @@ public class JwtUtil {
                    .getBody()
                    .getSubject();
     }
+    
 }

@@ -34,7 +34,6 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        // Check if the request is for the /authenticate endpoint
         if (request.getRequestURI().equals("/api/v1/management/authenticate")) {
             filterChain.doFilter(request, response);
             return;
@@ -45,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("jwt")) {
+                if ("jwt".equals(cookie.getName())) {
                     token = cookie.getValue();
                 }
             }
@@ -55,29 +54,18 @@ public class JwtFilter extends OncePerRequestFilter {
             if (token != null) {
                 String username = jwtUtil.validateToken(token);
                 SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(username, null, List.of())
+                    new UsernamePasswordAuthenticationToken(username, null, null)
                 );
             } else {
-                // If there's no token, set the response to 401 Unauthorized
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-                // Return an error message in the response body
-                ObjectMapper mapper = new ObjectMapper();
-                String errorMessage = "Invalid or missing JWT token";
-                mapper.writeValue(response.getOutputStream(), Map.of("message", errorMessage));
+                new ObjectMapper().writeValue(response.getOutputStream(), Map.of("message", "Invalid or missing JWT token"));
                 return;
             }
         } catch (Exception e) {
-            System.err.println("Invalid JWT Token: " + e.getMessage());
-            // Set the response to 401 Unauthorized
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-            // Return an error message in the response body
-            ObjectMapper mapper = new ObjectMapper();
-            String errorMessage = "Invalid or missing JWT token";
-            mapper.writeValue(response.getOutputStream(), Map.of("message", errorMessage));
+            new ObjectMapper().writeValue(response.getOutputStream(), Map.of("message", "Invalid or missing JWT token"));
             return;
         }
 
