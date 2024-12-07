@@ -10,11 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.springframework.aot.hint.TypeReference;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -75,6 +76,21 @@ public class LiveServiceImpl implements LiveService {
         this.matches.put(match.getMatchId(), match);
     }
 
+    @KafkaListener(id = "stats", topics = "stats")
+    public void listen(GameStatistics stats) {
+        System.out.println("Hello from Kafka!");
+        System.out.println("Received GameStatistics: " + stats.toString());
+
+        Match match = this.matches.get(stats.getMatchId());
+
+        if (match == null) {
+            System.err.println("Match not found for ID: " + stats.getMatchId());
+            return;
+        }
+
+        match.setGameStatistics(stats);
+    }
+
     @KafkaListener(id = "events", topics = "events", containerFactory = "customKafkaListenerContainerFactory")
     public void listen(ConsumerRecord<String, String> record) {
         System.out.println("Hello from Kafka!");
@@ -84,7 +100,6 @@ public class LiveServiceImpl implements LiveService {
             event = objectMapper.readValue(
                     record.value(),
                     new TypeReference<Map<String, String>>() {
-
                     });
             System.out.println("Received Event: " + event.toString());
         } catch (Exception e) {

@@ -79,10 +79,12 @@ def process_events(events):
         current_time = datetime.now(pytz.utc)  # Update current time
 
 
-def publish_game_info(game):
+def publish_game_info(game, stats):
     try:
         # Send the event to Kafka
         producer.send(GAMES_TOPIC, value=game)
+        sleep(3)
+        producer.send(STATS_TOPIC, value=stats)
         producer.flush()  # Ensure all messages are sent
         print(f"Published event: {game}")
     except Exception as e:
@@ -102,9 +104,17 @@ def main():
         "away_team": game_data.get("away_team"),
         "match_start_time": game_data.get("match_start_time"),
     }
-
+    mathc_stats = {
+        "match_id": game_data.get("match_id"),
+        "home_team_stats": {
+            "Stats:\n Possession: 0\n Shots: 0\n Passes Acc: 0\n Tackles: 0\n Fouls: 0\n Corners: 0\n Offsides: 0\n Interceptions: 0",
+        },
+        "away_team_stats": {
+            "Stats:\n Possession: 0\n Shots: 0\n Passes Acc: 0\n Tackles: 0\n Fouls: 0\n Corners: 0\n Offsides: 0\n Interceptions: 0",
+        },
+    }
     sleep(10)
-    publish_game_info(match_info)
+    publish_game_info(match_info, mathc_stats)
 
     if events:
         process_events(events)

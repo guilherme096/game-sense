@@ -53,7 +53,7 @@ def serialize_game_for_kafka(
         "event_type": "START",
         "minute": 0,
         "publish_timestamp": event_time.isoformat(),
-        "id":0
+        "id": 0
     }
 
     match_info["events"].append(start_event)
@@ -118,7 +118,8 @@ def save_game_to_file(
     game: Game, events: List[Event], filename: str = None, start_time: datetime = None
 ):
     if filename is None:
-        filename = f"match_{game.home_team.name}_vs_{game.away_team.name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        filename = f"match_{game.home_team.name}_vs_{game.away_team.name}_{
+            datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
 
     filename = GAMES_DIR + filename
 
@@ -127,7 +128,4 @@ def save_game_to_file(
     with open(filename, "w") as f:
         json.dump(match_info, f, indent=2)
 
-    return filename
-    return filename
-    return filename
     return filename
