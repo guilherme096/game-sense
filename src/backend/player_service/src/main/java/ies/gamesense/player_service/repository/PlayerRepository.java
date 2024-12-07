@@ -1,19 +1,13 @@
 package ies.gamesense.player_service.repository;
 
+import ies.gamesense.player_service.model.Player;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import ies.gamesense.player_service.model.Player;
+import java.util.List;
 
 @Repository
-public interface PlayerRepository extends JpaRepository<Player, Long>, JpaSpecificationExecutor<Player>{
-    Iterable<Player> findByNameAndClub(String name, String club);
-    Iterable<Player> findByName(String name);
-    Iterable<Player> findByClub(String club);
-    Iterable<Player> findByGoals(int goals);
-    Iterable<Player> findByAssists(int assists);
-    Iterable<Player> findByFouls(int fouls);
-    Iterable<Player> findByYellowCards(int yellowCards);
-    Iterable<Player> findByRedCards(int redCards);
+public interface PlayerRepository extends JpaRepository<Player, Long> {
+    List<Player> findByClubId(Long clubId);
+    List<Player> findPlayersByCriteria(String name, Integer age, String club, String position);
 }

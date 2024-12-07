@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.ForeignKey;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.JoinColumn;
 
@@ -12,13 +11,11 @@ import jakarta.persistence.JoinColumn;
 public class PlayerGameStats {
 
     @Id
-    @ManyToOne
     @NotNull
     @JoinColumn(name = "player_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_player_game_stats_player"))
     private Long player_id;
 
     @Id
-    @ManyToOne
     @NotNull
     @JoinColumn(name = "game_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_player_game_stats_game"))
     private Long game_id;

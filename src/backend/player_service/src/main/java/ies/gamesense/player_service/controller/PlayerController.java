@@ -4,12 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import ies.gamesense.player_service.model.Player;
+import ies.gamesense.player_service.model.PlayerGameStats;
+import ies.gamesense.player_service.model.Injury;
+
 import ies.gamesense.player_service.service.PlayerService;
 import io.swagger.v3.oas.annotations.Operation;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/player")
@@ -18,9 +19,16 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
+    // GET /api/v1/player/health
+    @Operation(summary = "Health check")
+    @GetMapping("/health")
+    public String healthCheck() {
+        return "OK";
+    }
+
     // GET /api/v1/player
     @Operation(summary = "Get all players")
-    @GetMapping
+    @GetMapping("/")
     public List<Player> getPlayers() {
         return playerService.getAllPlayers();
     }
@@ -32,14 +40,39 @@ public class PlayerController {
         return playerService.getPlayerById(id);
     }
 
-    // GET /api/v1/player/{id}/{statistics}
-    @Operation(summary = "Get statistic by player id")
-    @GetMapping("/{id}/{statistics}")
-    public Map<String, Object> getPlayerStatistics(@PathVariable Long id, @PathVariable String statistics) {
-        Object result = playerService.getPlayerStatistics(id, statistics);
-        Map<String, Object> response = new HashMap<>();
-        response.put(statistics, result);
-        return response;
+    // POST /api/v1/player
+    @Operation(summary = "Create a new player")
+    @PostMapping
+    public Player createPlayer(@RequestBody Player player) {
+        return playerService.createPlayer(player);
+    }
+
+    // PUT /api/v1/player/{id}
+    @Operation(summary = "Update a player")
+    @PutMapping("/{id}")
+    public Player updatePlayer(@PathVariable Long id, @RequestBody Player player) {
+        return playerService.updatePlayer(id, player);
+    }
+
+    // GET /api/v1/player/{clubId}
+    @Operation(summary = "Get players by club id")
+    @GetMapping("/{clubId}")
+    public List<Player> getPlayersByClub(@PathVariable Long clubId) {
+        return playerService.getPlayersByClub(clubId);
+    }
+
+    // GET /api/v1/player/{id}/statistics/{gameId}
+    @Operation(summary = "Get statistic of a player by game id")
+    @GetMapping("/{id}/statistics/{gameId}")
+    public PlayerGameStats getPlayerStatisticsbyGameId(@PathVariable Long id, @PathVariable Long gameId) {
+        return playerService.getPlayerStatisticsbyGameId(id, gameId);
+    }
+
+    // GET /api/v1/player/{id}/injuries
+    @Operation(summary = "Get injuries by player id")
+    @GetMapping("/{id}/injuries")
+    public List<Injury> getPlayerInjuries(@PathVariable Long id) {
+        return playerService.getPlayerInjuries(id);
     }
 
     // GET /api/v1/player/search
@@ -49,12 +82,7 @@ public class PlayerController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer age,
             @RequestParam(required = false) String club,
-            @RequestParam(required = false) String position,
-            @RequestParam(required = false) Integer goals,
-            @RequestParam(required = false) Integer assists,
-            @RequestParam(required = false) Integer fouls,
-            @RequestParam(required = false) Integer yellowCards,
-            @RequestParam(required = false) Integer redCards) {
-        return playerService.searchPlayers(name, age, club, position, goals, assists, fouls, yellowCards, redCards);
+            @RequestParam(required = false) String position) {
+        return playerService.searchPlayers(name, age, club, position);
     }
 }

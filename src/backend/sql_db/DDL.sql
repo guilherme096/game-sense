@@ -117,12 +117,13 @@ CREATE TABLE IF NOT EXISTS game (
 );
 
 CREATE TABLE IF NOT EXISTS injury (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     player_id INT NOT NULL,
     date DATE NOT NULL,
     description VARCHAR(100) NOT NULL,
     severity VARCHAR(50) NOT NULL,
     games_out INT NOT NULL,
-    PRIMARY KEY (player_id),
     FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
 );
+
 
