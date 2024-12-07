@@ -3,7 +3,7 @@ import iconLogo from "/icon-logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import { useSignIn } from "react-auth-kit";
+import useSignIn from 'react-auth-kit/hooks/useSignIn';
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -15,27 +15,51 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(null); 
+    setError(null);
 
     try {
-      const response = await axios.post("http://localhost:8080/authenticate", 
-        {username, password},
-        {headers: {"Content-Type": "application/json"}}
+      const response = await axios.post(
+        "http://localhost:8080/authenticate",
+        { username, password },
+        { 
+          withCredentials: true ,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
       );
 
       if (response.status === 200) {
-        signIn({
-          token: 'dummy-token', 
-          expiresIn: 36000, 
-          tokenType: 'Bearer',
-          authState: { username }, 
+        const result = signIn({
+          token: response.data.token || 'authenticated',  // Use actual token from response
+          expiresIn: 36000,
+          tokenType: "Bearer",
+          authState: { username: response.data.username || username }
         });
 
-        navigate("/dashboard");
+        if (result) {
+          navigate("/home");
+        } else {
+          setError("Failed to sign in. Please try again.");
+        }
       }
     } catch (err) {
       console.error("Login failed", err);
-      setError("Invalid username or password. Please try again.");
+      if (err.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error("Response data:", err.response.data);
+        console.error("Response status:", err.response.status);
+        setError(err.response.data || "Authentication failed");
+      } else if (err.request) {
+        // The request was made but no response was received
+        console.error("No response received");
+        setError("No response from server. Please try again.");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error("Error setting up request:", err.message);
+        setError("An error occurred. Please try again.");
+      }
     }
   };
 
@@ -49,12 +73,10 @@ export default function Login() {
 
         <div className="card w-full max-w-md shadow-2xl p-8 bg-[#333D4D] rounded-lg">
           <form onSubmit={handleLogin} className="flex flex-col space-y-4">
-            {/* Error Message */}
             {error && (
               <div className="text-red-500 text-center mb-2">{error}</div>
             )}
 
-            {/* Username Input */}
             <div>
               <label className="text-sm text-gray-200 mb-1 block">
                 Username
@@ -69,7 +91,6 @@ export default function Login() {
               />
             </div>
 
-            {/* Password Input */}
             <div>
               <label className="text-sm text-gray-200 mb-1 block">
                 Password
@@ -84,7 +105,6 @@ export default function Login() {
               />
             </div>
 
-            {/* Forgot Password Link */}
             <div className="text-left">
               <Link
                 to="/forgot-password"
@@ -95,7 +115,6 @@ export default function Login() {
             </div>
 
             <div className="flex items-center">
-              {/* Login Button */}
               <button
                 type="submit"
                 className="btn w-full text-white py-2 px-4 rounded-md text-lg bg-[#21A179]"
@@ -104,7 +123,6 @@ export default function Login() {
               </button>
             </div>
 
-            {/* Create Account Link */}
             <div className="text-center">
               <Link
                 to="/register"

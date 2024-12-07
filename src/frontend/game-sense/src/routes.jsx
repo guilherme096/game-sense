@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
 
 export const routesList = [
     {
-        path: "/",
+        path: "/home",
         element: (
           <>
             <Helmet>
@@ -71,7 +71,7 @@ export const routesList = [
     },
 
     {
-        path: "/login",
+        path: "/",
         element: (
           <>
             <Helmet>

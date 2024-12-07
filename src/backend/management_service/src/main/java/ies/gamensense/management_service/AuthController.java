@@ -1,4 +1,5 @@
 package ies.gamensense.management_service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.Cookie;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "http://localhost", allowCredentials = "true")
 public class AuthController {
     // Handles the authentication request
     // Validates the credentials and generates a JWT token
@@ -27,8 +29,9 @@ public class AuthController {
             // Set the token in an HttpOnly cookie
             Cookie cookie = new Cookie("jwt", token);
             cookie.setSecure(true);
-            cookie.setHttpOnly(true);
+            cookie.setHttpOnly( true);
             cookie.setPath("/");
+            cookie.setDomain("localhost");
             response.addCookie(cookie);
 
             return ResponseEntity.ok("Login successful");

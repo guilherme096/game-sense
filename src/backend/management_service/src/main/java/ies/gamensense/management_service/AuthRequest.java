@@ -6,15 +6,13 @@ public class AuthRequest {
 
     private String username;
     private String password;
-    private Boolean isPremium;
 
     public AuthRequest() {
     }
 
-    public AuthRequest(String username, String password, Boolean isPremium) {
+    public AuthRequest(String username, String password) {
         this.username = username;
         this.password = password;
-        this.isPremium = isPremium;
     }
 
     public String getUsername() {
@@ -31,13 +29,5 @@ public class AuthRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Boolean getIsPremium() {
-        return isPremium;
-    }
-
-    public void setIsPremium(Boolean isPremium) {
-        this.isPremium = isPremium;
     }
 }

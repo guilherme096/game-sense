@@ -12,6 +12,7 @@ services:
       - player-service
       - league-service
       - kafka
+      - management-service
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
