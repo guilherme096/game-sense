@@ -23,7 +23,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless mode
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/management/authenticate").permitAll()
+                .requestMatchers("/api/v1/management/authenticate", "/error").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

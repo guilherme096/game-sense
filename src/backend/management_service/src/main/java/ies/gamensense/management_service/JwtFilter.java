@@ -21,8 +21,6 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
-
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -33,11 +31,18 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        if (request.getRequestURI().equals("/api/v1/management/authenticate")) {
+        
+    throws ServletException, IOException {
+
+        System.out.println(request.getRequestURI());
+
+        if (request.getRequestURI().equals("/api/v1/management/authenticate")|| 
+        request.getServletPath().equals("/error")) {
             filterChain.doFilter(request, response);
             return;
         }
+
+        System.out.println("ANTES DA COOKIE");
 
         String token = null;
         Cookie[] cookies = request.getCookies();
@@ -50,22 +55,25 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
+        System.out.println("AQUIIIIIIIIIIIIIIIIIII NO FILTRO 22222222222");
+
         try {
             if (token != null) {
                 String username = jwtUtil.validateToken(token);
                 SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(username, null, null)
-                );
+                        new UsernamePasswordAuthenticationToken(username, null, null));
             } else {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), Map.of("message", "Invalid or missing JWT token"));
+                new ObjectMapper().writeValue(response.getOutputStream(),
+                        Map.of("message", "Invalid or missing JWT token"));
                 return;
             }
         } catch (Exception e) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(), Map.of("message", "Invalid or missing JWT token"));
+            new ObjectMapper().writeValue(response.getOutputStream(),
+                    Map.of("message", "Invalid or missing JWT token"));
             return;
         }
 

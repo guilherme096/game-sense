@@ -27,6 +27,7 @@ public class AuthController {
     @PostMapping("/authenticate")
     public ResponseEntity<Map<String, Object>> authenticate(@RequestBody AuthRequest request, HttpServletResponse response) {
         if ("admin".equals(request.getUsername()) && "admin".equals(request.getPassword())) {
+
             String token = jwtUtil.generateToken(request.getUsername());
 
             Cookie cookie = new Cookie("jwt", token);
