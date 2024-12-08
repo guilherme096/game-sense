@@ -60,7 +60,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public PlayerGameStats getPlayerStatisticsbyGameId(Long id, Long gameId) {
+    public Optional<PlayerGameStats> getPlayerStatisticsbyGameId(Long id, Long gameId) {
         return playerGameStatsRepository.findByPlayerIdAndGameId(id, gameId);
     }
 
@@ -70,7 +70,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<Player> searchPlayers(String name, Integer age, String club, String position) {
-        return playerRepository.findPlayersByCriteria(name, age, club, position);
+    public List<Player> searchPlayers(String name, Integer age, String position) {
+        return playerRepository.findPlayersByCriteria(name, age, position);
     }
 }

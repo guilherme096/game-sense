@@ -1,7 +1,15 @@
 package ies.gamesense.player_service.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import java.util.Optional;
 
 import ies.gamesense.player_service.model.Player;
 import ies.gamesense.player_service.model.PlayerGameStats;
@@ -64,7 +72,7 @@ public class PlayerController {
     // GET /api/v1/player/{id}/statistics/{gameId}
     @Operation(summary = "Get statistic of a player by game id")
     @GetMapping("/{id}/statistics/{gameId}")
-    public PlayerGameStats getPlayerStatisticsbyGameId(@PathVariable Long id, @PathVariable Long gameId) {
+    public Optional<PlayerGameStats> getPlayerStatisticsbyGameId(@PathVariable Long id, @PathVariable Long gameId) {
         return playerService.getPlayerStatisticsbyGameId(id, gameId);
     }
 
@@ -81,8 +89,7 @@ public class PlayerController {
     public List<Player> searchPlayers(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer age,
-            @RequestParam(required = false) String club,
             @RequestParam(required = false) String position) {
-        return playerService.searchPlayers(name, age, club, position);
+        return playerService.searchPlayers(name, age, position);
     }
 }

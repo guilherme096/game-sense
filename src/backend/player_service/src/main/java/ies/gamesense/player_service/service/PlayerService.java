@@ -1,6 +1,7 @@
 package ies.gamesense.player_service.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import ies.gamesense.player_service.model.Player;
 import ies.gamesense.player_service.model.PlayerGameStats;
@@ -17,9 +18,9 @@ public interface PlayerService {
 
     List<Player> getPlayersByClub(Long clubId);
 
-    PlayerGameStats getPlayerStatisticsbyGameId(Long id, Long gameId);
+    Optional<PlayerGameStats> getPlayerStatisticsbyGameId(Long id, Long gameId);
 
     List<Injury> getPlayerInjuries(Long id);
 
-    List<Player> searchPlayers(String name, Integer age, String club, String position);
+    List<Player> searchPlayers(String name, Integer age, String position);
 }

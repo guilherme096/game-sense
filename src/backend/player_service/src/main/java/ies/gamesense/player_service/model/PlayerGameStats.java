@@ -2,22 +2,25 @@ package ies.gamesense.player_service.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ForeignKey;
+import jakarta.persistence.GeneratedValue;
 import jakarta.validation.constraints.NotNull;
-import jakarta.persistence.JoinColumn;
 
 @Entity
 public class PlayerGameStats {
 
     @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotNull
-    @JoinColumn(name = "player_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_player_game_stats_player"))
+    @Column(name = "player_id", nullable = false)
     private Long player_id;
 
-    @Id
     @NotNull
-    @JoinColumn(name = "game_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_player_game_stats_game"))
+    @Column(name = "game_id", nullable = false)
     private Long game_id;
 
     @NotNull
