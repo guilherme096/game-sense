@@ -2,10 +2,39 @@ import PageTemplate from "./PageTemplate.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import GeneralCard from "../components/cards/GeneralCard"; 
-import profile from "../static/profile"; 
+import GeneralCard from "../components/cards/GeneralCard";
+import profile from "../static/profile";
+import { useNavigate } from "react-router-dom";
+import useSignOut from 'react-auth-kit/hooks/useSignOut';
+
 
 function Profile() {
+    const navigate = useNavigate();
+    const signOut = useSignOut();
+
+    const handleLogout = async () => {
+        try {
+            const response = await fetch("/api/v1/management/logout", {
+                method: "POST",
+                credentials: "include", // Include cookies in the request
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.ok) {
+                // Successfully logged out
+                signOut();
+                // Redirect to the login page
+                navigate("/");
+            } else {
+                console.error("Failed to logout");
+            }
+        } catch (error) {
+            console.error("Error logging out:", error);
+        }
+    };
+
     return (
         <PageTemplate>
             <div className="p-5 space-y-4">
@@ -19,7 +48,12 @@ function Profile() {
                         />
                         <div className="ml-4">
                             <h2 className="text-xl font-bold">{profile.name}</h2>
-                            <button className="text-gray-500 underline text-sm">Logout</button>
+                            <button
+                                onClick={handleLogout}
+                                className="text-gray-500 underline text-sm"
+                            >
+                                Logout
+                            </button>
                         </div>
                     </div>
                     <button className="ml-auto">
@@ -50,8 +84,9 @@ function Profile() {
                         {profile.myTeams.map((team) => (
                             <div
                                 key={team}
-                                className={`relative flex flex-col items-center ${team === profile.favTeam
-                                    }`}
+                                className={`relative flex flex-col items-center ${
+                                    team === profile.favTeam 
+                                }`}
                             >
                                 {/* Star Icon for Favorite Team */}
                                 {team === profile.favTeam && (
@@ -110,7 +145,6 @@ function Profile() {
                         ))}
                     </div>
                 </GeneralCard>
-
             </div>
         </PageTemplate>
     );

@@ -49,4 +49,18 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Invalid credentials"));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout(HttpServletResponse response) {
+        // Invalidate the JWT cookie by setting its Max-Age to 0
+        Cookie cookie = new Cookie("jwt", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false); // Set to true in production with HTTPS
+        cookie.setPath("/");
+        cookie.setMaxAge(0); // Expire the cookie immediately
+        response.addCookie(cookie);
+
+        // Return a success response
+        return ResponseEntity.ok(Map.of("message", "Logout successful"));
+    }
 }
