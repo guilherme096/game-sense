@@ -13,28 +13,30 @@ import jakarta.servlet.http.Cookie;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/management")
 public class AuthController {
-    // Handles the authentication request
-    // Validates the credentials and generates a JWT token
-    // Sets the token in a cookie
 
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/authenticate")
     public ResponseEntity<Map<String, Object>> authenticate(@RequestBody AuthRequest request, HttpServletResponse response) {
-        if ("admin".equals(request.getUsername()) && "admin".equals(request.getPassword())) {
+        Optional<AuthRequest> user = userService.validateUser(request.getUsername(), request.getPassword());
 
+        if (user.isPresent()) {
             String token = jwtUtil.generateToken(request.getUsername());
 
             Cookie cookie = new Cookie("jwt", token);
             cookie.setHttpOnly(true);
             cookie.setSecure(false); // Set to true in production (with HTTPS)
             cookie.setPath("/");
-            cookie.setMaxAge(36000);  
+            cookie.setMaxAge(36000);
             response.addCookie(cookie);
 
             Map<String, Object> responseBody = new HashMap<>();
