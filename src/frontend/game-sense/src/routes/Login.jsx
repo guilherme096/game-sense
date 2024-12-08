@@ -116,10 +116,10 @@ export default function Login() {
 
             <div className="text-left">
               <Link
-                to="/forgot-password"
+                to="/home"
                 className="text-sm text-gray-400 underline"
               >
-                Forgot Password?
+                Enter as guest
               </Link>
             </div>
 

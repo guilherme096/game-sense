@@ -6,6 +6,7 @@ import { routesList } from "./routes.jsx";
 import { QueryClient, QueryClientProvider } from "react-query";
 import AuthProvider from "react-auth-kit";
 import createStore from 'react-auth-kit/createStore';
+import { ToastContainer } from "react-toastify"
 
 
 const router = createBrowserRouter(routesList);
@@ -23,6 +24,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <AuthProvider store={store}>
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
+        <ToastContainer />
         <RouterProvider
           router={router}
           future={{

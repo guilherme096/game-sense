@@ -12,7 +12,7 @@ export default function Navbar() {
   const location = useLocation();
 
   const links = [
-    { path: "/", description: "Home", icon: faHouse },
+    { path: "/home", description: "Home", icon: faHouse },
     { path: "/leaguePage", description: "League", icon: faTrophy },
     { path: "/profile", description: "Profile", icon: faUser },
   ];

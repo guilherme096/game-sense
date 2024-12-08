@@ -7,6 +7,7 @@ import Login from "./routes/Login";
 import Register from "./routes/Register";
 import Profile from "./routes/Profile";
 import Club from "./routes/Club";
+import { RequireAuth } from "./routes/RequireAuth";
 import { Helmet } from 'react-helmet';
 
 export const routesList = [
@@ -18,18 +19,6 @@ export const routesList = [
               <title>GameSense - Home</title>
             </Helmet>
             <Home />
-          </>
-        ),
-    },
-
-    {
-        path: "/template",
-        element: (
-          <>
-            <Helmet>
-              <title>GameSense - Template</title>
-            </Helmet>
-            <Template />
           </>
         ),
     },
@@ -97,12 +86,14 @@ export const routesList = [
     {
         path: "/profile",
         element: (
+          <RequireAuth>
           <>
             <Helmet>
               <title>GameSense - Profile</title>
             </Helmet>
             <Profile />
           </>
+          </RequireAuth>
         ),
     },
 
