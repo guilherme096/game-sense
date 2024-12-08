@@ -28,8 +28,8 @@ build-club:
 	@echo "Building Club Service..."
 	@cd $(CLUB_SERVICE) && ./mvnw clean package -DskipTests
 build-management:
-        @echo "Building Management Service..."
-        @cd $(MANAGEMENT_SERVICE) && ./mvnw clean package -DskipTests
+	@echo "Building Management Service..."
+	@cd $(MANAGEMENT_SERVICE) && ./mvnw clean package -DskipTests
 build-live-game:
 	@echo "Building Live Game Service..."
 	@cd $(LIVE_GAME_SERVICE) && ./mvnw clean package -DskipTests
@@ -39,7 +39,6 @@ build-player:
 build-league:
 	@echo "Building League Service..."
 	@cd $(LEAGUE_SERVICE) && ./mvnw clean package -DskipTests
-
 build-frontend:
 	@echo "Building Frontend..."
 build-databases:
@@ -69,7 +68,7 @@ restart:
 	@echo "All services restarted!"
 
 # Rebuild specific services
-.PHONY: rebuild-club rebuild-live-game rebuild-player rebuild-league rebuild-frontend rebuild-databases rebuild-sql rebuild-redis
+.PHONY: rebuild-club rebuild-live-game rebuild-player rebuild-management rebuild-league rebuild-frontend rebuild-databases rebuild-sql rebuild-redis
 rebuild-club:
 	@docker-compose up --build -d club-service
 rebuild-live-game:
