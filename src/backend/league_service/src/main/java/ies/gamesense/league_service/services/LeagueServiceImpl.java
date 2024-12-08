@@ -2,15 +2,14 @@ package ies.gamesense.league_service.services;
 
 import ies.gamesense.league_service.entities.League;
 import ies.gamesense.league_service.entities.League_Club;
+import ies.gamesense.league_service.repositories.LeagueRepository;
+import ies.gamesense.league_service.repositories.LeagueClubRepository;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import ies.gamesense.league_service.repositories.LeagueClubRepository;
-import ies.gamesense.league_service.repositories.LeagueRepository;
-
-import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -27,27 +26,32 @@ public class LeagueServiceImpl implements LeagueService {
         this.leagueClubRepository = leagueClubRepository;
     }
 
-    private final Map<Long, League> leagues = new HashMap<>();
+    @Override
+    public List<League> getAllLeagues() {
+        return leagueRepository.findAll();
+    }
 
     @Override
+    @Transactional
     public League getLeagueById(Long id) {
-        return leagueRepository.findById(id).orElse(null);
+        League league = leagueRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("League not found with ID: " + id));
+        // Explicitly initialize lazy associations
+        Hibernate.initialize(league.getLeagueClubs());
+        return league;
     }
 
     @Override
     public League createLeague(League league) {
-        league.setId(leagues.size() + 1L);
-        leagues.put(league.getId(), league);
         return leagueRepository.save(league);
     }
 
     @Override
     public League updateLeague(League league) {
-        if (leagues.containsKey(league.getId())) {
-            leagues.put(league.getId(), league);    
-            return leagueRepository.save(league);
+        if (!leagueRepository.existsById(league.getId())) {
+            throw new RuntimeException("League not found with ID: " + league.getId());
         }
-        throw new IllegalArgumentException("League not found: " + league.getId());
+        return leagueRepository.save(league);
     }
 
     @Override
@@ -55,17 +59,11 @@ public class LeagueServiceImpl implements LeagueService {
         return leagueClubRepository.findByLeagueId(leagueId);
     }
 
-    
     @Override
     public League_Club createLeagueClub(Long leagueId, League_Club leagueClub) {
-        // Fetch the league entity from the database
         League league = leagueRepository.findById(leagueId)
-                .orElseThrow(() -> new IllegalArgumentException("League not found: " + leagueId));
-        
-        // Set the league for the leagueClub entity
+                .orElseThrow(() -> new RuntimeException("League not found with ID: " + leagueId));
         leagueClub.setLeague(league);
-        
-        // Save the League_Club entity
         return leagueClubRepository.save(leagueClub);
     }
 }

@@ -1,24 +1,24 @@
 package ies.gamesense.player_service.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import java.util.Optional;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ies.gamesense.player_service.model.Player;
 import ies.gamesense.player_service.model.PlayerGameStats;
 import ies.gamesense.player_service.model.Injury;
-
 import ies.gamesense.player_service.service.PlayerService;
 import io.swagger.v3.oas.annotations.Operation;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/player")
@@ -27,69 +27,97 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    // GET /api/v1/player/health
+    // Health check endpoint
     @Operation(summary = "Health check")
     @GetMapping("/health")
-    public String healthCheck() {
-        return "OK";
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("OK");
     }
 
-    // GET /api/v1/player
+    // Get all players
     @Operation(summary = "Get all players")
     @GetMapping("/")
-    public List<Player> getPlayers() {
-        return playerService.getAllPlayers();
+    public ResponseEntity<List<Player>> getPlayers() {
+        List<Player> players = playerService.getAllPlayers();
+        return ResponseEntity.ok(players);
     }
 
-    // GET /api/v1/player/{id}
+    // Get player by ID
     @Operation(summary = "Get player by id")
     @GetMapping("/{id}")
-    public Player getPlayer(@PathVariable Long id) {
-        return playerService.getPlayerById(id);
+    public ResponseEntity<Player> getPlayer(@PathVariable Long id) {
+        try {
+            Player player = playerService.getPlayerById(id);
+            return ResponseEntity.ok(player);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
-    // POST /api/v1/player
+    // Create a new player
     @Operation(summary = "Create a new player")
     @PostMapping
-    public Player createPlayer(@RequestBody Player player) {
-        return playerService.createPlayer(player);
+    public ResponseEntity<Player> createPlayer(@RequestBody Player player) {
+        Player createdPlayer = playerService.createPlayer(player);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdPlayer);
     }
 
-    // PUT /api/v1/player/{id}
+    // Update a player by ID
     @Operation(summary = "Update a player")
     @PutMapping("/{id}")
-    public Player updatePlayer(@PathVariable Long id, @RequestBody Player player) {
-        return playerService.updatePlayer(id, player);
+    public ResponseEntity<Player> updatePlayer(@PathVariable Long id, @RequestBody Player player) {
+        try {
+            Player updatedPlayer = playerService.updatePlayer(id, player);
+            return ResponseEntity.ok(updatedPlayer);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
-    // GET /api/v1/player/{clubId}
+    // Get players by club ID
     @Operation(summary = "Get players by club id")
-    @GetMapping("/{clubId}")
-    public List<Player> getPlayersByClub(@PathVariable Long clubId) {
-        return playerService.getPlayersByClub(clubId);
+    @GetMapping("/club/{clubId}")
+    public ResponseEntity<List<Player>> getPlayersByClub(@PathVariable Long clubId) {
+        List<Player> players = playerService.getPlayersByClub(clubId);
+        if (players.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(players);
     }
 
-    // GET /api/v1/player/{id}/statistics/{gameId}
+    // Get player's statistics by game ID
     @Operation(summary = "Get statistic of a player by game id")
     @GetMapping("/{id}/statistics/{gameId}")
-    public Optional<PlayerGameStats> getPlayerStatisticsbyGameId(@PathVariable Long id, @PathVariable Long gameId) {
-        return playerService.getPlayerStatisticsbyGameId(id, gameId);
+    public ResponseEntity<Optional<PlayerGameStats>> getPlayerStatisticsbyGameId(@PathVariable Long id, @PathVariable Long gameId) {
+        Optional<PlayerGameStats> stats = playerService.getPlayerStatisticsbyGameId(id, gameId);
+        if (stats.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(stats);
+        }
+        return ResponseEntity.ok(stats);
     }
 
-    // GET /api/v1/player/{id}/injuries
+    // Get injuries by player ID
     @Operation(summary = "Get injuries by player id")
     @GetMapping("/{id}/injuries")
-    public List<Injury> getPlayerInjuries(@PathVariable Long id) {
-        return playerService.getPlayerInjuries(id);
+    public ResponseEntity<List<Injury>> getPlayerInjuries(@PathVariable Long id) {
+        List<Injury> injuries = playerService.getPlayerInjuries(id);
+        if (injuries.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(injuries);
     }
 
-    // GET /api/v1/player/search
+    // Search players by criteria
     @Operation(summary = "Search players")
     @GetMapping("/search")
-    public List<Player> searchPlayers(
+    public ResponseEntity<List<Player>> searchPlayers(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer age,
             @RequestParam(required = false) String position) {
-        return playerService.searchPlayers(name, age, position);
+        List<Player> players = playerService.searchPlayers(name, age, position);
+        if (players.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(players);
     }
 }

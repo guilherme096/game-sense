@@ -9,6 +9,8 @@ import java.util.List;
 @Service
 public interface LeagueService {
 
+    List<League> getAllLeagues();
+
     League getLeagueById(Long id);
 
     League createLeague(League league);
