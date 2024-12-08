@@ -9,14 +9,14 @@ import java.util.List;
 @Service
 public interface LeagueService {
 
-    League getLeagueById(int id);
+    League getLeagueById(Long id);
 
     League createLeague(League league);
 
     League updateLeague(League league);
 
-    List<League_Club> getLeagueStandings(int leagueId);
+    List<League_Club> getLeagueStandings(Long leagueId);
 
-    League_Club createLeagueClub(int leagueId, League_Club leagueClub);
+    League_Club createLeagueClub(Long leagueId, League_Club leagueClub);
 
 }

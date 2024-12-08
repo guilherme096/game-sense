@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import ies.gamesense.league_service.repositories.LeagueClubRepository;
 import ies.gamesense.league_service.repositories.LeagueRepository;
 
-import java.util.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class LeagueServiceImpl implements LeagueService {
@@ -20,18 +22,21 @@ public class LeagueServiceImpl implements LeagueService {
     @Autowired
     private LeagueClubRepository leagueClubRepository;
 
+    public LeagueServiceImpl(LeagueRepository leagueRepository, LeagueClubRepository leagueClubRepository) {
+        this.leagueRepository = leagueRepository;
+        this.leagueClubRepository = leagueClubRepository;
+    }
 
-    private final Map<Integer, League> leagues = new HashMap<>();
-    private final Map<Integer, List<League_Club>> leagueClubs = new HashMap<>();
+    private final Map<Long, League> leagues = new HashMap<>();
 
     @Override
-    public League getLeagueById(int id) {
+    public League getLeagueById(Long id) {
         return leagueRepository.findById(id).orElse(null);
     }
 
     @Override
     public League createLeague(League league) {
-        league.setId(leagues.size() + 1); 
+        league.setId(leagues.size() + 1L);
         leagues.put(league.getId(), league);
         return leagueRepository.save(league);
     }
@@ -46,13 +51,13 @@ public class LeagueServiceImpl implements LeagueService {
     }
 
     @Override
-    public List<League_Club> getLeagueStandings(int leagueId) {
+    public List<League_Club> getLeagueStandings(Long leagueId) {
         return leagueClubRepository.findByLeagueId(leagueId);
     }
 
     
     @Override
-    public League_Club createLeagueClub(int leagueId, League_Club leagueClub) {
+    public League_Club createLeagueClub(Long leagueId, League_Club leagueClub) {
         // Fetch the league entity from the database
         League league = leagueRepository.findById(leagueId)
                 .orElseThrow(() -> new IllegalArgumentException("League not found: " + leagueId));
@@ -63,8 +68,4 @@ public class LeagueServiceImpl implements LeagueService {
         // Save the League_Club entity
         return leagueClubRepository.save(leagueClub);
     }
-
-
-
-
 }

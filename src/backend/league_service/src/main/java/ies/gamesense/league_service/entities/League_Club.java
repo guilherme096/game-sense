@@ -13,7 +13,7 @@ public class League_Club {
 
     @Id
     @Column(name = "club_id", nullable = false)
-    private int club_id;
+    private Long club_id;
 
     @Column(name = "matches_played", nullable = false)
     private int matchesPlayed;
@@ -45,7 +45,7 @@ public class League_Club {
     public League_Club() {
     }
 
-    public League_Club(League league, int club_id, int matchesPlayed, int wins, int goalsScored, int goalsConceded, int losses, int goal_difference, int place, int points, int draws) {
+    public League_Club(League league, Long club_id, int matchesPlayed, int wins, int goalsScored, int goalsConceded, int losses, int goal_difference, int place, int points, int draws) {
         this.league = league;
         this.club_id = club_id;
         this.matchesPlayed = matchesPlayed;
@@ -68,11 +68,11 @@ public class League_Club {
         this.league = league;
     }
 
-    public int getClub_id() {
+    public Long getClub_id() {
         return club_id;
     }
 
-    public void setClub_id(int club_id) {
+    public void setClub_id(Long club_id) {
         this.club_id = club_id;
     }
 

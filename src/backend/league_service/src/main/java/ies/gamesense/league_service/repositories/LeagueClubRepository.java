@@ -6,5 +6,5 @@ import java.util.List;
 
 @Repository
 public interface LeagueClubRepository extends JpaRepository<League_Club, Integer> {
-    List<League_Club> findByLeagueId(int leagueId);
+    List<League_Club> findByLeagueId(Long leagueId);
 }
