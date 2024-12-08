@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -50,24 +52,27 @@ export default function Login() {
           navigate("/home");
         } else {
           console.error("Sign in failed");
-          setError("Failed to sign in. Please try again.");
+          toast.error("Failed to sign in. Please try again.");
         }
       } else {
         console.error("Unexpected response:", response);
-        setError("Unexpected response from server. Please try again.");
+        toast.error("Unexpected response from server. Please try again.");
       }
     } catch (err) {
       console.error("Login failed", err);
+      setUsername("");
+      setPassword("");
+
       if (err.response) {
         console.error("Response data:", err.response.data);
         console.error("Response status:", err.response.status);
-        setError(err.response.data.message || "Authentication failed");
+        toast.error(err.response.data.message || "Authentication failed");
       } else if (err.request) {
         console.error("No response received");
-        setError("No response from server. Please try again.");
+        toast.error("No response from server. Please try again.");
       } else {
         console.error("Error setting up request:", err.message);
-        setError("An error occurred. Please try again.");
+        toast.error("An error occurred. Please try again.");
       }
     }
   };
@@ -82,10 +87,6 @@ export default function Login() {
 
         <div className="card w-full max-w-md shadow-2xl p-8 bg-[#333D4D] rounded-lg">
           <form onSubmit={handleLogin} className="flex flex-col space-y-4">
-            {error && (
-              <div className="text-red-500 text-center mb-2">{error}</div>
-            )}
-
             <div>
               <label className="text-sm text-gray-200 mb-1 block">
                 Username
