@@ -33,8 +33,7 @@ public class AuthController {
             String token = jwtUtil.generateToken(request.getUsername());
 
             Cookie cookie = new Cookie("jwt", token);
-            cookie.setHttpOnly(true);
-            cookie.setSecure(false); // Set to true in production (with HTTPS)
+            cookie.setHttpOnly(true); // keep the token in server side
             cookie.setPath("/");
             cookie.setMaxAge(36000);
             response.addCookie(cookie);

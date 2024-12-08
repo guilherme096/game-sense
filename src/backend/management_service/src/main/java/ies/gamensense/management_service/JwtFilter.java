@@ -36,13 +36,10 @@ public class JwtFilter extends OncePerRequestFilter {
 
         System.out.println(request.getRequestURI());
 
-        if (request.getRequestURI().equals("/api/v1/management/authenticate")|| 
-        request.getServletPath().equals("/error")) {
+        if (request.getRequestURI().equals("/api/v1/management/authenticate")) {
             filterChain.doFilter(request, response);
             return;
         }
-
-        System.out.println("ANTES DA COOKIE");
 
         String token = null;
         Cookie[] cookies = request.getCookies();
@@ -54,8 +51,6 @@ public class JwtFilter extends OncePerRequestFilter {
                 }
             }
         }
-
-        System.out.println("AQUIIIIIIIIIIIIIIIIIII NO FILTRO 22222222222");
 
         try {
             if (token != null) {

@@ -2,8 +2,6 @@ package ies.gamensense.management_service;
 
 public class AuthRequest {
 
-    // Data class for login requests
-
     private String username;
     private String password;
 

@@ -6,7 +6,6 @@ import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,8 +13,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtUtil {
-
-    // JWT token operations
 
     @Value("${jwt.secret}")
     private String secret;
@@ -29,7 +26,7 @@ public class JwtUtil {
         return Jwts.builder()
                    .setSubject(username)
                    .setIssuedAt(new Date())
-                   .setExpiration(new Date(System.currentTimeMillis() + 36000000)) // Valid for 10 hours
+                   .setExpiration(new Date(System.currentTimeMillis() + 36000000)) 
                    .signWith(getSigningKey())
                    .compact();
     }
