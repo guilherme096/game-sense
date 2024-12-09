@@ -1,6 +1,6 @@
 import textLogo from "/text-logo.png";
 import iconLogo from "/icon-logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
@@ -14,6 +14,16 @@ export default function Login() {
 
   const signIn = useSignIn();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Function to handle going back to the previous page
+  const handleGoBack = () => {
+    // Check if there's a previous location in state
+    const previousPath = location.state?.from?.pathname || '/home';
+    
+    // Navigate back to the previous page
+    navigate(previousPath);
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -143,6 +153,18 @@ export default function Login() {
             </div>
           </form>
         </div>
+
+        {/* Go Back Button */}
+        {location.state?.from && (
+          <div className="mt-4 text-center w-full max-w-md">
+            <button 
+              onClick={handleGoBack}
+              className="w-full text-white py-2 px-4 rounded-md text-lg bg-yellow-400"
+            >
+              Go Back to Previous Page
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
