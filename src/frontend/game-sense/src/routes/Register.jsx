@@ -14,26 +14,16 @@ export default function Register() {
                     className="card w-full max-w-md shadow-2xl p-8 bg-[#333D4D] rounded-lg"
                 >
                     <div className="flex flex-col space-y-4">
-                        {/* Full Name Input */}
+                        {/* Name Input */}
                         <div>
-                            <label className="text-sm text-gray-200 mb-1 block">Full Name</label>
+                            <label className="text-sm text-gray-200 mb-1 block">Name</label>
                             <input
                                 type="text"
-                                placeholder="fullname"
+                                placeholder="name"
                                 className="input input-bordered w-full p-2 rounded-md bg-white text-gray-800"
                             />
                         </div>
-
-                        {/* Username Input */}
-                        <div>
-                            <label className="text-sm text-gray-200 mb-1 block">Username</label>
-                            <input
-                                type="text"
-                                placeholder="username"
-                                className="input input-bordered w-full p-2 rounded-md bg-white text-gray-800"
-                            />
-                        </div>
-
+                        
                         {/* Favourite Team Input */}
                         <div>
                             <label className="text-sm text-gray-200 mb-1 block">Favourite Team</label>

@@ -1,5 +1,6 @@
 package ies.gamensense.management_service;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,5 +64,28 @@ public class AuthController {
 
         // Return a success response
         return ResponseEntity.ok(Map.of("message", "Logout successful"));
+    }    
+
+    @GetMapping("/username")
+    public ResponseEntity<Map<String, String>> getCurrentUsername(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwt".equals(cookie.getName())) {
+                    try {
+                        String username = jwtUtil.validateToken(cookie.getValue());
+                        
+                        Map<String, String> response = new HashMap<>();
+                        response.put("username", username);
+                        return ResponseEntity.ok(response);
+                    } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                            .body(Map.of("message", "Invalid or expired token"));
+                    }
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body(Map.of("message", "No authentication token found"));
     }
 }

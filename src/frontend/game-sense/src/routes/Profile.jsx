@@ -6,26 +6,26 @@ import GeneralCard from "../components/cards/GeneralCard";
 import profile from "../static/profile";
 import { useNavigate } from "react-router-dom";
 import useSignOut from 'react-auth-kit/hooks/useSignOut';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 
 
 function Profile() {
     const navigate = useNavigate();
     const signOut = useSignOut();
+    const [username, setUsername] = useState("");
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("/api/v1/management/logout", {
-                method: "POST",
-                credentials: "include", // Include cookies in the request
+            const response = await axios.post("/api/v1/management/logout", {}, {
+                withCredentials: true,
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
 
-            if (response.ok) {
-                // Successfully logged out
+            if (response.status === 200) {
                 signOut();
-                // Redirect to the login page
                 navigate("/");
             } else {
                 console.error("Failed to logout");
@@ -34,6 +34,24 @@ function Profile() {
             console.error("Error logging out:", error);
         }
     };
+
+    useEffect(() => {
+        const fetchUsername = async () => {
+            try {
+                const response = await axios.get("/api/v1/management/username", {
+                    withCredentials: true
+                });
+                
+                if (response.data && response.data.username) {
+                    setUsername(response.data.username);
+                }
+            } catch (error) {
+                console.error("Error fetching username:", error);
+            }
+        };
+
+        fetchUsername();
+    }, []);
 
     return (
         <PageTemplate>
@@ -47,7 +65,9 @@ function Profile() {
                             className="w-20 h-20 rounded-full"
                         />
                         <div className="ml-4">
-                            <h2 className="text-xl font-bold">{profile.name}</h2>
+                            <h2 className="text-xl font-bold">
+                                {username}
+                            </h2>
                             <button
                                 onClick={handleLogout}
                                 className="text-gray-500 underline text-sm"
