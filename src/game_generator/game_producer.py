@@ -51,9 +51,15 @@ def read_game_from_file(file_path):
 
 
 # Function to simulate the timing for event publishing
-def process_events(events):
+def process_events(events, stats):
     # Current time in UTC (or adjust if needed)
     current_time = datetime.now(pytz.utc)
+    stats_publish_time = [
+        15,
+        60,
+        80,
+    ]
+    stats_published = 0
 
     # Sort events by their publish_timestamp
     events.sort(key=lambda e: e["publish_timestamp"])
@@ -72,6 +78,10 @@ def process_events(events):
             print(f"Waiting for {wait_time} event at {publish_timestamp}")
             time.sleep(wait_time)
 
+        if stats_published == 0 and event["minute"] >= stats_publish_time[0]:
+            publish_game_stat()
+            stats_published += 1
+
         # Publish the event
         print(f"Publishing event: {event}")
         sleep(20)
@@ -83,6 +93,7 @@ def publish_game_info(game, stats):
     try:
         # Send the event to Kafka
         producer.send(GAMES_TOPIC, value=game)
+        producer.flush()  # Ensure all messages are sent
         sleep(3)
         producer.send(STATS_TOPIC, value=stats)
         producer.flush()  # Ensure all messages are sent
@@ -106,18 +117,33 @@ def main():
     }
     mathc_stats = {
         "match_id": game_data.get("match_id"),
+        "half": 0,
         "home_team_stats": {
-            "Stats:\n Possession: 0\n Shots: 0\n Passes Acc: 0\n Tackles: 0\n Fouls: 0\n Corners: 0\n Offsides: 0\n Interceptions: 0",
+            "Possession": 0,
+            "Shots": 0,
+            "Passes Acc": 0,
+            "Tackles": 0,
+            "Fouls": 0,
+            "Corners": 0,
+            "Offsides": 0,
+            "Interceptions": 0,
         },
         "away_team_stats": {
-            "Stats:\n Possession: 0\n Shots: 0\n Passes Acc: 0\n Tackles: 0\n Fouls: 0\n Corners: 0\n Offsides: 0\n Interceptions: 0",
+            "Possession": 0,
+            "Shots": 0,
+            "Passes Acc": 0,
+            "Tackles": 0,
+            "Fouls": 0,
+            "Corners": 0,
+            "Offsides": 0,
+            "Interceptions": 0,
         },
     }
     sleep(10)
     publish_game_info(match_info, mathc_stats)
 
     if events:
-        process_events(events)
+        process_events(events, game_data.get("match_stats"))
     else:
         print("No events found in the game data.")
 

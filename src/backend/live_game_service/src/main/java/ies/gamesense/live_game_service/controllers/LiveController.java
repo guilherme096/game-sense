@@ -42,13 +42,23 @@ public class LiveController {
     }
 
     @Operation(summary = "Get game statistics by game id")
-    @GetMapping("/{id}/statistics")
-    public ResponseEntity<GameStatistics> getGameStatistics(@PathVariable("id") String id) {
-        GameStatistics stats = liveService.getGameStatistics(id);
+    @GetMapping("/{id}/statistics/ping")
+    public ResponseEntity<Map<Integer, GameStatistics>> getGameStatistics(@PathVariable("id") String id,
+            @RequestParam("lastHalf") Integer lastEventId) {
+        Map<Integer, GameStatistics> stats = liveService.getGameStatistics(id);
         if (stats == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok(stats);
+
+        if (lastEventId == null) {
+            return ResponseEntity.badRequest().body(null);
+        } else {
+            GameStatistics lastStats = stats.get(lastEventId);
+            if (lastStats == null) {
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+            }
+            return ResponseEntity.ok(stats);
+        }
     }
 
     @Operation(summary = "Get new events for live game")

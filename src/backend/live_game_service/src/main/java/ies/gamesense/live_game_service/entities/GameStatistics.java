@@ -6,34 +6,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GameStatistics {
     @JsonProperty("home_team_stats")
-    private Map<String, Object> homeTeamStats;
+    private Map<String, Double> homeTeamStats;
     @JsonProperty("away_team_stats")
-    private Map<String, Object> awayTeamStats;
+    private Map<String, Double> awayTeamStats;
 
-    @JsonProperty("game_id")
+    @JsonProperty("half")
+    private Integer half;
+
+    @JsonProperty("match_id")
     private String matchId;
 
     public String getMatchId() {
+        System.out.println("Getting stats Match ID: " + matchId);
         return matchId;
+    }
+
+    public Integer getHalf() {
+        return half;
+    }
+
+    public void setHalf(Integer half) {
+        this.half = half;
     }
 
     public void setMatchId(String matchId) {
         this.matchId = matchId;
     }
 
-    public Map<String, Object> getHomeTeamStats() {
+    public Map<String, Double> getHomeTeamStats() {
         return homeTeamStats;
     }
 
-    public void setHomeTeamStats(Map<String, Object> homeTeamStats) {
+    public void setHomeTeamStats(Map<String, Double> homeTeamStats) {
         this.homeTeamStats = homeTeamStats;
     }
 
-    public Map<String, Object> getAwayTeamStats() {
+    public Map<String, Double> getAwayTeamStats() {
         return awayTeamStats;
     }
 
-    public void setAwayTeamStats(Map<String, Object> awayTeamStats) {
+    public void setAwayTeamStats(Map<String, Double> awayTeamStats) {
         this.awayTeamStats = awayTeamStats;
     }
 
@@ -45,7 +57,8 @@ public class GameStatistics {
                 '}';
     }
 
-    public GameStatistics(Map<String, Object> homeTeamStats, Map<String, Object> awayTeamStats) {
+    public GameStatistics(Map<String, Double> homeTeamStats,
+            Map<String, Double> awayTeamStats) {
         this.homeTeamStats = homeTeamStats;
         this.awayTeamStats = awayTeamStats;
     }
@@ -53,7 +66,8 @@ public class GameStatistics {
     public GameStatistics() {
     }
 
-    public void updateStats(Map<String, Object> homeTeamStats, Map<String, Object> awayTeamStats) {
+    public void updateStats(Map<String, Double> homeTeamStats,
+            Map<String, Double> awayTeamStats) {
         this.homeTeamStats = homeTeamStats;
         this.awayTeamStats = awayTeamStats;
     }

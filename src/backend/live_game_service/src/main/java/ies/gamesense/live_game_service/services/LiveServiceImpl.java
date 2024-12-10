@@ -1,65 +1,30 @@
 package ies.gamesense.live_game_service.services;
 
-import ies.gamesense.live_game_service.entities.GameStatistics;
-import ies.gamesense.live_game_service.entities.Live;
-import ies.gamesense.live_game_service.entities.Match;
-import jakarta.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ies.gamesense.live_game_service.entities.GameStatistics;
+import ies.gamesense.live_game_service.entities.Match;
+import jakarta.annotation.PostConstruct;
+
 @Service
 public class LiveServiceImpl implements LiveService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Value("classpath:static/mock_games.json")
-    private Resource jsonLiveGames;
-
-    private Map<Long, Live> liveGames;
     private Map<String, Match> matches;
 
     @PostConstruct
     public void init() {
         this.matches = new HashMap<>();
-        this.liveGames = new HashMap<>();
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            // Parse the JSON file into a List<Live>
-            List<Live> games = mapper.readValue(jsonLiveGames.getInputStream(),
-                    mapper.getTypeFactory().constructCollectionType(List.class, Live.class));
-
-            // Check if the parsed list is null or empty
-            if (games == null || games.isEmpty()) {
-                System.err.println("No games found in the JSON file: " + jsonLiveGames.getFilename());
-                return;
-            }
-
-            // Populate the liveGames map
-            games.forEach(game -> {
-                if (game.getId() == null) {
-                    System.err.println("Game with missing ID detected. Skipping: " + game);
-                } else {
-                    this.liveGames.put(game.getId(), game);
-                }
-            });
-
-            // Log success
-            System.out.println("Loaded " + liveGames.size() + " live games from " + jsonLiveGames.getFilename());
-        } catch (IOException e) {
-            // Handle and log specific error
-            System.err.println("Error reading or parsing the JSON file: " + jsonLiveGames.getFilename());
-            e.printStackTrace();
-        }
     }
 
     @KafkaListener(id = "games", topics = "games")
@@ -76,7 +41,7 @@ public class LiveServiceImpl implements LiveService {
         this.matches.put(match.getMatchId(), match);
     }
 
-    @KafkaListener(id = "stats", topics = "stats")
+    @KafkaListener(id = "stats", topics = "stats", containerFactory = "gameStatsKafkaListenerContainerFactory")
     public void listen(GameStatistics stats) {
         System.out.println("Hello from Kafka!");
         System.out.println("Received GameStatistics: " + stats.toString());
@@ -88,7 +53,9 @@ public class LiveServiceImpl implements LiveService {
             return;
         }
 
-        match.setGameStatistics(stats);
+        Integer half = stats.getHalf();
+
+        match.addGameStatistics(half, stats);
     }
 
     @KafkaListener(id = "events", topics = "events", containerFactory = "customKafkaListenerContainerFactory")
@@ -114,6 +81,7 @@ public class LiveServiceImpl implements LiveService {
             System.err.println("Match not found for ID: " + matchId);
             return;
         }
+        match.setGameStatistics(new HashMap<>());
 
         if (event.get("event_type").equals("GOAL")) {
             String team = event.get("team");
@@ -142,9 +110,9 @@ public class LiveServiceImpl implements LiveService {
     }
 
     @Override
-    public GameStatistics getGameStatistics(String id) {
+    public Map<Integer, GameStatistics> getGameStatistics(String id) {
         Match game = getLiveById(id);
-        return (game != null) ? game.getGameStatistics() : null;
+        return (game != null) ? game.getGameStatistics() : new HashMap<>();
     }
 
     @Override
