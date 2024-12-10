@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ies.gamsense.club_service.model.Club;
 import ies.gamsense.club_service.model.Game;
-import ies.gamsense.club_service.model.Injury;
-import ies.gamsense.club_service.model.Player;
 import ies.gamsense.club_service.repository.ClubRepository;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
@@ -54,8 +52,6 @@ public class ClubServiceImpl implements ClubService {
                 for (JsonNode clubNode : rootNode) {
                     Club club = new Club();
                     club.setId(clubNode.get("id").asLong());
-                    club.setLeague(clubNode.get("league").asText());
-                    club.setLeaguePosition(clubNode.get("league_position").asInt());
     
                     // Parse nextGame
                     JsonNode nextGameNode = clubNode.get("nextGame");
@@ -90,29 +86,6 @@ public class ClubServiceImpl implements ClubService {
                     }
                     club.setLastGames(lastGames);
     
-                    // Parse players
-                    List<Player> players = new ArrayList<>();
-                    for (JsonNode playerNode : clubNode.get("players")) {
-                        Player player = new Player();
-                        player.setId(playerNode.get("id").asLong());
-                        player.setName(playerNode.get("name").asText());
-                        player.setInjured(playerNode.get("injured").asBoolean());
-    
-                        // Parse injury history
-                        List<Injury> injuries = new ArrayList<>();
-                        for (JsonNode injuryNode : playerNode.get("injury_history")) {
-                            Injury injury = new Injury();
-                            injury.setDate(injuryNode.get("date").asText());
-                            injury.setDescription(injuryNode.get("description").asText());
-                            injury.setSeverity(injuryNode.get("severity").asText());
-                            injury.setGamesOut(injuryNode.get("gamesOut").asInt());
-                            injuries.add(injury);
-                        }
-                        player.setInjuries(injuries);
-                        players.add(player);
-                    }
-                    club.setPlayers(players);
-    
                     // Store the club in the map
                     clubsFromJson.put(club.getId(), club);
                     
@@ -138,11 +111,8 @@ public class ClubServiceImpl implements ClubService {
         for (Club club : clubsFromDb) {
             Club jsonClub = clubsFromJson.get(club.getId());
             if (jsonClub != null) {
-                club.setLeague(jsonClub.getLeague());
-                club.setLeaguePosition(jsonClub.getLeaguePosition());
                 club.setNextGame(jsonClub.getNextGame());
                 club.setLastGames(jsonClub.getLastGames());
-                club.setPlayers(jsonClub.getPlayers());
             }
         }
 
@@ -157,11 +127,8 @@ public class ClubServiceImpl implements ClubService {
             Club club = clubFromDb.get();
             Club jsonClub = clubsFromJson.get(id);
             if (jsonClub != null) {
-                club.setLeague(jsonClub.getLeague());
-                club.setLeaguePosition(jsonClub.getLeaguePosition());
                 club.setNextGame(jsonClub.getNextGame());
                 club.setLastGames(jsonClub.getLastGames());
-                club.setPlayers(jsonClub.getPlayers());
             }
             return club;
         }
@@ -187,12 +154,6 @@ public class ClubServiceImpl implements ClubService {
             c.setStarred(true);
             clubRepository.save(c);
         });
-    }
-
-    @Override
-    public List<Player> getPlayersByClubId(Long clubId) {
-        Club club = getClubById(clubId);
-        return club != null ? club.getPlayers() : Collections.emptyList();
     }
 
     @Override

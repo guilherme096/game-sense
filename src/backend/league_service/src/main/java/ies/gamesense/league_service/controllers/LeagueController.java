@@ -27,7 +27,7 @@ public class LeagueController {
     }
 
     // Get all leagues
-    @Operation(summary = "Get all leagues")
+    @Operation(summary = "Get all Leagues")
     @GetMapping("/")
     public ResponseEntity<List<League>> getAllLeagues() {
         try {
@@ -39,7 +39,7 @@ public class LeagueController {
     }
 
     // Get a league by ID
-    @Operation(summary = "Get a league by ID")
+    @Operation(summary = "Get a League by ID")
     @GetMapping("/{id}")
     public ResponseEntity<League> getLeagueById(@PathVariable Long id) {
         try {
@@ -51,8 +51,8 @@ public class LeagueController {
     }
 
     // Get league_clubs by league ID
-    @Operation(summary = "Get league_clubs by league ID")
-    @GetMapping("/{id}/clubs")
+    @Operation(summary = "Get League Clubs by League ID")
+    @GetMapping("/{id}/standings")
     public ResponseEntity<List<League_Club>> getLeagueClubs(@PathVariable Long id) {
         try {
             List<League_Club> leagueClubs = leagueService.getLeagueStandings(id);
@@ -63,7 +63,7 @@ public class LeagueController {
     }
 
     // Create a new league
-    @Operation(summary = "Create a new league")
+    @Operation(summary = "Create a new League")
     @PostMapping("/create")
     public ResponseEntity<League> createLeague(@RequestBody League league) {
         try {
@@ -75,7 +75,7 @@ public class LeagueController {
     }
 
     // Create a new league_club
-    @Operation(summary = "Create a new league_club")
+    @Operation(summary = "Create a new League Club")
     @PostMapping("/{id}/clubs/create")
     public ResponseEntity<League_Club> createLeagueClub(@PathVariable Long id, @RequestBody League_Club leagueClub) {
         try {
@@ -87,7 +87,7 @@ public class LeagueController {
     }
 
     // Update a league
-    @Operation(summary = "Update a league")
+    @Operation(summary = "Update a League")
     @PutMapping("/update")
     public ResponseEntity<League> updateLeague(@RequestBody League league) {
         try {

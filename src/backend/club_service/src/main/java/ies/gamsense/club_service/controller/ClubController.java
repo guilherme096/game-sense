@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ies.gamsense.club_service.model.Club;
-import ies.gamsense.club_service.model.Player;
 import ies.gamsense.club_service.model.Game;
 import ies.gamsense.club_service.service.ClubService;
 
@@ -21,6 +20,12 @@ public class ClubController {
 
     @Autowired
     private ClubService clubService;
+
+    @GetMapping("/health")
+    @Operation(summary = "Hello endpoint for testing")
+    public ResponseEntity<String> hello() {
+        return new ResponseEntity<>("Hello from Club Service!", HttpStatus.OK);
+    }
 
     @GetMapping("/")
     @Operation(summary = "Get all Clubs")
@@ -63,16 +68,6 @@ public class ClubController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/{id}/players")
-    @Operation(summary = "Get Players of a Club")
-    public ResponseEntity<List<Player>> getPlayersByClubId(@PathVariable Long id) {
-        List<Player> players = clubService.getPlayersByClubId(id);
-        if (players.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(players, HttpStatus.OK);
-    }
-
     @GetMapping("/{id}/games/last")
     @Operation(summary = "Get Last Games of a Club")
     public ResponseEntity<List<Game>> getLastGamesByClubId(@PathVariable Long id) {
@@ -89,11 +84,5 @@ public class ClubController {
         Optional<Game> game = clubService.getNextGameByClubId(id);
         return game.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @GetMapping("/hello")
-    @Operation(summary = "Hello endpoint for testing")
-    public ResponseEntity<String> hello() {
-        return new ResponseEntity<>("Hello from Club Service!", HttpStatus.OK);
     }
 }
