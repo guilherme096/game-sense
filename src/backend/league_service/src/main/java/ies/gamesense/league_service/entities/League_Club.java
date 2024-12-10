@@ -17,7 +17,7 @@ public class League_Club {
 
     @NotNull
     @Column(name = "league_id", nullable = false)
-    private Long leagueId;
+    private Long league_id;
 
     @NotNull
     @Column(name = "club_id", nullable = false)
@@ -53,9 +53,9 @@ public class League_Club {
     public League_Club() {
     }
 
-    public League_Club(Long id, Long leagueId, Long club_id, int matchesPlayed, int wins, int goalsScored, int goalsConceded, int losses, int goal_difference, int place, int points, int draws) {
+    public League_Club(Long id, Long league_id, Long club_id, int matchesPlayed, int wins, int goalsScored, int goalsConceded, int losses, int goal_difference, int place, int points, int draws) {
         this.id = id;
-        this.leagueId = leagueId;
+        this.league_id = league_id;
         this.club_id = club_id;
         this.matchesPlayed = matchesPlayed;
         this.wins = wins;
@@ -78,11 +78,11 @@ public class League_Club {
     }
 
     public Long getLeagueId() {
-        return leagueId;
+        return league_id;
     }
 
     public void setLeagueId(Long leagueId) {
-        this.leagueId = leagueId;
+        this.league_id = leagueId;
     }
 
     public Long getClub_id() {
@@ -167,7 +167,7 @@ public class League_Club {
 
     @Override
     public String toString() {
-        return "League_Club [id=" + id + ", leagueId=" + leagueId + ", club_id=" + club_id + ", matchesPlayed=" + matchesPlayed
+        return "League_Club [id=" + id + ", leagueId=" + league_id + ", club_id=" + club_id + ", matchesPlayed=" + matchesPlayed
                 + ", wins=" + wins + ", goalsScored=" + goalsScored + ", goalsConceded=" + goalsConceded + ", losses=" + losses
                 + ", goal_difference=" + goal_difference + ", place=" + place + ", points=" + points + ", draws=" + draws + "]";
     }

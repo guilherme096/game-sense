@@ -62,6 +62,18 @@ public class LeagueController {
         }
     }
 
+    // Get LeagueClubs by club ID
+    @Operation(summary = "Get League Clubs by Club ID")
+    @GetMapping("/club/{clubId}")
+    public ResponseEntity<League_Club> getLeagueClubsByClubId(@PathVariable Long clubId) {
+        try {
+            League_Club leagueClub = leagueService.getLeagueClubByClubId(clubId);
+            return new ResponseEntity<>(leagueClub, HttpStatus.OK);
+        } catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     // Create a new league
     @Operation(summary = "Create a new League")
     @PostMapping("/create")

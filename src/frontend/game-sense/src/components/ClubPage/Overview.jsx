@@ -2,9 +2,35 @@ import MatchCard from "./MatchCard";
 import LastMatchesCard from "./LastMatchesCard";
 import InjuryStatusCard from "./InjuryStatusCard";
 import PropTypes from "prop-types";
+import { useQuery } from "react-query";
+import axios from "axios";
 
-export default function Overview({ clubData }) {
-  const injuredPlayers = clubData.players.filter(player => player.injured);
+export default function Overview({ clubData, id }) {
+
+  const fetchPlayersFromClub = async () => {
+    console.log("fetching players from club");
+    const response = await axios.get("/api/v1/player/club/" + id, {
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Accept": "application/json",
+        },
+    });
+    return response.playerFromClub;
+  }
+
+  const { playerFromClub: playerFromClub, isLoading, error } = useQuery("playerFromClub", fetchPlayersFromClub);
+  console.log("LeagueClub");
+  console.log(playerFromClub);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>An error has occurred: {error.message}</div>;
+  }
+
+  const injuredPlayers = playerFromClub.filter(player => player.injured);
+
   return (
     <>
       <MatchCard matchData={clubData.nextGame} />
@@ -33,12 +59,6 @@ Overview.propTypes = {
         homeTeamLogo: PropTypes.string.isRequired,
         score: PropTypes.string.isRequired,
         result: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    players: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        injured: PropTypes.bool.isRequired,
       })
     ).isRequired,
   }).isRequired,

@@ -21,4 +21,5 @@ public interface LeagueService {
 
     League_Club createLeagueClub(Long leagueId, League_Club leagueClub);
 
+    League_Club getLeagueClubByClubId(Long clubId);
 }

@@ -59,7 +59,7 @@ export const routesList = [
     },
 
     {
-        path: "/playerPage",
+        path: "/player/:id",
         element: (
           <>
             <Helmet>
@@ -107,7 +107,7 @@ export const routesList = [
     },
 
     {
-        path: "/club",
+        path: "/club/:id",
         element: (
           <>
             <Helmet>

@@ -8,7 +8,7 @@ import axios from 'axios';
 function LeaguePageBase() {
 
     const fetchGame = async () => {
-        const response = await axios.get("/api/v1/league/2", {
+        const response = await axios.get("/api/v1/league/1", {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",

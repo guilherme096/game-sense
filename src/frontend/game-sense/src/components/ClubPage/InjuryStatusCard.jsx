@@ -1,9 +1,61 @@
-import PropTypes from "prop-types";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function InjuryStatusCard({ injuredPlayers }) {
-  if (!injuredPlayers.length) {
+  const [playerInjuries, setPlayerInjuries] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchInjuries = async () => {
+      try {
+        const injuryData = await Promise.all(
+          injuredPlayers.map(async (player) => {
+            const response = await axios.get(`/api/v1/player/${player.id}/injuries`, {
+              headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                Accept: "application/json",
+              },
+            });
+
+            // Transform data into expected format
+            return {
+              id: player.id,
+              name: player.name,
+              injury_history: response.data.map((entry) => ({
+                date: entry.date,
+                description: entry.description,
+                severity: entry.severity.toLowerCase(),
+                gamesOut: entry.gamesOut,
+              })),
+            };
+          })
+        );
+
+        setPlayerInjuries(injuryData);
+        setIsLoading(false);
+      } catch (err) {
+        setError(err);
+        setIsLoading(false);
+      }
+    };
+
+    fetchInjuries();
+  }, [injuredPlayers]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>An error has occurred: {error.message}</div>;
+  }
+
+  if (!playerInjuries.length) {
     return <div>No players are currently injured.</div>;
-  }  
+  }
+
   return (
     <div className="bg-white shadow-lg rounded-lg m-5">
       {/* Card Header */}
@@ -14,7 +66,7 @@ export default function InjuryStatusCard({ injuredPlayers }) {
       {/* Injuries Table */}
       <table className="w-full text-left border-collapse">
         <tbody>
-          {injuredPlayers.map((player, index) => {
+          {playerInjuries.map((player, index) => {
             // Find the most recent injury for the player
             const mostRecentInjury = player.injury_history.reduce(
               (latest, current) =>
@@ -57,15 +109,3 @@ export default function InjuryStatusCard({ injuredPlayers }) {
     </div>
   );
 }
-
-InjuryStatusCard.propTypes = {
-  injuredPlayers: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      injury: PropTypes.shape({
-        gamesOut: PropTypes.number.isRequired,
-        gamesIn: PropTypes.number.isRequired,
-      }).isRequired,
-    })
-  ).isRequired,
-};

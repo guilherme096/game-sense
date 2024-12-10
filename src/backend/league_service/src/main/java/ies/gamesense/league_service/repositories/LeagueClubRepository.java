@@ -8,6 +8,9 @@ import java.util.List;
 
 @Repository
 public interface LeagueClubRepository extends JpaRepository<League_Club, Integer> {
-    @Query("SELECT l FROM League_Club l WHERE l.leagueId = :leagueId")
-    List<League_Club> findByLeagueId(@Param("leagueId") Long leagueId);
+    @Query("SELECT l FROM League_Club l WHERE l.league_id = :league_id")
+    List<League_Club> findByLeagueId(@Param("league_id") Long league_id);
+
+    @Query("SELECT l FROM League_Club l WHERE l.club_id = :club_id")
+    League_Club findByClubId(@Param("club_id") Long club_id);
 }

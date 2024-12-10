@@ -7,7 +7,6 @@ import ies.gamesense.league_service.repositories.LeagueClubRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,11 +30,19 @@ public class LeagueServiceImpl implements LeagueService {
     }
 
     @Override
-    @Transactional
     public League getLeagueById(Long id) {
         League league = leagueRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("League not found with ID: " + id));
         return league;
+    }
+
+    @Override
+    public League_Club getLeagueClubByClubId(Long clubId) {
+        League_Club leagueClub = leagueClubRepository.findByClubId(clubId);
+        if (leagueClub == null) {
+            throw new RuntimeException("League Club not found with club ID: " + clubId);
+        }
+        return leagueClub;
     }
 
     @Override
