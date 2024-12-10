@@ -1,17 +1,25 @@
 package ies.gamesense.league_service.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
 
 @Entity
-@IdClass(LeagueClubId.class)
 public class League_Club {
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "league_id", nullable = false)
-    private League league;
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Id
+    @NotNull
+    @Column(name = "league_id", nullable = false)
+    private Long leagueId;
+
+    @NotNull
     @Column(name = "club_id", nullable = false)
     private Long club_id;
 
@@ -45,8 +53,9 @@ public class League_Club {
     public League_Club() {
     }
 
-    public League_Club(League league, Long club_id, int matchesPlayed, int wins, int goalsScored, int goalsConceded, int losses, int goal_difference, int place, int points, int draws) {
-        this.league = league;
+    public League_Club(Long id, Long leagueId, Long club_id, int matchesPlayed, int wins, int goalsScored, int goalsConceded, int losses, int goal_difference, int place, int points, int draws) {
+        this.id = id;
+        this.leagueId = leagueId;
         this.club_id = club_id;
         this.matchesPlayed = matchesPlayed;
         this.wins = wins;
@@ -60,12 +69,20 @@ public class League_Club {
     }
 
 
-    public League getLeague() {
-        return league;
+    public Long getId() {
+        return id;
     }
 
-    public void setLeague(League league) {
-        this.league = league;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getLeagueId() {
+        return leagueId;
+    }
+
+    public void setLeagueId(Long leagueId) {
+        this.leagueId = leagueId;
     }
 
     public Long getClub_id() {
@@ -150,9 +167,8 @@ public class League_Club {
 
     @Override
     public String toString() {
-        return "League_Club [club_id=" + club_id + ", league_id=" + league.getId() + ", matchesPlayed=" + matchesPlayed
-                + ", wins=" + wins + ", goalsScored=" + goalsScored + ", goalsConceded=" + goalsConceded + ", losses="
-                + losses + ", goal_difference=" + goal_difference + ", place=" + place + ", points=" + points
-                + ", draws=" + draws + "]";
+        return "League_Club [id=" + id + ", leagueId=" + leagueId + ", club_id=" + club_id + ", matchesPlayed=" + matchesPlayed
+                + ", wins=" + wins + ", goalsScored=" + goalsScored + ", goalsConceded=" + goalsConceded + ", losses=" + losses
+                + ", goal_difference=" + goal_difference + ", place=" + place + ", points=" + points + ", draws=" + draws + "]";
     }
 }

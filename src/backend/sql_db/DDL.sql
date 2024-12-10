@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS club(
 );
 
 CREATE TABLE IF NOT EXISTS league_club (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     league_id BIGINT NOT NULL,
     club_id BIGINT NOT NULL,
     matches_played INT NOT NULL,
@@ -25,7 +26,6 @@ CREATE TABLE IF NOT EXISTS league_club (
     goals_conceded INT NOT NULL,
     goal_difference INT NOT NULL,
     place INT NOT NULL,
-    PRIMARY KEY (league_id, club_id),
     FOREIGN KEY (league_id) REFERENCES league(id),
     FOREIGN KEY (club_id) REFERENCES club(id)
 );

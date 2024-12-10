@@ -6,10 +6,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-import java.util.Set;
 
 @Entity
 @Table(name = "league")
@@ -23,9 +19,6 @@ public class League {
 
     @Column(name = "logo", nullable = false)
     private String logo;
-
-    @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<League_Club> leagueClubs;
 
     public League() {
     }
@@ -57,14 +50,6 @@ public class League {
 
     public void setLogo(String logo) {
         this.logo = logo;
-    }
-
-    public Set<League_Club> getLeagueClubs() {
-        return leagueClubs;
-    }
-
-    public void setLeagueClubs(Set<League_Club> leagueClubs) {
-        this.leagueClubs = leagueClubs;
     }
 
     @Override

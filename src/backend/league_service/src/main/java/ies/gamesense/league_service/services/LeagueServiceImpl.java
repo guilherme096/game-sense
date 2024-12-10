@@ -5,7 +5,6 @@ import ies.gamesense.league_service.entities.League_Club;
 import ies.gamesense.league_service.repositories.LeagueRepository;
 import ies.gamesense.league_service.repositories.LeagueClubRepository;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +35,6 @@ public class LeagueServiceImpl implements LeagueService {
     public League getLeagueById(Long id) {
         League league = leagueRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("League not found with ID: " + id));
-        // Explicitly initialize lazy associations
-        Hibernate.initialize(league.getLeagueClubs());
         return league;
     }
 
@@ -61,9 +58,9 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     public League_Club createLeagueClub(Long leagueId, League_Club leagueClub) {
-        League league = leagueRepository.findById(leagueId)
-                .orElseThrow(() -> new RuntimeException("League not found with ID: " + leagueId));
-        leagueClub.setLeague(league);
+        Long leagueId_ = leagueRepository.findById(leagueId)
+                .orElseThrow(() -> new RuntimeException("League not found with ID: " + leagueId)).getId();
+        leagueClub.setLeagueId(leagueId_);
         return leagueClubRepository.save(leagueClub);
     }
 }
