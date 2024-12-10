@@ -92,6 +92,9 @@ rebuild-redis:
 	@echo "Restarting Redis..."
 	@docker-compose restart redis_db
 	@echo "Redis restarted!"
+rebuild-users-db:
+	@echo "Rebuilding Users Database..."
+	@docker-compose up --build -d users_db
 
 # Build and restart all services
 .PHONY: rebuild

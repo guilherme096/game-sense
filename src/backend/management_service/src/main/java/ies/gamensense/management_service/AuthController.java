@@ -28,33 +28,51 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<Map<String, Object>> authenticate(@RequestBody AuthRequest request, HttpServletResponse response) {
-        Optional<AuthRequest> user = userService.validateUser(request.getUsername(), request.getPassword());
+    public ResponseEntity<Map<String, Object>> authenticate(@RequestBody AuthRequest request) {
+        Optional<User> user = userService.validateUser(request.getUsername(), request.getPassword());
 
         if (user.isPresent()) {
             String token = jwtUtil.generateToken(request.getUsername());
 
-            Cookie cookie = new Cookie("jwt", token);
-            cookie.setHttpOnly(true); // keep the token i nserver side
-            cookie.setSecure(false); // Use true in production with HTTPS
-            cookie.setPath("/");
-            cookie.setMaxAge(36000);
-            response.addCookie(cookie);
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("username", request.getUsername());
+            response.put("message", "Login successful");
 
-            Map<String, Object> responseBody = new HashMap<>();
-            responseBody.put("token", token);
-            responseBody.put("username", request.getUsername());
-            responseBody.put("message", "Login successful");
-
-            return ResponseEntity.ok(responseBody);
+            return ResponseEntity.ok(response);
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Invalid credentials"));
+        return ResponseEntity.status(401).body(Map.of("message", "Invalid credentials"));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Map<String, Object>> register(@RequestBody User user) {
+        try {
+            if (userService.getUserDetails(user.getUsername()).isPresent()) {
+                return ResponseEntity.badRequest().body(Map.of("message", "Username already exists"));
+            }
+    
+            if (user.getUsername() == null || user.getPassword() == null) {
+                return ResponseEntity.badRequest().body(Map.of("message", "Username and password are required"));
+            }
+    
+            User createdUser = userService.createUser(user);
+            String token = jwtUtil.generateToken(createdUser.getUsername());
+    
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("username", createdUser.getUsername());
+            response.put("message", "Registration successful");
+    
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body(Map.of("message", "Error during registration: " + e.getMessage()));
+        }
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Map<String, String>> logout(HttpServletResponse response) {
-        // Invalidate the JWT cookie by setting its Max-Age to 0
         Cookie cookie = new Cookie("jwt", null);
         cookie.setHttpOnly(true);
         cookie.setSecure(false); // Set to true in production with HTTPS
@@ -62,7 +80,6 @@ public class AuthController {
         cookie.setMaxAge(0); // Expire the cookie immediately
         response.addCookie(cookie);
 
-        // Return a success response
         return ResponseEntity.ok(Map.of("message", "Logout successful"));
     }    
 
@@ -89,3 +106,4 @@ public class AuthController {
                              .body(Map.of("message", "No authentication token found"));
     }
 }
+
