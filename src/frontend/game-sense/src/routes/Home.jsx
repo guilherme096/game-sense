@@ -43,7 +43,7 @@ function Home() {
                             return (
                                 <Link to={"/game/" + g.match_id} key={key}>
                                     <div className="-mt-3">
-                                        <LiveGame key={g.id} game={g} />
+                                        <LiveGame key={g.match_id} game={g} />
                                     </div>
                                 </Link>
                             );

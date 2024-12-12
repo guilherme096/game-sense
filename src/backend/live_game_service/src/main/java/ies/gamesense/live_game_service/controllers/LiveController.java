@@ -3,6 +3,7 @@ package ies.gamesense.live_game_service.controllers;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -95,4 +96,15 @@ public class LiveController {
         }
         return ResponseEntity.ok(topStats);
     }
+
+    @Operation(summary = "Get game basic info (score,teams,id,minute)")
+    @GetMapping("/{id}/basicInfo")
+    public ResponseEntity<Map<String, String>> getBasicInfo(@PathVariable("id") String id) {
+        Map<String, String> basicInfo = liveService.getBasicInfo(id);
+        if (basicInfo == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(basicInfo);
+    }
+
 }

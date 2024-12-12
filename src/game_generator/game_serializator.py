@@ -5,7 +5,7 @@ import uuid
 from models import Game, Event, Goal, YellowCard, RedCard, Substitution
 
 GAMES_DIR = "./games/"
-GAME_REAL_DURATION = 1
+GAME_REAL_DURATION = 3
 
 
 def serialize_game_for_kafka(
@@ -112,6 +112,14 @@ def serialize_game_for_kafka(
             continue
         id += 1
         match_info["events"].append(event_data)
+    end_event = {
+        "game_id": match_id,
+        "event_type": "END",
+        "minute": 90,
+        "publish_timestamp": event_time.isoformat(),
+        "id": str(int(match_info["events"][-1]["id"]) + 1)
+    }
+    match_info["events"].append(end_event)
 
     return match_info
 

@@ -88,6 +88,8 @@ public class LiveServiceImpl implements LiveService {
             return;
         }
 
+        match.setMinute(Integer.parseInt(event.get("minute")));
+
         if (event.get("event_type").equals("GOAL")) {
             String team = event.get("team");
             if (team.equals("home")) {
@@ -95,6 +97,10 @@ public class LiveServiceImpl implements LiveService {
             } else {
                 match.getAwayTeam().setScore(match.getAwayTeam().getScore() + 1);
             }
+        }
+
+        if (event.get("event_type").equals("END")) {
+            match.endMatch();
         }
 
         match.getEvents().add(event);
@@ -165,5 +171,17 @@ public class LiveServiceImpl implements LiveService {
     public List<String> getTopStats(String id) {
         Match game = getLiveById(id);
         return (game != null) ? game.getTopStats() : null;
+    }
+
+    @Override
+    public Map<String, String> getBasicInfo(String id) {
+        Match game = getLiveById(id);
+        if (game == null) {
+            return null;
+        }
+        Map<String, String> basicInfo = game.getBasicInfo();
+        basicInfo.put("home_score", String.valueOf(game.getHomeTeam().getScore()));
+        basicInfo.put("away_score", String.valueOf(game.getAwayTeam().getScore()));
+        return basicInfo;
     }
 }

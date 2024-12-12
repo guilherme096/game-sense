@@ -22,4 +22,6 @@ public interface LiveService {
     String getCurrentMVP(String id);
 
     List<String> getTopStats(String id);
+
+    Map<String, String> getBasicInfo(String id);
 }
