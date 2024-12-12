@@ -1,0 +1,255 @@
+{
+  "match_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+  "home_team": {
+    "name": "SCP",
+    "id": "1",
+    "starting_squad": [
+      "Adan",
+      "Coates",
+      "Neto",
+      "Porro",
+      "Palhinha",
+      "Nuno Santos",
+      "Pote",
+      "Jovane",
+      "Paulinho",
+      "Matheus Nunes",
+      "Feddal"
+    ],
+    "subs_squad": [
+      "Max",
+      "Inacio",
+      "Tabata",
+      "Vietto",
+      "Sporar",
+      "Jo\u00e3o Pereira",
+      "Antunes"
+    ],
+    "image": "bla"
+  },
+  "away_team": {
+    "name": "SLB",
+    "id": "2",
+    "starting_squad": [
+      "Vlachodimos",
+      "Lucas Verissimo",
+      "Otamendi",
+      "Gilberto",
+      "Weigl",
+      "Rafa",
+      "Everton",
+      "Waldschmidt",
+      "Darwin",
+      "Grimaldo",
+      "Diogo"
+    ],
+    "subs_squad": [
+      "Helton",
+      "Vertonghen",
+      "Pizzi",
+      "Chiquinho",
+      "Seferovic",
+      "Nuno Tavares",
+      "Gabriel"
+    ],
+    "image": "bla"
+  },
+  "match_result": {
+    "winner": "AWAY",
+    "home_score": 3,
+    "away_score": 1
+  },
+  "match_stats": {
+    "home_team_stats": [
+      {
+        "Possession": 45,
+        "Shots": 10,
+        "Passes Acc": 54,
+        "Tackles": 7,
+        "Fouls": 8,
+        "Corners": 4,
+        "Offsides": 4,
+        "Interceptions": 6
+      },
+      {
+        "Possession": 32,
+        "Shots": 7,
+        "Passes Acc": 38,
+        "Tackles": 5,
+        "Fouls": 6,
+        "Corners": 3,
+        "Offsides": 3,
+        "Interceptions": 4
+      },
+      {
+        "Possession": 58,
+        "Shots": 3,
+        "Passes Acc": 70,
+        "Tackles": 2,
+        "Fouls": 2,
+        "Corners": 1,
+        "Offsides": 1,
+        "Interceptions": 2
+      }
+    ],
+    "away_team_stats": [
+      {
+        "Possession": 55,
+        "Shots": 3,
+        "Passes Acc": 50,
+        "Tackles": 2,
+        "Fouls": 3,
+        "Corners": 2,
+        "Offsides": 3,
+        "Interceptions": 1
+      },
+      {
+        "Possession": 68,
+        "Shots": 2,
+        "Passes Acc": 35,
+        "Tackles": 1,
+        "Fouls": 2,
+        "Corners": 1,
+        "Offsides": 2,
+        "Interceptions": 1
+      },
+      {
+        "Possession": 42,
+        "Shots": 1,
+        "Passes Acc": 15,
+        "Tackles": 1,
+        "Fouls": 1,
+        "Corners": 1,
+        "Offsides": 1,
+        "Interceptions": 0
+      }
+    ]
+  },
+  "match_start_time": "2024-12-12T12:02:56.224195",
+  "events": [
+    {
+      "game_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+      "event_type": "START",
+      "minute": 0,
+      "publish_timestamp": "2024-12-12T12:02:56.224195",
+      "id": 0
+    },
+    {
+      "game_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+      "event_type": "YELLOW_CARD",
+      "minute": "8",
+      "team": "home",
+      "player": "Matheus Nunes",
+      "publish_timestamp": "2024-12-12T12:03:00.890862",
+      "id": "1"
+    },
+    {
+      "game_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+      "event_type": "SUBSTITUTION",
+      "minute": "14",
+      "team": "home",
+      "player_out": "Vietto",
+      "player_in": "Jovane",
+      "publish_timestamp": "2024-12-12T12:03:04.890862",
+      "id": "2"
+    },
+    {
+      "game_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+      "event_type": "GOAL",
+      "minute": "18",
+      "team": "home",
+      "scorer": "Coates",
+      "assist": "Jovane",
+      "publish_timestamp": "2024-12-12T12:03:07.557528",
+      "id": "3"
+    },
+    {
+      "game_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+      "event_type": "SUBSTITUTION",
+      "minute": "47",
+      "team": "away",
+      "player_out": "Gabriel",
+      "player_in": "Weigl",
+      "publish_timestamp": "2024-12-12T12:03:26.890862",
+      "id": "4"
+    },
+    {
+      "game_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+      "event_type": "SUBSTITUTION",
+      "minute": "49",
+      "team": "away",
+      "player_out": "Seferovic",
+      "player_in": "Darwin",
+      "publish_timestamp": "2024-12-12T12:03:28.224195",
+      "id": "5"
+    },
+    {
+      "game_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+      "event_type": "SUBSTITUTION",
+      "minute": "55",
+      "team": "home",
+      "player_out": "Sporar",
+      "player_in": "Paulinho",
+      "publish_timestamp": "2024-12-12T12:03:32.224195",
+      "id": "6"
+    },
+    {
+      "game_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+      "event_type": "GOAL",
+      "minute": "73",
+      "team": "away",
+      "scorer": "Otamendi",
+      "assist": "Rafa",
+      "publish_timestamp": "2024-12-12T12:03:44.224195",
+      "id": "7"
+    },
+    {
+      "game_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+      "event_type": "GOAL",
+      "minute": "74",
+      "team": "home",
+      "scorer": "Matheus Nunes",
+      "assist": "Palhinha",
+      "publish_timestamp": "2024-12-12T12:03:44.890862",
+      "id": "8"
+    },
+    {
+      "game_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+      "event_type": "GOAL",
+      "minute": "77",
+      "team": "home",
+      "scorer": "Palhinha",
+      "assist": "Neto",
+      "publish_timestamp": "2024-12-12T12:03:46.890862",
+      "id": "9"
+    },
+    {
+      "game_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+      "event_type": "SUBSTITUTION",
+      "minute": "78",
+      "team": "home",
+      "player_out": "Antunes",
+      "player_in": "Porro",
+      "publish_timestamp": "2024-12-12T12:03:47.557528",
+      "id": "10"
+    },
+    {
+      "game_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+      "event_type": "YELLOW_CARD",
+      "minute": "82",
+      "team": "away",
+      "player": "Rafa",
+      "publish_timestamp": "2024-12-12T12:03:50.224195",
+      "id": "11"
+    },
+    {
+      "game_id": "e8c49558-4455-458b-a661-4d4a2193850c",
+      "event_type": "YELLOW_CARD",
+      "minute": "83",
+      "team": "home",
+      "player": "Matheus Nunes",
+      "publish_timestamp": "2024-12-12T12:03:50.890862",
+      "id": "12"
+    }
+  ]
+}

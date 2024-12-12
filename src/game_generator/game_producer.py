@@ -70,10 +70,8 @@ def process_events(events, stats):
             event["publish_timestamp"]
         ).astimezone(pytz.utc)
 
-        # Calculate the time difference to wait
         wait_time = (publish_timestamp - current_time).total_seconds()
 
-        # If the event's publish time is in the future, wait until it
         if wait_time > 0:
             print(f"Waiting for {wait_time} event at {publish_timestamp}")
             time.sleep(wait_time)
@@ -114,7 +112,8 @@ def publish_game_info(game, stats):
 
 
 def main():
-    game_file_path = os.path.join("games", "match_SCP_vs_SLB_20241202_234819.json")
+    game_file_path = os.path.join(
+        "games", "match_SCP_vs_SLB_20241212_120256.json")
 
     game_data = read_game_from_file(game_file_path)
     print(game_data)
