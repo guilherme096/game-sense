@@ -36,10 +36,10 @@ public class JwtFilter extends OncePerRequestFilter {
 
         System.out.println(request.getRequestURI());
 
-        if (request.getRequestURI().equals("/api/v1/management/authenticate")) {
+        if (request.getRequestURI().equals("/api/v1/management/register") || request.getRequestURI().equals("/api/v1/management/authenticate")) {
             filterChain.doFilter(request, response);
             return;
-        }
+    }
 
         String token = null;
         Cookie[] cookies = request.getCookies();
@@ -61,7 +61,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(),
-                        Map.of("message", "Invalid or missing JWT token"));
+                        Map.of("message", "Invalid or missing JWT tokenn"));
                 return;
             }
         } catch (Exception e) {

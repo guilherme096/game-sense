@@ -16,20 +16,28 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public User createUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            User savedUser = userRepository.save(user);
+            System.out.println("User created: " + savedUser.getUsername());
+            return savedUser;
+        } catch (Exception e) {
+            System.err.println("Error creating user: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public Optional<User> validateUser(String username, String password) {
-        Optional<User> user = userRepository.findById(username);
-        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
-            return user;
-        }
-        return Optional.empty();
+        return getUserDetails(username)
+            .filter(user -> passwordEncoder.matches(password, user.getPassword()));
     }
+    
 
     public Optional<User> getUserDetails(String username) {
-        return userRepository.findById(username);
+        return userRepository.findAll().stream()
+            .filter(user -> user.getUsername().equals(username))
+            .findFirst();
     }
 
     public List<User> getAllUsers() {
@@ -41,10 +49,6 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         return userRepository.save(user);
-    }
-
-    public void deleteUser(String username) {
-        userRepository.deleteById(username);
     }
 }
 

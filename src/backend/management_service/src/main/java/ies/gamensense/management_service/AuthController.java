@@ -51,25 +51,22 @@ public class AuthController {
             if (userService.getUserDetails(user.getUsername()).isPresent()) {
                 return ResponseEntity.badRequest().body(Map.of("message", "Username already exists"));
             }
-    
             if (user.getUsername() == null || user.getPassword() == null) {
                 return ResponseEntity.badRequest().body(Map.of("message", "Username and password are required"));
             }
-    
             User createdUser = userService.createUser(user);
             String token = jwtUtil.generateToken(createdUser.getUsername());
-    
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
             response.put("username", createdUser.getUsername());
             response.put("message", "Registration successful");
-    
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(Map.of("message", "Error during registration: " + e.getMessage()));
+                                .body(Map.of("message", "Error during registration: " + e.getMessage()));
         }
     }
+
 
     @PostMapping("/logout")
     public ResponseEntity<Map<String, String>> logout(HttpServletResponse response) {

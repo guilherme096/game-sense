@@ -22,12 +22,13 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/management/authenticate").permitAll()
+                .requestMatchers("/api/v1/management/authenticate", "/api/v1/management/register").permitAll()
                 .anyRequest().authenticated()
             )
             .httpBasic(httpBasic -> {});
 
         return http.build();
     }
+
 }
 

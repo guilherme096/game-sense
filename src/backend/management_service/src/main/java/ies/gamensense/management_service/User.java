@@ -18,23 +18,21 @@ public class User {
     
     @Column(name = "password", nullable = false)
     @NotBlank(message = "Password is required")
-    @Size(min = 5, max = 20, message = "Password must be between 5 to 20 characters long")
     private String password;
     
-    @Column(name = "favorite_team")
-    private String favoriteTeam;
+    @Column(name = "favourite_team")
+    private String favouriteTeam;
 
     @Column(name = "is_premium", nullable = false)
-    @NotBlank(message = "Premium status is required")
     private boolean isPremium;
 
     // Default constructor
     public User() {}
 
-    public User(String username, String password, String favoriteTeam, boolean isPremium) {
+    public User(String username, String password, String favouriteTeam, boolean isPremium) {
         this.username = username;
         this.password = password;
-        this.favoriteTeam = favoriteTeam;
+        this.favouriteTeam = favouriteTeam;
         this.isPremium = isPremium;
     }
 
@@ -55,12 +53,12 @@ public class User {
         this.password = password;
     }
 
-    public String getFavoriteTeam() {
-        return favoriteTeam;
+    public String getFavouriteTeam() {
+        return favouriteTeam;
     }
 
-    public void setFavoriteTeam(String favoriteTeam) {
-        this.favoriteTeam = favoriteTeam;
+    public void setFavoriteTeam(String favouriteTeam) {
+        this.favouriteTeam = favouriteTeam;
     }
 
     public boolean isPremium() {

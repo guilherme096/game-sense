@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS user(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
     favourite_team VARCHAR(50),
-    is_premium BOOLEAN NOT NULL
+    is_premium BOOLEAN NOT NULL DEFAULT 0
 );
