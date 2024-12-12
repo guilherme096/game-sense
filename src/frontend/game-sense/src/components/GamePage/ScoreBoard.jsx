@@ -6,7 +6,6 @@ import { useState } from "react";
 import axios from "axios";
 
 const fetchGame = async (id) => {
-    console.log("fetching game with id: " + id);
     const response = await axios.get("/api/v1/live/" + id, {
         headers: {
             "Content-Type": "application/json",
@@ -14,7 +13,6 @@ const fetchGame = async (id) => {
             Accept: "application/json",
         },
     });
-    console.log("the response is", response.data);
     return response.data;
 };
 
