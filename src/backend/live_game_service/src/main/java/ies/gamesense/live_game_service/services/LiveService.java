@@ -13,7 +13,7 @@ public interface LiveService {
 
     void createLive(Match live);
 
-    GameStatistics getGameStatistics(String id);
+    Map<Integer, GameStatistics> getGameStatistics(String id);
 
     boolean existsNewEvent(String id, Long lastEventId);
 

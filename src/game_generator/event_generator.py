@@ -132,8 +132,7 @@ def generate_substitution_events(
         n_substitutions = random.randint(0, 3)
         for _ in range(n_substitutions):
             while True:
-                player_in = team.subs_squad[random.randint(
-                    1, len(team.subs_squad) - 1)]
+                player_in = team.subs_squad[random.randint(1, len(team.subs_squad) - 1)]
                 if player_in in in_players or player_in in subd_off:
                     continue
                 same_position_in_field = []
@@ -155,8 +154,7 @@ def generate_substitution_events(
                 if player_in == player_out:
                     continue
 
-                substitution = Substitution(
-                    minute, team, player_in, player_out)
+                substitution = Substitution(minute, team, player_in, player_out)
                 substitutions.append(substitution)
                 subd_off.add(player_out)
 

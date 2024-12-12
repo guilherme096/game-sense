@@ -10,6 +10,7 @@ from time import sleep
 KAFKA_BROKER = "kafka:9092"  # Adjust to your Kafka broker
 EVENTS_TOPIC = "events"  # Topic to publish to
 GAMES_TOPIC = "games"  # Topic to publish to
+STATS_TOPIC = "stats"  # Topic to publish to
 
 # Initialize Kafka producer
 producer = KafkaProducer(
@@ -32,6 +33,16 @@ def publish_game_event(event):
         print(f"Failed to publish event: {e}")
 
 
+def publish_game_stat(stat):
+    try:
+        # Send the event to Kafka
+        producer.send(STATS_TOPIC, value=stat)
+        producer.flush()  # Ensure all messages are sent
+        print(f"Published stat: {stat}")
+    except Exception as e:
+        print(f"Failed to publish stat: {e}")
+
+
 # Function to read game data from a JSON file
 def read_game_from_file(file_path):
     with open(file_path, "r") as file:
@@ -40,9 +51,15 @@ def read_game_from_file(file_path):
 
 
 # Function to simulate the timing for event publishing
-def process_events(events):
+def process_events(events, stats):
     # Current time in UTC (or adjust if needed)
     current_time = datetime.now(pytz.utc)
+    stats_publish_time = [
+        15,
+        50,
+        60,
+    ]
+    stats_published = 0
 
     # Sort events by their publish_timestamp
     events.sort(key=lambda e: e["publish_timestamp"])
@@ -53,25 +70,41 @@ def process_events(events):
             event["publish_timestamp"]
         ).astimezone(pytz.utc)
 
-        # Calculate the time difference to wait
         wait_time = (publish_timestamp - current_time).total_seconds()
 
-        # If the event's publish time is in the future, wait until it
         if wait_time > 0:
             print(f"Waiting for {wait_time} event at {publish_timestamp}")
             time.sleep(wait_time)
 
+        if (
+            stats_published < 3
+            and int(event["minute"]) >= stats_publish_time[stats_published]
+        ):
+            print(stats_publish_time[stats_published])
+            print(event["minute"])
+            mathc_stats = {
+                "match_id": event["game_id"],
+                "half": stats_published,
+                "home_team_stats": stats["home_team_stats"][stats_published],
+                "away_team_stats": stats["away_team_stats"][stats_published],
+            }
+
+            stats_published += 1
+            publish_game_stat(mathc_stats)
+
         # Publish the event
         print(f"Publishing event: {event}")
-        sleep(20)
         publish_game_event(event)
         current_time = datetime.now(pytz.utc)  # Update current time
 
 
-def publish_game_info(game):
+def publish_game_info(game, stats):
     try:
         # Send the event to Kafka
         producer.send(GAMES_TOPIC, value=game)
+        producer.flush()  # Ensure all messages are sent
+        sleep(3)
+        producer.send(STATS_TOPIC, value=stats)
         producer.flush()  # Ensure all messages are sent
         print(f"Published event: {game}")
     except Exception as e:
@@ -79,7 +112,8 @@ def publish_game_info(game):
 
 
 def main():
-    game_file_path = os.path.join("games", "match_SCP_vs_SLB_20241202_234819.json")
+    game_file_path = os.path.join(
+        "games", "match_SCP_vs_SLB_20241212_120256.json")
 
     game_data = read_game_from_file(game_file_path)
     print(game_data)
@@ -91,12 +125,35 @@ def main():
         "away_team": game_data.get("away_team"),
         "match_start_time": game_data.get("match_start_time"),
     }
-
+    mathc_stats = {
+        "match_id": game_data.get("match_id"),
+        "half": 0,
+        "home_team_stats": {
+            "Possession": 0,
+            "Shots": 0,
+            "Passes Acc": 0,
+            "Tackles": 0,
+            "Fouls": 0,
+            "Corners": 0,
+            "Offsides": 0,
+            "Interceptions": 0,
+        },
+        "away_team_stats": {
+            "Possession": 0,
+            "Shots": 0,
+            "Passes Acc": 0,
+            "Tackles": 0,
+            "Fouls": 0,
+            "Corners": 0,
+            "Offsides": 0,
+            "Interceptions": 0,
+        },
+    }
     sleep(10)
-    publish_game_info(match_info)
+    publish_game_info(match_info, mathc_stats)
 
     if events:
-        process_events(events)
+        process_events(events, game_data.get("match_stats"))
     else:
         print("No events found in the game data.")
 

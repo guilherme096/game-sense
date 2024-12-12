@@ -61,14 +61,68 @@
   },
   "match_stats": {
     "home_team_stats": [
-      "Stats:\n Possession: 71\n Shots: 6\n Passes Acc: 50\n Tackles: 6\n Fouls: 7\n Corners: 6\n Offsides: 5\n Interceptions: 3",
-      "Stats:\n Possession: 43\n Shots: 4\n Passes Acc: 30\n Tackles: 4\n Fouls: 4\n Corners: 4\n Offsides: 3\n Interceptions: 2",
-      "Stats:\n Possession: 99\n Shots: 2\n Passes Acc: 70\n Tackles: 2\n Fouls: 3\n Corners: 2\n Offsides: 2\n Interceptions: 1"
+      {
+        "Possession": 71,
+        "Shots": 6,
+        "Passes Acc": 50,
+        "Tackles": 6,
+        "Fouls": 7,
+        "Corners": 6,
+        "Offsides": 5,
+        "Interceptions": 3
+      },
+      {
+        "Possession": 43,
+        "Shots": 4,
+        "Passes Acc": 30,
+        "Tackles": 4,
+        "Fouls": 4,
+        "Corners": 4,
+        "Offsides": 3,
+        "Interceptions": 2
+      },
+      {
+        "Possession": 99,
+        "Shots": 2,
+        "Passes Acc": 70,
+        "Tackles": 2,
+        "Fouls": 3,
+        "Corners": 2,
+        "Offsides": 2,
+        "Interceptions": 1
+      }
     ],
     "away_team_stats": [
-      "Stats:\n Possession: 29\n Shots: 2\n Passes Acc: 50\n Tackles: 1\n Fouls: 1\n Corners: 2\n Offsides: 2\n Interceptions: 3",
-      "Stats:\n Possession: 57\n Shots: 1\n Passes Acc: 30\n Tackles: 1\n Fouls: 1\n Corners: 1\n Offsides: 1\n Interceptions: 2",
-      "Stats:\n Possession: 1\n Shots: 1\n Passes Acc: 20\n Tackles: 0\n Fouls: 0\n Corners: 1\n Offsides: 1\n Interceptions: 1"
+      {
+        "Possession": 29,
+        "Shots": 2,
+        "Passes Acc": 50,
+        "Tackles": 1,
+        "Fouls": 1,
+        "Corners": 2,
+        "Offsides": 2,
+        "Interceptions": 3
+      },
+      {
+        "Possession": 57,
+        "Shots": 1,
+        "Passes Acc": 30,
+        "Tackles": 1,
+        "Fouls": 1,
+        "Corners": 1,
+        "Offsides": 1,
+        "Interceptions": 2
+      },
+      {
+        "Possession": 1,
+        "Shots": 1,
+        "Passes Acc": 20,
+        "Tackles": 0,
+        "Fouls": 0,
+        "Corners": 1,
+        "Offsides": 1,
+        "Interceptions": 1
+      }
     ]
   },
   "match_start_time": "2024-12-02T23:48:19.291185",

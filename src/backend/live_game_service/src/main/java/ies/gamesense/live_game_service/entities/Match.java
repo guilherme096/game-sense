@@ -21,7 +21,7 @@ public class Match implements Serializable {
     @JsonProperty("match_start_time")
     private String matchStartTime;
 
-    private GameStatistics gameStatistics;
+    private Map<Integer, GameStatistics> gameStatistics = new java.util.HashMap<>();
 
     private List<Map<String, String>> events = new ArrayList<>();
 
@@ -68,12 +68,18 @@ public class Match implements Serializable {
         this.matchStartTime = matchStartTime;
     }
 
-    public GameStatistics getGameStatistics() {
+    public Map<Integer, GameStatistics> getGameStatistics() {
         return this.gameStatistics;
     }
 
-    public void setGameStatistics(GameStatistics gameStatistics) {
+    public void setGameStatistics(Map<Integer, GameStatistics> gameStatistics) {
         this.gameStatistics = gameStatistics;
+    }
+
+    public void addGameStatistics(Integer half, GameStatistics stats) {
+        System.out.println("Adding stats for half " + half + ": " + stats.toString());
+        this.gameStatistics.put(half, stats);
+        System.out.println("Game statistics updated: " + this.gameStatistics.toString());
     }
 
     public List<Map<String, String>> getEvents() {
@@ -131,6 +137,8 @@ public class Match implements Serializable {
                 ", homeTeam=" + homeTeam +
                 ", awayTeam=" + awayTeam +
                 ", matchStartTime='" + matchStartTime + '\'' +
+                ", gameStatistics=" + gameStatistics +
+
                 '}';
     }
 }

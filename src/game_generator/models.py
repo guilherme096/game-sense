@@ -19,8 +19,7 @@ class EventType(Enum):
 class Player:
     def __init__(self, name: str, positions: list | int, quality: int):
         self.name = name
-        self.positions = positions if isinstance(
-            positions, list) else [positions]
+        self.positions = positions if isinstance(positions, list) else [positions]
         self.quality = quality
 
     def __str__(self):
@@ -50,6 +49,18 @@ class Stats:
 
     def __str__(self):
         return f"Stats:\n Possession: {self.possession}\n Shots: {self.shots}\n Passes Acc: {self.passes_acc}\n Tackles: {self.tackles}\n Fouls: {self.fouls}\n Corners: {self.corners}\n Offsides: {self.offsides}\n Interceptions: {self.interceptions}"
+
+    def __dict__(self):
+        return {
+            "Possession": self.possession,
+            "Shots": self.shots,
+            "Passes Acc": self.passes_acc,
+            "Tackles": self.tackles,
+            "Fouls": self.fouls,
+            "Corners": self.corners,
+            "Offsides": self.offsides,
+            "Interceptions": self.interceptions,
+        }
 
 
 class Team:
