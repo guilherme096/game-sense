@@ -56,8 +56,8 @@ def process_events(events, stats):
     current_time = datetime.now(pytz.utc)
     stats_publish_time = [
         15,
+        50,
         60,
-        80,
     ]
     stats_published = 0
 
@@ -78,13 +78,24 @@ def process_events(events, stats):
             print(f"Waiting for {wait_time} event at {publish_timestamp}")
             time.sleep(wait_time)
 
-        if stats_published == 0 and event["minute"] >= stats_publish_time[0]:
-            publish_game_stat()
+        if (
+            stats_published < 3
+            and int(event["minute"]) >= stats_publish_time[stats_published]
+        ):
+            print(stats_publish_time[stats_published])
+            print(event["minute"])
+            mathc_stats = {
+                "match_id": event["game_id"],
+                "half": stats_published,
+                "home_team_stats": stats["home_team_stats"][stats_published],
+                "away_team_stats": stats["away_team_stats"][stats_published],
+            }
+
             stats_published += 1
+            publish_game_stat(mathc_stats)
 
         # Publish the event
         print(f"Publishing event: {event}")
-        sleep(20)
         publish_game_event(event)
         current_time = datetime.now(pytz.utc)  # Update current time
 

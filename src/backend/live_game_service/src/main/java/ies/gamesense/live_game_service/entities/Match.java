@@ -76,8 +76,10 @@ public class Match implements Serializable {
         this.gameStatistics = gameStatistics;
     }
 
-    public void addGameStatistics(int half, GameStatistics stats) {
+    public void addGameStatistics(Integer half, GameStatistics stats) {
+        System.out.println("Adding stats for half " + half + ": " + stats.toString());
         this.gameStatistics.put(half, stats);
+        System.out.println("Game statistics updated: " + this.gameStatistics.toString());
     }
 
     public List<Map<String, String>> getEvents() {
@@ -135,6 +137,8 @@ public class Match implements Serializable {
                 ", homeTeam=" + homeTeam +
                 ", awayTeam=" + awayTeam +
                 ", matchStartTime='" + matchStartTime + '\'' +
+                ", gameStatistics=" + gameStatistics +
+
                 '}';
     }
 }

@@ -45,7 +45,10 @@ public class LiveController {
     @GetMapping("/{id}/statistics/ping")
     public ResponseEntity<Map<Integer, GameStatistics>> getGameStatistics(@PathVariable("id") String id,
             @RequestParam("lastHalf") Integer lastEventId) {
+        Match game = liveService.getLiveById(id);
+        System.out.println("game: " + game);
         Map<Integer, GameStatistics> stats = liveService.getGameStatistics(id);
+        System.out.println("stats: " + stats);
         if (stats == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

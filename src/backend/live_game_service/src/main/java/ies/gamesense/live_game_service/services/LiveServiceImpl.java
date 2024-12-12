@@ -52,10 +52,16 @@ public class LiveServiceImpl implements LiveService {
             System.err.println("Match not found for ID: " + stats.getMatchId());
             return;
         }
+        System.out.println(this.matches);
 
         Integer half = stats.getHalf();
 
         match.addGameStatistics(half, stats);
+        this.matches.replace(match.getMatchId(), match);
+
+        System.out.println("Match updated: " + match.toString());
+        System.out.println(this.matches);
+
     }
 
     @KafkaListener(id = "events", topics = "events", containerFactory = "customKafkaListenerContainerFactory")
@@ -81,7 +87,6 @@ public class LiveServiceImpl implements LiveService {
             System.err.println("Match not found for ID: " + matchId);
             return;
         }
-        match.setGameStatistics(new HashMap<>());
 
         if (event.get("event_type").equals("GOAL")) {
             String team = event.get("team");
@@ -112,6 +117,8 @@ public class LiveServiceImpl implements LiveService {
     @Override
     public Map<Integer, GameStatistics> getGameStatistics(String id) {
         Match game = getLiveById(id);
+        System.out.println("Getting game statistics for game: " + id);
+        System.out.println(game);
         return (game != null) ? game.getGameStatistics() : new HashMap<>();
     }
 
