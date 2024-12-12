@@ -59,9 +59,6 @@ const GameTimeline = ({ id }) => {
     }
 
     const renderEventBlock = (event, team) => {
-        if (event.event_type === "START") {
-            return <></>;
-        }
         const isLeft = team === "home";
 
         return (
@@ -155,10 +152,7 @@ const GameTimeline = ({ id }) => {
                     {events.length === 0 ? (
                         <p className="text-center text-white">No events to display.</p>
                     ) : (
-                        events.map((event, index) => {
-                            if (event.event_type === "START") {
-                                return <></>;
-                            }
+                        events.map((event, index) => (
                             <div
                                 key={index}
                                 className={`relative flex w-full items-center my-8 transition-opacity duration-300 ease-in-out ${visibleEvents.includes(index) ? "opacity-100" : "opacity-0"
@@ -168,8 +162,8 @@ const GameTimeline = ({ id }) => {
                                 <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center">
                                     <div className="w-4 h-4 bg-white rounded-full event-dot"></div>
                                 </div>
-                            </div>;
-                        })
+                            </div>
+                        ))
                     )}
                 </div>
             ) : (
