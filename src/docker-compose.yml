@@ -45,6 +45,8 @@ services:
       - kafka
     networks:
       - app-network
+    env_file:
+      - .env
 
   player-service:
     build:
