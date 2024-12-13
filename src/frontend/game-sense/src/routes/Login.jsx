@@ -23,6 +23,13 @@ export default function Login() {
     }
   }, [location.state]);
 
+  const handleGoBack = () => {
+    // Check if there's a previous location in state
+    const previousPath = location.state?.from?.pathname || '/home';
+    
+    navigate(previousPath);
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);

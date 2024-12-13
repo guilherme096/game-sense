@@ -70,7 +70,23 @@ export default function Register() {
             setSuccessMessage("Registration successful!");
             navigate("/", { state: { successMessage: "Account created successfully!" } });
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred during registration.");
+            if (err.response) {
+                // Backend returned a response with a status code
+                const message = err.response.data.message;
+    
+                // Check if the username already exists
+                if (message === "Username already exists") {
+                    toast.error("Username already taken. Please choose another.");
+                } else {
+                    toast.error(message || "An error occurred during registration.");
+                }
+            } else if (err.request) {
+                // Request was made but no response was received
+                toast.error("No response from server. Please try again later.");
+            } else {
+                // Something else happened in setting up the request
+                toast.error("An error occurred during registration.");
+            }
         }
     };
 
