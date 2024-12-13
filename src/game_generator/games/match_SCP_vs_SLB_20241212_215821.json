@@ -1,0 +1,184 @@
+{
+  "match_id": "08171640-d60d-4b3e-ac07-da56253a006e",
+  "home_team": {
+    "name": "SCP",
+    "id": "1",
+    "starting_squad": [
+      "Adan",
+      "Coates",
+      "Neto",
+      "Porro",
+      "Palhinha",
+      "Nuno Santos",
+      "Pote",
+      "Jovane",
+      "Paulinho",
+      "Matheus Nunes",
+      "Feddal"
+    ],
+    "subs_squad": [
+      "Max",
+      "Inacio",
+      "Tabata",
+      "Vietto",
+      "Sporar",
+      "Jo\u00e3o Pereira",
+      "Antunes"
+    ],
+    "image": "bla"
+  },
+  "away_team": {
+    "name": "SLB",
+    "id": "2",
+    "starting_squad": [
+      "Vlachodimos",
+      "Lucas Verissimo",
+      "Otamendi",
+      "Gilberto",
+      "Weigl",
+      "Rafa",
+      "Everton",
+      "Waldschmidt",
+      "Darwin",
+      "Grimaldo",
+      "Diogo"
+    ],
+    "subs_squad": [
+      "Helton",
+      "Vertonghen",
+      "Pizzi",
+      "Chiquinho",
+      "Seferovic",
+      "Nuno Tavares",
+      "Gabriel"
+    ],
+    "image": "bla"
+  },
+  "match_result": {
+    "winner": "TIE",
+    "home_score": 1,
+    "away_score": 1
+  },
+  "match_stats": {
+    "home_team_stats": [
+      {
+        "Possession": 40,
+        "Shots": 7,
+        "Passes Acc": 61,
+        "Tackles": 5,
+        "Fouls": 4,
+        "Corners": 5,
+        "Offsides": 5,
+        "Interceptions": 8
+      },
+      {
+        "Possession": 28,
+        "Shots": 5,
+        "Passes Acc": 43,
+        "Tackles": 4,
+        "Fouls": 3,
+        "Corners": 4,
+        "Offsides": 4,
+        "Interceptions": 6
+      },
+      {
+        "Possession": 52,
+        "Shots": 2,
+        "Passes Acc": 79,
+        "Tackles": 1,
+        "Fouls": 1,
+        "Corners": 1,
+        "Offsides": 1,
+        "Interceptions": 2
+      }
+    ],
+    "away_team_stats": [
+      {
+        "Possession": 60,
+        "Shots": 2,
+        "Passes Acc": 50,
+        "Tackles": 1,
+        "Fouls": 2,
+        "Corners": 2,
+        "Offsides": 1,
+        "Interceptions": 2
+      },
+      {
+        "Possession": 72,
+        "Shots": 1,
+        "Passes Acc": 35,
+        "Tackles": 1,
+        "Fouls": 1,
+        "Corners": 1,
+        "Offsides": 1,
+        "Interceptions": 1
+      },
+      {
+        "Possession": 48,
+        "Shots": 1,
+        "Passes Acc": 15,
+        "Tackles": 0,
+        "Fouls": 1,
+        "Corners": 1,
+        "Offsides": 0,
+        "Interceptions": 1
+      }
+    ]
+  },
+  "match_start_time": "2024-12-12T21:58:21.762701",
+  "events": [
+    {
+      "game_id": "08171640-d60d-4b3e-ac07-da56253a006e",
+      "event_type": "START",
+      "minute": 0,
+      "publish_timestamp": "2024-12-12T21:58:21.762701",
+      "id": 0
+    },
+    {
+      "game_id": "08171640-d60d-4b3e-ac07-da56253a006e",
+      "event_type": "GOAL",
+      "minute": "6",
+      "team": "home",
+      "scorer": "Porro",
+      "assist": "Matheus Nunes",
+      "publish_timestamp": "2024-12-12T21:58:31.762701",
+      "id": "1"
+    },
+    {
+      "game_id": "08171640-d60d-4b3e-ac07-da56253a006e",
+      "event_type": "SUBSTITUTION",
+      "minute": "25",
+      "team": "home",
+      "player_out": "Inacio",
+      "player_in": "Feddal",
+      "publish_timestamp": "2024-12-12T21:59:09.762701",
+      "id": "2"
+    },
+    {
+      "game_id": "08171640-d60d-4b3e-ac07-da56253a006e",
+      "event_type": "GOAL",
+      "minute": "47",
+      "team": "away",
+      "scorer": "Darwin",
+      "assist": "Diogo",
+      "publish_timestamp": "2024-12-12T21:59:53.762701",
+      "id": "3"
+    },
+    {
+      "game_id": "08171640-d60d-4b3e-ac07-da56253a006e",
+      "event_type": "YELLOW_CARD",
+      "minute": "52",
+      "team": "home",
+      "player": "Coates",
+      "publish_timestamp": "2024-12-12T22:00:03.762701",
+      "id": "4"
+    },
+    {
+      "game_id": "08171640-d60d-4b3e-ac07-da56253a006e",
+      "event_type": "END",
+      "minute": 90,
+      "publish_timestamp": "2024-12-12T22:00:03.762701",
+      "id": "5"
+    }
+  ]
+}
