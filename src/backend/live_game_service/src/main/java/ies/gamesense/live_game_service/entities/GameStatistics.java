@@ -1,12 +1,19 @@
 package ies.gamesense.live_game_service.entities;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GameStatistics {
+public class GameStatistics implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @JsonProperty("home_team_stats")
     private Map<String, Double> homeTeamStats;
+
     @JsonProperty("away_team_stats")
     private Map<String, Double> awayTeamStats;
 

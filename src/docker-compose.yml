@@ -41,14 +41,8 @@ services:
       context: backend/live_game_service
     image: live_game_service-image
     depends_on:
-      - sql_db
       - redis_db
       - kafka
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - app-network
 

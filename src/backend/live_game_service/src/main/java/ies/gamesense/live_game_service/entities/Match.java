@@ -1,13 +1,18 @@
 package ies.gamesense.live_game_service.entities;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Match implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @JsonProperty("match_id")
     private String matchId;
@@ -20,6 +25,9 @@ public class Match implements Serializable {
 
     @JsonProperty("match_start_time")
     private String matchStartTime;
+
+    @JsonProperty("basic_info")
+    private Map<String, String> basicInfo = new HashMap<>();
 
     private Map<Integer, GameStatistics> gameStatistics = new java.util.HashMap<>();
 
@@ -140,16 +148,24 @@ public class Match implements Serializable {
         this.minute = minute;
     }
 
+
     public Map<String, String> getBasicInfo() {
-        Map<String, String> basicInfo = new java.util.HashMap<>();
-        basicInfo.put("match_id", this.matchId);
-        basicInfo.put("home_team", this.homeTeam.getName());
-        basicInfo.put("home_team_image", this.homeTeam.getImage());
-        basicInfo.put("away_team_image", Integer.toString(this.homeTeam.getScore()));
-        basicInfo.put("away_team", this.awayTeam.getName());
-        basicInfo.put("match_start_time", this.matchStartTime);
-        basicInfo.put("minute", Integer.toString(this.minute));
+        if (basicInfo.isEmpty()) {
+            basicInfo.put("match_id", this.matchId);
+            basicInfo.put("home_team", this.homeTeam.getName());
+            basicInfo.put("home_team_image", this.homeTeam.getImage());
+            basicInfo.put("away_team_image", Integer.toString(this.homeTeam.getScore()));
+            basicInfo.put("away_team", this.awayTeam.getName());
+            basicInfo.put("match_start_time", this.matchStartTime);
+            basicInfo.put("minute", Integer.toString(this.minute));
+            return basicInfo;
+
+        }
         return basicInfo;
+    }
+
+    public void setBasicInfo(Map<String, String> basicInfo) {
+        this.basicInfo = basicInfo;
     }
 
     @Override
