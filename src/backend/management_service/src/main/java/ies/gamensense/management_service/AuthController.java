@@ -28,18 +28,26 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<Map<String, Object>> authenticate(@RequestBody AuthRequest request) {
+    public ResponseEntity<Map<String, Object>> authenticate(@RequestBody AuthRequest request, HttpServletResponse response) {
         Optional<User> user = userService.validateUser(request.getUsername(), request.getPassword());
 
         if (user.isPresent()) {
             String token = jwtUtil.generateToken(request.getUsername());
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("token", token);
-            response.put("username", request.getUsername());
-            response.put("message", "Login successful");
+            // Set JWT as a cookie
+            Cookie cookie = new Cookie("jwt", token);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(false); // Set to true if using HTTPS
+            cookie.setPath("/");
+            cookie.setMaxAge(3600); // Set cookie expiration time (e.g., 1 hour)
+            response.addCookie(cookie);
+            
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("token", token);
+            responseBody.put("username", request.getUsername());
+            responseBody.put("message", "Login successful");
 
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(responseBody);
         }
 
         return ResponseEntity.status(401).body(Map.of("message", "Invalid credentials"));
@@ -87,8 +95,23 @@ public class AuthController {
 
     @GetMapping("/username")
     public ResponseEntity<Map<String, String>> getCurrentUsername(HttpServletRequest request) {
-        String username = (String) request.getAttribute("username");
-        return ResponseEntity.ok(Map.of("username", username));
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwt".equals(cookie.getName())) {
+                    try {
+                        String username = jwtUtil.validateToken(cookie.getValue());
+                        return ResponseEntity.ok(Map.of("username", username));
+                    } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                            .body(Map.of("message", "Invalid or expired token"));
+                    }
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                            .body(Map.of("message", "No authentication token found"));
     }
+
 }
 

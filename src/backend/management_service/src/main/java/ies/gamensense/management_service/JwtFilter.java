@@ -55,22 +55,21 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             if (token != null) {
                 String username = jwtUtil.validateToken(token);
+                request.setAttribute("username", username); // Pass the username for further use
                 SecurityContextHolder.getContext().setAuthentication(
                         new UsernamePasswordAuthenticationToken(username, null, null));
             } else {
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(),
-                        Map.of("message", "Invalid or missing JWT tokenn"));
-                return;
+                throw new RuntimeException("Missing or invalid JWT token");
             }
         } catch (Exception e) {
+            System.err.println("JWT validation failed: " + e.getMessage());
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             new ObjectMapper().writeValue(response.getOutputStream(),
                     Map.of("message", "Invalid or missing JWT token"));
             return;
         }
+    
 
         filterChain.doFilter(request, response);
     }
