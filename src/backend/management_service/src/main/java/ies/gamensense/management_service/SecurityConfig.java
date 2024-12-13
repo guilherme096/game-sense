@@ -22,11 +22,10 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/management/authenticate", "/api/v1/management/register").permitAll()
+                .requestMatchers("/api/v1/management/authenticate", "/api/v1/management/register", "/api/v1/management/username", "/api/v1/management/logout").permitAll()
                 .anyRequest().authenticated()
             )
-            .httpBasic(httpBasic -> {});
-
+            .formLogin(form -> form.disable());
         return http.build();
     }
 

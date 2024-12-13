@@ -1,5 +1,6 @@
 package ies.gamensense.management_service;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/management")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthController {
 
     @Autowired
@@ -82,16 +84,18 @@ public class AuthController {
 
 
     @PostMapping("/logout")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public ResponseEntity<Map<String, String>> logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("jwt", null);
         cookie.setHttpOnly(true);
         cookie.setSecure(false); // Set to true in production with HTTPS
-        cookie.setPath("/");
+        cookie.setPath("/"); // Match the original cookie path
+        cookie.setDomain("localhost"); // Match the original cookie domain
         cookie.setMaxAge(0); // Expire the cookie immediately
         response.addCookie(cookie);
 
         return ResponseEntity.ok(Map.of("message", "Logout successful"));
-    }   
+    } 
 
     @GetMapping("/username")
     public ResponseEntity<Map<String, String>> getCurrentUsername(HttpServletRequest request) {

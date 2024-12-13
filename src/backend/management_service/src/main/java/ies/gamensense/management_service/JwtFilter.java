@@ -1,7 +1,6 @@
 package ies.gamensense.management_service;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
