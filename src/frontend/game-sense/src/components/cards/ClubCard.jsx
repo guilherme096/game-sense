@@ -5,72 +5,45 @@ import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { useQuery } from "react-query";
 import axios from "axios";
 
-export default function ClubCard({ clubData, id }) {
-  const [isFollowed, setIsFollowed] = useState(clubData.isStarred);
+export default function ClubCard({ clubData, leagueClubData}) {
+  const [isFollowed, setIsFollowed] = useState(clubData.starred);
 
   const handleFollowClick = () => {
     setIsFollowed((prev) => !prev);
   };
 
-  // Fetch league club information
-  const fetchLeagueClubInformation = async () => {
-    console.log("Fetching league club information");
-    const response = await axios.get(`/api/v1/league/club/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        Accept: "application/json",
-      },
-    });
-    console.log("API Response: ", response.data);
-    return response.data; // Ensure response structure matches this
-  };
-
-  const {
-    data: leagueClub,
-    isLoading: isLoadingLeagueClub,
-    error: errorLeagueClub,
-  } = useQuery(["leagueClub", id], fetchLeagueClubInformation);
-
-  if (isLoadingLeagueClub) {
-    return <div>Loading...</div>;
-  }
-  if (errorLeagueClub || !leagueClub) {
-    console.error("Error fetching league club: ", errorLeagueClub);
-    return <div>An error has occurred: {errorLeagueClub?.message}</div>;
-  }
-
-  const leagueId = leagueClub.league_id || leagueClub.leagueId; // Extract the correct field
-
   // Fetch league information
   const fetchLeagueInformation = async () => {
-    console.log("Fetching league information");
-    const response = await axios.get(`/api/v1/league/${leagueId}`, {
+    console.log("Fetching league information with leagueId:", leagueClubData.leagueId);
+    const response = await axios.get(`/api/v1/league/${leagueClubData.leagueId}`, {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         Accept: "application/json",
       },
     });
-    console.log("League API Response: ", response.data);
+    console.log("League API Response:", response.data);
     return response.data;
   };
 
-  const {
-    data: league,
-    isLoading: isLoadingLeague,
-    error: errorLeague,
-  } = useQuery(["league", leagueId], fetchLeagueInformation, {
-    enabled: !!leagueId, // Ensure this runs only when leagueId is available
-  });
+  const {data: league,isLoadingLeague, errorLeague} = useQuery(["leagueInformation", leagueClubData.leagueId], fetchLeagueInformation, { enabled: !!leagueClubData.leagueId});
 
   if (isLoadingLeague) {
-    return <div>Loading...</div>;
+    console.log("League data is loading...");
+    return <div>Loading League Data...</div>;
   }
+
   if (errorLeague || !league) {
-    console.error("Error fetching league data: ", errorLeague);
-    return <div>An error has occurred: {errorLeague?.message}</div>;
+    console.error("Error fetching league data:", errorLeague);
+    return (
+      <div>
+        An error has occurred while fetching league data:{" "}
+        {errorLeague?.message || "Unknown error"}
+      </div>
+    );
   }
+
+  const leagueName = league.name || "Unknown League";
 
   return (
     <div className="card card-side bg-base-100 shadow-xl m-4 flex items-center relative overflow-hidden rounded-lg">
@@ -90,14 +63,14 @@ export default function ClubCard({ clubData, id }) {
         <div className="flex items-center pl-4">
           <img
             src={clubData.logo}
-            alt={`${clubData.name} Logo`}
+            alt={clubData.name}
             className="w-[10rem] h-[10rem] object-contain"
           />
         </div>
         <div className="flex flex-col text-black ml-4">
           <span className="text-xl font-bold">{clubData.name}</span>
           <span className="text-sm text-gray-700">
-            {leagueClub.place}º {league.name}{" "}
+            {leagueClubData.place}º {leagueName}
             {clubData.countryFlag && (
               <img
                 src={clubData.countryFlag}

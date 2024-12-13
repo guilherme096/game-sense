@@ -8,6 +8,12 @@ export default function InjuryStatusCard({ injuredPlayers }) {
 
   useEffect(() => {
     const fetchInjuries = async () => {
+      if (!Array.isArray(injuredPlayers) || injuredPlayers.length === 0) {
+        console.log("No injured players provided.");
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const injuryData = await Promise.all(
           injuredPlayers.map(async (player) => {
@@ -36,6 +42,7 @@ export default function InjuryStatusCard({ injuredPlayers }) {
         setPlayerInjuries(injuryData);
         setIsLoading(false);
       } catch (err) {
+        console.error("Error fetching player injuries:", err);
         setError(err);
         setIsLoading(false);
       }
@@ -52,8 +59,17 @@ export default function InjuryStatusCard({ injuredPlayers }) {
     return <div>An error has occurred: {error.message}</div>;
   }
 
-  if (!playerInjuries.length) {
-    return <div>No players are currently injured.</div>;
+  if (!Array.isArray(playerInjuries) || playerInjuries.length === 0) {
+    return (
+      <div className="bg-white shadow-lg rounded-lg m-5">
+        <div className="bg-gray-700 text-white font-bold text-lg pl-3 p-2 rounded-t-lg">
+          Injury Status
+        </div>
+        <div className="p-4 text-center text-gray-500 font-medium">
+          No players are currently injured.
+        </div>
+      </div>
+    );
   }
 
   return (
