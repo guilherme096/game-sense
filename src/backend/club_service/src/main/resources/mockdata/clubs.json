@@ -1,0 +1,158 @@
+[
+  {
+    "id": 1,
+    "name": "Wolves",
+    "logo": "https://logos-download.com/wp-content/uploads/2016/05/Wolverhampton_Wanderers_FC_logo.png",
+    "league": "Premier League",
+    "league_position": 3,
+    "country": "England",
+    "countryFlag": "https://upload.wikimedia.org/wikipedia/en/b/be/Flag_of_England.svg",
+    "isStarred": true,
+    "nextGame": {
+      "id": 101,
+      "homeTeam": "Wolves",
+      "homeTeamLogo": "https://logos-download.com/wp-content/uploads/2016/05/Wolverhampton_Wanderers_FC_logo.png",
+      "awayTeam": "Chelsea",
+      "awayTeamLogo": "https://logodownload.org/wp-content/uploads/2017/02/chelsea-fc-logo-escudo.png",
+      "date": "2024-12-02T15:00:00Z",
+      "league": "Premier League",
+      "score": null,
+      "result": null
+    },
+    "lastGames": [
+      {
+        "id": 201,
+        "homeTeam": "Wolves",
+        "homeTeamLogo": "https://logos-download.com/wp-content/uploads/2016/05/Wolverhampton_Wanderers_FC_logo.png",
+        "awayTeam": "SC Braga",
+        "awayTeamLogo": "https://upload.wikimedia.org/wikipedia/en/8/8c/S.C._Braga_logo.png",
+        "date": "2024-11-15T18:00:00Z",
+        "league": "Friendly",
+        "score": "0-4",
+        "result": "L"
+      },
+      {
+        "id": 202,
+        "homeTeam": "Wolves",
+        "homeTeamLogo": "https://logos-download.com/wp-content/uploads/2016/05/Wolverhampton_Wanderers_FC_logo.png",
+        "awayTeam": "FC Porto",
+        "awayTeamLogo": "https://upload.wikimedia.org/wikipedia/en/f/f1/FC_Porto.svg",
+        "date": "2024-11-08T20:30:00Z",
+        "league": "Friendly",
+        "score": "8-1",
+        "result": "W"
+      },
+      {
+        "id": 203,
+        "homeTeam": "Wolves",
+        "homeTeamLogo": "https://logos-download.com/wp-content/uploads/2016/05/Wolverhampton_Wanderers_FC_logo.png",
+        "awayTeam": "Man United",
+        "awayTeamLogo": "https://logos-world.net/wp-content/uploads/2020/06/Manchester-United-Logo.png",
+        "date": "2024-10-29T16:00:00Z",
+        "league": "Premier League",
+        "score": "2-2",
+        "result": "D"
+      },
+      {
+        "id": 204,
+        "homeTeam": "Wolves",
+        "homeTeamLogo": "https://logos-download.com/wp-content/uploads/2016/05/Wolverhampton_Wanderers_FC_logo.png",
+        "awayTeam": "Sporting CP",
+        "awayTeamLogo": "https://upload.wikimedia.org/wikipedia/en/4/4e/Sporting_CP_logo.svg",
+        "date": "2024-10-20T14:00:00Z",
+        "league": "Friendly",
+        "score": "1-8",
+        "result": "W"
+      },
+      {
+        "id": 205,
+        "homeTeam": "Wolves",
+        "homeTeamLogo": "https://logos-download.com/wp-content/uploads/2016/05/Wolverhampton_Wanderers_FC_logo.png",
+        "awayTeam": "Brentford",
+        "awayTeamLogo": "https://brandlogos.net/wp-content/uploads/2021/11/brentford-fc-logo.png",
+        "date": "2024-09-15T17:45:00Z",
+        "league": "Premier League",
+        "score": "5-3",
+        "result": "L"
+      }
+    ],
+    "players": [
+      {
+        "id": 1,
+        "name": "Yerson Mosquera",
+        "injured": true,
+        "injury_history": [
+          {
+            "date": "2024-11-01",
+            "description": "Knee Injury",
+            "severity": "medium",
+            "gamesOut": 20
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Sasa Kalajdzic",
+        "injured": true,
+        "injury_history": [
+          {
+            "date": "2024-10-15",
+            "description": "Ligament Tear",
+            "severity": "high",
+            "gamesOut": 50
+          },
+          {
+            "date": "2023-12-10",
+            "description": "Fractured Ankle",
+            "severity": "high",
+            "gamesOut": 30
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Enso Gonzalez",
+        "injured": false,
+        "injury_history": []
+      },
+      {
+        "id": 4,
+        "name": "Pedro Neto",
+        "injured": false,
+        "injury_history": [
+          {
+            "date": "2024-01-05",
+            "description": "Hamstring Injury",
+            "severity": "low",
+            "gamesOut": 5
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Matheus Nunes",
+        "injured": false,
+        "injury_history": []
+      },
+      {
+        "id": 6,
+        "name": "Ruben Neves",
+        "injured": true,
+        "injury_history": [
+          {
+            "date": "2024-10-20",
+            "description": "Shoulder Dislocation",
+            "severity": "medium",
+            "gamesOut": 15
+          },
+          {
+            "date": "2023-06-12",
+            "description": "Torn ACL",
+            "severity": "high",
+            "gamesOut": 60
+          }
+        ]
+      }
+    ]
+  }
+]
