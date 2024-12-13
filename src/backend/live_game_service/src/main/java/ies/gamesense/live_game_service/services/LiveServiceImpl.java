@@ -121,6 +121,21 @@ public class LiveServiceImpl implements LiveService {
                 match.setEvents(new ArrayList<>());
             }
 
+            if (event.get("event_type").equals("GOAL")) {
+                String team = event.get("team");
+                if (team.equals("home")) {
+                    match.getHomeTeam().setScore(match.getHomeTeam().getScore() + 1);
+                } else {
+                    match.getAwayTeam().setScore(match.getAwayTeam().getScore() + 1);
+                }
+            }
+
+            if (event.get("event_type").equals("END")) {
+                match.endMatch();
+                this.matchPersistenceProducer.sendMatchForPersistence(match);
+                removeMatchFromCache(matchId);
+            }
+
             // Add event to the match
             match.getEvents().add(event);
             System.out.println("Event added to Match: " + match);
