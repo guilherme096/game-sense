@@ -7,11 +7,10 @@ import ies.gamesense.live_game_service.entities.GameStatistics;
 import ies.gamesense.live_game_service.entities.Match;
 
 public interface LiveService {
+
     List<Match> getLiveGames();
 
     Match getLiveById(String id);
-
-    void createLive(Match live);
 
     Map<Integer, GameStatistics> getGameStatistics(String id);
 
