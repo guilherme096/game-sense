@@ -3,7 +3,8 @@ import axios from 'axios';
 import textLogo from '/text-logo.png';
 import iconLogo from '/icon-logo.png';
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Register() {
     const navigate = useNavigate(); 
@@ -41,7 +42,12 @@ export default function Register() {
         setSuccessMessage(null);
 
         if (formData.password !== formData.confirmPassword) {
-            setError("Passwords do not match");
+            toast.error("Passwords do not match");
+            setFormData((prev) => ({
+                ...prev,
+                password: '',
+                confirmPassword: '',
+            }));
             return;
         }
 
