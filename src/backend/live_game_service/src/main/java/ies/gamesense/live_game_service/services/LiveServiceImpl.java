@@ -57,6 +57,7 @@ public class LiveServiceImpl implements LiveService {
         match.getHomeTeam().setScore(0);
         match.getAwayTeam().setScore(0);
 
+        updateMatch(match.getMatchId(), match);
         System.out.println("Match saved to Redis: " + match);
     }
 
@@ -129,6 +130,7 @@ public class LiveServiceImpl implements LiveService {
     @CachePut(value = "liveGames", keyGenerator = "customKeyGenerator")
     public void updateMatch(String id, Match match) {
         System.out.println("Updating match in Redis: " + match);
+        redisTemplate.opsForValue().set("liveGames::" + id, match);
     }
 
     @CacheEvict(value = "liveGames", keyGenerator = "customKeyGenerator")
