@@ -64,23 +64,38 @@ public class LiveServiceImpl implements LiveService {
 
     @KafkaListener(id = "stats", topics = "stats", containerFactory = "gameStatsKafkaListenerContainerFactory")
     public void listen(GameStatistics stats) {
-        System.out.println("Hello from Kafka!");
-        System.out.println("Received GameStatistics: " + stats.toString());
+        try {
+            System.out.println("Hello from Kafka!");
+            System.out.println("Received GameStatistics: " + stats);
 
-        Match match = matchCacheService.getLiveById(stats.getMatchId());
+            String matchId = stats.getMatchId(); // Ensure this field exists in GameStatistics
+            System.out.println("Getting stats Match ID: " + matchId);
 
-        if (match == null) {
-            System.err.println("Match not found for ID: " + stats.getMatchId());
-            return;
+            Match match = redisTemplate.opsForValue().get("liveGames::" + matchId);
+            if (match == null) {
+                System.err.println("Match not found for ID: " + matchId);
+                return;
+            }
+
+            // Ensure gameStatistics is initialized
+            if (match.getGameStatistics() == null) {
+                match.setGameStatistics(new HashMap<>());
+            }
+
+            // Update match statistics
+            Integer half = stats.getHalf(); // Ensure this field exists
+            match.addGameStatistics(half, stats);
+
+            // Save updated match to Redis
+            redisTemplate.opsForValue().set("liveGames::" + matchId, match);
+            System.out.println("Updated GameStatistics for Match: " + match);
+        } catch (Exception e) {
+            System.err.println("Error processing GameStatistics: " + stats);
+            e.printStackTrace();
+            throw e;
         }
-
-        Integer half = stats.getHalf();
-
-        match.addGameStatistics(half, stats);
-
-        System.out.println("Match updated: " + match);
-
     }
+
 
     @KafkaListener(id = "events", topics = "events", containerFactory = "customKafkaListenerContainerFactory")
     public void listen(ConsumerRecord<String, String> record) throws JsonProcessingException {
@@ -111,12 +126,12 @@ public class LiveServiceImpl implements LiveService {
             System.out.println("Event added to Match: " + match);
 
             // Save updated Match to Redis
-            redisTemplate.opsForValue().set("liveGames::" + matchId, match);
+            updateMatch(matchId, match);
             System.out.println("Updated Match saved to Redis: " + match);
         } catch (Exception e) {
             System.err.println("Error processing event: " + record.value());
-            e.printStackTrace(); // Log full stack trace
-            throw e; // Propagate the exception for Kafka error handling
+            e.printStackTrace();
+            throw e;
         }
     }
 

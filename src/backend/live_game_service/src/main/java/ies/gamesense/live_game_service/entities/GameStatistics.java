@@ -13,6 +13,7 @@ public class GameStatistics implements Serializable {
 
     @JsonProperty("home_team_stats")
     private Map<String, Double> homeTeamStats;
+
     @JsonProperty("away_team_stats")
     private Map<String, Double> awayTeamStats;
 
