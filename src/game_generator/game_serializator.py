@@ -5,7 +5,7 @@ import uuid
 from models import Game, Event, Goal, YellowCard, RedCard, Substitution
 
 GAMES_DIR = "./games/"
-GAME_REAL_DURATION = 3
+GAME_REAL_DURATION = 1.5
 
 
 def serialize_game_for_kafka(
@@ -53,7 +53,7 @@ def serialize_game_for_kafka(
         "event_type": "START",
         "minute": 0,
         "publish_timestamp": event_time.isoformat(),
-        "id": 0
+        "id": 0,
     }
 
     match_info["events"].append(start_event)
@@ -75,7 +75,7 @@ def serialize_game_for_kafka(
                 "scorer": event.scorer.name,
                 "assist": event.assist.name,
                 "publish_timestamp": str(event_time.isoformat()),
-                "id": str(id)
+                "id": str(id),
             }
         elif isinstance(event, YellowCard):
             event_data = {
@@ -85,7 +85,7 @@ def serialize_game_for_kafka(
                 "team": event_team,
                 "player": event.player.name,
                 "publish_timestamp": str(event_time.isoformat()),
-                "id": str(id)
+                "id": str(id),
             }
         elif isinstance(event, RedCard):
             event_data = {
@@ -95,7 +95,7 @@ def serialize_game_for_kafka(
                 "team": event_team,
                 "player": event.player.name,
                 "publish_timestamp": str(event_time.isoformat()),
-                "id": str(id)
+                "id": str(id),
             }
         elif isinstance(event, Substitution):
             event_data = {
@@ -106,7 +106,7 @@ def serialize_game_for_kafka(
                 "player_out": event.player_out.name,
                 "player_in": event.player_in.name,
                 "publish_timestamp": str(event_time.isoformat()),
-                "id": str(id)
+                "id": str(id),
             }
         else:
             continue
@@ -117,25 +117,25 @@ def serialize_game_for_kafka(
         "event_type": "END",
         "minute": 90,
         "publish_timestamp": event_time.isoformat(),
-        "id": str(int(match_info["events"][-1]["id"]) + 1)
+        "id": str(int(match_info["events"][-1]["id"]) + 1),
     }
     match_info["events"].append(end_event)
 
     return match_info
 
 
-def save_game_to_file(
+def serialize_game(
     game: Game, events: List[Event], filename: str = None, start_time: datetime = None
 ):
-    if filename is None:
-        filename = f"match_{game.home_team.name}_vs_{game.away_team.name}_{
-            datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    # if filename is None:
+    #    filename = f"match_{game.home_team.name}_vs_{game.away_team.name}_{
+    #        datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
 
-    filename = GAMES_DIR + filename
+    # filename = GAMES_DIR + filename
 
     match_info = serialize_game_for_kafka(game, events, start_time)
 
-    with open(filename, "w") as f:
-        json.dump(match_info, f, indent=2)
+    # with open(filename, "w") as f:
+    #    json.dump(match_info, f, indent=2)
 
-    return filename
+    return match_info

@@ -1,10 +1,13 @@
 import json
 import time
+import game_generator
 from kafka import KafkaProducer
 from datetime import datetime
 import pytz
 import os
 from time import sleep
+from game_generator import *
+from models import Team
 
 # Kafka configuration
 KAFKA_BROKER = "kafka:9092"  # Adjust to your Kafka broker
@@ -71,7 +74,6 @@ def process_events(events, stats):
         ).astimezone(pytz.utc)
 
         wait_time = (publish_timestamp - current_time).total_seconds()
-        sleep(5)
 
         if wait_time > 0:
             print(f"Waiting for {wait_time} event at {publish_timestamp}")
@@ -104,7 +106,6 @@ def publish_game_info(game, stats):
         # Send the event to Kafka
         producer.send(GAMES_TOPIC, value=game)
         producer.flush()  # Ensure all messages are sent
-        sleep(3)
         producer.send(STATS_TOPIC, value=stats)
         producer.flush()  # Ensure all messages are sent
         print(f"Published event: {game}")
@@ -113,10 +114,16 @@ def publish_game_info(game, stats):
 
 
 def main():
-    game_file_path = os.path.join("games", "match_SCP_vs_SLB_20241212_215821.json")
+    # game_file_path = os.path.join("games", "match_SCP_vs_SLB_20241212_215821.json")
+    home_team = os.environ.get("HOME_TEAM")
+    away_team = os.environ.get("AWAY_TEAM")
 
-    game_data = read_game_from_file(game_file_path)
-    print(game_data)
+    game_data = game_generator.main(
+        home_team=Team.from_dict(json.loads(home_team)),
+        away_team=Team.from_dict(json.loads(away_team)),
+    )
+
+    print("Game data generated successfully.")
 
     events = game_data.get("events", [])
     match_info = {
@@ -149,7 +156,6 @@ def main():
             "Interceptions": 0,
         },
     }
-    sleep(10)
     publish_game_info(match_info, mathc_stats)
 
     if events:
