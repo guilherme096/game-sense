@@ -48,6 +48,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(@RequestBody User user) {
         try {
+            System.out.println("isPremium: " + user.getPremium());
             if (userService.getUserDetails(user.getUsername()).isPresent()) {
                 return ResponseEntity.badRequest().body(Map.of("message", "Username already exists"));
             }
@@ -55,6 +56,10 @@ public class AuthController {
                 return ResponseEntity.badRequest().body(Map.of("message", "Username and password are required"));
             }
             User createdUser = userService.createUser(user);
+            System.out.println("Created user: " + createdUser);
+            // return the properties of the created user
+            System.out.println("is premium: " + createdUser.getPremium());
+
             String token = jwtUtil.generateToken(createdUser.getUsername());
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);

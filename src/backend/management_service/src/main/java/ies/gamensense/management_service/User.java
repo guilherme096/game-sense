@@ -1,4 +1,6 @@
 package ies.gamensense.management_service;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -25,7 +27,7 @@ public class User {
 
     @Column(name = "is_premium", nullable = false)
     private boolean isPremium;
-
+    
     // Default constructor
     public User() {}
 
@@ -61,12 +63,12 @@ public class User {
         this.favouriteTeam = favouriteTeam;
     }
 
-    public boolean isPremium() {
+    public boolean getPremium() {
         return isPremium;
     }
 
     public void setPremium(boolean premium) {
-        isPremium = premium;
+        this.isPremium = premium;
     }
 }
 

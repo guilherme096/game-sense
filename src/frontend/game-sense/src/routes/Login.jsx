@@ -1,7 +1,7 @@
 import textLogo from "/text-logo.png";
 import iconLogo from "/icon-logo.png";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { toast } from "react-toastify";
@@ -16,18 +16,16 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Function to handle going back to the previous page
-  const handleGoBack = () => {
-    // Check if there's a previous location in state
-    const previousPath = location.state?.from?.pathname || '/home';
-    
-    // Navigate back to the previous page
-    navigate(previousPath);
-  };
+  // Show toast if there's a success message in the location state
+  useEffect(() => {
+    if (location.state?.successMessage) {
+      toast.success(location.state.successMessage);
+    }
+  }, [location.state]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(null); 
+    setError(null);
 
     const formData = {
       username,
@@ -35,9 +33,8 @@ export default function Login() {
     };
 
     try {
-      console.log("Sending authentication request...");
       const response = await axios.post(
-        "/api/v1/management/authenticate", 
+        "/api/v1/management/authenticate",
         formData,
         {
           withCredentials: true,
@@ -47,41 +44,29 @@ export default function Login() {
         }
       );
 
-      console.log("Response received:", response);
-
       if (response.status === 200 && response.data.token) {
-        console.log("Token received:", response.data.token);
         if (signIn({
           auth: {
             token: response.data.token,
-            type: 'Bearer'
+            type: 'Bearer',
           },
-          userState: { username: response.data.username }
+          userState: { username: response.data.username },
         })) {
-          console.log("Sign in successful, navigating to /home");
           navigate("/home");
         } else {
-          console.error("Sign in failed");
           toast.error("Failed to sign in. Please try again.");
         }
       } else {
-        console.error("Unexpected response:", response);
         toast.error("Unexpected response from server. Please try again.");
       }
     } catch (err) {
-      console.error("Login failed", err);
       setUsername("");
       setPassword("");
-
       if (err.response) {
-        console.error("Response data:", err.response.data);
-        console.error("Response status:", err.response.status);
         toast.error(err.response.data.message || "Authentication failed");
       } else if (err.request) {
-        console.error("No response received");
         toast.error("No response from server. Please try again.");
       } else {
-        console.error("Error setting up request:", err.message);
         toast.error("An error occurred. Please try again.");
       }
     }
@@ -157,7 +142,7 @@ export default function Login() {
         {/* Go Back Button */}
         {location.state?.from && (
           <div className="mt-4 text-center w-full max-w-md">
-            <button 
+            <button
               onClick={handleGoBack}
               className="w-full text-white py-2 px-4 rounded-md text-lg bg-yellow-400"
             >

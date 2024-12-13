@@ -12,7 +12,7 @@ export default function Register() {
         favouriteTeam: '',
         password: '',
         confirmPassword: '',
-        isPremium: false,
+        isPremium: null,
     });
 
     const [error, setError] = useState(null);
@@ -20,11 +20,20 @@ export default function Register() {
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value,
-        }));
+    
+        if (name === "isPremium") {
+            setFormData((prev) => ({
+                ...prev,
+                isPremium: checked, 
+            }));
+        } else {
+            setFormData((prev) => ({
+                ...prev,
+                [name]: value, 
+            }));
+        }
     };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -37,7 +46,15 @@ export default function Register() {
         }
 
         try {
-            const response = await axios.post('http://localhost/api/v1/management/register', {
+
+            console.log({
+                username: formData.name,
+                password: formData.password,
+                favouriteTeam: formData.favouriteTeam,
+                isPremium: formData.isPremium,
+            });
+            
+            await axios.post('http://localhost/api/v1/management/register', {
                 username: formData.name,
                 password: formData.password,
                 favouriteTeam: formData.favouriteTeam,
@@ -46,14 +63,6 @@ export default function Register() {
 
             setSuccessMessage("Registration successful!");
             navigate("/", { state: { successMessage: "Account created successfully!" } });
-
-            setFormData({
-                name: '',
-                favouriteTeam: '',
-                password: '',
-                confirmPassword: '',
-                isPremium: false,
-            });
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred during registration.");
         }
