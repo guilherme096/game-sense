@@ -229,8 +229,6 @@ def main():
     signal.signal(signal.SIGINT, signal_handler)
 
     try:
-        with open("logger.txt","w") as f:
-            f.write("bla")
         # Start game producers
         scheduler.start_game_producers()
 
