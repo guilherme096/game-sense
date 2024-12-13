@@ -12,13 +12,31 @@ services:
       - player-service
       - league-service
       - kafka
+      - management-service
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      USERS_DATABASE: ${USERS_DATABASE}
+      USERS_USER: ${USERS_USER}
+      USERS_PASSWORD: ${USERS_PASSWORD}
     networks:
       - app-network
+
+  management-service:
+    build:
+      context: backend/management_service
+    image: management_service-image  
+    depends_on:
+      - users_db
+    networks:
+      - app-network
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      USERS_DATABASE: ${USERS_DATABASE}
+      USERS_USER: ${USERS_USER}
+      USERS_PASSWORD: ${USERS_PASSWORD}
 
   club-service:
     build:
@@ -93,6 +111,19 @@ services:
     networks:
       - app-network
 
+  users_db:
+    image: mysql:8.0
+    container_name: users_db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      USERS_DATABASE: ${USERS_DATABASE}
+      USERS_USER: ${USERS_USER}
+      USERS_PASSWORD: ${USERS_PASSWORD}
+    volumes:
+      - users-db-data:/var/lib/mysql
+    networks:
+      - app-network
+
   redis_db:
     image: redis:latest
     container_name: redis_db
@@ -142,6 +173,7 @@ services:
 
 volumes:
   db-data:
+  users-db-data:
 
 networks:
   app-network:

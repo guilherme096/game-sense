@@ -4,6 +4,7 @@ CLUB_SERVICE = ./backend/club_service
 LIVE_GAME_SERVICE = ./backend/live_game_service
 PLAYER_SERVICE = ./backend/player_service
 LEAGUE_SERVICE = ./backend/league_service
+MANAGEMENT_SERVICE = ./backend/management_service
 
 # Default goal
 .PHONY: all
@@ -17,6 +18,7 @@ build:
 	@$(MAKE) build-player
 	@$(MAKE) build-league
 	@$(MAKE) build-frontend
+	@$(MAKE) build-management
 	@$(MAKE) build-databases
 	@echo "All services built!"
 
@@ -25,6 +27,9 @@ build:
 build-club:
 	@echo "Building Club Service..."
 	@cd $(CLUB_SERVICE) && ./mvnw clean package -DskipTests
+build-management:
+	@echo "Building Management Service..."
+	@cd $(MANAGEMENT_SERVICE) && ./mvnw clean package -DskipTests
 build-live-game:
 	@echo "Building Live Game Service..."
 	@cd $(LIVE_GAME_SERVICE) && ./mvnw clean package -DskipTests
@@ -63,13 +68,15 @@ restart:
 	@echo "All services restarted!"
 
 # Rebuild specific services
-.PHONY: rebuild-club rebuild-live-game rebuild-player rebuild-league rebuild-frontend rebuild-databases rebuild-sql rebuild-redis
+.PHONY: rebuild-club rebuild-live-game rebuild-player rebuild-management rebuild-league rebuild-frontend rebuild-databases rebuild-sql rebuild-redis
 rebuild-club:
 	@docker-compose up --build -d club-service
 rebuild-live-game:
 	@docker-compose up --build -d live-game-service
 rebuild-player:
 	@docker-compose up --build -d player-service
+rebuild-management:
+	@docker-compose up --build -d management-service
 rebuild-league:
 	@docker-compose up --build -d league-service
 rebuild-frontend:
@@ -85,6 +92,9 @@ rebuild-redis:
 	@echo "Restarting Redis..."
 	@docker-compose restart redis_db
 	@echo "Redis restarted!"
+rebuild-users-db:
+	@echo "Rebuilding Users Database..."
+	@docker-compose up --build -d users_db
 
 # Build and restart all services
 .PHONY: rebuild
@@ -100,6 +110,8 @@ rebuild:
 clean:
 	@echo "Cleaning Club Service..."
 	@cd $(CLUB_SERVICE) && ./mvnw clean || echo "Failed to clean Club Service"
+	@echo "Cleaning Management Service..."
+	@cd $(MANAGEMENT_SERVICE) && ./mvnw clean || echo "Failed to clean Management Service"
 	@echo "Cleaning Live Game Service..."
 	@cd $(LIVE_GAME_SERVICE) && ./mvnw clean || echo "Failed to clean Live Game Service"
 	@echo "Cleaning Player Service..."

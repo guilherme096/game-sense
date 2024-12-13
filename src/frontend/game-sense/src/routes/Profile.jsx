@@ -2,10 +2,57 @@ import PageTemplate from "./PageTemplate.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import GeneralCard from "../components/cards/GeneralCard"; 
-import profile from "../static/profile"; 
+import GeneralCard from "../components/cards/GeneralCard";
+import profile from "../static/profile";
+import { useNavigate } from "react-router-dom";
+import useSignOut from 'react-auth-kit/hooks/useSignOut';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+
 
 function Profile() {
+    const navigate = useNavigate();
+    const signOut = useSignOut();
+    const [username, setUsername] = useState("");
+
+    const handleLogout = async () => {
+        try {
+            const response = await axios.post("/api/v1/management/logout", {}, {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.status === 200) {
+                signOut();
+                navigate("/");
+            } else {
+                console.error("Failed to logout");
+            }
+        } catch (error) {
+            console.error("Error logging out:", error);
+        }
+    };
+
+    useEffect(() => {
+        const fetchUsername = async () => {
+            try {
+                const response = await axios.get("/api/v1/management/username", {
+                    withCredentials: true
+                });
+                
+                if (response.data && response.data.username) {
+                    setUsername(response.data.username);
+                }
+            } catch (error) {
+                console.error("Error fetching username:", error);
+            }
+        };
+
+        fetchUsername();
+    }, []);
+
     return (
         <PageTemplate>
             <div className="p-5 space-y-4">
@@ -18,8 +65,15 @@ function Profile() {
                             className="w-20 h-20 rounded-full"
                         />
                         <div className="ml-4">
-                            <h2 className="text-xl font-bold">{profile.name}</h2>
-                            <button className="text-gray-500 underline text-sm">Logout</button>
+                            <h2 className="text-xl font-bold">
+                                {username}
+                            </h2>
+                            <button
+                                onClick={handleLogout}
+                                className="text-gray-500 underline text-sm"
+                            >
+                                Logout
+                            </button>
                         </div>
                     </div>
                     <button className="ml-auto">
@@ -50,8 +104,9 @@ function Profile() {
                         {profile.myTeams.map((team) => (
                             <div
                                 key={team}
-                                className={`relative flex flex-col items-center ${team === profile.favTeam
-                                    }`}
+                                className={`relative flex flex-col items-center ${
+                                    team === profile.favTeam 
+                                }`}
                             >
                                 {/* Star Icon for Favorite Team */}
                                 {team === profile.favTeam && (
@@ -110,7 +165,6 @@ function Profile() {
                         ))}
                     </div>
                 </GeneralCard>
-
             </div>
         </PageTemplate>
     );
