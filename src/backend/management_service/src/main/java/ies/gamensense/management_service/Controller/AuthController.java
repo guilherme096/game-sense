@@ -26,7 +26,6 @@ import ies.gamensense.management_service.Models.AuthRequest;
 
 @RestController
 @RequestMapping("/api/v1/management")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthController {
 
     @Autowired
