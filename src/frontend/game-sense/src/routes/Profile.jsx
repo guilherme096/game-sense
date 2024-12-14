@@ -9,11 +9,11 @@ import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
-
 function Profile() {
     const navigate = useNavigate();
     const signOut = useSignOut();
     const [username, setUsername] = useState("");
+    const [isPremium, setPremium] = useState(false); 
 
     const handleLogout = async () => {
         try {
@@ -38,12 +38,15 @@ function Profile() {
     useEffect(() => {
         const fetchUsername = async () => {
             try {
-                const response = await axios.get("/api/v1/management/username", {
+                const response = await axios.get("/api/v1/management/user-info", {
                     withCredentials: true
                 });
+
+                console.log(response);
                 
-                if (response.data && response.data.username) {
+                if (response.status === 200) {
                     setUsername(response.data.username);
+                    setPremium(response.data.premium);  // Set premium status based on API response
                 }
             } catch (error) {
                 console.error("Error fetching username:", error);
@@ -82,18 +85,21 @@ function Profile() {
                 </div>
 
                 {/* Plan Section */}
-                {!profile.isPremium && (
-                    <div className="rounded-lg flex justify-between items-center">
-                        <div className="text-left">
-                            <p className="text-sm text-gray-500">Current Plan</p>
-                            <p className="text-xl font-bold">Free</p>
-                        </div>
+                <div className="rounded-lg flex justify-between items-center">
+                    <div className="text-left">
+                        <p className="text-sm text-gray-500">Current Plan</p>
+                        <p className="text-xl font-bold">
+                            {isPremium ? "Premium" : "Free"}
+                        </p>
+                    </div>
+                    {!isPremium && (
                         <button className="bg-yellow-400 text-white py-2 px-4 rounded-md font-bold">
                             Become Premium
                         </button>
-                    </div>
-                )}
+                    )}
+                </div>
                 <br />
+                
                 {/* My Teams Section */}
                 <GeneralCard
                     title="My Teams"
@@ -128,7 +134,7 @@ function Profile() {
                         Change Favorite Team
                     </button>
                 </GeneralCard>
-                <div className="pt-0"></div>
+
                 {/* My Teams Last Results */}
                 <GeneralCard title="My Teams Last Results">
                     <div className="divide-y divide-gray-200">

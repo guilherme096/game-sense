@@ -1,4 +1,4 @@
-package ies.gamensense.management_service;
+package ies.gamensense.management_service.Jwt;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

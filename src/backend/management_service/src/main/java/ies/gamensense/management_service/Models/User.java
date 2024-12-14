@@ -1,9 +1,7 @@
-package ies.gamensense.management_service;
-import com.fasterxml.jackson.annotation.JsonSetter;
+package ies.gamensense.management_service.Models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 
 @Entity

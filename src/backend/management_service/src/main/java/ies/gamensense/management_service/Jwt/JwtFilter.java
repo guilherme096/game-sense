@@ -1,4 +1,4 @@
-package ies.gamensense.management_service;
+package ies.gamensense.management_service.Jwt;
 
 import java.io.IOException;
 import java.util.Map;
@@ -22,8 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
-
-    // Intercept requests, extract JWT from cookies, validate JWT tokens
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -54,7 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             if (token != null) {
                 String username = jwtUtil.validateToken(token);
-                request.setAttribute("username", username); // Pass the username for further use
+                request.setAttribute("username", username); 
                 SecurityContextHolder.getContext().setAuthentication(
                         new UsernamePasswordAuthenticationToken(username, null, null));
             } else {
