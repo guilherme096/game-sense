@@ -66,7 +66,7 @@ export default function TeamInfo({ team, index }) {
             height: 20,
           }}
         >
-          {team.position}
+          {team.place}
         </div>
       </td>
 
