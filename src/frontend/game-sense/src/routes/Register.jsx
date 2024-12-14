@@ -64,7 +64,7 @@ export default function Register() {
                 username: formData.name,
                 password: formData.password,
                 favouriteTeam: formData.favouriteTeam,
-                isPremium: formData.isPremium,
+                premium: formData.isPremium,
             });
 
             setSuccessMessage("Registration successful!");
