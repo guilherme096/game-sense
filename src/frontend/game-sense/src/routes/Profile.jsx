@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import PageTemplate from "./PageTemplate.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
@@ -7,7 +8,6 @@ import profile from "../static/profile";
 import { useNavigate } from "react-router-dom";
 import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
 import PremiumModal from "../components/PremiumModal.jsx";  
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,17 +18,10 @@ function Profile() {
     const [username, setUsername] = useState("");
     const [isPremium, setPremium] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);  
-    const [loading, setLoading] = useState(true);  // Add loading state
+    const [loading, setLoading] = useState(true);
 
-    // Open the modal
-    const openModal = () => {
-        setIsModalOpen(true);
-    };
-
-    // Close the modal
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
 
     const handleLogout = async () => {
         try {
@@ -52,24 +45,22 @@ function Profile() {
 
     const handleBecomePremium = async () => {
         try {
-            // Send a request to the backend to make the user premium
             const response = await axios.post('/api/v1/management/become-premium', {}, {
                 withCredentials: true
             });
     
             if (response.status === 200) {
-                setPremium(true);  // Update the premium status
-                closeModal();  // Close the modal after successful upgrade
-                toast.success("You are now a premium member!");  // Show success message
+                setPremium(true);
+                closeModal();
+                toast.success("You are now a premium member!");
             } else {
-                toast.error("Failed to become premium.");  // Show error if status code is not 200
+                toast.error("Failed to become premium.");
             }
         } catch (error) {
             console.error('Error upgrading to premium:', error);
-            toast.error("An error occurred while upgrading to premium.");  // Show error for any exceptions
+            toast.error("An error occurred while upgrading to premium.");
         }
     };
-    
 
     useEffect(() => {
         const fetchUsername = async () => {
@@ -80,12 +71,12 @@ function Profile() {
 
                 if (response.status === 200) {
                     setUsername(response.data.username);
-                    setPremium(response.data.premium);  // Set premium status based on API response
+                    setPremium(response.data.premium);
                 }
             } catch (error) {
                 console.error("Error fetching username:", error);
             } finally {
-                setLoading(false); // Set loading to false once data is fetched
+                setLoading(false);
             }
         };
 
@@ -107,17 +98,20 @@ function Profile() {
         );
     }
 
+    // Get the first letter of the username
+    const userInitial = username.charAt(0).toUpperCase();
+
     return (
         <PageTemplate>
             <div className="p-5 space-y-4">
                 {/* User Section */}
                 <div className="flex items-center">
                     <div className="flex items-center">
-                        <img
-                            src={profile.photoUrl}
-                            alt={profile.name}
-                            className="w-20 h-20 rounded-full"
-                        />
+                        <div className="avatar placeholder">
+                            <div className="bg-neutral text-neutral-content w-20 rounded-full">
+                                <span className="text-3xl">{userInitial}</span>
+                            </div>
+                        </div>
                         <div className="ml-4">
                             <h2 className="text-xl font-bold">
                                 {username}
@@ -152,7 +146,6 @@ function Profile() {
                         </button>
                     )}
                 </div>
-                <br />
 
                 {/* My Teams Section */}
                 <GeneralCard
@@ -160,7 +153,6 @@ function Profile() {
                     button={<span className="text-sm text-white">({profile.myTeams.length})</span>}
                 >
                     <div className="p-4 grid grid-cols-4 gap-4">
-                        {/* Teams */}
                         {profile.myTeams.map((team) => (
                             <div
                                 key={team}
@@ -168,7 +160,6 @@ function Profile() {
                                     team === profile.favTeam 
                                 }`}
                             >
-                                {/* Star Icon for Favorite Team */}
                                 {team === profile.favTeam && (
                                     <FontAwesomeIcon
                                         icon={faStar}
@@ -192,10 +183,8 @@ function Profile() {
                 {/* My Teams Last Results */}
                 <GeneralCard title="My Teams Last Results">
                     <div className="divide-y divide-gray-200">
-                        {/* Match Rows */}
                         {profile.lastResults.map((match, index) => (
                             <div key={index} className="grid grid-cols-3 items-center py-4 px-6">
-                                {/* Team 1 */}
                                 <div className="flex items-center space-x-4">
                                     <img
                                         src="https://via.placeholder.com/40"
@@ -204,15 +193,11 @@ function Profile() {
                                     />
                                     <p className="text-sm font-bold">{match.team1}</p>
                                 </div>
-
-                                {/* Scores */}
                                 <div className="flex justify-center space-x-4 font-bold text-lg">
                                     <p>{match.score1}</p>
                                     <p>-</p>
                                     <p>{match.score2}</p>
                                 </div>
-
-                                {/* Team 2 */}
                                 <div className="flex items-center space-x-4 justify-end">
                                     <p className="text-sm font-bold">{match.team2}</p>
                                     <img
@@ -227,7 +212,6 @@ function Profile() {
                 </GeneralCard>
             </div>
 
-            {/* Modal for Becoming Premium */}
             <PremiumModal
                 isOpen={isModalOpen}
                 closeModal={closeModal}
