@@ -1,11 +1,9 @@
 package ies.gamesense.league_service.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "league")
@@ -19,6 +17,10 @@ public class League {
 
     @Column(name = "logo", nullable = false)
     private String logo;
+
+    @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<League_Club> leagueClubs;
 
     public League() {
     }

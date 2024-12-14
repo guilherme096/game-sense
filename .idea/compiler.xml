@@ -6,7 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="club_service" />
         <module name="live_game_service" />
+        <module name="player_service" />
+        <module name="league_service" />
       </profile>
     </annotationProcessing>
   </component>
