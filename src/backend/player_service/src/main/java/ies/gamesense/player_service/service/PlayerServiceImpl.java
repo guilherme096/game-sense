@@ -65,6 +65,11 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
+    public List<PlayerGameStats> getPlayerStatistics(Long id) {
+        return playerGameStatsRepository.findByPlayerId(id);
+    }
+
+    @Override
     public List<Injury> getPlayerInjuries(Long id) {
         return injuryRepository.findByPlayerId(id);
     }

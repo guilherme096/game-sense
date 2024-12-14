@@ -20,6 +20,8 @@ public interface PlayerService {
 
     Optional<PlayerGameStats> getPlayerStatisticsbyGameId(Long id, Long gameId);
 
+    List<PlayerGameStats> getPlayerStatistics(Long id);
+
     List<Injury> getPlayerInjuries(Long id);
 
     List<Player> searchPlayers(String name, Integer age, String position);

@@ -3,6 +3,7 @@ import LastMatchesCard from "./LastMatchesCard";
 import InjuryStatusCard from "./InjuryStatusCard";
 import { useQuery } from "react-query";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 export default function Overview({ clubData, id }) {
   const fetchPlayersFromClub = async () => {
@@ -61,4 +62,21 @@ export default function Overview({ clubData, id }) {
       <br />
     </>
   );
+}
+
+Overview.propTypes = {
+    injuredPlayers: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            injury_history: PropTypes.arrayOf(
+                PropTypes.shape({
+                    date: PropTypes.string.isRequired,
+                    description: PropTypes.string.isRequired,
+                    severity: PropTypes.string.isRequired,
+                    gamesOut: PropTypes.number.isRequired,
+                })
+            ).isRequired
+        })
+    ).isRequired
 }

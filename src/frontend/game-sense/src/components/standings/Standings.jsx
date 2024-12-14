@@ -2,6 +2,7 @@ import TeamTable from './TeamTable';
 import GeneralCard from '../cards/GeneralCard';
 import { useQuery } from 'react-query';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 export default function Standings({ showHeader = true }) {
     const fetchStandings = async () => {
@@ -63,3 +64,20 @@ export default function Standings({ showHeader = true }) {
         </div>
     );
 }
+
+Standings.propTypes = {
+    showHeader: PropTypes.bool,
+    standings: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            logo: PropTypes.string.isRequired,
+            wins: PropTypes.number.isRequired,
+            draws: PropTypes.number.isRequired,
+            losses: PropTypes.number.isRequired,
+            goalsScored: PropTypes.number.isRequired,
+            goalsConceded: PropTypes.number.isRequired,
+            points: PropTypes.number.isRequired,
+            position: PropTypes.number.isRequired,
+        })
+    ).isRequired,
+};

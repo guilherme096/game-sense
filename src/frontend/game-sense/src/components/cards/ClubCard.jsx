@@ -4,6 +4,8 @@ import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { useQuery } from "react-query";
 import axios from "axios";
+import PropTypes from "prop-types";
+import Club from "../../routes/Club";
 
 export default function ClubCard({ clubData, leagueClubData}) {
   const [isFollowed, setIsFollowed] = useState(clubData.starred);
@@ -96,3 +98,19 @@ export default function ClubCard({ clubData, leagueClubData}) {
     </div>
   );
 }
+
+ClubCard.propTypes = {
+    clubData: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        logo: PropTypes.string.isRequired,
+        starred: PropTypes.bool.isRequired,
+    }).isRequired,
+    leagueClubData: PropTypes.shape({
+        place: PropTypes.number.isRequired,
+        country: PropTypes.string.isRequired,
+        countryFlag: PropTypes.string.isRequired,
+    }).isRequired,
+    isFollowed: PropTypes.bool.isRequired,
+    setIsFollowed: PropTypes.func.isRequired,
+    handleFollowClick: PropTypes.func.isRequired,
+};

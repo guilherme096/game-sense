@@ -4,6 +4,7 @@ import Standings from "../components/standings/Standings.jsx";
 import HorizontalTab from "../components/HorizontalTab.jsx";
 import { useQuery } from 'react-query';
 import axios from 'axios';
+import PropTypes from "prop-types";
 
 function LeaguePageBase() {
     const fetchLeagueDetails = async () => {
@@ -47,3 +48,10 @@ function LeaguePageBase() {
 }
 
 export default LeaguePageBase;
+
+LeaguePageBase.propTypes = {
+    league: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        logo: PropTypes.string.isRequired,
+    }).isRequired,
+};

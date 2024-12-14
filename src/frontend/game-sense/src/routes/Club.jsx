@@ -2,9 +2,11 @@ import PageTemplate from "./PageTemplate";
 import HorizontalTab from "../components/HorizontalTab";
 import Overview from "../components/ClubPage/Overview";
 import ClubCard from "../components/cards/ClubCard";
+import SquadOverview from "../components/ClubPage/SquadOverview";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import PropTypes from "prop-types";
 
 function Club() {
   const id = useParams().id;
@@ -56,7 +58,7 @@ function Club() {
         categories={[
           { name: "Overview", content: <Overview clubData={club || {}} id={id} /> },
           { name: "Statistics", content: "Statistics Content" },
-          { name: "Injuries", content: "Injuries Content" },
+          { name: "Squad", content: <SquadOverview clubData={club || {}} id={id} /> },
           { name: "Tips", content: "Tips Content" },
         ]}
       />
@@ -65,3 +67,15 @@ function Club() {
 }
 
 export default Club;
+
+Club.propTypes = {
+    club: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        logo: PropTypes.string.isRequired,
+    }).isRequired,
+    leagueClub: PropTypes.shape({
+        place: PropTypes.number.isRequired,
+        country: PropTypes.string.isRequired,
+        countryFlag: PropTypes.string.isRequired,
+    }).isRequired
+};  

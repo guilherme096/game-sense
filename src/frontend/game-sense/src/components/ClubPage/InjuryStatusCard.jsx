@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function InjuryStatusCard({ injuredPlayers }) {
   const [playerInjuries, setPlayerInjuries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
     const fetchInjuries = async () => {
@@ -93,7 +95,8 @@ export default function InjuryStatusCard({ injuredPlayers }) {
             return (
               <tr
                 key={player.id}
-                className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"}`}
+                className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"} cursor-pointer`}
+                onClick={() => navigate(`/player/${player.id}`)} // Navigate to the player's page
               >
                 {/* Player Name */}
                 <td className="py-3 pl-3 text-black text-sm">{player.name}</td>

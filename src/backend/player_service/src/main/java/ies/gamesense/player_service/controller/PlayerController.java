@@ -96,6 +96,17 @@ public class PlayerController {
         return ResponseEntity.ok(stats);
     }
 
+    // Get player's statistics
+    @Operation(summary = "Get statistics of a player")
+    @GetMapping("/{id}/statistics")
+    public ResponseEntity<List<PlayerGameStats>> getPlayerStatistics(@PathVariable Long id) {
+        List<PlayerGameStats> stats = playerService.getPlayerStatistics(id);
+        if (stats.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(stats);
+    }
+
     // Get injuries by player ID
     @Operation(summary = "Get injuries by player id")
     @GetMapping("/{id}/injuries")
