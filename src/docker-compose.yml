@@ -29,7 +29,8 @@ services:
       context: backend/management_service
     image: management_service-image  
     depends_on:
-      - users_db
+      users_db:
+        condition: service_healthy
     networks:
       - app-network
     environment:
@@ -116,13 +117,19 @@ services:
     container_name: users_db
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      USERS_DATABASE: ${USERS_DATABASE}
-      USERS_USER: ${USERS_USER}
-      USERS_PASSWORD: ${USERS_PASSWORD}
+      MYSQL_DATABASE: ${USERS_DATABASE}
+      MYSQL_USER: ${USERS_USER}
+      MYSQL_PASSWORD: ${USERS_PASSWORD}
     volumes:
       - users-db-data:/var/lib/mysql
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   redis_db:
     image: redis:latest
