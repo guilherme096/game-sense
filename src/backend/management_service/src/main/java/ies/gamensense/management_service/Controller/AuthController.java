@@ -1,4 +1,4 @@
-package ies.gamensense.management_service;
+package ies.gamensense.management_service.Controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import ies.gamensense.management_service.Jwt.JwtUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import ies.gamensense.management_service.Models.User;
+import ies.gamensense.management_service.Models.AuthRequest;
 
 @RestController
 @RequestMapping("/api/v1/management")
@@ -41,7 +47,7 @@ public class AuthController {
             cookie.setHttpOnly(true);
             cookie.setSecure(false); // Set to true if using HTTPS
             cookie.setPath("/");
-            cookie.setMaxAge(3600); // Set cookie expiration time (e.g., 1 hour)
+            cookie.setMaxAge(3600);
             response.addCookie(cookie);
             
             Map<String, Object> responseBody = new HashMap<>();
@@ -91,7 +97,7 @@ public class AuthController {
         cookie.setSecure(false); // Set to true in production with HTTPS
         cookie.setPath("/"); // Match the original cookie path
         cookie.setDomain("localhost"); // Match the original cookie domain
-        cookie.setMaxAge(0); // Expire the cookie immediately
+        cookie.setMaxAge(0); 
         response.addCookie(cookie);
 
         return ResponseEntity.ok(Map.of("message", "Logout successful"));
@@ -117,7 +123,6 @@ public class AuthController {
                             .body(Map.of("message", "No authentication token found"));
     }
 
-    // Get the user details
     @GetMapping("/user-info")
     public ResponseEntity<User> getUserDetails(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();

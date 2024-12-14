@@ -1,4 +1,4 @@
-package ies.gamensense.management_service;
+package ies.gamensense.management_service.Models;
 
 public class AuthRequest {
 

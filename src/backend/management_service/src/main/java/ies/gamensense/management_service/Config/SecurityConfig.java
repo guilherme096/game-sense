@@ -1,4 +1,4 @@
-package ies.gamensense.management_service;
+package ies.gamensense.management_service.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,13 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/management/authenticate", "/api/v1/management/register", "/api/v1/management/username", "/api/v1/management/logout", "/api/v1/management/user-info").permitAll()
+                .requestMatchers(
+                    "/api/v1/management/authenticate", 
+                    "/api/v1/management/register", 
+                    "/api/v1/management/username", 
+                    "/api/v1/management/logout", 
+                    "/api/v1/management/user-info"
+                    ).permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form.disable());
