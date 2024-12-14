@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import ies.gamensense.management_service.Models.User;
+import ies.gamensense.management_service.Service.UserService;
 import ies.gamensense.management_service.Models.AuthRequest;
 
 @RestController
@@ -143,6 +144,46 @@ public class AuthController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                             .body(null);
+    }
+
+    @PostMapping("/become-premium")
+    public ResponseEntity<String> becomePremium(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwt".equals(cookie.getName())) {
+                    try {
+                        String username = jwtUtil.validateToken(cookie.getValue());
+                        if (username != null) {
+                            Optional<User> userOpt = userService.getUserDetails(username);
+                            if (userOpt.isPresent()) {
+                                User user = userOpt.get();
+                                if (!user.getPremium()) {
+                                    user.setPremium(true); // Set the user to premium
+                                    userService.save(user); // Save the updated user
+                                    return ResponseEntity.ok("User upgraded to premium.");
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                        .body("User is already premium.");
+                                }
+                            } else {
+                                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                    .body("User not found.");
+                            }
+                        } else {
+                            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                .body("Invalid token.");
+                        }
+                    } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                            .body("Token validation failed.");
+                    }
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body("No authentication token found.");
     }
 
 }
