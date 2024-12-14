@@ -26,6 +26,17 @@ class Player:
     def __str__(self):
         return f"Player: {self.name}\n Position: {self.positions}\n Quality: {self.quality}"
 
+    def to_dict(self):
+        return {"name": self.name, "positions": self.positions, "quality": self.quality}
+
+    @staticmethod
+    def from_dict(data):
+        return Player(
+            name=data["name"],
+            positions=data["positions"],
+            quality=data["quality"],
+        )
+
 
 class Stats:
     def __init__(
@@ -50,6 +61,18 @@ class Stats:
 
     def __str__(self):
         return f"Stats:\n Possession: {self.possession}\n Shots: {self.shots}\n Passes Acc: {self.passes_acc}\n Tackles: {self.tackles}\n Fouls: {self.fouls}\n Corners: {self.corners}\n Offsides: {self.offsides}\n Interceptions: {self.interceptions}"
+
+    def __dict__(self):
+        return {
+            "Possession": self.possession,
+            "Shots": self.shots,
+            "Passes Acc": self.passes_acc,
+            "Tackles": self.tackles,
+            "Fouls": self.fouls,
+            "Corners": self.corners,
+            "Offsides": self.offsides,
+            "Interceptions": self.interceptions,
+        }
 
 
 class Team:
@@ -86,6 +109,39 @@ class Team:
         for stat in self.stats:
             stats_print += f"{stat}\n"
         return f"{self.name}\n Bias: {self.bias}\n Form: {self.form}\n Squad: {self.squad}\n Squad Quality: {self.squad_quality}\n Attack Strength: {self.attack_strength}\n Defense Strength: {self.defense_strength}\n Stats: {stats_print}"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "bias": self.bias,
+            "form": self.form,
+            "squad": [player.to_dict() for player in self.squad],
+            "starting_squad": [player.to_dict() for player in self.starting_squad],
+            "subs_squad": [player.to_dict() for player in self.subs_squad],
+            "squad_quality": self.squad_quality,
+            "attack_strength": self.attack_strength,
+            "defense_strength": self.defense_strength,
+            "image": self.image,
+        }
+
+    @staticmethod
+    def from_dict(data):
+        return Team(
+            id=data["id"],
+            name=data["name"],
+            bias=data["bias"],
+            form=data["form"],
+            starting_squad=[
+                Player.from_dict(player) for player in data["starting_squad"]
+            ],
+            subs_squad=[Player.from_dict(player)
+                        for player in data["subs_squad"]],
+            squad_quality=data["squad_quality"],
+            attack_strength=data["attack_strength"],
+            defense_strength=data["defense_strength"],
+            image=data["image"],
+        )
 
 
 class Game:

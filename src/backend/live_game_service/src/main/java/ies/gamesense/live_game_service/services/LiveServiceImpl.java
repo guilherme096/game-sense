@@ -1,14 +1,13 @@
 package ies.gamesense.live_game_service.services;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -16,52 +15,36 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ies.gamesense.live_game_service.entities.GameStatistics;
-import ies.gamesense.live_game_service.entities.Live;
 import ies.gamesense.live_game_service.entities.Match;
-import jakarta.annotation.PostConstruct;
 
 @Service
 public class LiveServiceImpl implements LiveService {
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final MatchPersistenceProducer matchPersistenceProducer;
+    private final MatchCacheService matchCacheService;
+    private final RedisTemplate<String , Match> redisTemplate;
 
-    @Value("classpath:static/mock_games.json")
-    private Resource jsonLiveGames;
+    public LiveServiceImpl(MatchPersistenceProducer matchPersistenceProducer, MatchCacheService matchCacheService, RedisTemplate<String, Match> redisTemplate) {
+        this.matchPersistenceProducer = matchPersistenceProducer;
+        this.matchCacheService = matchCacheService;
+        this.redisTemplate = redisTemplate;
+    }
 
-    private Map<Long, Live> liveGames;
-    private Map<String, Match> matches;
+    @Override
+    public List<Match> getLiveGames() {
 
-    @PostConstruct
-    public void init() {
-        this.matches = new HashMap<>();
-        this.liveGames = new HashMap<>();
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            // Parse the JSON file into a List<Live>
-            List<Live> games = mapper.readValue(jsonLiveGames.getInputStream(),
-                    mapper.getTypeFactory().constructCollectionType(List.class, Live.class));
-
-            // Check if the parsed list is null or empty
-            if (games == null || games.isEmpty()) {
-                System.err.println("No games found in the JSON file: " + jsonLiveGames.getFilename());
-                return;
-            }
-
-            // Populate the liveGames map
-            games.forEach(game -> {
-                if (game.getId() == null) {
-                    System.err.println("Game with missing ID detected. Skipping: " + game);
-                } else {
-                    this.liveGames.put(game.getId(), game);
+        Set<String> keys = redisTemplate.keys("liveGames::*");
+        List<Match> liveGames = new ArrayList<>();
+        if (keys != null) {
+            keys.forEach(key -> {
+                Match match = redisTemplate.opsForValue().get(key);
+                if (match != null) {
+                    liveGames.add(match);
                 }
             });
-
-            // Log success
-            System.out.println("Loaded " + liveGames.size() + " live games from " + jsonLiveGames.getFilename());
-        } catch (IOException e) {
-            // Handle and log specific error
-            System.err.println("Error reading or parsing the JSON file: " + jsonLiveGames.getFilename());
-            e.printStackTrace();
         }
+
+        return liveGames;
     }
 
     @KafkaListener(id = "games", topics = "games")
@@ -75,68 +58,129 @@ public class LiveServiceImpl implements LiveService {
         match.getHomeTeam().setScore(0);
         match.getAwayTeam().setScore(0);
 
-        this.matches.put(match.getMatchId(), match);
+        updateMatch(match.getMatchId(), match);
+        System.out.println("Match saved to Redis: " + match);
     }
+
+    @KafkaListener(id = "stats", topics = "stats", containerFactory = "gameStatsKafkaListenerContainerFactory")
+    public void listen(GameStatistics stats) {
+        try {
+            System.out.println("Hello from Kafka!");
+            System.out.println("Received GameStatistics: " + stats);
+
+            String matchId = stats.getMatchId(); // Ensure this field exists in GameStatistics
+            System.out.println("Getting stats Match ID: " + matchId);
+
+            Match match = redisTemplate.opsForValue().get("liveGames::" + matchId);
+            if (match == null) {
+                System.err.println("Match not found for ID: " + matchId);
+                return;
+            }
+
+            // Ensure gameStatistics is initialized
+            if (match.getGameStatistics() == null) {
+                match.setGameStatistics(new HashMap<>());
+            }
+
+            // Update match statistics
+            Integer half = stats.getHalf(); // Ensure this field exists
+            match.addGameStatistics(half, stats);
+
+            // Save updated match to Redis
+            redisTemplate.opsForValue().set("liveGames::" + matchId, match);
+            System.out.println("Updated GameStatistics for Match: " + match);
+        } catch (Exception e) {
+            System.err.println("Error processing GameStatistics: " + stats);
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
 
     @KafkaListener(id = "events", topics = "events", containerFactory = "customKafkaListenerContainerFactory")
-    public void listen(ConsumerRecord<String, String> record) {
-        System.out.println("Hello from Kafka!");
-        Map<String, String> event = null;
+    public void listen(ConsumerRecord<String, String> record) throws JsonProcessingException {
         try {
-            // Parse the JSON payload into a Map<String, String>
-            event = objectMapper.readValue(
+            System.out.println("Hello from Kafka!");
+            Map<String, String> event = objectMapper.readValue(
                     record.value(),
-                    new TypeReference<Map<String, String>>() {
-                    });
-            System.out.println("Received Event: " + event.toString());
-        } catch (Exception e) {
-            throw new RuntimeException("Error parsing event JSON: " + record.value(), e);
-        }
+                    new TypeReference<Map<String, String>>() {}
+            );
+            System.out.println("Received Event: " + event);
 
-        String matchId = event.get("game_id");
+            String matchId = event.get("game_id");
 
-        Match match = this.matches.get(matchId);
-
-        if (match == null) {
-            System.err.println("Match not found for ID: " + matchId);
-            return;
-        }
-
-        if (event.get("event_type").equals("GOAL")) {
-            String team = event.get("team");
-            if (team.equals("home")) {
-                match.getHomeTeam().setScore(match.getHomeTeam().getScore() + 1);
-            } else {
-                match.getAwayTeam().setScore(match.getAwayTeam().getScore() + 1);
+            // Fetch Match object from Redis
+            Match match = redisTemplate.opsForValue().get("liveGames::" + matchId);
+            if (match == null) {
+                System.err.println("Match not found for ID: " + matchId);
+                return;
             }
+
+            // Initialize events list if null
+            if (match.getEvents() == null) {
+                match.setEvents(new ArrayList<>());
+            }
+
+            if (event.get("event_type").equals("GOAL")) {
+                String team = event.get("team");
+                if (team.equals("home")) {
+                    match.getHomeTeam().setScore(match.getHomeTeam().getScore() + 1);
+                } else {
+                    match.getAwayTeam().setScore(match.getAwayTeam().getScore() + 1);
+                }
+            }
+
+            if (event.get("event_type").equals("END")) {
+                match.endMatch();
+                this.matchPersistenceProducer.sendMatchForPersistence(match);
+                removeMatchFromCache(matchId);
+            }
+
+            // Add event to the match
+            match.getEvents().add(event);
+            System.out.println("Event added to Match: " + match);
+
+            // Save updated Match to Redis
+            updateMatch(matchId, match);
+            System.out.println("Updated Match saved to Redis: " + match);
+        } catch (Exception e) {
+            System.err.println("Error processing event: " + record.value());
+            e.printStackTrace();
+            throw e;
         }
+    }
 
-        match.getEvents().add(event);
+
+    @CachePut(value = "liveGames", keyGenerator = "customKeyGenerator")
+    public void updateMatch(String id, Match match) {
+        System.out.println("Updating match in Redis: " + match);
+        redisTemplate.opsForValue().set("liveGames::" + id, match);
+    }
+
+    @CacheEvict(value = "liveGames", keyGenerator = "customKeyGenerator")
+    public void removeMatchFromCache(String id) {
+        System.out.println("Removing match from Redis cache for ID: " + id);
     }
 
     @Override
-    public List<Match> getLiveGames() {
-        return new ArrayList<>(this.matches.values());
-    }
-
-    @Override
+    @Cacheable(value = "liveGames", keyGenerator = "customKeyGenerator")
     public Match getLiveById(String id) {
-        Match game = this.matches.get(id);
-        if (game == null) {
-            System.err.println("Live game not found for ID: " + id);
-        }
-        return game;
+        System.out.println("Fetching live game from redis for id " + id);
+        return null;
     }
 
+
     @Override
-    public GameStatistics getGameStatistics(String id) {
-        Match game = getLiveById(id);
-        return (game != null) ? game.getGameStatistics() : null;
+    public Map<Integer, GameStatistics> getGameStatistics(String id) {
+        Match game = matchCacheService.getLiveById(id);
+        System.out.println("Getting game statistics for game: " + id);
+        System.out.println(game);
+        return (game != null) ? game.getGameStatistics() : new HashMap<>();
     }
 
     @Override
     public boolean existsNewEvent(String id, Long lastEventId) {
-        Match game = getLiveById(id);
+        Match game = matchCacheService.getLiveById(id);
         if (game == null)
             return false;
         List<Map<String, String>> events = game.getEvents();
@@ -147,7 +191,7 @@ public class LiveServiceImpl implements LiveService {
 
     @Override
     public List<Map<String, String>> getNewEvents(String id, Long lastEventId) {
-        Match game = getLiveById(id);
+        Match game = matchCacheService.getLiveById(id);
         if (game == null)
             return null;
 
@@ -162,20 +206,28 @@ public class LiveServiceImpl implements LiveService {
         return newEvents;
     }
 
-    @Override
-    public void createLive(Match live) {
-        this.matches.put(live.getMatchId(), live);
-    }
 
     @Override
     public String getCurrentMVP(String id) {
-        Match game = getLiveById(id);
+        Match game = matchCacheService.getLiveById(id);
         return (game != null) ? game.getCurrentMvp() : null;
     }
 
     @Override
     public List<String> getTopStats(String id) {
-        Match game = getLiveById(id);
+        Match game = matchCacheService.getLiveById(id);
         return (game != null) ? game.getTopStats() : null;
+    }
+
+    @Override
+    public Map<String, String> getBasicInfo(String id) {
+        Match game = matchCacheService.getLiveById(id);
+        if (game == null) {
+            return null;
+        }
+        Map<String, String> basicInfo = game.getBasicInfo();
+        basicInfo.put("home_score", String.valueOf(game.getHomeTeam().getScore()));
+        basicInfo.put("away_score", String.valueOf(game.getAwayTeam().getScore()));
+        return basicInfo;
     }
 }

@@ -11,9 +11,7 @@ VALUES
 ('Chelsea', 'England', FALSE, 'chelsea_logo.png', 'england_flag.png');
 
 -- League_Club Table
-INSERT INTO league_club (
-    league_id, club_id, matches_played, points, wins, draws, losses, goals_scored, goals_conceded, goal_difference, place
-)
+INSERT INTO league_club (league_id, club_id, matches_played, points, wins, draws, losses, goals_scored, goals_conceded, goal_difference, place)
 VALUES
 (1, 1, 38, 75, 23, 6, 9, 65, 40, 25, 1), 
 (1, 2, 38, 72, 21, 9, 8, 70, 45, 25, 2), 

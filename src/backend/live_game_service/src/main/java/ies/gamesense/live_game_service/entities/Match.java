@@ -1,13 +1,18 @@
 package ies.gamesense.live_game_service.entities;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Match implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @JsonProperty("match_id")
     private String matchId;
@@ -21,7 +26,10 @@ public class Match implements Serializable {
     @JsonProperty("match_start_time")
     private String matchStartTime;
 
-    private GameStatistics gameStatistics;
+    @JsonProperty("basic_info")
+    private Map<String, String> basicInfo = new HashMap<>();
+
+    private Map<Integer, GameStatistics> gameStatistics = new java.util.HashMap<>();
 
     private List<Map<String, String>> events = new ArrayList<>();
 
@@ -34,6 +42,16 @@ public class Match implements Serializable {
     private String stadium = "Unknown";
 
     private int minute = 0;
+
+    private boolean ended = false;
+
+    public void endMatch() {
+        this.ended = true;
+    }
+
+    public boolean isEnded() {
+        return this.ended;
+    }
 
     // Getters and Setters
     public String getMatchId() {
@@ -68,12 +86,18 @@ public class Match implements Serializable {
         this.matchStartTime = matchStartTime;
     }
 
-    public GameStatistics getGameStatistics() {
+    public Map<Integer, GameStatistics> getGameStatistics() {
         return this.gameStatistics;
     }
 
-    public void setGameStatistics(GameStatistics gameStatistics) {
+    public void setGameStatistics(Map<Integer, GameStatistics> gameStatistics) {
         this.gameStatistics = gameStatistics;
+    }
+
+    public void addGameStatistics(Integer half, GameStatistics stats) {
+        System.out.println("Adding stats for half " + half + ": " + stats.toString());
+        this.gameStatistics.put(half, stats);
+        System.out.println("Game statistics updated: " + this.gameStatistics.toString());
     }
 
     public List<Map<String, String>> getEvents() {
@@ -124,6 +148,26 @@ public class Match implements Serializable {
         this.minute = minute;
     }
 
+
+    public Map<String, String> getBasicInfo() {
+        if (basicInfo.isEmpty()) {
+            basicInfo.put("match_id", this.matchId);
+            basicInfo.put("home_team", this.homeTeam.getName());
+            basicInfo.put("home_team_image", this.homeTeam.getImage());
+            basicInfo.put("away_team_image", Integer.toString(this.homeTeam.getScore()));
+            basicInfo.put("away_team", this.awayTeam.getName());
+            basicInfo.put("match_start_time", this.matchStartTime);
+            basicInfo.put("minute", Integer.toString(this.minute));
+            return basicInfo;
+
+        }
+        return basicInfo;
+    }
+
+    public void setBasicInfo(Map<String, String> basicInfo) {
+        this.basicInfo = basicInfo;
+    }
+
     @Override
     public String toString() {
         return "Match{" +
@@ -131,6 +175,8 @@ public class Match implements Serializable {
                 ", homeTeam=" + homeTeam +
                 ", awayTeam=" + awayTeam +
                 ", matchStartTime='" + matchStartTime + '\'' +
+                ", gameStatistics=" + gameStatistics +
+
                 '}';
     }
 }

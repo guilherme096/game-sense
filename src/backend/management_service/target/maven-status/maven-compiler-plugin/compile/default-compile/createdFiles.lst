@@ -1,0 +1,6 @@
+ies/gamensense/management_service/AuthController.class
+ies/gamensense/management_service/AuthRequest.class
+ies/gamensense/management_service/JwtFilter.class
+ies/gamensense/management_service/SecurityConfig.class
+ies/gamensense/management_service/JwtUtil.class
+ies/gamensense/management_service/ManagementServiceApplication.class

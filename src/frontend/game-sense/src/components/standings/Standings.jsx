@@ -52,14 +52,15 @@ export default function Standings({ showHeader = true }) {
         </button>
     );
 
+    // Render the component
     return (
         <div className="container mx-auto px-4">
             {showHeader ? (
                 <GeneralCard title="Standings" button={changeTeam}>
-                    <TeamTable standings={sortedStandings} />
+                    <TeamTable standings={standings} />
                 </GeneralCard>
             ) : (
-                <TeamTable standings={sortedStandings} />
+                <TeamTable standings={standings} />
             )}
         </div>
     );

@@ -37,7 +37,7 @@ function Header() {
         <>
             <div className="navbar bg-base-100">
                 <div className="flex-1 flex items-center">
-                    <Link to="/">
+                    <Link to="/home">
                     <div className="w-16">
                         <img src={Logo} alt="Logo" className="h-full w-full object-contain" />
                     </div>

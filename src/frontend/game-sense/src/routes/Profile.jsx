@@ -2,10 +2,60 @@ import PageTemplate from "./PageTemplate.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import GeneralCard from "../components/cards/GeneralCard"; 
-import profile from "../static/profile"; 
+import GeneralCard from "../components/cards/GeneralCard";
+import profile from "../static/profile";
+import { useNavigate } from "react-router-dom";
+import useSignOut from 'react-auth-kit/hooks/useSignOut';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 
 function Profile() {
+    const navigate = useNavigate();
+    const signOut = useSignOut();
+    const [username, setUsername] = useState("");
+    const [isPremium, setPremium] = useState(false); 
+
+    const handleLogout = async () => {
+        try {
+            const response = await axios.post("/api/v1/management/logout", {}, {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.status === 200) {
+                signOut();
+                navigate("/");
+            } else {
+                console.error("Failed to logout");
+            }
+        } catch (error) {
+            console.error("Error logging out:", error);
+        }
+    };
+
+    useEffect(() => {
+        const fetchUsername = async () => {
+            try {
+                const response = await axios.get("/api/v1/management/user-info", {
+                    withCredentials: true
+                });
+
+                console.log(response);
+                
+                if (response.status === 200) {
+                    setUsername(response.data.username);
+                    setPremium(response.data.premium);  // Set premium status based on API response
+                }
+            } catch (error) {
+                console.error("Error fetching username:", error);
+            }
+        };
+
+        fetchUsername();
+    }, []);
+
     return (
         <PageTemplate>
             <div className="p-5 space-y-4">
@@ -18,8 +68,15 @@ function Profile() {
                             className="w-20 h-20 rounded-full"
                         />
                         <div className="ml-4">
-                            <h2 className="text-xl font-bold">{profile.name}</h2>
-                            <button className="text-gray-500 underline text-sm">Logout</button>
+                            <h2 className="text-xl font-bold">
+                                {username}
+                            </h2>
+                            <button
+                                onClick={handleLogout}
+                                className="text-gray-500 underline text-sm"
+                            >
+                                Logout
+                            </button>
                         </div>
                     </div>
                     <button className="ml-auto">
@@ -28,18 +85,21 @@ function Profile() {
                 </div>
 
                 {/* Plan Section */}
-                {!profile.isPremium && (
-                    <div className="rounded-lg flex justify-between items-center">
-                        <div className="text-left">
-                            <p className="text-sm text-gray-500">Current Plan</p>
-                            <p className="text-xl font-bold">Free</p>
-                        </div>
+                <div className="rounded-lg flex justify-between items-center">
+                    <div className="text-left">
+                        <p className="text-sm text-gray-500">Current Plan</p>
+                        <p className="text-xl font-bold">
+                            {isPremium ? "Premium" : "Free"}
+                        </p>
+                    </div>
+                    {!isPremium && (
                         <button className="bg-yellow-400 text-white py-2 px-4 rounded-md font-bold">
                             Become Premium
                         </button>
-                    </div>
-                )}
+                    )}
+                </div>
                 <br />
+                
                 {/* My Teams Section */}
                 <GeneralCard
                     title="My Teams"
@@ -50,8 +110,9 @@ function Profile() {
                         {profile.myTeams.map((team) => (
                             <div
                                 key={team}
-                                className={`relative flex flex-col items-center ${team === profile.favTeam
-                                    }`}
+                                className={`relative flex flex-col items-center ${
+                                    team === profile.favTeam 
+                                }`}
                             >
                                 {/* Star Icon for Favorite Team */}
                                 {team === profile.favTeam && (
@@ -73,7 +134,7 @@ function Profile() {
                         Change Favorite Team
                     </button>
                 </GeneralCard>
-                <div className="pt-0"></div>
+
                 {/* My Teams Last Results */}
                 <GeneralCard title="My Teams Last Results">
                     <div className="divide-y divide-gray-200">
@@ -110,7 +171,6 @@ function Profile() {
                         ))}
                     </div>
                 </GeneralCard>
-
             </div>
         </PageTemplate>
     );

@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS league(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     logo VARCHAR(254) NOT NULL
+-- clear league table
 );
 
 CREATE TABLE IF NOT EXISTS club(

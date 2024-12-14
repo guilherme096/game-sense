@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import Timer from "../Timer";
 
 function LiveGame({ game }) {
     return (
@@ -52,13 +53,15 @@ function LiveGame({ game }) {
                 </div>
             </div>
             <div className="divider divider-horizontal"></div>
-            <div className="text-lg text-green-600 font-bold">{game.minute}'</div>
+            <div className="text-lg text-green-600 font-bold">
+                <Timer initialTime={game.minute} gameId={game.match_id} />'
+            </div>
         </div>
     );
 }
 
 LiveGame.propTypes = {
     game: PropTypes.object.isRequired,
-}
+};
 
 export default LiveGame;

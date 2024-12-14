@@ -12,6 +12,53 @@ services:
       - player-service
       - league-service
       - kafka
+      - management-service
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      USERS_DATABASE: ${USERS_DATABASE}
+      USERS_USER: ${USERS_USER}
+      USERS_PASSWORD: ${USERS_PASSWORD}
+    networks:
+      - app-network
+
+  management-service:
+    build:
+      context: backend/management_service
+    image: management_service-image  
+    depends_on:
+      users_db:
+        condition: service_healthy
+    networks:
+      - app-network
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      USERS_DATABASE: ${USERS_DATABASE}
+      USERS_USER: ${USERS_USER}
+      USERS_PASSWORD: ${USERS_PASSWORD}
+
+
+  live-game-service:
+    build:
+      context: backend/live_game_service
+    image: live_game_service-image
+    depends_on:
+      redis_db:
+        condition: service_healthy
+    networks:
+      - app-network
+    env_file:
+      - .env
+
+  player-service:
+    build:
+      context: backend/player_service
+    image: player_service-image
+    depends_on:
+      sql_db:
+        condition: service_healthy
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -25,41 +72,8 @@ services:
       context: backend/club_service
     image: club_service-image
     depends_on:
-      - sql_db
-      - redis_db
-      - kafka
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    networks:
-      - app-network
-
-  live-game-service:
-    build:
-      context: backend/live_game_service
-    image: live_game_service-image
-    depends_on:
-      - sql_db
-      - redis_db
-      - kafka
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    networks:
-      - app-network
-
-  player-service:
-    build:
-      context: backend/player_service
-    image: player_service-image
-    depends_on:
-      - sql_db
-      - redis_db
-      - kafka
+      sql_db:
+        condition: service_healthy
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -73,16 +87,16 @@ services:
       context: backend/league_service
     image: league_service-image
     depends_on:
-      - sql_db
-      - redis_db
-      - kafka
+      sql_db:
+        condition: service_healthy
+    networks:
+      - app-network
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    networks:
-      - app-network
+
 
   sql_db:
     image: mysql:8.0
@@ -96,12 +110,44 @@ services:
       - db-data:/var/lib/mysql
     networks:
       - app-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
+
+  users_db:
+    image: mysql:8.0
+    container_name: users_db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${USERS_DATABASE}
+      MYSQL_USER: ${USERS_USER}
+      MYSQL_PASSWORD: ${USERS_PASSWORD}
+    volumes:
+      - users-db-data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   redis_db:
     image: redis:latest
     container_name: redis_db
     networks:
       - app-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.4
@@ -125,6 +171,7 @@ services:
     networks:
       - app-network
 
+
   kafdrop:
     image: obsidiandynamics/kafdrop:4.0.2
     environment:
@@ -146,6 +193,7 @@ services:
 
 volumes:
   db-data:
+  users-db-data:
 
 networks:
   app-network:
