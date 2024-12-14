@@ -1,4 +1,4 @@
-package ies.gamensense.management_service.Controller;
+package ies.gamensense.management_service.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +19,10 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+    
     public User createUser(User user) {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));

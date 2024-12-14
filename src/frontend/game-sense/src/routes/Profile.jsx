@@ -8,12 +8,24 @@ import { useNavigate } from "react-router-dom";
 import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import PremiumModal from "../components/PremiumModal.jsx";  
 
 function Profile() {
     const navigate = useNavigate();
     const signOut = useSignOut();
     const [username, setUsername] = useState("");
-    const [isPremium, setPremium] = useState(false); 
+    const [isPremium, setPremium] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);  
+
+    // Open the modal
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    // Close the modal
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     const handleLogout = async () => {
         try {
@@ -35,6 +47,25 @@ function Profile() {
         }
     };
 
+    const handleBecomePremium = async () => {
+        try {
+            // Send a request to the backend to make the user premium
+            const response = await axios.post('/api/v1/management/become-premium', {}, {
+                withCredentials: true
+            });
+
+            if (response.status === 200) {
+                setPremium(true);  // Update the premium status
+                closeModal();  // Close the modal after successful upgrade
+            } else {
+                alert("Failed to become premium.");
+            }
+        } catch (error) {
+            console.error('Error upgrading to premium:', error);
+            alert("An error occurred while upgrading to premium.");
+        }
+    };
+
     useEffect(() => {
         const fetchUsername = async () => {
             try {
@@ -42,8 +73,6 @@ function Profile() {
                     withCredentials: true
                 });
 
-                console.log(response);
-                
                 if (response.status === 200) {
                     setUsername(response.data.username);
                     setPremium(response.data.premium);  // Set premium status based on API response
@@ -93,13 +122,16 @@ function Profile() {
                         </p>
                     </div>
                     {!isPremium && (
-                        <button className="bg-yellow-400 text-white py-2 px-4 rounded-md font-bold">
+                        <button
+                            onClick={openModal}
+                            className="bg-yellow-400 text-white py-2 px-4 rounded-md font-bold"
+                        >
                             Become Premium
                         </button>
                     )}
                 </div>
                 <br />
-                
+
                 {/* My Teams Section */}
                 <GeneralCard
                     title="My Teams"
@@ -172,6 +204,17 @@ function Profile() {
                     </div>
                 </GeneralCard>
             </div>
+
+            {/* Modal for Becoming Premium */}
+            <PremiumModal
+                isOpen={isModalOpen}
+                closeModal={closeModal}
+                title="Become Premium"
+                message="Are you sure you want to upgrade to the premium plan?"
+                onConfirm={handleBecomePremium}
+                confirmText="Yes, Upgrade"
+                cancelText="Cancel"
+            />
         </PageTemplate>
     );
 }
