@@ -2,75 +2,50 @@ import TeamTable from './TeamTable';
 import GeneralCard from '../cards/GeneralCard';
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 export default function Standings({ showHeader = true }) {
-    // Fetch league data
-    const fetchGame = async () => {
-        try {
-            const response = await axios.get(`/api/v1/league/1`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                    "Accept": "application/json",
-                },
-            });
-            return response.data;
-        }
-        catch (error) {
-            console.log("Error in fetching league data", error);
-            return error;
-        }
+    const fetchStandings = async () => {
+        const response = await axios.get(`/api/v1/league/1/standings`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Accept": "application/json",
+            },
+        });
+        return response.data;
     };
 
-    // Use React Query for fetching
-    const { data: league, isLoading, isError,error } = useQuery('league', fetchGame,
-        {
-            retry: 2,
-            staleTime: 10,
-        })
-    ;
-    console.log("standings component");
-    console.log(league);
+    const { data: standings, isLoading, error } = useQuery('standings', fetchStandings);
 
-    // Handle loading state
     if (isLoading) {
-        return (
-            <div className="flex justify-center items-center h-64">
-                <div className="text-center">
-                    <div className="animate-spin mb-4">⚽</div>
-                    <p className="text-gray-600">Loading league standings...</p>
-                </div>
-            </div>
-        );
+        return <div>Loading standings...</div>;
     }
 
-    // Handle error state
-    if (isError) {
-        return (
-            <div className="bg-red-50 border border-red-200 p-4 rounded">
-                <h2 className="text-red-600 font-bold mb-2">Standings Unavailable</h2>
-                <p className="text-red-500">
-                    {error?.message || 'Unable to fetch league standings. Please try again later.'}
-                </p>
-            </div>
-        );
+    if (error) {
+        console.error("Error fetching standings:", error);
+        return <div>An error has occurred: {error.message}</div>;
     }
 
-    // Validate and sort standings by getting league.leagueClubs
-    const standings = league?.leagueClubs || [];
-    standings.sort((a, b) => a.position - b.position);
-
-    // Handle empty standings
-    if (standings.length === 0) {
-        return (
-            <div className="text-center text-gray-500 p-4">
-                No standings data available at this time.
-            </div>
-        );
+    if (!Array.isArray(standings)) {
+        console.error("Invalid standings data format:", standings);
+        return <div>Error: Invalid standings data</div>;
     }
 
-    // Define the change team button
+    const sortedStandings = standings
+        .map((team) => ({
+            ...team,
+            points: team.wins * 3 + team.draws,
+        }))
+        .sort((a, b) => {
+            if (b.points !== a.points) return b.points - a.points;
+            return (b.goalsScored - b.goalsConceded) - (a.goalsScored - a.goalsConceded);
+        })
+        .map((team, index) => ({
+            ...team,
+            position: index + 1,
+        }));
+
     const changeTeam = (
         <button className="text-gray-400 font-medium text-base">
             Change Favorite Team
@@ -93,4 +68,17 @@ export default function Standings({ showHeader = true }) {
 
 Standings.propTypes = {
     showHeader: PropTypes.bool,
+    standings: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            logo: PropTypes.string.isRequired,
+            wins: PropTypes.number.isRequired,
+            draws: PropTypes.number.isRequired,
+            losses: PropTypes.number.isRequired,
+            goalsScored: PropTypes.number.isRequired,
+            goalsConceded: PropTypes.number.isRequired,
+            points: PropTypes.number.isRequired,
+            position: PropTypes.number.isRequired,
+        })
+    ).isRequired,
 };

@@ -1,88 +1,81 @@
 package ies.gamesense.player_service.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import ies.gamesense.player_service.repository.PlayerRepository;
+import ies.gamesense.player_service.repository.PlayerGameStatsRepository;
+import ies.gamesense.player_service.repository.InjuryRepository;
+import ies.gamesense.player_service.model.Player;
+import ies.gamesense.player_service.model.PlayerGameStats;
+import ies.gamesense.player_service.model.Injury;
 
-import ies.gamesense.player_service.util.PlayerStatiscticHelper;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ies.gamesense.player_service.model.Player;
-import jakarta.annotation.PostConstruct;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
 
-    // Temporarily using a JSON file to store player data for demonstration purposes
-    @Value("classpath:static/mock_players.json")
-    private Resource jsonPlayers;
+    @Autowired
+    private PlayerRepository playerRepository;
 
-    private Map<Long, Player> players;
+    @Autowired
+    private PlayerGameStatsRepository playerGameStatsRepository;
 
-    @PostConstruct
-    public void init() {
-        this.players = new HashMap<>();
+    @Autowired
+    private InjuryRepository injuryRepository;
 
-        ObjectMapper mapper = new ObjectMapper();
-        List<Player> playerList = new ArrayList<>();
-
-        // Parse the JSON file and populate the players map
-        try {
-            playerList = mapper.readValue(jsonPlayers.getInputStream(),
-                    mapper.getTypeFactory().constructCollectionType(List.class, Player.class));
-            playerList.forEach(player -> this.players.put(player.getId(), player));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public PlayerServiceImpl(PlayerRepository playerRepository, PlayerGameStatsRepository playerGameStatsRepository, InjuryRepository injuryRepository) {
+        this.playerRepository = playerRepository;
+        this.playerGameStatsRepository = playerGameStatsRepository;
+        this.injuryRepository = injuryRepository;
     }
 
+    @Override
     public List<Player> getAllPlayers() {
-        return new ArrayList<>(players.values());
+        return playerRepository.findAll();
     }
 
-    
     @Override
     public Player getPlayerById(Long id) {
-        return this.players.get(id);
+        Optional<Player> player = playerRepository.findById(id);
+        return player.orElseThrow(() -> new RuntimeException("Player not found with ID: " + id));
     }
 
     @Override
-    public Object getPlayerStatistics(Long id, String statistics) {
-        Player player = this.players.get(id);
-        if (player == null) {
-            return null;
-        }
-
-        return PlayerStatiscticHelper.getStatistic(player, statistics);
+    public Player createPlayer(Player player) {
+        return playerRepository.save(player);
     }
 
     @Override
-    public List<Player> searchPlayers(String name, Integer age, String club, String position, Integer goals,
-            Integer assists, Integer fouls, Integer yellowCards, Integer redCards) {
+    public Player updatePlayer(Long id, Player player) {
+        Player existingPlayer = getPlayerById(id);
+        player.setId(existingPlayer.getId());
+        return playerRepository.save(player);
+    }
 
-        List<Player> filteredPlayers = new ArrayList<>();
+    @Override
+    public List<Player> getPlayersByClub(Long clubId) {
+        return playerRepository.findByClubId(clubId);
+    }
 
-        for (Player player : players.values()) {
-            if ((name == null || player.getName().equals(name)) &&
-                (age == null || player.getAge() == age) &&
-                (club == null || player.getClub().equals(club)) &&
-                (position == null || player.getPosition().equals(position)) &&
-                (goals == null || player.getGoals() == goals) &&
-                (assists == null || player.getAssists() == assists) &&
-                (fouls == null || player.getFouls() == fouls) &&
-                (yellowCards == null || player.getYellowCards() == yellowCards) &&
-                (redCards == null || player.getRedCards() == redCards)) {
+    @Override
+    public Optional<PlayerGameStats> getPlayerStatisticsbyGameId(Long id, Long gameId) {
+        return playerGameStatsRepository.findByPlayerIdAndGameId(id, gameId);
+    }
 
-                filteredPlayers.add(player);
-            }
-        }
+    @Override
+    public List<PlayerGameStats> getPlayerStatistics(Long id) {
+        return playerGameStatsRepository.findByPlayerId(id);
+    }
 
-        return filteredPlayers;
+    @Override
+    public List<Injury> getPlayerInjuries(Long id) {
+        return injuryRepository.findByPlayerId(id);
+    }
+
+    @Override
+    public List<Player> searchPlayers(String name, Integer age, String position) {
+        return playerRepository.findPlayersByCriteria(name, age, position);
     }
 }

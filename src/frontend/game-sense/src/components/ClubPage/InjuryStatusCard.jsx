@@ -1,9 +1,79 @@
-import PropTypes from "prop-types";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function InjuryStatusCard({ injuredPlayers }) {
-  if (!injuredPlayers.length) {
-    return <div>No players are currently injured.</div>;
-  }  
+  const [playerInjuries, setPlayerInjuries] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Hook for navigation
+
+  useEffect(() => {
+    const fetchInjuries = async () => {
+      if (!Array.isArray(injuredPlayers) || injuredPlayers.length === 0) {
+        console.log("No injured players provided.");
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const injuryData = await Promise.all(
+          injuredPlayers.map(async (player) => {
+            const response = await axios.get(`/api/v1/player/${player.id}/injuries`, {
+              headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                Accept: "application/json",
+              },
+            });
+
+            // Transform data into expected format
+            return {
+              id: player.id,
+              name: player.name,
+              injury_history: response.data.map((entry) => ({
+                date: entry.date,
+                description: entry.description,
+                severity: entry.severity.toLowerCase(),
+                gamesOut: entry.gamesOut,
+              })),
+            };
+          })
+        );
+
+        setPlayerInjuries(injuryData);
+        setIsLoading(false);
+      } catch (err) {
+        console.error("Error fetching player injuries:", err);
+        setError(err);
+        setIsLoading(false);
+      }
+    };
+
+    fetchInjuries();
+  }, [injuredPlayers]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>An error has occurred: {error.message}</div>;
+  }
+
+  if (!Array.isArray(playerInjuries) || playerInjuries.length === 0) {
+    return (
+      <div className="bg-white shadow-lg rounded-lg m-5">
+        <div className="bg-gray-700 text-white font-bold text-lg pl-3 p-2 rounded-t-lg">
+          Injury Status
+        </div>
+        <div className="p-4 text-center text-gray-500 font-medium">
+          No players are currently injured.
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white shadow-lg rounded-lg m-5">
       {/* Card Header */}
@@ -14,7 +84,7 @@ export default function InjuryStatusCard({ injuredPlayers }) {
       {/* Injuries Table */}
       <table className="w-full text-left border-collapse">
         <tbody>
-          {injuredPlayers.map((player, index) => {
+          {playerInjuries.map((player, index) => {
             // Find the most recent injury for the player
             const mostRecentInjury = player.injury_history.reduce(
               (latest, current) =>
@@ -25,7 +95,8 @@ export default function InjuryStatusCard({ injuredPlayers }) {
             return (
               <tr
                 key={player.id}
-                className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"}`}
+                className={`${index % 2 === 0 ? "bg-gray-100" : "bg-white"} cursor-pointer`}
+                onClick={() => navigate(`/player/${player.id}`)} // Navigate to the player's page
               >
                 {/* Player Name */}
                 <td className="py-3 pl-3 text-black text-sm">{player.name}</td>
@@ -57,15 +128,3 @@ export default function InjuryStatusCard({ injuredPlayers }) {
     </div>
   );
 }
-
-InjuryStatusCard.propTypes = {
-  injuredPlayers: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      injury: PropTypes.shape({
-        gamesOut: PropTypes.number.isRequired,
-        gamesIn: PropTypes.number.isRequired,
-      }).isRequired,
-    })
-  ).isRequired,
-};

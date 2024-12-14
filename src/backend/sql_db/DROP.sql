@@ -1,10 +1,14 @@
--- Drop tables in the reverse order of their dependencies
-DROP TABLE IF EXISTS injury;
-DROP TABLE IF EXISTS game;
-DROP TABLE IF EXISTS top_stats;
-DROP TABLE IF EXISTS half;
-DROP TABLE IF EXISTS team_stats;
-DROP TABLE IF EXISTS player;
-DROP TABLE IF EXISTS league_club;
+SET FOREIGN_KEY_CHECKS = 0;
+
 DROP TABLE IF EXISTS club;
+DROP TABLE IF EXISTS game;
+DROP TABLE IF EXISTS half;
+DROP TABLE IF EXISTS injury;
 DROP TABLE IF EXISTS league;
+DROP TABLE IF EXISTS league_club;
+DROP TABLE IF EXISTS player;
+DROP TABLE IF EXISTS player_game_stats;
+DROP TABLE IF EXISTS team_stats;
+DROP TABLE IF EXISTS top_stats;
+
+SET FOREIGN_KEY_CHECKS = 1;

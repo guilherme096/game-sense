@@ -4,133 +4,191 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Column;
 
 @Entity
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @NotBlank(message = "Name is mandatory")
+    @NotNull
+    @Column(name="club_id")
+    private Long clubId;
+
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @NotBlank(message = "Age is mandatory")
+    @NotNull
+    @Column(name = "surname", nullable = false)
+    private String surname;
+
+    @NotNull
+    @Column(name = "age", nullable = false)
     private int age;
 
-    @NotBlank(message = "Country is mandatory")
+    @NotNull
+    @Column(name = "height", nullable = false)
+    private int height;
+
+    @NotNull
+    @Column(name = "weight", nullable = false)
+    private int weight;
+
+    @NotNull
+    @Column(name = "position", nullable = false)
+    private String position;
+
+    @NotNull
+    @Column(name = "country", nullable = false)
     private String country;
 
-    private String club;
-    private String position;
-    private int goals;
-    private int assists;
-    private int fouls;
-    private int yellowCards;
-    private int redCards;
+    @NotNull
+    @Column(name = "country_Flag", nullable = false)
+    private String countryFlag;
+
+    @NotNull
+    @Column(name = "jersey_number", nullable = false)
+    private int jerseyNumber;
+
+    @NotNull
+    @Column(name = "is_injured", nullable = false)
+    private boolean isInjured;
 
     public Player() {
     }
 
-    public Player(String name, int age, String country, String club, String position, int goals, int assists, int fouls, int yellowCards, int redCards) {
+    public Player(Long id, String name, String surname, int age, int height, int weight, 
+                  String position, String country, String countryFlag, int jerseyNumber, boolean isInjured) {
+        this.id = id;
         this.name = name;
+        this.surname = surname;
         this.age = age;
-        this.country = country;
-        this.club = club;
+        this.height = height;
+        this.weight = weight;
         this.position = position;
-        this.goals = goals;
-        this.assists = assists;
-        this.fouls = fouls;
-        this.yellowCards = yellowCards;
-        this.redCards = redCards;
+        this.country = country;
+        this.countryFlag = countryFlag;
+        this.jerseyNumber = jerseyNumber;
+        this.isInjured = isInjured;
     }
 
+    // Getters and Setters
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getClubId() {
+        return clubId;
+    }
+
+    public void setClubId(Long clubId) {
+        this.clubId = clubId;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     public int getAge() {
         return age;
     }
 
-    public String getCountry() {
-        return country;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public String getClub() {
-        return club;
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 
     public String getPosition() {
         return position;
     }
 
-    public int getGoals() {
-        return goals;
-    }
-
-    public int getAssists() {
-        return assists;
-    }
-
-    public int getFouls() {
-        return fouls;
-    }
-
-    public int getYellowCards() {
-        return yellowCards;
-    }
-
-    public int getRedCards() {
-        return redCards;
-    }
-
-    public void setClub(String club) {
-        this.club = club;
-    }
-
-    public void setGoals(int goals) {
-        this.goals = goals;
-    }
-
     public void setPosition(String position) {
         this.position = position;
     }
 
-    public void setAssists(int assists) {
-        this.assists = assists;
+    public String getCountry() {
+        return country;
     }
 
-    public void setFouls(int fouls) {
-        this.fouls = fouls;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public void setYellowCards(int yellowCards) {
-        this.yellowCards = yellowCards;
+    public String getCountryFlag() {
+        return countryFlag;
     }
 
-    public void setRedCards(int redCards) {
-        this.redCards = redCards;
+    public void setCountryFlag(String countryFlag) {
+        this.countryFlag = countryFlag;
+    }
+
+    public int getJerseyNumber() {
+        return jerseyNumber;
+    }
+
+    public void setJerseyNumber(int jerseyNumber) {
+        this.jerseyNumber = jerseyNumber;
+    }
+
+    public boolean isInjured() {
+        return isInjured;
+    }
+
+    public void setInjured(boolean injured) {
+        isInjured = injured;
     }
 
     @Override
     public String toString() {
-        return "Player[" +
+        return "Player{" +
                 "id=" + id +
+                ", clubId=" + clubId +
                 ", name='" + name + '\'' +
-                ", age=" + age + '\'' +
-                ", country='" + country + '\'' +
-                ", club='" + club + '\'' +
+                ", surname='" + surname + '\'' +
+                ", age=" + age +
+                ", height=" + height +
+                ", weight=" + weight +
                 ", position='" + position + '\'' +
-                ", goals=" + goals + '\'' +
-                ", assists=" + assists + '\'' +
-                ", fouls=" + fouls + '\'' +
-                ", yellowCards=" + yellowCards + '\''+
-                ", redCards=" + redCards +
-                ']';
+                ", country='" + country + '\'' +
+                ", countryFlag='" + countryFlag + '\'' +
+                ", jerseyNumber=" + jerseyNumber +
+                ", isInjured=" + isInjured +
+                '}';
     }
 }

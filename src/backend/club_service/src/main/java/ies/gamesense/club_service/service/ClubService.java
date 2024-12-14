@@ -1,3 +1,4 @@
+
 package ies.gamesense.club_service.service;
 
 import ies.gamesense.club_service.model.Club;

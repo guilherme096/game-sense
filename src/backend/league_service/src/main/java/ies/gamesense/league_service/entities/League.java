@@ -1,25 +1,24 @@
 package ies.gamesense.league_service.entities;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
-import java.util.Set;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "league")
 public class League {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "logo", nullable = false)
     private String logo;
-
-    @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private Set<League_Club> leagueClubs;
 
     public League() {
     }
@@ -29,11 +28,11 @@ public class League {
         this.logo = logo;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -51,14 +50,6 @@ public class League {
 
     public void setLogo(String logo) {
         this.logo = logo;
-    }
-
-    public Set<League_Club> getLeagueClubs() {
-        return leagueClubs;
-    }
-
-    public void setLeagueClubs(Set<League_Club> leagueClubs) {
-        this.leagueClubs = leagueClubs;
     }
 
     @Override
