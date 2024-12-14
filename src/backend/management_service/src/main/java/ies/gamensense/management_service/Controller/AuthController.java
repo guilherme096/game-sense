@@ -90,7 +90,6 @@ public class AuthController {
 
 
     @PostMapping("/logout")
-    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     public ResponseEntity<Map<String, String>> logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("jwt", null);
         cookie.setHttpOnly(true);
