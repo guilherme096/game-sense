@@ -9,6 +9,8 @@ import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import PremiumModal from "../components/PremiumModal.jsx";  
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function Profile() {
     const navigate = useNavigate();
@@ -16,6 +18,7 @@ function Profile() {
     const [username, setUsername] = useState("");
     const [isPremium, setPremium] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);  
+    const [loading, setLoading] = useState(true);  // Add loading state
 
     // Open the modal
     const openModal = () => {
@@ -53,18 +56,20 @@ function Profile() {
             const response = await axios.post('/api/v1/management/become-premium', {}, {
                 withCredentials: true
             });
-
+    
             if (response.status === 200) {
                 setPremium(true);  // Update the premium status
                 closeModal();  // Close the modal after successful upgrade
+                toast.success("You are now a premium member!");  // Show success message
             } else {
-                alert("Failed to become premium.");
+                toast.error("Failed to become premium.");  // Show error if status code is not 200
             }
         } catch (error) {
             console.error('Error upgrading to premium:', error);
-            alert("An error occurred while upgrading to premium.");
+            toast.error("An error occurred while upgrading to premium.");  // Show error for any exceptions
         }
     };
+    
 
     useEffect(() => {
         const fetchUsername = async () => {
@@ -79,11 +84,28 @@ function Profile() {
                 }
             } catch (error) {
                 console.error("Error fetching username:", error);
+            } finally {
+                setLoading(false); // Set loading to false once data is fetched
             }
         };
 
         fetchUsername();
     }, []);
+
+    if (loading) {
+        return (
+            <PageTemplate>
+                <div className="p-5 flex justify-center items-center">
+                    <div className="text-center">
+                        <p className="text-lg font-semibold">Loading...</p>
+                        <div className="spinner-border text-yellow-500 mt-4" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </PageTemplate>
+        );
+    }
 
     return (
         <PageTemplate>
