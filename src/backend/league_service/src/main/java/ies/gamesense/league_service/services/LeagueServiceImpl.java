@@ -6,7 +6,9 @@ import ies.gamesense.league_service.repositories.LeagueRepository;
 import ies.gamesense.league_service.repositories.LeagueClubRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -31,10 +33,10 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     public League getLeagueById(Long id) {
-        League league = leagueRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("League not found with ID: " + id));
-        return league;
+        return leagueRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "League not found"));
     }
+
 
     @Override
     public League_Club getLeagueClubByClubId(Long clubId) {
@@ -65,9 +67,9 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     public League_Club createLeagueClub(Long leagueId, League_Club leagueClub) {
-        Long leagueId_ = leagueRepository.findById(leagueId)
-                .orElseThrow(() -> new RuntimeException("League not found with ID: " + leagueId)).getId();
-        leagueClub.setLeagueId(leagueId_);
+        League league = leagueRepository.findById(leagueId)
+                .orElseThrow(() -> new RuntimeException("League not found with ID: " + leagueId));
+        leagueClub.setLeague(league);
         return leagueClubRepository.save(leagueClub);
     }
 }

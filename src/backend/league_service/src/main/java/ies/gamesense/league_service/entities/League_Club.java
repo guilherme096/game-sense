@@ -1,25 +1,25 @@
 package ies.gamesense.league_service.entities;
 
-import jakarta.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
 
 @Entity
+@IdClass(LeagueClubId.class)
 public class League_Club {
 
     @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "league_id", nullable = false)
+    @JsonBackReference
+    private League league;
 
-    @NotNull
-    @Column(name = "league_id", nullable = false)
-    private Long league_id;
-
-    @NotNull
+    @Id
     @Column(name = "club_id", nullable = false)
     private Long club_id;
 
@@ -53,9 +53,8 @@ public class League_Club {
     public League_Club() {
     }
 
-    public League_Club(Long id, Long league_id, Long club_id, int matchesPlayed, int wins, int goalsScored, int goalsConceded, int losses, int goal_difference, int place, int points, int draws) {
-        this.id = id;
-        this.league_id = league_id;
+    public League_Club(League league, Long club_id, int matchesPlayed, int wins, int goalsScored, int goalsConceded, int losses, int goal_difference, int place, int points, int draws) {
+        this.league = league;
         this.club_id = club_id;
         this.matchesPlayed = matchesPlayed;
         this.wins = wins;
@@ -69,20 +68,11 @@ public class League_Club {
     }
 
 
-    public Long getId() {
-        return id;
+    public League getLeague() {
+        return league;
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getLeagueId() {
-        return league_id;
-    }
-
-    public void setLeagueId(Long leagueId) {
-        this.league_id = leagueId;
+    public void setLeague(League league) {
+        this.league = league;
     }
 
     public Long getClub_id() {
@@ -167,8 +157,9 @@ public class League_Club {
 
     @Override
     public String toString() {
-        return "League_Club [id=" + id + ", leagueId=" + league_id + ", club_id=" + club_id + ", matchesPlayed=" + matchesPlayed
-                + ", wins=" + wins + ", goalsScored=" + goalsScored + ", goalsConceded=" + goalsConceded + ", losses=" + losses
-                + ", goal_difference=" + goal_difference + ", place=" + place + ", points=" + points + ", draws=" + draws + "]";
+        return "League_Club [club_id=" + club_id + ", league_id=" + league.getId() + ", matchesPlayed=" + matchesPlayed
+                + ", wins=" + wins + ", goalsScored=" + goalsScored + ", goalsConceded=" + goalsConceded + ", losses="
+                + losses + ", goal_difference=" + goal_difference + ", place=" + place + ", points=" + points
+                + ", draws=" + draws + "]";
     }
 }

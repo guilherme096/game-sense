@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LeagueRepository extends JpaRepository<League, Long> {
-    League findByName(String name);
-    boolean existsByName(String name);    
 }
