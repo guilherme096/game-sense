@@ -117,5 +117,29 @@ public class AuthController {
                             .body(Map.of("message", "No authentication token found"));
     }
 
+    // Get the user details
+    @GetMapping("/user-info")
+    public ResponseEntity<User> getUserDetails(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwt".equals(cookie.getName())) {
+                    try {
+                        String username = jwtUtil.validateToken(cookie.getValue());
+                        Optional<User> user = userService.getUserDetails(username);
+                        if (user.isPresent()) {
+                            return ResponseEntity.ok(user.get());
+                        }
+                    } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                            .body(null);
+                    }
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                            .body(null);
+    }
+
 }
 
