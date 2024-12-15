@@ -10,12 +10,10 @@ import { Menu, Transition } from '@headlessui/react';
 import PremiumModal from './PremiumModal';
 
 import axios from 'axios';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
+    const [isModalOpen, setIsModalOpen] = useState(false); 
     const searchRef = useRef(null);
     const buttonRef = useRef(null);
 
@@ -44,12 +42,10 @@ function Header() {
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    // Function to refresh the page
     const refreshPage = () => {
         window.location.reload();
     };
 
-    // Function to handle confirmation of cancellation
     const handleConfirmCancel = () => {
         const response = axios.post('/api/v1/management/cancel-premium', {}, { withCredentials: true });
         if (response.status === 200) {
@@ -57,8 +53,7 @@ function Header() {
             setIsPremium(false);
             closeModal();
         }
-        refreshPage();
-        
+        refreshPage();        
     };
 
     return (
