@@ -72,13 +72,21 @@ const GameTimeline = ({ id }) => {
                         (event.event_type === "SUBSTITUTION" ? (
                             <div className="mr-4">
                                 <span className="font-bold">{event.minute}'</span>{" "}
-                                {event.player_out} - {event.player_in}
+                                ({event.player_out}) -
+                                <span className="font-bold">{event.player_in}</span>
                             </div>
-                        ) : (
+                        ) : (event.event_type === "GOAL"? (
+                            <div className="mr-4 ">
+                                <span className="font-light">{event.minute}'</span> ({event.assist})
+                                <span className="font-bold">{event.scorer}'</span>
+                            </div>
+                            ) :
+                            (
                             <div className="mr-4">
                                 <span className="font-bold">{event.minute}'</span>{" "}
                                 {event.player}
                             </div>
+                            )
                         ))}
                 </>
 
