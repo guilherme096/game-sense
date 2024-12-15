@@ -13,7 +13,8 @@ import axios from 'axios';
 
 function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false); 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isPremium, setIsPremium] = useState(false); // State for premium status
     const searchRef = useRef(null);
     const buttonRef = useRef(null);
 
@@ -39,6 +40,22 @@ function Header() {
         };
     }, []);
 
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            try {
+                const response = await axios.get('/api/v1/management/user-info', { withCredentials: true });
+                if (response.status === 200) {
+                    setIsPremium(response.data.premium);
+                }
+
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+            }
+        };
+
+        fetchUserInfo();
+    }, []);
+
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
@@ -46,14 +63,18 @@ function Header() {
         window.location.reload();
     };
 
-    const handleConfirmCancel = () => {
-        const response = axios.post('/api/v1/management/cancel-premium', {}, { withCredentials: true });
-        if (response.status === 200) {
-            console.log(response.data.message);
-            setIsPremium(false);
-            closeModal();
+    const handleConfirmCancel = async () => {
+        try {
+            const response = await axios.post('/api/v1/management/cancel-premium', {}, { withCredentials: true });
+            if (response.status === 200) {
+                console.log(response.data.message);
+                setIsPremium(false);
+                closeModal();
+                refreshPage();
+            }
+        } catch (error) {
+            console.error('Error canceling premium:', error);
         }
-        refreshPage();        
     };
 
     return (
@@ -70,10 +91,9 @@ function Header() {
                 {/* Search Box */}
                 <div
                     ref={searchRef}
-                    className={`absolute right-0 transform transition-all duration-500 ease-in-out ${isSearchOpen
-                        ? 'w-56 opacity-100'
-                        : 'w-0 opacity-0'
-                        }`}
+                    className={`absolute right-0 transform transition-all duration-500 ease-in-out ${
+                        isSearchOpen ? 'w-56 opacity-100' : 'w-0 opacity-0'
+                    }`}
                 >
                     <input
                         type="text"
@@ -105,67 +125,71 @@ function Header() {
                 </button>
             </div>
 
-            <div className="flex items-center relative">
-                {/* Premium Icon */}
-                <div
-                    tabIndex={0}
-                    className="btn btn-sm btn-warning btn-circle avatar mr-1 ml-1"
-                >
-                    <FontAwesomeIcon icon={faCrown} className="h-5 w-5 text-white" />
+            {/* Premium Icon (Visible only if user is not premium) */}
+            {!isPremium && (
+                <div className="flex items-center relative">
+                    <div
+                        tabIndex={0}
+                        className="btn btn-sm btn-warning btn-circle avatar mr-1 ml-1"
+                    >
+                        <FontAwesomeIcon icon={faCrown} className="h-5 w-5 text-white" />
+                    </div>
                 </div>
-            </div>
+            )}
 
-            {/* Right Section: Bars Icon with Dropdown */}
-            <div className="flex items-center">
-                <Menu as="div" className="relative">
-                    {({ open }) => (
-                        <>
-                            <Menu.Button
-                                className="btn btn-ghost btn-circle focus:outline-none"
-                                aria-label="Settings"
-                            >
-                                <FontAwesomeIcon
-                                    icon={faBars}
-                                    className={`h-6 w-6 transform transition-transform duration-300 ${
-                                        open ? 'rotate-90' : 'rotate-0'
-                                    }`}
-                                />
-                            </Menu.Button>
-
-                            <Transition
-                                as={Fragment}
-                                show={open}
-                                enter="transition ease-out duration-100 delay-200"
-                                enterFrom="transform opacity-0 scale-95"
-                                enterTo="transform opacity-100 scale-100"
-                                leave="transition ease-in duration-150"
-                                leaveFrom="transform opacity-100 scale-100"
-                                leaveTo="transform opacity-0 scale-95"
-                            >
-                                <Menu.Items
-                                    static
-                                    className="absolute right-0 mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg origin-top-right z-20"
+            {/* Right Section: Bars Icon with Dropdown (Visible only if user is premium) */}
+            {isPremium && (
+                <div className="flex items-center">
+                    <Menu as="div" className="relative">
+                        {({ open }) => (
+                            <>
+                                <Menu.Button
+                                    className="btn btn-ghost btn-circle focus:outline-none"
+                                    aria-label="Settings"
                                 >
-                                    <div className="py-1">
-                                        <Menu.Item>
-                                            {({ active }) => (
-                                                <button
-                                                    className={`${
-                                                        active ? 'bg-gray-100' : ''
-                                                    } w-full text-left px-4 py-2 text-sm text-gray-700`}
-                                                    onClick={openModal} // Open modal on click
-                                                >
-                                                    Cancel Premium
-                                                </button>
-                                            )}
-                                        </Menu.Item>
-                                    </div>
-                                </Menu.Items>
-                            </Transition>
-                        </>
-                    )}
-                </Menu>
-            </div>
+                                    <FontAwesomeIcon
+                                        icon={faBars}
+                                        className={`h-6 w-6 transform transition-transform duration-300 ${
+                                            open ? 'rotate-90' : 'rotate-0'
+                                        }`}
+                                    />
+                                </Menu.Button>
+
+                                <Transition
+                                    as={Fragment}
+                                    show={open}
+                                    enter="transition ease-out duration-100 delay-200"
+                                    enterFrom="transform opacity-0 scale-95"
+                                    enterTo="transform opacity-100 scale-100"
+                                    leave="transition ease-in duration-150"
+                                    leaveFrom="transform opacity-100 scale-100"
+                                    leaveTo="transform opacity-0 scale-95"
+                                >
+                                    <Menu.Items
+                                        static
+                                        className="absolute right-0 mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg origin-top-right z-20"
+                                    >
+                                        <div className="py-1">
+                                            <Menu.Item>
+                                                {({ active }) => (
+                                                    <button
+                                                        className={`${
+                                                            active ? 'bg-gray-100' : ''
+                                                        } w-full text-left px-4 py-2 text-sm text-gray-700`}
+                                                        onClick={openModal}
+                                                    >
+                                                        Cancel Premium
+                                                    </button>
+                                                )}
+                                            </Menu.Item>
+                                        </div>
+                                    </Menu.Items>
+                                </Transition>
+                            </>
+                        )}
+                    </Menu>
+                </div>
+            )}
 
             {/* Premium Modal */}
             <PremiumModal

@@ -26,7 +26,6 @@ function Profile() {
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    // Fetch user data and favorite team image
     const fetchUserData = async () => {
         try {
             const userResponse = await axios.get("/api/v1/management/user-info", {
@@ -81,6 +80,10 @@ function Profile() {
         }
     };
 
+    const refreshPage = () => {
+        window.location.reload();
+    };
+
     const handleBecomePremium = async () => {
         try {
             const response = await axios.post('/api/v1/management/become-premium', {}, {
@@ -91,6 +94,7 @@ function Profile() {
                 setPremium(true);
                 closeModal();
                 toast.success("You are now a premium member!");
+                refreshPage();
             } else {
                 toast.error("Failed to become premium.");
             }
