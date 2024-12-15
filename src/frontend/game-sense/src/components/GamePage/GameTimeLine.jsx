@@ -25,6 +25,7 @@ const GameTimeline = ({ id }) => {
     } = useQuery("events", () => fetchEvents(id), {
         refetchInterval: 10000,
     });
+    console.log(events);
 
     useEffect(() => {
         if (timelineRef.current && events.length > 0) {
@@ -62,12 +63,10 @@ const GameTimeline = ({ id }) => {
         const isLeft = team === "home";
 
         return (
-            <div
-                className={`flex items-center w-1/2 ${isLeft
+            <div className={`flex items-center w-1/2 ${isLeft
                         ? "pr-7 justify-end text-right"
                         : "pl-7 justify-start text-left"
-                    }`}
-            >
+                    }`}>
                 <>
                     {isLeft &&
                         (event.event_type === "SUBSTITUTION" ? (
@@ -83,20 +82,14 @@ const GameTimeline = ({ id }) => {
                         ))}
                 </>
 
-                <div
-                    className={`flex items-center justify-center ${event.event_type === "GOAL"
-                            ? "text-green-200"
-                            : event.event_type === "RED_CARD"
-                                ? "text-red-500"
-                                : event.event_type === "YELLOW_CARD"
-                                    ? "text-yellow-400"
-                                    : event.event_type === "SUBSTITUTION"
-                                        ? "text-blue-400"
-                                        : event.event_type === "auto-goal"
-                                            ? "text-red-300"
-                                            : ""
-                        }`}
-                >
+                <div className= {` px-2 flex items-center justify-center ${
+                        event.event_type === "GOAL" ? "text-green-200" : 
+                        event.event_type === "RED_CARD"? "text-red-500" : 
+                        event.event_type === "YELLOW_CARD"? "text-yellow-400" : 
+                        event.event_type === "SUBSTITUTION" ? "text-blue-400" :
+                        event.event_type === "auto-goal"? "text-red-300": 
+                        ""
+                        }`}>
                     {event.event_type === "GOAL" && (
                         <FontAwesomeIcon icon={faFutbol} className="h-5" />
                     )}
@@ -132,11 +125,8 @@ const GameTimeline = ({ id }) => {
     return (
         <>
             {events.length > 0 ? (
-                <div
-                    className={`relative w-full bg-[#196146] text-white p-6 rounded-md ${events.length > 0 ? "min-h-[100px]" : "min-h-[70px]"
-                        }`}
-                    ref={timelineRef}
-                >
+                <div className={`relative w-full bg-[#196146] text-white p-4 text-sm rounded-md ${events.length > 0 ? "min-h-[100px]" : "min-h-[70px]"
+                        }`} ref={timelineRef}>
                     {/* Vertical Line */}
                     {events.length > 0 && (
                         <div
@@ -153,11 +143,8 @@ const GameTimeline = ({ id }) => {
                         <p className="text-center text-white">No events to display.</p>
                     ) : (
                         events.map((event, index) => (
-                            <div
-                                key={index}
-                                className={`relative flex w-full items-center my-8 transition-opacity duration-300 ease-in-out ${visibleEvents.includes(index) ? "opacity-100" : "opacity-0"
-                                    } ${event.team === "home" ? "justify-start" : "justify-end"}`}
-                            >
+                            <div key={index} className={`relative flex w-full items-center my-8 transition-opacity duration-300 ease-in-out ${visibleEvents.includes(index) ? "opacity-100" : "opacity-0"
+                                    } ${event.team === "home" ? "justify-start" : "justify-end"}`}>
                                 {renderEventBlock(event, event.team)}
                                 <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center">
                                     <div className="w-4 h-4 bg-white rounded-full event-dot"></div>
