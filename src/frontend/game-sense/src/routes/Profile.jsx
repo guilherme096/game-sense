@@ -10,6 +10,7 @@ import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import axios from 'axios';
 import PremiumModal from "../components/PremiumModal.jsx";  
 import { toast } from "react-toastify";
+import LoadingLogo from '../components/LoadingLogo.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Profile() {
@@ -86,14 +87,7 @@ function Profile() {
     if (loading) {
         return (
             <PageTemplate>
-                <div className="p-5 flex justify-center items-center">
-                    <div className="text-center">
-                        <p className="text-lg font-semibold">Loading...</p>
-                        <div className="spinner-border text-yellow-500 mt-4" role="status">
-                            <span className="sr-only">Loading...</span>
-                        </div>
-                    </div>
-                </div>
+                <LoadingLogo></LoadingLogo>
             </PageTemplate>
         );
     }
