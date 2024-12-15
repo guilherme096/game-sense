@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
@@ -17,7 +16,7 @@ public class TeamStats {
     @Column(name = "team_stat_id")
     private Long teamStatId;
 
-    @JoinColumn(name = "club_id", referencedColumnName = "id")
+    @Column(name = "club_id")
     private Long clubId;
 
     @Column(name = "possession")

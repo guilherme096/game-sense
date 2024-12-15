@@ -11,6 +11,7 @@ services:
       - live-game-service
       - player-service
       - league-service
+      - game-service
       - kafka
       - management-service
     environment:
@@ -56,8 +57,8 @@ services:
       context: backend/game_service
     image: game_service-image
     depends_on:
-      - sql_db
-      - club-service
+      sql_db:
+        condition: service_healthy
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}

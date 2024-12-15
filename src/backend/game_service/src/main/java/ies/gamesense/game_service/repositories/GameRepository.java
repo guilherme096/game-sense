@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {  
-    @Query("SELECT g FROM Game g WHERE g.homeClubId = ?1")
+    @Query("SELECT g FROM Game g WHERE g.homeClubId = ?1 or g.awayClubId = ?1")
     public List<Game> findByClubId(Long id);
 }

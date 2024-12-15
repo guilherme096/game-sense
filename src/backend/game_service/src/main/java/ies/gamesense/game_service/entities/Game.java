@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "game")
@@ -21,7 +20,7 @@ public class Game {
     private String referee;
 
     @Column(name = "kickoff_time")
-    private LocalDateTime kickoffTime;
+    private String kickoffTime;
 
     @Column(name = "stadium")
     private String stadium;
@@ -41,7 +40,7 @@ public class Game {
     public Game() {
     }
 
-    public Game(String referee, LocalDateTime kickoffTime, String stadium, Long homeClubId, Long awayClubId, Long firstHalfId, Long secondHalfId) {
+    public Game(String referee, String kickoffTime, String stadium, Long homeClubId, Long awayClubId, Long firstHalfId, Long secondHalfId) {
         this.referee = referee;
         this.kickoffTime = kickoffTime;
         this.stadium = stadium;
@@ -67,11 +66,11 @@ public class Game {
         this.referee = referee;
     }
 
-    public LocalDateTime getKickoffTime() {
+    public String getKickoffTime() {
         return kickoffTime;
     }
 
-    public void setKickoffTime(LocalDateTime kickoffTime) {
+    public void setKickoffTime(String kickoffTime) {
         this.kickoffTime = kickoffTime;
     }
 

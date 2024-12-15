@@ -15,13 +15,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/game")
 public class GameController {
-    
+
     @Autowired
     private GameService gameService;
 
@@ -37,23 +39,33 @@ public class GameController {
     @GetMapping("/")
     public ResponseEntity<List<Game>> getAllGames() {
         List<Game> games = gameService.getAllGames();
-        return ResponseEntity.ok(games);
+        if (games.isEmpty()) {
+            return ResponseEntity.noContent().build(); // 204 No Content
+        }
+        return ResponseEntity.ok(games); // 200 OK
     }
 
     // Get game by id
     @Operation(summary = "Get game by id")
     @GetMapping("/{id}")
     public ResponseEntity<Game> getGameById(@PathVariable Long id) {
-        Game game = gameService.getGameById(id);
-        return ResponseEntity.ok(game);
+        Optional<Game> game = Optional.ofNullable(gameService.getGameById(id));
+        if (game.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(null); // 404 Not Found
+        }
+        return ResponseEntity.ok(game.get()); // 200 OK
     }
 
     // Create game
     @Operation(summary = "Create game")
     @PostMapping("/")
     public ResponseEntity<Game> createGame(@RequestBody Game game) {
+        if (game == null || game.getReferee() == null || game.getKickoffTime() == null) {
+            return ResponseEntity.badRequest().body(null); // 400 Bad Request
+        }
         Game newGame = gameService.createGame(game);
-        return ResponseEntity.ok(newGame);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newGame); // 201 Created
     }
 
     // Get games by club
@@ -61,29 +73,52 @@ public class GameController {
     @GetMapping("/club/{id}")
     public ResponseEntity<List<Game>> getGamesByClub(@PathVariable Long id) {
         List<Game> games = gameService.getGamesByClub(id);
-        return ResponseEntity.ok(games);
+        if (games.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
+        }
+        return ResponseEntity.ok(games); // 200 OK
     }
 
     // Get game first half stats
     @Operation(summary = "Get game first half stats")
-    @GetMapping("{id}/stats/first_half")
+    @GetMapping("/{id}/stats/first_half")
     public ResponseEntity<List<TeamStats>> getGameFirstHalfStats(@PathVariable Long id) {
-        List<TeamStats> stats = gameService.getGameFirstHalfStats(id);
-        return ResponseEntity.ok(stats);
+        try {
+            List<TeamStats> stats = gameService.getGameFirstHalfStats(id);
+            if (stats.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
+            }
+            return ResponseEntity.ok(stats); // 200 OK
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(null); // 404 Not Found
+        }
     }
 
     // Get game second half stats
     @Operation(summary = "Get game second half stats")
-    @GetMapping("{id}/stats/second_half")
+    @GetMapping("/{id}/stats/second_half")
     public ResponseEntity<List<TeamStats>> getGameSecondHalfStats(@PathVariable Long id) {
-        List<TeamStats> stats = gameService.getGameSecondHalfStats(id);
-        return ResponseEntity.ok(stats);
+        try {
+            List<TeamStats> stats = gameService.getGameSecondHalfStats(id);
+            if (stats.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
+            }
+            return ResponseEntity.ok(stats); // 200 OK
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(null); // 404 Not Found
+        }
     }
 
     // Get game events
     @Operation(summary = "Get game events")
-    @GetMapping("{id}/events")
+    @GetMapping("/{id}/events")
     public ResponseEntity<List<GameEvents>> getGameEvents(@PathVariable Long id) {
-        return ResponseEntity.ok(gameService.getGameEvents(id));
+        List<GameEvents> events = gameService.getGameEvents(id);
+        if (events.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
+        }
+        return ResponseEntity.ok(events); // 200 OK
     }
 }

@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS half (
 CREATE TABLE IF NOT EXISTS game (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     referee VARCHAR(50) NOT NULL,
-    kickoff_time TIMESTAMP NOT NULL,
+    kickoff_time VARCHAR(254) NOT NULL,
     stadium VARCHAR(50) NOT NULL,
     home_club_id BIGINT NOT NULL,
     away_club_id BIGINT NOT NULL,
