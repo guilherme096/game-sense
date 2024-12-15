@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 public class PlayerGameStats {
 
     @Id
-    @ManyToOne(fetch = FetchType.LAZY) // Ensure this is lazily fetched if needed
+    @ManyToOne //(fetch = FetchType.LAZY) // Ensure this is lazily fetched if needed
     @JoinColumn(name = "player_id", referencedColumnName = "id", nullable = false)
     @JsonBackReference
     private Player player;
@@ -19,35 +19,27 @@ public class PlayerGameStats {
     @Column(name = "game_id", nullable = false)
     private Long game_id;
 
-    @NotNull
     @Column(name = "rating", nullable = false)
     private int rating;
 
-    @NotNull
     @Column(name = "minutes_played", nullable = false)
     private int minutesPlayed;
 
-    @NotNull
     @Column(name = "goals", nullable = false)
     private int goals;
 
-    @NotNull
     @Column(name = "assists", nullable = false)
     private int assists;
 
-    @NotNull
     @Column(name = "fouls", nullable = false)
     private int fouls;
 
-    @NotNull
     @Column(name = "yellow_cards", nullable = false)
     private int yellowCards;
 
-    @NotNull
     @Column(name = "red_cards", nullable = false)
     private int redCards;
 
-    @NotNull
     @Column(name = "saves", nullable = false)
     private int saves;
 
