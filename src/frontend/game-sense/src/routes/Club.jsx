@@ -40,6 +40,10 @@ function Club() {
   const { data: club, isLoading, error } = useQuery(["club", id], fetchClub);
   const { data: leagueClub, isLoadingLeagueClub, errorLeagueClub } = useQuery(["leagueClub", id],fetchLeagueClubInformation);
 
+  console.log("Club:", club);
+  console.log("League Club:", leagueClub);
+
+
   if (isLoading || isLoadingLeagueClub) {
     console.log("Data is loading...");
     return <div>Loading...</div>;

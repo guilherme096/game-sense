@@ -5,7 +5,6 @@ import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { useQuery } from "react-query";
 import axios from "axios";
 import PropTypes from "prop-types";
-import Club from "../../routes/Club";
 
 export default function ClubCard({ clubData, leagueClubData}) {
   const [isFollowed, setIsFollowed] = useState(clubData.starred);
