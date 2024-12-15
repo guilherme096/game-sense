@@ -1,19 +1,17 @@
-import React, { useState, useRef, useEffect, Fragment } from 'react';
+import React, { useState, useRef, useEffect, Fragment, memo, useContext } from 'react';
 import { Link } from "react-router-dom";
 import Logo from '../../public/icon-logo.png';
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCrown, faBars } from "@fortawesome/free-solid-svg-icons";
-
 import { Menu, Transition } from '@headlessui/react';
-
 import PremiumModal from './PremiumModal';
-
 import axios from 'axios';
+import { UserContext } from './UserProvider.jsx';
 
 function Header() {
+    const { isPremium, setIsPremium, isLoading } = useContext(UserContext);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false); 
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const searchRef = useRef(null);
     const buttonRef = useRef(null);
 
@@ -42,18 +40,32 @@ function Header() {
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    const refreshPage = () => {
-        window.location.reload();
+    const handleConfirmCancel = async () => {
+        try {
+            const response = await axios.post('/api/v1/management/cancel-premium', {}, { withCredentials: true });
+            if (response.status === 200) {
+                console.log(response.data.message);
+                setIsPremium(false);
+                closeModal();
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error canceling premium:', error);
+        }
     };
 
-    const handleConfirmCancel = () => {
-        const response = axios.post('/api/v1/management/cancel-premium', {}, { withCredentials: true });
-        if (response.status === 200) {
-            console.log(response.data.message);
-            setIsPremium(false);
-            closeModal();
+    const handleUpgrade = async () => {
+        try {
+            const response = await axios.post('/api/v1/management/become-premium', {}, { withCredentials: true });
+            if (response.status === 200) {
+                console.log(response.data.message);
+                setIsPremium(true);
+                closeModal();
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error canceling premium:', error);
         }
-        refreshPage();        
     };
 
     return (
@@ -70,10 +82,9 @@ function Header() {
                 {/* Search Box */}
                 <div
                     ref={searchRef}
-                    className={`absolute right-0 transform transition-all duration-500 ease-in-out ${isSearchOpen
-                        ? 'w-56 opacity-100'
-                        : 'w-0 opacity-0'
-                        }`}
+                    className={`absolute right-0 transform transition-all duration-500 ease-in-out ${
+                        isSearchOpen ? 'w-56 opacity-100' : 'w-0 opacity-0'
+                    }`}
                 >
                     <input
                         type="text"
@@ -105,80 +116,91 @@ function Header() {
                 </button>
             </div>
 
-            <div className="flex items-center relative">
-                {/* Premium Icon */}
-                <div
-                    tabIndex={0}
-                    className="btn btn-sm btn-warning btn-circle avatar mr-1 ml-1"
-                >
-                    <FontAwesomeIcon icon={faCrown} className="h-5 w-5 text-white" />
-                </div>
-            </div>
-
-            {/* Right Section: Bars Icon with Dropdown */}
-            <div className="flex items-center">
-                <Menu as="div" className="relative">
-                    {({ open }) => (
-                        <>
-                            <Menu.Button
-                                className="btn btn-ghost btn-circle focus:outline-none"
-                                aria-label="Settings"
+            {/* Premium Section */}
+            {!isLoading && (
+                <>
+                    {!isPremium ? (
+                        <div className="flex items-center relative">
+                            <div
+                                tabIndex={0}
+                                className="btn btn-sm btn-warning btn-circle avatar mr-1 ml-1"
+                                title="Upgrade to Premium"
+                                onClick={openModal}
                             >
-                                <FontAwesomeIcon
-                                    icon={faBars}
-                                    className={`h-6 w-6 transform transition-transform duration-300 ${
-                                        open ? 'rotate-90' : 'rotate-0'
-                                    }`}
-                                />
-                            </Menu.Button>
+                                <FontAwesomeIcon icon={faCrown} className="h-5 w-5 text-white" />
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="flex items-center">
+                            <Menu as="div" className="relative">
+                                {({ open }) => (
+                                    <>
+                                        <Menu.Button
+                                            className="btn btn-ghost btn-circle focus:outline-none"
+                                            aria-label="Settings"
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faBars}
+                                                className={`h-6 w-6 transform transition-transform duration-300 ${
+                                                    open ? 'rotate-90' : 'rotate-0'
+                                                }`}
+                                            />
+                                        </Menu.Button>
 
-                            <Transition
-                                as={Fragment}
-                                show={open}
-                                enter="transition ease-out duration-100 delay-200"
-                                enterFrom="transform opacity-0 scale-95"
-                                enterTo="transform opacity-100 scale-100"
-                                leave="transition ease-in duration-150"
-                                leaveFrom="transform opacity-100 scale-100"
-                                leaveTo="transform opacity-0 scale-95"
-                            >
-                                <Menu.Items
-                                    static
-                                    className="absolute right-0 mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg origin-top-right z-20"
-                                >
-                                    <div className="py-1">
-                                        <Menu.Item>
-                                            {({ active }) => (
-                                                <button
-                                                    className={`${
-                                                        active ? 'bg-gray-100' : ''
-                                                    } w-full text-left px-4 py-2 text-sm text-gray-700`}
-                                                    onClick={openModal} // Open modal on click
-                                                >
-                                                    Cancel Premium
-                                                </button>
-                                            )}
-                                        </Menu.Item>
-                                    </div>
-                                </Menu.Items>
-                            </Transition>
-                        </>
+                                        <Transition
+                                            as={Fragment}
+                                            show={open}
+                                            enter="transition ease-out duration-100 delay-200"
+                                            enterFrom="transform opacity-0 scale-95"
+                                            enterTo="transform opacity-100 scale-100"
+                                            leave="transition ease-in duration-150"
+                                            leaveFrom="transform opacity-100 scale-100"
+                                            leaveTo="transform opacity-0 scale-95"
+                                        >
+                                            <Menu.Items
+                                                static
+                                                className="absolute right-0 mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg origin-top-right z-20"
+                                            >
+                                                <div className="py-1">
+                                                    <Menu.Item>
+                                                        {({ active }) => (
+                                                            <button
+                                                                className={`${
+                                                                    active ? 'bg-gray-100' : ''
+                                                                } w-full text-left px-4 py-2 text-sm text-gray-700`}
+                                                                onClick={openModal}
+                                                            >
+                                                                Cancel Premium
+                                                            </button>
+                                                        )}
+                                                    </Menu.Item>
+                                                </div>
+                                            </Menu.Items>
+                                        </Transition>
+                                    </>
+                                )}
+                            </Menu>
+                        </div>
                     )}
-                </Menu>
-            </div>
+                </>
+            )}
 
             {/* Premium Modal */}
             <PremiumModal
                 isOpen={isModalOpen}
                 closeModal={closeModal}
-                title="Cancel Premium Subscription"
-                message="Are you sure you want to cancel your Premium Subscription?"
-                onConfirm={handleConfirmCancel}
-                confirmText="Yes, Cancel"
-                cancelText="No, Keep It"
+                title={isPremium ? "Cancel Premium Subscription" : "Upgrade to Premium"}
+                message={
+                    isPremium
+                        ? "Are you sure you want to cancel your Premium Subscription?"
+                        : "Upgrade to access premium features."
+                }
+                onConfirm={isPremium ? handleConfirmCancel : handleUpgrade}
+                confirmText={isPremium ? "Yes, Cancel" : "Upgrade Now"}
+                cancelText="No, Thanks"
             />
         </div>
     );
 }
 
-export default Header;
+export default memo(Header);
