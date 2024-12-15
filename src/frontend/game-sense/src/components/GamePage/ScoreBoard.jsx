@@ -14,6 +14,7 @@ const fetchGame = async (id) => {
             Accept: "application/json",
         },
     });
+    console.log(response.data);
     return response.data;
 };
 
@@ -41,7 +42,7 @@ export default function ScoreBoard({ id }) {
     const team2 = game.away_team;
     const minute = game.minute;
     const score1 = game.home_score;
-    const score2 = team2.away_score;
+    const score2 = game.away_score;
 
     return (
         <div className="scoreboard-container">
@@ -128,4 +129,5 @@ export default function ScoreBoard({ id }) {
 
 ScoreBoard.propTypes = {
     id: PropTypes.string.isRequired,
+
 };
