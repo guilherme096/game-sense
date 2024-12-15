@@ -1,67 +1,55 @@
 package ies.gamesense.player_service.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+
 import jakarta.validation.constraints.NotNull;
 
 @Entity
+@IdClass(PlayerGameStatsId.class)
 public class PlayerGameStats {
 
     @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @ManyToOne //(fetch = FetchType.LAZY) // Ensure this is lazily fetched if needed
+    @JoinColumn(name = "player_id", referencedColumnName = "id", nullable = false)
+    @JsonBackReference
+    private Player player;
 
-    @NotNull
-    @Column(name = "player_id", nullable = false)
-    private Long player_id;
-
-    @NotNull
+    @Id
     @Column(name = "game_id", nullable = false)
     private Long game_id;
 
-    @NotNull
     @Column(name = "rating", nullable = false)
     private int rating;
 
-    @NotNull
     @Column(name = "minutes_played", nullable = false)
     private int minutesPlayed;
 
-    @NotNull
     @Column(name = "goals", nullable = false)
     private int goals;
 
-    @NotNull
     @Column(name = "assists", nullable = false)
     private int assists;
 
-    @NotNull
     @Column(name = "fouls", nullable = false)
     private int fouls;
 
-    @NotNull
     @Column(name = "yellow_cards", nullable = false)
     private int yellowCards;
 
-    @NotNull
     @Column(name = "red_cards", nullable = false)
     private int redCards;
 
-    @NotNull
     @Column(name = "saves", nullable = false)
     private int saves;
 
-    public PlayerGameStats() {
-    }
+    public PlayerGameStats() {}
 
-    public PlayerGameStats(Long player_id, Long game_id, int rating, int minutesPlayed, int goals, int assists, int fouls,
-                           int yellowCards, int redCards, int saves) {
-        this.player_id = player_id;
+    public PlayerGameStats(Player player, Long game_id, int rating, int minutesPlayed, int goals, int assists,
+                           int fouls, int yellowCards, int redCards, int saves) {
+        this.player = player;
         this.game_id = game_id;
+        this.rating = rating;
         this.minutesPlayed = minutesPlayed;
         this.goals = goals;
         this.assists = assists;
@@ -71,13 +59,14 @@ public class PlayerGameStats {
         this.saves = saves;
     }
 
+
     // Getters and Setters
-    public Long getPlayerId() {
-        return player_id;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setPlayerId(Long player_id) {
-        this.player_id = player_id;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public Long getGameId() {
@@ -155,7 +144,7 @@ public class PlayerGameStats {
     @Override
     public String toString() {
         return "PlayerGameStats{" +
-                "player=" + player_id +
+                "player=" + player +
                 ", game=" + game_id +
                 ", minutesPlayed=" + minutesPlayed +
                 ", goals=" + goals +

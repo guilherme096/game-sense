@@ -52,6 +52,7 @@ public class LeagueController {
             League league = leagueService.getLeagueById(id);
             return new ResponseEntity<>(league, HttpStatus.OK);
         } catch (RuntimeException ex) {
+            System.out.println("League not found with ID: " + id + ex);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
