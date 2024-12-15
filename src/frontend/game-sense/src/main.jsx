@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import AuthProvider from "react-auth-kit";
 import createStore from 'react-auth-kit/createStore';
 import { ToastContainer } from "react-toastify"
+import { UserProvider } from "./components/UserProvider.jsx";
 
 
 const router = createBrowserRouter(routesList);
@@ -22,6 +23,7 @@ const store = createStore({
 ReactDOM.createRoot(document.getElementById("root")).render(
 
   <AuthProvider store={store}>
+    <UserProvider>
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <ToastContainer />
@@ -33,5 +35,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         />
       </QueryClientProvider>
     </React.StrictMode>
+    </UserProvider>
   </AuthProvider>
 );

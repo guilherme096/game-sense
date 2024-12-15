@@ -18,11 +18,47 @@ function Profile() {
     const signOut = useSignOut();
     const [username, setUsername] = useState("");
     const [isPremium, setPremium] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);  
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [favoriteTeam, setFavoriteTeam] = useState(null);
+    const [teamImage, setTeamImage] = useState(null);
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
+
+    const fetchUserData = async () => {
+        try {
+            const userResponse = await axios.get("/api/v1/management/user-info", {
+                withCredentials: true
+            });
+
+            if (userResponse.status === 200) {
+                setUsername(userResponse.data.username);
+                setPremium(userResponse.data.premium);
+                setFavoriteTeam(userResponse.data.favouriteTeam);
+
+                // If there's a favorite team, fetch its image
+                if (userResponse.data.favouriteTeam) {
+                    const clubResponse = await axios.get(`/api/v1/club`, {
+                        params: { name: userResponse.data.favouriteTeam }
+                    });                    
+
+                    if (clubResponse.status === 200 && clubResponse.data.length > 0) {
+                        setTeamImage(clubResponse.data[0].logo);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            toast.error("Failed to load user data");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
 
     const handleLogout = async () => {
         try {
@@ -44,6 +80,10 @@ function Profile() {
         }
     };
 
+    const refreshPage = () => {
+        window.location.reload();
+    };
+
     const handleBecomePremium = async () => {
         try {
             const response = await axios.post('/api/v1/management/become-premium', {}, {
@@ -54,6 +94,7 @@ function Profile() {
                 setPremium(true);
                 closeModal();
                 toast.success("You are now a premium member!");
+                refreshPage();
             } else {
                 toast.error("Failed to become premium.");
             }
@@ -63,36 +104,14 @@ function Profile() {
         }
     };
 
-    useEffect(() => {
-        const fetchUsername = async () => {
-            try {
-                const response = await axios.get("/api/v1/management/user-info", {
-                    withCredentials: true
-                });
-
-                if (response.status === 200) {
-                    setUsername(response.data.username);
-                    setPremium(response.data.premium);
-                }
-            } catch (error) {
-                console.error("Error fetching username:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUsername();
-    }, []);
-
     if (loading) {
         return (
             <PageTemplate>
-                <LoadingLogo></LoadingLogo>
+                <LoadingLogo />
             </PageTemplate>
         );
     }
 
-    // Get the first letter of the username
     const userInitial = username.charAt(0).toUpperCase();
 
     return (
@@ -118,9 +137,6 @@ function Profile() {
                             </button>
                         </div>
                     </div>
-                    <button className="ml-auto">
-                        <FontAwesomeIcon icon={faPenToSquare} className="h-5 w-5 text-gray-700" />
-                    </button>
                 </div>
 
                 {/* Plan Section */}
@@ -141,41 +157,36 @@ function Profile() {
                     )}
                 </div>
 
-                {/* My Teams Section */}
-                <GeneralCard
-                    title="My Teams"
-                    button={<span className="text-sm text-white">({profile.myTeams.length})</span>}
-                >
-                    <div className="p-4 grid grid-cols-4 gap-4">
-                        {profile.myTeams.map((team) => (
-                            <div
-                                key={team}
-                                className={`relative flex flex-col items-center ${
-                                    team === profile.favTeam 
-                                }`}
-                            >
-                                {team === profile.favTeam && (
-                                    <FontAwesomeIcon
-                                        icon={faStar}
-                                        className="absolute -top-2 -right-1 text-yellow-400 text-lg"
-                                    />
-                                )}
-                                <img
-                                    src="https://via.placeholder.com/40"
-                                    alt={team}
-                                    className="w-10 h-10"
+                {/* Favorite Team Section */}
+                <GeneralCard title="My Team">
+                    <div className="p-4 flex justify-center">
+                        {favoriteTeam ? (
+                            <div className="relative flex flex-col items-center">
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className="absolute -top-2 -right-1 text-yellow-400 text-lg"
                                 />
-                                <p className="text-sm mt-1 font-bold">{team}</p>
+                                <img
+                                    src={teamImage || "https://via.placeholder.com/40"}
+                                    alt={favoriteTeam}
+                                    className="w-16 h-16 object-contain"
+                                />
+                                <p className="text-sm mt-2 font-bold">{favoriteTeam}</p>
                             </div>
-                        ))}
+                        ) : (
+                            <p className="text-gray-500">No favorite team selected</p>
+                        )}
                     </div>
-                    <button className="w-full text-sm bg-gray-200 text-gray-600 py-2 font-bold rounded-b-lg">
-                        Change Favorite Team
+                    <button 
+                        className="w-full text-sm bg-gray-200 text-gray-600 py-2 font-bold rounded-b-lg"
+                        onClick={() => navigate('/teams')}
+                    >
+                        {favoriteTeam ? 'Change Favorite Team' : 'Select Favorite Team'}
                     </button>
                 </GeneralCard>
 
                 {/* My Teams Last Results */}
-                <GeneralCard title="My Teams Last Results">
+                <GeneralCard title="My Team's Last Results">
                     <div className="divide-y divide-gray-200">
                         {profile.lastResults.map((match, index) => (
                             <div key={index} className="grid grid-cols-3 items-center py-4 px-6">
