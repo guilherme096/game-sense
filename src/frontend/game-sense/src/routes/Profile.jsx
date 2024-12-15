@@ -137,9 +137,6 @@ function Profile() {
                             </button>
                         </div>
                     </div>
-                    <button className="ml-auto">
-                        <FontAwesomeIcon icon={faPenToSquare} className="h-5 w-5 text-gray-700" />
-                    </button>
                 </div>
 
                 {/* Plan Section */}
