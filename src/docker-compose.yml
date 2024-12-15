@@ -39,7 +39,6 @@ services:
       USERS_USER: ${USERS_USER}
       USERS_PASSWORD: ${USERS_PASSWORD}
 
-
   live-game-service:
     build:
       context: backend/live_game_service
@@ -51,6 +50,21 @@ services:
       - app-network
     env_file:
       - .env
+
+  game-service:
+    build:
+      context: backend/game_service
+    image: game_service-image
+    depends_on:
+      - sql_db
+      - club-service
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - app-network
 
   player-service:
     build:
