@@ -35,6 +35,19 @@ export default function Register() {
         }
     };
     
+    const validateClub = async (clubName) => {
+        try {
+            const response = await axios.get(`http://localhost/api/v1/club`, { params: { name: clubName } });
+            // Check if any club in the response matches the input club name (case-insensitive)
+            return response.data.some(club => 
+                club.name.toLowerCase() === clubName.toLowerCase()
+            );
+        } catch (error) {
+            toast.error("An error occurred while validating the club.");
+            return false;
+        }
+    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -53,12 +66,11 @@ export default function Register() {
 
         try {
 
-            console.log({
-                username: formData.name,
-                password: formData.password,
-                favouriteTeam: formData.favouriteTeam,
-                isPremium: formData.isPremium,
-            });
+            const clubExists = await validateClub(formData.favouriteTeam);
+            if (!clubExists) {
+                toast.error("Please enter a valid club name.");
+                return;
+            }
             
             await axios.post('http://localhost/api/v1/management/register', {
                 username: formData.name,
