@@ -35,17 +35,15 @@ const GameTimeline = ({ id }) => {
                 const lastDot = dots[dots.length - 1].getBoundingClientRect();
                 const containerTop = timelineRef.current.getBoundingClientRect().top;
 
-                // Update vertical line styles
                 setLineStyles({
                     top: firstDot.top - containerTop + firstDot.height / 2,
                     height: lastDot.top - firstDot.top,
                 });
 
-                // Animate event visibility
                 events.forEach((_, index) => {
                     setTimeout(() => {
                         setVisibleEvents((prev) => [...prev, index]);
-                    }, index * 300); // Delay each event rendering
+                    }, index * 300);
                 });
             }
         }
@@ -60,44 +58,49 @@ const GameTimeline = ({ id }) => {
     }
 
     const renderEventBlock = (event, team) => {
-        const isLeft = team === "home";
+    const isLeft = team === "home";
 
-        return (
-            <div className={`flex items-center w-1/2 ${isLeft
-                        ? "pr-7 justify-end text-right"
-                        : "pl-7 justify-start text-left"
+    return (
+        <div className={`flex items-center w-1/2 ${isLeft
+                        ? "pr-4 justify-end text-right"
+                        : "pl-4 justify-start text-left"
                     }`}>
-                <>
-                    {isLeft &&
-                        (event.event_type === "SUBSTITUTION" ? (
-                            <div className="mr-4">
-                                <span className="font-bold">{event.minute}'</span>{" "}
-                                ({event.player_out}) -
-                                <span className="font-bold">{event.player_in}</span>
-                            </div>
-                        ) : (event.event_type === "GOAL"? (
-                            <div className="mr-4 ">
-                                <span className="font-light">{event.minute}'</span> ({event.assist})
-                                <span className="font-bold">{event.scorer}'</span>
-                            </div>
-                            ) :
-                            (
-                            <div className="mr-4">
-                                <span className="font-bold">{event.minute}'</span>{" "}
+                {isLeft && (
+                    event.event_type === "SUBSTITUTION" ? (
+                        <div className="ml-4 flex-1">
+                            <span className="font-bold break-words inline-block">
+                                {event.player_in}
+                            </span>
+                            <span className="break-words inline-block ml-1">
+                                ({event.player_out})
+                            </span>
+                        </div>
+                    ) : event.event_type === "GOAL" ? (
+                        <div className="ml-4 flex-1">
+                            <span className="font-bold break-words inline-block">
+                                {event.scorer}
+                            </span>
+                            <span className="break-words inline-block ml-1">
+                                ({event.assist})
+                            </span>
+                        </div>
+                    ) : (
+                        <div className="ml-4 flex-1">
+                            <span className="break-words inline-block">
                                 {event.player}
-                            </div>
-                            )
-                        ))}
-                </>
+                            </span>
+                        </div>
+                    )
+                )}
 
-                <div className= {` px-2 flex items-center justify-center ${
-                        event.event_type === "GOAL" ? "text-green-200" : 
-                        event.event_type === "RED_CARD"? "text-red-500" : 
-                        event.event_type === "YELLOW_CARD"? "text-yellow-400" : 
-                        event.event_type === "SUBSTITUTION" ? "text-blue-400" :
-                        event.event_type === "auto-goal"? "text-red-300": 
-                        ""
-                        }`}>
+                <div className={`px-4 flex items-center justify-center ${
+                    event.event_type === "GOAL" ? "text-green-200" : 
+                    event.event_type === "RED_CARD" ? "text-red-500" : 
+                    event.event_type === "YELLOW_CARD" ? "text-yellow-400" : 
+                    event.event_type === "SUBSTITUTION" ? "text-blue-400" :
+                    event.event_type === "auto-goal" ? "text-red-300" : 
+                    ""
+                }`}>
                     {event.event_type === "GOAL" && (
                         <FontAwesomeIcon icon={faFutbol} className="h-5" />
                     )}
@@ -115,26 +118,43 @@ const GameTimeline = ({ id }) => {
                     )}
                 </div>
 
-                {!isLeft &&
-                    (event.event_type === "SUBSTITUTION" ? (
-                        <div className="mr-4">
-                            <span className="font-bold">{event.minute}'</span>{" "}
-                            {event.player_out} - {event.player_in}
+                {!isLeft && (
+                    event.event_type === "SUBSTITUTION" ? (
+                        <div className="mr-4 flex-1">
+                            <span className="font-bold break-words inline-block">
+                                {event.player_in}
+                            </span>
+                            <span className="break-words inline-block ml-1">
+                                ({event.player_out})
+                            </span>
+                        </div>
+                    ) : event.event_type === "GOAL" ? (
+                        <div className="mr-4 flex-1">
+                            <span className="font-bold break-words inline-block">
+                                {event.scorer}
+                            </span>
+                            <span className="break-words inline-block ml-1">
+                                ({event.assist})
+                            </span>
                         </div>
                     ) : (
-                        <div className="mr-4">
-                            <span className="font-bold">{event.minute}'</span> {event.player}
+                        <div className="mr-4 flex-1">
+                            <span className="break-words inline-block">
+                                {event.player}
+                            </span>
                         </div>
-                    ))}
+                    )
+                )}
             </div>
         );
     };
+
 
     return (
         <>
             {events.length > 0 ? (
                 <div className={`relative w-full bg-[#196146] text-white p-4 text-sm rounded-md ${events.length > 0 ? "min-h-[100px]" : "min-h-[70px]"
-                        }`} ref={timelineRef}>
+                }`} ref={timelineRef}>
                     {/* Vertical Line */}
                     {events.length > 0 && (
                         <div
@@ -155,7 +175,7 @@ const GameTimeline = ({ id }) => {
                                     } ${event.team === "home" ? "justify-start" : "justify-end"}`}>
                                 {renderEventBlock(event, event.team)}
                                 <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center">
-                                    <div className="w-4 h-4 bg-white rounded-full event-dot"></div>
+                                    <div className="w-6 h-6 text-xs bg-white text-green-800 font-extrabold rounded-full event-dot flex items-center justify-center">{event.minute}'</div> 
                                 </div>
                             </div>
                         ))
