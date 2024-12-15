@@ -28,7 +28,8 @@ public class SecurityConfig {
                     "/api/v1/management/username", 
                     "/api/v1/management/logout", 
                     "/api/v1/management/user-info",
-                    "/api/v1/management/become-premium"
+                    "/api/v1/management/become-premium",
+                    "/api/v1/management/cancel-premium"
                     ).permitAll()
                 .anyRequest().authenticated()
             )

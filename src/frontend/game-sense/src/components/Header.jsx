@@ -9,6 +9,10 @@ import { Menu, Transition } from '@headlessui/react';
 
 import PremiumModal from './PremiumModal';
 
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
@@ -40,11 +44,21 @@ function Header() {
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
+    // Function to refresh the page
+    const refreshPage = () => {
+        window.location.reload();
+    };
+
     // Function to handle confirmation of cancellation
     const handleConfirmCancel = () => {
-        // TODO: Add your cancellation logic here (e.g., API call)
-        console.log("Premium subscription canceled.");
-        closeModal();
+        const response = axios.post('/api/v1/management/cancel-premium', {}, { withCredentials: true });
+        if (response.status === 200) {
+            console.log(response.data.message);
+            setIsPremium(false);
+            closeModal();
+        }
+        refreshPage();
+        
     };
 
     return (
@@ -165,8 +179,8 @@ function Header() {
                 title="Cancel Premium Subscription"
                 message="Are you sure you want to cancel your Premium Subscription?"
                 onConfirm={handleConfirmCancel}
-                confirmText="No, Keep It"
-                cancelText="Yes, Cancel"
+                confirmText="Yes, Cancel"
+                cancelText="No, Keep It"
             />
         </div>
     );
