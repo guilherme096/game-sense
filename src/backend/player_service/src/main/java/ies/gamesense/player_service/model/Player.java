@@ -1,61 +1,46 @@
 package ies.gamesense.player_service.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.persistence.Column;
 
 @Entity
+@Table(name = "player")
 public class Player {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
-    @Column(name = "id", nullable = false)
     private Long id;
 
-    @NotNull
-    @Column(name="club_id")
+    @Column(name="club_id", nullable = false)
     private Long clubId;
 
-    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
     @Column(name = "surname", nullable = false)
     private String surname;
 
-    @NotNull
     @Column(name = "age", nullable = false)
     private int age;
 
-    @NotNull
     @Column(name = "height", nullable = false)
     private int height;
 
-    @NotNull
     @Column(name = "weight", nullable = false)
     private int weight;
 
-    @NotNull
     @Column(name = "position", nullable = false)
     private String position;
 
-    @NotNull
     @Column(name = "country", nullable = false)
     private String country;
 
-    @NotNull
     @Column(name = "country_Flag", nullable = false)
     private String countryFlag;
 
-    @NotNull
     @Column(name = "jersey_number", nullable = false)
     private int jerseyNumber;
 
-    @NotNull
     @Column(name = "is_injured", nullable = false)
     private boolean isInjured;
 

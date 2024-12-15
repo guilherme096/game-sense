@@ -38,8 +38,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Player getPlayerById(Long id) {
-        Optional<Player> player = playerRepository.findById(id);
-        return player.orElseThrow(() -> new RuntimeException("Player not found with ID: " + id));
+        return playerRepository.findById(id).orElse(null);
     }
 
     @Override
