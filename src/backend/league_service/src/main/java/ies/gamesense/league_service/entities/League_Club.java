@@ -7,7 +7,6 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @IdClass(LeagueClubId.class)

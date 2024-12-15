@@ -9,14 +9,14 @@ import jakarta.persistence.Column;
 
 @Entity
 public class Player {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
-    @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
-    @Column(name="club_id")
+    @Column(name="club_id", nullable = false)
     private Long clubId;
 
     @NotNull
