@@ -52,18 +52,46 @@ public class Player {
     }
 
     public Player(Long id, String name, String surname, int age, int height, int weight, 
-                  String position, String country, String countryFlag, int jerseyNumber, boolean isInjured) {
+                  int position, String country, String countryFlag, int jerseyNumber, boolean isInjured) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.age = age;
         this.height = height;
         this.weight = weight;
-        this.position = position;
+        this.position = getPlayerString(position);
         this.country = country;
         this.countryFlag = countryFlag;
         this.jerseyNumber = jerseyNumber;
         this.isInjured = isInjured;
+    }
+
+    public String getPlayerString(int position) {
+        switch (position) {
+            case 1:
+                return "Goalkeeper";
+            case 2:
+                return "Right Back";
+            case 3:
+                return "Left Back";
+            case 4:
+                return "Center Back";
+            case 5:
+                return "Center Back";
+            case 6:
+                return "Defensive Midfielder";
+            case 7:
+                return "Winger";
+            case 8:
+                return "Central Midfielder";
+            case 9:
+                return "Striker";
+            case 10:
+                return "Attacking Midfielder";
+            case 11:
+                return "Forward";
+        }
+        return "Unknown";
     }
 
     // Getters and Setters

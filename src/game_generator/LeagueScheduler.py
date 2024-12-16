@@ -162,12 +162,12 @@ def create_team_players(team_name, team_id):
         Player(f"{team_name} Defender 2", [4, 5], 3),
         Player(f"{team_name} Defender 3", 3, 4),
         Player(f"{team_name} Midfielder 1", 6, 5),
-        Player(f"{team_name} Midfielder 2", 11, 6),
-        Player(f"{team_name} Midfielder 3", 6, 7),
+        Player(f"{team_name} Midfielder 2", 8, 6),
+        Player(f"{team_name} Midfielder 3", 10, 7),
         Player(f"{team_name} Winger", 7, 8),
         Player(f"{team_name} Striker", 9, 9),
         Player(f"{team_name} Forward", 11, 10),
-        Player(f"{team_name} Defender 4", [4, 5], 11),
+        Player(f"{team_name} Defender 4", 2, 11),
     ]
 
     subs_squad = [
