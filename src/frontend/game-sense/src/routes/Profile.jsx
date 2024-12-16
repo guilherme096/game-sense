@@ -109,7 +109,7 @@ function Profile() {
                 }
                 setIsTeamModalOpen(false);
                 setSelectedTeamTemp(null); // Reset temporary selection
-                toast.success("Favorite team updated successfully!");
+                toast.success("Favorite team updated successfully");
             }
         } catch (error) {
             console.error("Error updating favorite team:", error);
@@ -283,7 +283,7 @@ function Profile() {
                                 Cancel
                             </button>
                             <button
-                                className="px-4 py-2 rounded bg-blue-500 text-white disabled:bg-blue-300"
+                                className="px-4 py-2 rounded bg-yellow-500 text-white disabled:bg-yellow-300"
                                 onClick={handleTeamConfirm}
                                 disabled={!selectedTeamTemp}
                             >
