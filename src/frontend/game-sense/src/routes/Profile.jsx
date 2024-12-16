@@ -24,6 +24,7 @@ function Profile() {
     const [favoriteTeam, setFavoriteTeam] = useState(null);
     const [teamImage, setTeamImage] = useState(null);
     const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
+    const [selectedTeamTemp, setSelectedTeamTemp] = useState(null); 
 
 
     const openModal = () => setIsModalOpen(true);
@@ -83,24 +84,31 @@ function Profile() {
         }
     };
 
-    const handleTeamSelect = async (team) => {
+    const handleTeamSelect = (team) => {
+        setSelectedTeamTemp(team); // Store the selection temporarily
+    };
+
+    const handleTeamConfirm = async () => {
+        if (!selectedTeamTemp) return;
+
         try {
             const response = await axios.put('/api/v1/management/update-favorite-team', 
-                { team },
+                { team: selectedTeamTemp },
                 { withCredentials: true }
             );
 
             if (response.status === 200) {
-                setFavoriteTeam(team);
+                setFavoriteTeam(selectedTeamTemp);
                 // Fetch new team image
                 const clubResponse = await axios.get(`/api/v1/club`, {
-                    params: { name: team }
+                    params: { name: selectedTeamTemp }
                 });
                 
                 if (clubResponse.status === 200 && clubResponse.data.length > 0) {
                     setTeamImage(clubResponse.data[0].logo);
                 }
                 setIsTeamModalOpen(false);
+                setSelectedTeamTemp(null); // Reset temporary selection
                 toast.success("Favorite team updated successfully!");
             }
         } catch (error) {
@@ -108,7 +116,7 @@ function Profile() {
             toast.error("Failed to update favorite team");
         }
     };
-    
+
     const refreshPage = () => {
         window.location.reload();
     };
@@ -131,6 +139,11 @@ function Profile() {
             console.error('Error upgrading to premium:', error);
             toast.error("An error occurred while upgrading to premium.");
         }
+    };
+
+    const handleCloseTeamModal = () => {
+        setIsTeamModalOpen(false);
+        setSelectedTeamTemp(null); 
     };
 
     if (loading) {
@@ -249,7 +262,7 @@ function Profile() {
 
             <Dialog 
                 open={isTeamModalOpen} 
-                onClose={() => setIsTeamModalOpen(false)}
+                onClose={handleCloseTeamModal}
                 className="relative z-50"
             >
                 <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
@@ -259,15 +272,22 @@ function Profile() {
                             Select Favorite Team
                         </Dialog.Title>
                         <FavoriteTeamCombobox 
-                            selectedTeam={favoriteTeam} 
+                            selectedTeam={selectedTeamTemp || favoriteTeam} 
                             onTeamChange={handleTeamSelect}
                         />
                         <div className="mt-4 flex justify-end space-x-2">
                             <button
                                 className="px-4 py-2 rounded bg-gray-200 text-gray-700"
-                                onClick={() => setIsTeamModalOpen(false)}
+                                onClick={handleCloseTeamModal}
                             >
                                 Cancel
+                            </button>
+                            <button
+                                className="px-4 py-2 rounded bg-blue-500 text-white disabled:bg-blue-300"
+                                onClick={handleTeamConfirm}
+                                disabled={!selectedTeamTemp}
+                            >
+                                Confirm
                             </button>
                         </div>
                     </Dialog.Panel>
