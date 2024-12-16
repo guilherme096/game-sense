@@ -1,0 +1,9 @@
+build
+dist
+node_modules
+
+.git
+.gitignore
+
+/frontend/
+/backend/
