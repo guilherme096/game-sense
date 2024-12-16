@@ -93,27 +93,27 @@ const SearchBar = ({ isOpen, onClose }) => {
           autoFocus
         />
         
-        <div className="flex border-b">
+        <div className="flex border-b space-x-2 p-2">
           <button
             onClick={() => setFilter('all')}
-            className={`flex-1 px-4 py-2 text-sm ${
-              filter === 'all' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'
+            className={`btn-sm flex justify-center items-center flex-1 px-4 py-2 text-sm rounded-full ${
+              filter === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
             }`}
           >
             All
           </button>
           <button
             onClick={() => setFilter('players')}
-            className={`flex-1 px-4 py-2 text-sm ${
-              filter === 'players' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'
+            className={`btn-sm flex justify-center items-center flex-1 px-4 py-2 text-sm rounded-full ${
+              filter === 'players' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
             }`}
           >
             Players
           </button>
           <button
             onClick={() => setFilter('clubs')}
-            className={`flex-1 px-4 py-2 text-sm ${
-              filter === 'clubs' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'
+            className={`btn-sm flex justify-center items-center flex-1 px-4 py-2 text-sm rounded-full ${
+              filter === 'clubs' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
             }`}
           >
             Clubs

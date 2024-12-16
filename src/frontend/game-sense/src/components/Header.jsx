@@ -89,8 +89,14 @@ function Header() {
                     />
                     <button
                         ref={buttonRef}
-                        className="btn btn-ghost btn-circle z-10 relative"
-                        onClick={toggleSearch}
+                        className="btn btn-ghost btn-circle z-100 relative"
+                        onClick={() => {
+                            if (isSearchOpen) {
+                                setIsSearchOpen(false);
+                            } else {
+                                toggleSearch();
+                            }
+                        }}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
