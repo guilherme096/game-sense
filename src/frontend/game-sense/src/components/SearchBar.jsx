@@ -79,7 +79,7 @@ const SearchBar = ({ isOpen, onClose }) => {
   return (
     <div
       ref={searchRef}
-      className={`absolute right-0 top-full mt-2 transition-all duration-300 ease-in-out ${
+      className={`absolute right-0 top-full -mt-11 mr-1 transition-all duration-300 ease-in-out ${
         isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
       }`}
     >
@@ -89,7 +89,7 @@ const SearchBar = ({ isOpen, onClose }) => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search players or clubs..."
-          className="w-full px-4 py-2 border-b focus:outline-none"
+          className="w-full px-4 py-2 border-b focus:outline-none rounded-t-lg"
           autoFocus
         />
         
