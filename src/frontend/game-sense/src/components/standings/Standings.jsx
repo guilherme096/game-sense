@@ -32,19 +32,8 @@ export default function Standings({ showHeader = true }) {
         return <div>Error: Invalid standings data</div>;
     }
 
-    const sortedStandings = standings
-        .map((team) => ({
-            ...team,
-            points: team.wins * 3 + team.draws,
-        }))
-        .sort((a, b) => {
-            if (b.points !== a.points) return b.points - a.points;
-            return (b.goalsScored - b.goalsConceded) - (a.goalsScored - a.goalsConceded);
-        })
-        .map((team, index) => ({
-            ...team,
-            position: index + 1,
-        }));
+    // sort by team.place
+    const sortedStandings = standings.sort((a, b) => a.place - b.place);
 
     const changeTeam = (
         <button className="text-gray-400 font-medium text-base">
@@ -57,10 +46,10 @@ export default function Standings({ showHeader = true }) {
         <div className="container mx-auto px-4">
             {showHeader ? (
                 <GeneralCard title="Standings" button={changeTeam}>
-                    <TeamTable standings={standings} />
+                    <TeamTable standings={sortedStandings} />
                 </GeneralCard>
             ) : (
-                <TeamTable standings={standings} />
+                <TeamTable standings={sortedStandings} />
             )}
         </div>
     );

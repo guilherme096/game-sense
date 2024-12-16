@@ -58,14 +58,18 @@ public class GameServiceImpl implements GameService {
         Game game = gameRepository.findById(id)
                 .orElse(null);
 
+        assert game != null;
         Long firstHalfId = game.getFirstHalfId();
 
         Half half = halfRepository.findById(firstHalfId)
                 .orElse(null);
 
+        assert half != null;
         Optional<TeamStats> homeClubStats = teamStatsRepository.findById(half.getHomeClubStatsId());
         Optional<TeamStats> awayClubStats = teamStatsRepository.findById(half.getAwayClubStatsId());
 
+        assert homeClubStats.orElse(null) != null;
+        assert awayClubStats.orElse(null) != null;
         return List.of(homeClubStats.orElse(null), awayClubStats.orElse(null));
     }
 
@@ -73,14 +77,18 @@ public class GameServiceImpl implements GameService {
         Game game = gameRepository.findById(id)
                 .orElse(null);
 
+        assert game != null;
         Long secondHalfId = game.getSecondHalfId();
 
         Half half = halfRepository.findById(secondHalfId)
                 .orElse(null);
 
+        assert half != null;
         Optional<TeamStats> homeClubStats = teamStatsRepository.findById(half.getHomeClubStatsId());
         Optional<TeamStats> awayClubStats = teamStatsRepository.findById(half.getAwayClubStatsId());
 
+        assert awayClubStats.orElse(null) != null;
+        assert homeClubStats.orElse(null) != null;
         return List.of(homeClubStats.orElse(null), awayClubStats.orElse(null));
     }
 
