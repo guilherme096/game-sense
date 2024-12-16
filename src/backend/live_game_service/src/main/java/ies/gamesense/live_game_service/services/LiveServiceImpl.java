@@ -1,6 +1,7 @@
 package ies.gamesense.live_game_service.services;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -9,6 +10,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -22,7 +25,8 @@ public class LiveServiceImpl implements LiveService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final MatchPersistenceProducer matchPersistenceProducer;
     private final MatchCacheService matchCacheService;
-    private final RedisTemplate<String, Match> redisTemplate;
+    private final RedisTemplate<String , Match> redisTemplate;
+    private final Map<String, Long> scheduledRemovals = new ConcurrentHashMap<>();
 
     public LiveServiceImpl(MatchPersistenceProducer matchPersistenceProducer, MatchCacheService matchCacheService,
             RedisTemplate<String, Match> redisTemplate) {
@@ -133,7 +137,7 @@ public class LiveServiceImpl implements LiveService {
             if (event.get("event_type").equals("END")) {
                 match.endMatch();
                 this.matchPersistenceProducer.sendMatchForPersistence(match);
-                removeMatchFromCache(matchId);
+                scheduledRemovals.put(matchId, System.currentTimeMillis() + 20000);
             }
 
             // Add event to the match
@@ -159,7 +163,26 @@ public class LiveServiceImpl implements LiveService {
     @CacheEvict(value = "liveGames", keyGenerator = "customKeyGenerator")
     public void removeMatchFromCache(String id) {
         System.out.println("Removing match from Redis cache for ID: " + id);
+        redisTemplate.delete("liveGames::" + id);
+        if (Boolean.TRUE.equals(redisTemplate.hasKey("liveGames::" + id))) {
+            System.out.println("Key still exists: liveGames::" + id);
+        } else {
+            System.out.println("Key successfully removed: liveGames::" + id);
+        }
     }
+
+    @Scheduled(fixedRate = 5000) // Runs every 5 seconds
+    public void processScheduledRemovals() {
+        long currentTime = System.currentTimeMillis();
+        for (Map.Entry<String, Long> entry : scheduledRemovals.entrySet()) {
+            if (currentTime >= entry.getValue()) {
+                String matchId = entry.getKey();
+                removeMatchFromCache(matchId);
+                scheduledRemovals.remove(matchId);
+            }
+        }
+    }
+
 
     @Override
     @Cacheable(value = "liveGames", keyGenerator = "customKeyGenerator")

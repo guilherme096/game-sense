@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ies-24-25-group-project-102.iml" filepath="$PROJECT_DIR$/.idea/ies-24-25-group-project-102.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/backend/player_service/player_service.iml" filepath="$PROJECT_DIR$/src/backend/player_service/player_service.iml" />
     </modules>
   </component>
 </project>

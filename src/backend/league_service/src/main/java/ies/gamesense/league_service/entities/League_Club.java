@@ -7,7 +7,6 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @IdClass(LeagueClubId.class)
@@ -71,8 +70,13 @@ public class League_Club {
     public League getLeague() {
         return league;
     }
+
     public void setLeague(League league) {
         this.league = league;
+    }
+
+    public Long getLeagueId() {
+        return league.getId();
     }
 
     public Long getClub_id() {

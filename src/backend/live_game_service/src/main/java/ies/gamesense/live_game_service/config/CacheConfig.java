@@ -13,7 +13,10 @@ public class CacheConfig {
     @Bean("customKeyGenerator")
     public KeyGenerator keyGenerator() {
         return (Object target, Method method, Object... params) -> {
-            return method.getName() + "::" + Arrays.deepToString(params);
+            if (params.length > 0) {
+                return method.getName() + "::" + Arrays.hashCode(params);
+            }
+            return method.getName() + "::no-params";
         };
     }
 }

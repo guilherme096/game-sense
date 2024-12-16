@@ -11,10 +11,10 @@ import org.springframework.data.repository.query.Param;
 
 @Repository
 public interface PlayerGameStatsRepository extends JpaRepository<PlayerGameStats, Long> {
-    @Query("SELECT pg FROM PlayerGameStats pg WHERE pg.player_id = :playerId AND pg.game_id = :gameId")
+    @Query("SELECT pg FROM PlayerGameStats pg WHERE pg.player.id = :playerId AND pg.game_id = :gameId")
     Optional<PlayerGameStats> findByPlayerIdAndGameId(@Param("playerId") Long playerId, @Param("gameId") Long gameId);
 
     // Fetch all stats for a player (no join)
-    @Query("SELECT pg FROM PlayerGameStats pg WHERE pg.player_id = :playerId")
+    @Query("SELECT pg FROM PlayerGameStats pg WHERE pg.player.id = :playerId")
     List<PlayerGameStats> findByPlayerId(@Param("playerId") Long playerId);
 }    
