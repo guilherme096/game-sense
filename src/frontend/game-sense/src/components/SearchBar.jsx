@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import debounce from 'lodash.debounce';
 
 const SearchBar = ({ isOpen, onClose }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -10,26 +11,49 @@ const SearchBar = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const searchRef = useRef(null);
 
-  useEffect(() => {
-    if (isOpen && searchTerm.length >= 2) {
-      const fetchData = async () => {
-        setLoading(true);
-        try {
-          const [playersRes, clubsRes] = await Promise.all([
-            axios.get(`/api/v1/player/search?name=${searchTerm}`),
-            axios.get(`/api/v1/club?name=${searchTerm}`)
-          ]);
-          setPlayers(playersRes.data || []);
-          setClubs(clubsRes.data || []);
-        } catch (error) {
-          console.error('Error fetching search results:', error);
-        }
+  const fetchData = useCallback(
+    debounce(async (term) => {
+      if (term.length < 2) {
+        setPlayers([]);
+        setClubs([]);
         setLoading(false);
-      };
+        return;
+      }
+  
+      setLoading(true);
+      try {
+        const [playerRes, clubRes] = await Promise.all([
+          axios.get(`/api/v1/player/search`, {
+            params: { name: term }
+          }),
+          axios.get(`/api/v1/club`, {
+            params: { name: term }
+          })
+        ]);
+  
+        setPlayers(Array.isArray(playerRes.data) ? playerRes.data : []);
+        setClubs(Array.isArray(clubRes.data) ? clubRes.data : []);
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+        setPlayers([]);
+        setClubs([]);
+      }
+      setLoading(false);
+    }, 300),
+    []
+  );
 
-      fetchData();
+  useEffect(() => {
+    if (isOpen) {
+      fetchData(searchTerm);
+    } else {
+      fetchData.cancel();
     }
-  }, [searchTerm, isOpen]);
+
+    return () => {
+      fetchData.cancel();
+    };
+  }, [searchTerm, isOpen, fetchData]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -47,7 +71,7 @@ const SearchBar = ({ isOpen, onClose }) => {
       case 'players':
         return players.map(player => ({
           id: player.id,
-          name: player.name,
+          name: `${player.name} ${player.surname}`, // Assuming player has surname
           type: 'player',
           link: `/player/${player.id}`
         }));
@@ -62,7 +86,7 @@ const SearchBar = ({ isOpen, onClose }) => {
         return [
           ...players.map(player => ({
             id: player.id,
-            name: player.name,
+            name: `${player.name} ${player.surname}`, // Assuming player has surname
             type: 'player',
             link: `/player/${player.id}`
           })),
@@ -79,7 +103,7 @@ const SearchBar = ({ isOpen, onClose }) => {
   return (
     <div
       ref={searchRef}
-      className={`absolute right-0 top-full -mt-11 mr-1 transition-all duration-300 ease-in-out ${
+      className={`absolute right-0 top-full -mt-11 mr-1 transition-all duration-300 ease-in-out z-1000 ${
         isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
       }`}
     >
