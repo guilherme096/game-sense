@@ -7,65 +7,106 @@ import time
 from models import Team, Player
 import json
 import itertools
-
+import requests
+from time import sleep
 
 
 class LeagueScheduler:
-    def __init__(self, teams, rounds=2):
+    def __init__(self, teams):
         self.teams = teams
-        self.rounds = rounds
-        self.schedule = self.generate_schedule()
+        self.num_teams = len(teams)
+        self.schedule = self.generate_schedule(3)
         self.processes = []
 
-    def generate_schedule(self):
-        team_combinations = list(itertools.permutations(self.teams, 2))
-        
-        random.shuffle(team_combinations)
-        
-        schedule = []
-        used_teams = set()
+    def generate_schedule(self, num_rounds):
+        if self.num_teams % 2 != 0:
+            raise ValueError("Number of teams must be even")
 
-        for round in range(self.rounds):
-            round_matches = []
-            used_teams_in_round = set()
+        base_schedule = self._create_base_schedule()
 
-            for home_team, away_team in team_combinations:
-                if home_team in used_teams_in_round or away_team in used_teams_in_round:
+        random.shuffle(base_schedule)
+
+        full_schedule = []
+        matches_played = set()
+
+        for i in range(len(self.teams)):
+            teams_in_journey = set()
+
+            for match in base_schedule:
+                home_team, away_team = match
+
+                if (
+                    tuple(sorted([home_team, away_team], key=lambda x: x.name))
+                    in matches_played
+                ):
                     continue
-                
-                if round % 2 == 1:
-                    home_team, away_team = away_team, home_team
-                
-                round_matches.append((home_team, away_team))
-                used_teams_in_round.update([home_team, away_team])
 
-                if len(round_matches) == 2:
-                    schedule.extend(round_matches)
-                    used_teams.update(used_teams_in_round)
-                    break
+                if home_team in teams_in_journey or away_team in teams_in_journey:
+                    continue
 
-        return schedule
+                teams_in_journey.add(home_team)
+                teams_in_journey.add(away_team)
+                match_key = tuple(sorted([home_team, away_team], key=lambda x: x.name))
+                matches_played.add(match_key)
+
+                full_schedule.append((home_team, away_team))
+
+        # repeat schedule but switch home and away teams
+        full_schedule += [
+            (away_team, home_team) for home_team, away_team in full_schedule
+        ]
+
+        print("Full schedule:")
+        for match in full_schedule:
+            print(f"Match: {match[0].name} vs {match[1].name}")
+
+        return full_schedule
+
+    def _create_base_schedule(self):
+        # Create all possible matches
+        all_matches = list(itertools.permutations(self.teams, 2))
+        print("All matches:")
+        for match in all_matches:
+            print(f"Match: {match[0].name} vs {match[1].name}")
+
+        # Group matches to ensure variety
+        match_groups = {}
+        for match in all_matches:
+            # Sort the match to create a unique key
+            key = tuple(sorted(match, key=lambda x: x.name))
+            if match[0] not in match_groups and match[1] not in match_groups:
+                match_groups[(key, match[0], match[1])] = match
+
+        print("Match groups:")
+        for match in match_groups.values():
+            print(f"Match: {match[0].name} vs {match[1].name}")
+
+        # Convert back to list of matches
+        return list(match_groups.values())
 
     def start_game_producers(self):
         """
         Start game producers for each match in pairs
         """
+
         def run_producer(home_team, away_team):
             """
             Run a game producer subprocess
             """
             try:
                 env = os.environ.copy()
-                env['HOME_TEAM'] = json.dumps(home_team.to_dict())
-                env['AWAY_TEAM'] = json.dumps(away_team.to_dict())
+                env["HOME_TEAM"] = json.dumps(home_team.to_dict())
+                env["AWAY_TEAM"] = json.dumps(away_team.to_dict())
 
-                return subprocess.Popen(['python', 'game_producer.py'], env=env)
+                return subprocess.Popen(["python", "game_producer.py"], env=env)
             except Exception as e:
-                print(f"Error running producer for {home_team.name} vs {away_team.name}: {e}")
+                print(f"Error : {e}")
                 return None
 
         # Reset processes
         self.processes = []
+        print("Starting game producers...")
+        print(self.schedule)
 
         # Schedule matches in pairs
         for i in range(0, len(self.schedule), 2):
@@ -75,9 +116,11 @@ class LeagueScheduler:
             home_team1, away_team1 = match1
             home_team2, away_team2 = match2
 
-            print(f"Round {i//2 + 1}: "
-                  f"{home_team1.name} vs {away_team1.name}, "
-                  f"{home_team2.name} vs {away_team2.name}")
+            print(
+                f"Round {i//2 + 1}: "
+                f"{home_team1.name} vs {away_team1.name}, "
+                f"{home_team2.name} vs {away_team2.name}"
+            )
 
             # Start producers for both matches
             process1 = run_producer(home_team1, away_team1)
@@ -88,7 +131,7 @@ class LeagueScheduler:
             if process2:
                 self.processes.append(process2)
 
-            time.sleep(1.5*60)
+            time.sleep(1.5 * 60)
 
     def wait_for_producers(self):
         """
@@ -140,87 +183,81 @@ def create_team_players(team_name, team_id):
     return starting_squad, subs_squad
 
 
-def main():
-    # Create teams with proper Team objects
-    teams = [
-        Team(
-            id='1',
-            name='Sporting CP',
-            bias=3,
-            form=5,
-            starting_squad=create_team_players('Sporting CP', '1')[0],
-            subs_squad=create_team_players('Sporting CP', '1')[1],
-            squad_quality=9,
-            attack_strength=8,
-            defense_strength=8,
-            image='https://upload.wikimedia.org/wikipedia/pt/3/3e/Sporting_Clube_de_Portugal.png'
-        ),
-        Team(
-            id='2',
-            name='Benfica',
-            bias=3,
-            form=4,
-            starting_squad=create_team_players('Benfica', '2')[0],
-            subs_squad=create_team_players('Benfica', '2')[1],
-            squad_quality=8,
-            attack_strength=8,
-            defense_strength=8,
-            image='https://upload.wikimedia.org/wikipedia/pt/thumb/d/de/Sport_Lisboa_e_Benfica.svg/320px-Sport_Lisboa_e_Benfica.svg.png'
-        ),
-        Team(
-            id='3',
-            name='Porto',
-            bias=3,
-            form=5,
-            starting_squad=create_team_players('Porto', '3')[0],
-            subs_squad=create_team_players('Porto', '3')[1],
-            squad_quality=7,
-            attack_strength=8,
-            defense_strength=7,
-            image='https://upload.wikimedia.org/wikipedia/pt/thumb/c/c5/F.C._Porto_logo.png/240px-F.C._Porto_logo.png'
-        ),
-        Team(
-            id='4',
-            name='Braga',
-            bias=3,
-            form=4,
-            starting_squad=create_team_players('Braga', '4')[0],
-            subs_squad=create_team_players('Braga', '4')[1],
-            squad_quality=7,
-            attack_strength=6,
-            defense_strength=6,
-            image='https://upload.wikimedia.org/wikipedia/pt/thumb/f/f9/150px-Sporting_Clube_Braga.png/270px-150px-Sporting_Clube_Braga.png'
-        ),
-        Team(
-            id='5',
-            name='Vitoria SC',
-            bias=3,
-            form=4,
-            starting_squad=create_team_players('Vitoria SC', '5')[0],
-            subs_squad=create_team_players('Vitoria SC', '5')[1],
-            squad_quality=6,
-            attack_strength=6,
-            defense_strength=6,
-            image='https://upload.wikimedia.org/wikipedia/pt/thumb/b/b3/VitoriaGuimaraes.png/270px-VitoriaGuimaraes.png'
-        ),
-        Team(
-            id='6',
-            name='Man United',
-            bias=3,
-            form=4,
-            starting_squad=create_team_players('Man United', '6')[0],
-            subs_squad=create_team_players('Man United', '6')[1],
-            squad_quality=9,
-            attack_strength=8,
-            defense_strength=7,
-            image='https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/400px-Manchester_United_FC_crest.svg.png'
-            )
+def get_league_clubs():
+    league_clubs = requests.get(
+        "http://league-service:8080/api/v1/league/1/standings"
+    ).json()
+    ids = [club["club_id"] for club in league_clubs]
+
+    clubs = [
+        requests.get(f"http://club-service:8080/api/v1/club/{id}").json() for id in ids
     ]
 
-    # Create league scheduler
-    scheduler = LeagueScheduler(teams, rounds=3)
+    return clubs
 
-    # Handle keyboard interrupt gracefully
+
+def serialize_team(team):
+    # teams: Manchester United, Liverpool, Chelsea
+    bias = 0
+    form = 0
+    squad_quality = 0
+    attack_strength = 0
+    defense_strength = 0
+    image = ""
+
+    if team["name"] == "Manchester United":
+        bias = 3
+        form = 4
+        squad_quality = 9
+        attack_strength = 8
+        defense_strength = 7
+        image = "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/400px-Manchester_United_FC_crest.svg.png"
+    elif team["name"] == "Liverpool":
+        bias = 3
+        form = 5
+        squad_quality = 9
+        attack_strength = 8
+        defense_strength = 8
+        image = "https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png"
+    elif team["name"] == "Chelsea":
+        bias = 3
+        form = 4
+        squad_quality = 8
+        attack_strength = 8
+        defense_strength = 7
+        image = "https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/1200px-Chelsea_FC.svg.png"
+
+    elif team["name"] == "Aston Villa":
+        bias = 3
+        form = 4
+        squad_quality = 7
+        attack_strength = 7
+        defense_strength = 6
+        image = "https://upload.wikimedia.org/wikipedia/en/thumb/9/9a/Aston_Villa_FC_new_crest.svg/272px-Aston_Villa_FC_new_crest.svg.png?20240602000855"
+
+    return Team(
+        id=team["id"],
+        name=team["name"],
+        bias=bias,
+        form=form,
+        starting_squad=create_team_players(team["name"], team["id"])[0],
+        subs_squad=create_team_players(team["name"], team["id"])[1],
+        squad_quality=squad_quality,
+        attack_strength=attack_strength,
+        defense_strength=defense_strength,
+        image=image,
+    )
+
+
+def main():
+    # Create teams with proper Team objects
+    sleep(1)
+    clubs = get_league_clubs()
+    teams = [serialize_team(club) for club in clubs]
+    print("------------------------------------")
+
+    scheduler = LeagueScheduler(teams)
+
     def signal_handler(sig, frame):
         print("\nTerminating game producers...")
         scheduler.terminate_producers()
@@ -228,17 +265,16 @@ def main():
 
     signal.signal(signal.SIGINT, signal_handler)
 
-    try:
-        # Start game producers
-        scheduler.start_game_producers()
+    while True:
+        try:
+            scheduler.start_game_producers()
 
-        # Wait for all producers to complete
-        scheduler.wait_for_producers()
+            scheduler.wait_for_producers()
 
-    except Exception as e:
-        print(f"Error in league scheduling: {e}")
-        scheduler.terminate_producers()
+        except Exception as e:
+            print(f"Error in league scheduling: {e}")
+            scheduler.terminate_producers()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

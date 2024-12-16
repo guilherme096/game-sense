@@ -68,6 +68,9 @@ def process_events(events, stats):
     events.sort(key=lambda e: e["publish_timestamp"])
 
     for event in events:
+        print(event)
+
+    for event in events:
         # Parse the publish_timestamp from the event
         publish_timestamp = datetime.fromisoformat(
             event["publish_timestamp"]

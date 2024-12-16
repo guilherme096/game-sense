@@ -3,8 +3,10 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from "prop-types";
 import { useQuery } from "react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function TeamInfo({ team, index }) {
+  const navigate = useNavigate();
   const fetchClubInfo = async () => {
     const response = await axios.get(`/api/v1/club/${team.club_id}`, {
       headers: {
@@ -44,9 +46,9 @@ export default function TeamInfo({ team, index }) {
 
   return (
     <tr
-      className={`border-b ${index % 2 !== 0 ? 'bg-gray-50' : 'bg-white'} ${
-        clubInfo?.starred ? 'bg-yellow-300' : ''
-      }`}
+      className={` cursor-pointer border-b ${index % 2 !== 0 ? 'bg-gray-50' : 'bg-white'} 
+      ${clubInfo?.starred ? 'bg-yellow-300' : ''}`}
+      onClick={() => navigate(`/club/${team.club_id}`)}
     >
       {/* Position */}
       <td className="px-2 py-2 text-center">

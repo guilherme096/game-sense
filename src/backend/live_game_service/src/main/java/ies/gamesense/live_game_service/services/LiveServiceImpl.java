@@ -28,7 +28,8 @@ public class LiveServiceImpl implements LiveService {
     private final RedisTemplate<String , Match> redisTemplate;
     private final Map<String, Long> scheduledRemovals = new ConcurrentHashMap<>();
 
-    public LiveServiceImpl(MatchPersistenceProducer matchPersistenceProducer, MatchCacheService matchCacheService, RedisTemplate<String, Match> redisTemplate) {
+    public LiveServiceImpl(MatchPersistenceProducer matchPersistenceProducer, MatchCacheService matchCacheService,
+            RedisTemplate<String, Match> redisTemplate) {
         this.matchPersistenceProducer = matchPersistenceProducer;
         this.matchCacheService = matchCacheService;
         this.redisTemplate = redisTemplate;
@@ -100,15 +101,14 @@ public class LiveServiceImpl implements LiveService {
         }
     }
 
-
     @KafkaListener(id = "events", topics = "events", containerFactory = "customKafkaListenerContainerFactory")
     public void listen(ConsumerRecord<String, String> record) throws JsonProcessingException {
         try {
             System.out.println("Hello from Kafka!");
             Map<String, String> event = objectMapper.readValue(
                     record.value(),
-                    new TypeReference<Map<String, String>>() {}
-            );
+                    new TypeReference<Map<String, String>>() {
+                    });
             System.out.println("Received Event: " + event);
 
             String matchId = event.get("game_id");
@@ -154,7 +154,6 @@ public class LiveServiceImpl implements LiveService {
         }
     }
 
-
     @CachePut(value = "liveGames", keyGenerator = "customKeyGenerator")
     public void updateMatch(String id, Match match) {
         System.out.println("Updating match in Redis: " + match);
@@ -192,7 +191,6 @@ public class LiveServiceImpl implements LiveService {
         return null;
     }
 
-
     @Override
     public Map<Integer, GameStatistics> getGameStatistics(String id) {
         Match game = matchCacheService.getLiveById(id);
@@ -228,7 +226,6 @@ public class LiveServiceImpl implements LiveService {
         }
         return newEvents;
     }
-
 
     @Override
     public String getCurrentMVP(String id) {
