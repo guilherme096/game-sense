@@ -3,19 +3,21 @@ INSERT INTO league (name, logo)
 VALUES 
 ('Premier League', 'premier_league_logo.png');
 
--- Club Table
+-- Club Table 
 INSERT INTO club (name, country, starred, logo, country_flag)
 VALUES
 ('Manchester United', 'England', TRUE, 'man_utd_logo.png', 'england_flag.png'),
 ('Liverpool', 'England', TRUE, 'liverpool_logo.png', 'england_flag.png'),
-('Chelsea', 'England', FALSE, 'chelsea_logo.png', 'england_flag.png');
+('Chelsea', 'England', FALSE, 'chelsea_logo.png', 'england_flag.png'),
+('Aston Villa', 'England', FALSE, 'aston_villa_logo.png', 'england_flag.png');
 
 -- League_Club Table
 INSERT INTO league_club (league_id, club_id, matches_played, points, wins, draws, losses, goals_scored, goals_conceded, goal_difference, place)
 VALUES
 (1, 1, 38, 75, 23, 6, 9, 65, 40, 25, 1), 
 (1, 2, 38, 72, 21, 9, 8, 70, 45, 25, 2), 
-(1, 3, 38, 68, 20, 8, 10, 60, 38, 22, 3);
+(1, 3, 38, 68, 20, 8, 10, 60, 38, 22, 3),
+(1, 4, 38, 55, 15, 10, 13, 50, 45, 5, 4);
 
 -- Players Table
 INSERT INTO player (club_id, name, surname, age, height, weight, position, country, country_flag, jersey_number, is_injured)

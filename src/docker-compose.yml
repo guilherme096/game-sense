@@ -27,7 +27,7 @@ services:
   management-service:
     build:
       context: backend/management_service
-    image: management_service-image  
+    image: management_service-image
     depends_on:
       users_db:
         condition: service_healthy
@@ -38,7 +38,6 @@ services:
       USERS_DATABASE: ${USERS_DATABASE}
       USERS_USER: ${USERS_USER}
       USERS_PASSWORD: ${USERS_PASSWORD}
-
 
   live-game-service:
     build:
@@ -97,7 +96,6 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
-
   sql_db:
     image: mysql:8.0
     container_name: sql_db
@@ -111,12 +109,21 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}" ]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD}",
+        ]
       interval: 10s
       retries: 5
       start_period: 30s
       timeout: 10s
-
 
   users_db:
     image: mysql:8.0
@@ -131,7 +138,17 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD}",
+        ]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -143,7 +160,7 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -171,7 +188,6 @@ services:
     networks:
       - app-network
 
-
   kafdrop:
     image: obsidiandynamics/kafdrop:4.0.2
     environment:
@@ -188,6 +204,8 @@ services:
     depends_on:
       - kafka
       - live-game-service
+      - league-service
+      - club-service
     networks:
       - app-network
 
