@@ -6,6 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 import Timer from "../Timer.jsx";
 import { useNavigate } from "react-router-dom";
+import shareIcon from "../../../public/icons8-share-256 1.png";
 
 const fetchGame = async (id) => {
     const response = await axios.get("/api/v1/live/" + id + "/basicInfo", {
@@ -62,8 +63,8 @@ export default function ScoreBoard({ id }) {
 
             <div className="w-full h-fit flex flex-row justify-between align-middle items-center">
                 {/* Team 1 Section */}
-                <div>
-                    <div className="flex flex-row items-center">
+                <div className="flex flex-row items-center">
+                    <div className="flex items-center ml-2 mb-6">
                         <button onClick={() => setTeam1Stared(!team1Stared)}>
                             <FontAwesomeIcon
                                 icon={faStar}
@@ -73,20 +74,22 @@ export default function ScoreBoard({ id }) {
                                 className="w-6 h-6 mr-2"
                             />
                         </button>
+                    </div>
+                    <div className="flex flex-col items-center cursor-pointer" onClick={() => navigate(`/club/${game.home_team_id}`)}>
                         <div className="w-24 h-24 bg-base-200 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer"
                             onClick={() => navigate(`/club/${game.home_team_id}`)}>
                             {logo1 ? (
                                 <img
                                     className="w-full h-full object-contain p-2"
                                     src={logo1}
-                                    alt={name1}
+                                    alt={`${name1}'s logo`}
                                 />
                             ) : (
-                                <span className="text-sm text-gray-500">{name1}</span>
+                                <span className="text-sm text-gray-500 flex items-center justify-center h-full">{name1}'s logo</span>
                             )}
                         </div>
+                        <div className="text-center mt-2" >{name1}</div>
                     </div>
-                    <div className="text-center my-2 ml-8 cursor-pointer" onClick={() => navigate(`/club/${game.home_team_id}`)}>{name1}</div>
                 </div>
                 <div className="h-fit flex flex-col align-middle items-center">
                     <div className="h-24 flex-col items-center align-middle flex justify-center">
@@ -98,35 +101,36 @@ export default function ScoreBoard({ id }) {
                         </div>
                     </div>
                     <button className="text-center text-sm flex justify-center font-extralight items-center">
-                        <img src="/public/icons8-share-256 1.png" alt="Share Icon" />
+                        <img src={shareIcon} alt="Share Icon" />
                     </button>
                 </div>
 
-                <div>
-                    <div className="flex flex-row items-center">
-                        <div className="w-24 h-24 bg-base-200 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer"
-                            onClick={() => navigate(`/club/${game.away_team_id}`)}>
+                <div className="flex flex-row items-center">
+                    <div className="flex flex-col items-center cursor-pointer" onClick={() => navigate(`/club/${game.away_team_id}`)}>
+                        <div className="w-24 h-24 bg-base-200 text-center rounded-lg flex items-center justify-center overflow-hidden">
                             {logo2 ? (
                                 <img
                                     className="w-full h-full object-contain p-2"
                                     src={logo2}
-                                    alt={name2}
+                                    alt={`${name2}'s logo`}
                                 />
                             ) : (
-                                <span className="text-sm text-gray-500">{name2}</span>
+                                <span className="text-sm text-gray-500 flex items-center justify-center h-full w-full">{name2}'s logo</span>
                             )}
                         </div>
+                        <div className="text-center mt-2" >{name2}</div>
+                    </div>
+                    <div className="flex items-center ml-2 mb-6">
                         <button onClick={() => setTeam2Stared(!team2Stared)}>
                             <FontAwesomeIcon
                                 icon={faStar}
                                 style={{
                                     color: team2Stared ? "#FFD43B" : "#D1D5DB", // Toggle color
                                 }}
-                                className="w-6 h-6 ml-2"
+                                className="w-6 h-6"
                             />
                         </button>
                     </div>
-                    <div className="text-center my-2 mr-8 cursor-pointer" onClick={() => navigate(`/club/${game.away_team_id}`)}>{name2}</div>
                 </div>
             </div>
         </div>
