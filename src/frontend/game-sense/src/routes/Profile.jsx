@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PageTemplate from "./PageTemplate.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import GeneralCard from "../components/cards/GeneralCard";
 import profile from "../static/profile";
@@ -11,6 +10,8 @@ import axios from 'axios';
 import PremiumModal from "../components/PremiumModal.jsx";  
 import { toast } from "react-toastify";
 import LoadingLogo from '../components/LoadingLogo.jsx';
+import FavoriteTeamCombobox from '../components/FavoriteTeamCombobox.jsx';
+import { Dialog } from '@headlessui/react';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Profile() {
@@ -22,6 +23,8 @@ function Profile() {
     const [loading, setLoading] = useState(true);
     const [favoriteTeam, setFavoriteTeam] = useState(null);
     const [teamImage, setTeamImage] = useState(null);
+    const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
+
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
@@ -80,6 +83,32 @@ function Profile() {
         }
     };
 
+    const handleTeamSelect = async (team) => {
+        try {
+            const response = await axios.put('/api/v1/management/update-favorite-team', 
+                { team },
+                { withCredentials: true }
+            );
+
+            if (response.status === 200) {
+                setFavoriteTeam(team);
+                // Fetch new team image
+                const clubResponse = await axios.get(`/api/v1/club`, {
+                    params: { name: team }
+                });
+                
+                if (clubResponse.status === 200 && clubResponse.data.length > 0) {
+                    setTeamImage(clubResponse.data[0].logo);
+                }
+                setIsTeamModalOpen(false);
+                toast.success("Favorite team updated successfully!");
+            }
+        } catch (error) {
+            console.error("Error updating favorite team:", error);
+            toast.error("Failed to update favorite team");
+        }
+    };
+    
     const refreshPage = () => {
         window.location.reload();
     };
@@ -179,12 +208,13 @@ function Profile() {
                     </div>
                     <button 
                         className="w-full text-sm bg-gray-200 text-gray-600 py-2 font-bold rounded-b-lg"
-                        onClick={() => navigate('/teams')}
+                        onClick={() => setIsTeamModalOpen(true)}
                     >
                         {favoriteTeam ? 'Change Favorite Team' : 'Select Favorite Team'}
                     </button>
                 </GeneralCard>
 
+                
                 {/* My Teams Last Results */}
                 <GeneralCard title="My Team's Last Results">
                     <div className="divide-y divide-gray-200">
@@ -216,6 +246,33 @@ function Profile() {
                     </div>
                 </GeneralCard>
             </div>
+
+            <Dialog 
+                open={isTeamModalOpen} 
+                onClose={() => setIsTeamModalOpen(false)}
+                className="relative z-50"
+            >
+                <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+                <div className="fixed inset-0 flex items-center justify-center p-4">
+                    <Dialog.Panel className="w-full max-w-md rounded-lg bg-white p-6">
+                        <Dialog.Title className="text-lg font-bold mb-4">
+                            Select Favorite Team
+                        </Dialog.Title>
+                        <FavoriteTeamCombobox 
+                            selectedTeam={favoriteTeam} 
+                            onTeamChange={handleTeamSelect}
+                        />
+                        <div className="mt-4 flex justify-end space-x-2">
+                            <button
+                                className="px-4 py-2 rounded bg-gray-200 text-gray-700"
+                                onClick={() => setIsTeamModalOpen(false)}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </Dialog.Panel>
+                </div>
+            </Dialog>
 
             <PremiumModal
                 isOpen={isModalOpen}

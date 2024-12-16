@@ -2,6 +2,7 @@ package ies.gamensense.management_service.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -225,5 +226,40 @@ public class AuthController {
                 .body(Map.of("message", "No authentication token found."));
     }
 
+    @PutMapping("/update-favorite-team") 
+    public ResponseEntity<Map<String, String>> updateFavoriteTeam(HttpServletRequest request, @RequestBody Map<String, String> body) {
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwt".equals(cookie.getName())) {
+                    try {
+                        String username = jwtUtil.validateToken(cookie.getValue());
+                        if (username != null) {
+                            Optional<User> userOpt = userService.getUserDetails(username);
+                            if (userOpt.isPresent()) {
+                                User user = userOpt.get();
+                                user.setFavoriteTeam(body.get("team"));
+                                userService.save(user);
+                                return ResponseEntity.ok(Map.of("message", "Favorite team updated successfully."));
+                            } else {
+                                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                        .body(Map.of("message", "User not found."));
+                            }
+                        } else {
+                            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                    .body(Map.of("message", "Invalid token."));
+                        }
+                    } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                .body(Map.of("message", "Token validation failed."));
+                    }
+                }
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("message", "No authentication token found."));
+    }
 }
 
