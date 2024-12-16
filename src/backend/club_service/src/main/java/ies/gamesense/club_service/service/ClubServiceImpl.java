@@ -165,13 +165,13 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public List<Club> getClubsByName(String name) {
-        List<Club> matchingClubs = new ArrayList<>();
+        List<Club> clubs = new ArrayList<>();
         for (Club club : getAllClubs()) {
-            if (club.getName().equalsIgnoreCase(name)) {
-                matchingClubs.add(club);
+            if (club.getName().toLowerCase().contains(name.toLowerCase())) {
+                clubs.add(club);
             }
         }
-        return matchingClubs;
+        return clubs;
     }
 
     @Override

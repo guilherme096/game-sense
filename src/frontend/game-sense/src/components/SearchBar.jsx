@@ -25,12 +25,12 @@ const SearchBar = ({ isOpen, onClose }) => {
       try {
         const results = await Promise.allSettled([
           axios.get('/api/v1/player/search', {
-            params: { name: term },
+            params: { name: term }, 
           }),
           axios.get('/api/v1/player/search', {
             params: { surname: term },
           }),
-          axios.get('/api/v1/club', {
+          axios.get('/api/v1/club/search', {
             params: { name: term },
           }),
         ]);

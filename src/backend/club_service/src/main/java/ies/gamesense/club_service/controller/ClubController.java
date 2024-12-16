@@ -48,11 +48,11 @@ public class ClubController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(params = "name")
+    @GetMapping("/search") 
     @Operation(summary = "Search Clubs by Name")
-    public ResponseEntity<List<Club>> getClubsByName(@RequestParam String name) {
+    public ResponseEntity<List<Club>> searchClubsByName(@RequestParam String name) {
         List<Club> clubs = clubService.getClubsByName(name);
-        if (clubs.isEmpty()) {  
+        if (clubs.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(clubs, HttpStatus.OK);
