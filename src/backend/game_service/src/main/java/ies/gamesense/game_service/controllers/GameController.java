@@ -1,24 +1,24 @@
 package ies.gamesense.game_service.controllers;
 
-import org.springframework.web.bind.annotation.RestController;
-
-import ies.gamesense.game_service.services.GameService;
-import io.swagger.v3.oas.annotations.Operation;
-import ies.gamesense.game_service.entities.Game;
-import ies.gamesense.game_service.entities.TeamStats;
-import ies.gamesense.game_service.entities.GameEvents;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import ies.gamesense.game_service.entities.Game;
+import ies.gamesense.game_service.entities.GameEvents;
+import ies.gamesense.game_service.entities.MatchDTO;
+import ies.gamesense.game_service.entities.TeamStats;
+import ies.gamesense.game_service.services.GameService;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/api/v1/game")
@@ -52,7 +52,7 @@ public class GameController {
         Optional<Game> game = Optional.ofNullable(gameService.getGameById(id));
         if (game.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(null); // 404 Not Found
+                    .body(null); // 404 Not Found
         }
         return ResponseEntity.ok(game.get()); // 200 OK
     }
@@ -60,12 +60,10 @@ public class GameController {
     // Create game
     @Operation(summary = "Create game")
     @PostMapping("/")
-    public ResponseEntity<Game> createGame(@RequestBody Game game) {
-        if (game == null || game.getReferee() == null || game.getKickoffTime() == null) {
-            return ResponseEntity.badRequest().body(null); // 400 Bad Request
-        }
-        Game newGame = gameService.createGame(game);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newGame); // 201 Created
+    public ResponseEntity<Game> createGame(@RequestBody MatchDTO game) {
+        System.out.println(game);
+        Game newGame = gameService.matchAdapter(game);
+        return ResponseEntity.ok(gameService.createGame(newGame));
     }
 
     // Get games by club
@@ -91,7 +89,7 @@ public class GameController {
             return ResponseEntity.ok(stats); // 200 OK
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(null); // 404 Not Found
+                    .body(null); // 404 Not Found
         }
     }
 
@@ -107,7 +105,7 @@ public class GameController {
             return ResponseEntity.ok(stats); // 200 OK
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(null); // 404 Not Found
+                    .body(null); // 404 Not Found
         }
     }
 

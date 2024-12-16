@@ -1,24 +1,24 @@
 package ies.gamesense.game_service.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import ies.gamesense.game_service.repositories.GameRepository;
-import ies.gamesense.game_service.repositories.HalfRepository;
-import ies.gamesense.game_service.repositories.TeamStatsRepository;
-import ies.gamesense.game_service.repositories.GameEventsRepository;
-
-import ies.gamesense.game_service.entities.Game;
-import ies.gamesense.game_service.entities.Half;
-import ies.gamesense.game_service.entities.TeamStats;
-import ies.gamesense.game_service.entities.GameEvents;
-
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import ies.gamesense.game_service.entities.Game;
+import ies.gamesense.game_service.entities.GameEvents;
+import ies.gamesense.game_service.entities.Half;
+import ies.gamesense.game_service.entities.MatchDTO;
+import ies.gamesense.game_service.entities.TeamStats;
+import ies.gamesense.game_service.repositories.GameEventsRepository;
+import ies.gamesense.game_service.repositories.GameRepository;
+import ies.gamesense.game_service.repositories.HalfRepository;
+import ies.gamesense.game_service.repositories.TeamStatsRepository;
+
 @Service
 public class GameServiceImpl implements GameService {
-    
+
     @Autowired
     private GameRepository gameRepository;
 
@@ -31,7 +31,8 @@ public class GameServiceImpl implements GameService {
     @Autowired
     private GameEventsRepository gameEventsRepository;
 
-    public GameServiceImpl(GameRepository gameRepository, HalfRepository halfRepository, TeamStatsRepository teamStatsRepository, GameEventsRepository gameEventsRepository) {
+    public GameServiceImpl(GameRepository gameRepository, HalfRepository halfRepository,
+            TeamStatsRepository teamStatsRepository, GameEventsRepository gameEventsRepository) {
         this.gameRepository = gameRepository;
         this.halfRepository = halfRepository;
         this.teamStatsRepository = teamStatsRepository;
@@ -86,5 +87,11 @@ public class GameServiceImpl implements GameService {
 
     public List<GameEvents> getGameEvents(Long id) {
         return gameEventsRepository.findByGame_id(id);
+    }
+
+    public Game matchAdapter(MatchDTO matchDTO) {
+        Game game = new Game();
+        game.parseFromMatchDTO(matchDTO);
+        return game;
     }
 }
