@@ -11,7 +11,6 @@ const SearchBar = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const searchRef = useRef(null);
 
-
   const fetchData = useCallback(
     debounce(async (term) => {
       if (term.length < 3) {
@@ -45,18 +44,27 @@ const SearchBar = ({ isOpen, onClose }) => {
             ? playerNameResult.value.data
             : [];
           combinedPlayers = [...combinedPlayers, ...playersByName];
-        } else {}
+        } else {
+          // Optionally, handle the error or notify the user
+          console.error('Error fetching players by name:', playerNameResult.reason);
+        }
 
         if (playerSurnameResult.status === 'fulfilled') {
           const playersBySurname = Array.isArray(playerSurnameResult.value.data)
             ? playerSurnameResult.value.data
             : [];
           combinedPlayers = [...combinedPlayers, ...playersBySurname];
-        } else {}
+        } else {
+          // Optionally, handle the error or notify the user
+          console.error('Error fetching players by surname:', playerSurnameResult.reason);
+        }
 
         if (clubResult.status === 'fulfilled') {
           clubsData = Array.isArray(clubResult.value.data) ? clubResult.value.data : [];
-        } else {}
+        } else {
+          // Optionally, handle the error or notify the user
+          console.error('Error fetching clubs:', clubResult.reason);
+        }
 
         const uniquePlayers = Array.from(
           new Map(combinedPlayers.map((player) => [player.id, player])).values()
@@ -80,23 +88,13 @@ const SearchBar = ({ isOpen, onClose }) => {
       fetchData(searchTerm);
     } else {
       fetchData.cancel();
+      setSearchTerm(''); // Optionally clear the search term when closing
     }
 
     return () => {
       fetchData.cancel();
     };
   }, [searchTerm, isOpen, fetchData]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
-        onClose();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [onClose]);
 
   const getFilteredResults = () => {
     switch (filter) {
@@ -118,7 +116,7 @@ const SearchBar = ({ isOpen, onClose }) => {
         return [
           ...players.map(player => ({
             id: player.id,
-            name: `${player.name} ${player.surname}`,
+            name: `${player.name} ${player.surname}`, 
             type: 'player',
             link: `/player/${player.id}`
           })),
@@ -135,7 +133,7 @@ const SearchBar = ({ isOpen, onClose }) => {
   return (
     <div
       ref={searchRef}
-      className={`absolute right-0 top-full -mt-11 mr-1 transition-all duration-300 ease-in-out z-1000 ${
+      className={`absolute right-0 top-full -mt-11 mr-1 transition-all duration-300 ease-in-out z-80 ${
         isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
       }`}
     >
@@ -146,7 +144,7 @@ const SearchBar = ({ isOpen, onClose }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search players or clubs..."
           className="w-full px-4 py-2 border-b focus:outline-none rounded-t-lg"
-          autoFocus
+          autoFocus={isOpen}
         />
         
         <div className="flex border-b space-x-2 p-2">

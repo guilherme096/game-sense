@@ -9,25 +9,18 @@ import axios from 'axios';
 import { UserContext } from './UserProvider.jsx';
 import SearchBar from './SearchBar';
 
-
 function Header() {
     const { isPremium, setIsPremium, isLoading } = useContext(UserContext);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const searchRef = useRef(null);
-    const buttonRef = useRef(null);
+    const containerRef = useRef(null); // Shared ref for search button and search bar
 
     const toggleSearch = () => {
         setIsSearchOpen((prev) => !prev);
     };
 
     const handleClickOutside = (event) => {
-        if (
-            searchRef.current &&
-            !searchRef.current.contains(event.target) &&
-            buttonRef.current &&
-            !buttonRef.current.contains(event.target)
-        ) {
+        if (containerRef.current && !containerRef.current.contains(event.target)) {
             setIsSearchOpen(false);
         }
     };
@@ -66,7 +59,7 @@ function Header() {
                 window.location.reload();
             }
         } catch (error) {
-            console.error('Error canceling premium:', error);
+            console.error('Error upgrading to premium:', error);
         }
     };
 
@@ -80,40 +73,31 @@ function Header() {
                 </Link>
             </div>
 
-            <div className="flex items-center relative">
+            <div className="flex items-center relative" ref={containerRef}>
                 {/* Search Box */}
-                <div className="flex items-center relative">
-                    <SearchBar 
-                        isOpen={isSearchOpen} 
-                        onClose={() => setIsSearchOpen(false)} 
-                    />
-                    <button
-                        ref={buttonRef}
-                        className="btn btn-ghost btn-circle z-100 relative"
-                        onClick={() => {
-                            if (isSearchOpen) {
-                                setIsSearchOpen(false);
-                            } else {
-                                toggleSearch();
-                            }
-                        }}
+                <SearchBar 
+                    isOpen={isSearchOpen} 
+                    onClose={() => setIsSearchOpen(false)} 
+                />
+                <button
+                    className="btn btn-ghost btn-circle z-96 relative"
+                    onClick={toggleSearch}
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-7 w-7"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-7 w-7"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                            />
-                        </svg>
-                    </button>
-                </div>
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                    </svg>
+                </button>
             </div>
 
             {/* Premium Section */}
