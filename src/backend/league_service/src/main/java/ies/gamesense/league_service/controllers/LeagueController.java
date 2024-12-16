@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/league")
@@ -106,12 +107,22 @@ public class LeagueController {
     }
 
     // Update a league
-    @Operation(summary = "Update a League")
+    @Operation(summary = "Update a League, receives a game object and updates the league_club")
     @PutMapping("/update")
-    public ResponseEntity<League> updateLeague(@RequestBody League league) {
+    public ResponseEntity<League> updateLeague(@RequestBody Map<String, Object> gameData) {
         try {
-            League updatedLeague = leagueService.updateLeague(league);
-            return new ResponseEntity<>(updatedLeague, HttpStatus.OK);
+            long homeTeamId = Long.parseLong(gameData.get("homeTeamId").toString());
+            long awayTeamId = Long.parseLong(gameData.get("awayTeamId").toString());
+            int homeTeamScore = Integer.parseInt(gameData.get("homeTeamScore").toString());
+            int awayTeamScore = Integer.parseInt(gameData.get("awayTeamScore").toString());
+            long leagueId = 1; // temporary , will be implemented at 19/12/2024
+
+            leagueService.updateLeague(homeTeamId, awayTeamId, homeTeamScore, awayTeamScore, leagueId);
+            
+            League updatedLeague = leagueService.getLeagueById(leagueId);
+
+            return new ResponseEntity<>(updatedLeague , HttpStatus.OK);
+
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

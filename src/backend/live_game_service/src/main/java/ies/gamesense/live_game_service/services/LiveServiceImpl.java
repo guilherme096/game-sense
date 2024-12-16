@@ -27,18 +27,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ies.gamesense.live_game_service.entities.GameStatistics;
 import ies.gamesense.live_game_service.entities.Match;
 import ies.gamesense.live_game_service.entities.MatchDTO;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class LiveServiceImpl implements LiveService {
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final MatchPersistenceProducer matchPersistenceProducer;
     private final MatchCacheService matchCacheService;
     private final RedisTemplate<String, Match> redisTemplate;
     private final Map<String, Long> scheduledRemovals = new ConcurrentHashMap<>();
 
-    public LiveServiceImpl(MatchPersistenceProducer matchPersistenceProducer, MatchCacheService matchCacheService,
+    public LiveServiceImpl(MatchCacheService matchCacheService,
             RedisTemplate<String, Match> redisTemplate) {
-        this.matchPersistenceProducer = matchPersistenceProducer;
         this.matchCacheService = matchCacheService;
         this.redisTemplate = redisTemplate;
     }
@@ -145,7 +144,7 @@ public class LiveServiceImpl implements LiveService {
             if (event.get("event_type").equals("END")) {
                 this.endMatch(matchId);
                 match.endMatch();
-                this.matchPersistenceProducer.sendMatchForPersistence(match);
+                sendMatchForPersistence(match);
                 scheduledRemovals.put(matchId, System.currentTimeMillis() + 20000);
             }
 
@@ -161,6 +160,24 @@ public class LiveServiceImpl implements LiveService {
             e.printStackTrace();
 
         }
+    }
+
+    public void sendMatchForPersistence(Match match) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        Map<String, Object> gameData = new HashMap<>();
+        gameData.put("homeTeamId", match.getHomeTeam().getId());
+        gameData.put("awayTeamId", match.getAwayTeam().getId());
+        gameData.put("homeTeamScore", match.getHomeTeam().getScore());
+        gameData.put("awayTeamScore", match.getAwayTeam().getScore());
+
+        String leagueServiceUrl = "http://league-service:8080/api/v1/league/update";
+        try {
+            restTemplate.put(leagueServiceUrl, gameData);
+        } catch (Exception e) {
+            System.err.println("Error calling league-service: " + e.getMessage());
+        }
+
     }
 
     @CachePut(value = "liveGames", keyGenerator = "customKeyGenerator")
