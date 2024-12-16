@@ -1,12 +1,12 @@
 # build fase
-FROM maven:3.9.9-eclipse-temurin-21-alpine AS build
+FROM maven:3.9.9-eclipse-temurin-17-alpine AS build
 
 WORKDIR /app
 
 # install dependencies
 COPY pom.xml .
 
-#RUN mvn dependency:go-offline
+RUN mvn dependency:go-offline
 
 COPY src ./src
 

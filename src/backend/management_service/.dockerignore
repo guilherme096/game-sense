@@ -1,7 +1,44 @@
-target
+# Ignore build artifacts
+target/
 
-.git
+# Ignore IDE/editor files
+*.idea/
+*.vscode/
+*.iml
+
+# Ignore version control files and folders
+.git/
 .gitignore
 
+# Ignore frontend and unrelated service directories
 /frontend/
-/game_genator/
+/game_generator/
+/some_other_service/
+
+# Ignore local environment files
+.env
+.env.local
+*.env
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore JWT and secret files
+*.pem           # Private keys (e.g., for JWT signing)
+*.key           # Private keys (e.g., RSA keys)
+*.crt           # Certificates
+config/secrets/ # Directory where secrets might be stored
+
+# Ignore node_modules and similar dependency folders (if any exist)
+node_modules/
+yarn.lock
+package-lock.json
+
+# Ignore Docker-related files (if they exist but aren't required for the build)
+Dockerfile
+docker-compose.yml
+
+# Ignore OS-generated files
+.DS_Store
+Thumbs.db
