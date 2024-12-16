@@ -23,4 +23,6 @@ public interface LiveService {
     List<String> getTopStats(String id);
 
     Map<String, String> getBasicInfo(String id);
+
+    void endMatch(String id) throws Exception;
 }

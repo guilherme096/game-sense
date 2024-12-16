@@ -1,12 +1,13 @@
 package ies.gamesense.game_service.services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import ies.gamesense.game_service.entities.Game;
-import ies.gamesense.game_service.entities.TeamStats;
 import ies.gamesense.game_service.entities.GameEvents;
-
-import java.util.List;
+import ies.gamesense.game_service.entities.MatchDTO;
+import ies.gamesense.game_service.entities.TeamStats;
 
 @Service
 public interface GameService {
@@ -24,4 +25,6 @@ public interface GameService {
     public List<TeamStats> getGameSecondHalfStats(Long id);
 
     public List<GameEvents> getGameEvents(Long id);
-} 
+
+    public Game matchAdapter(MatchDTO matchDTO);
+}

@@ -1,11 +1,11 @@
 package ies.gamesense.game_service.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "game")
@@ -40,7 +40,8 @@ public class Game {
     public Game() {
     }
 
-    public Game(String referee, String kickoffTime, String stadium, Long homeClubId, Long awayClubId, Long firstHalfId, Long secondHalfId) {
+    public Game(String referee, String kickoffTime, String stadium, Long homeClubId, Long awayClubId, Long firstHalfId,
+            Long secondHalfId) {
         this.referee = referee;
         this.kickoffTime = kickoffTime;
         this.stadium = stadium;
@@ -89,7 +90,7 @@ public class Game {
     public void setHomeClubId(Long homeClubId) {
         this.homeClubId = homeClubId;
     }
-    
+
     public Long getAwayClubId() {
         return awayClubId;
     }
@@ -101,7 +102,7 @@ public class Game {
     public Long getFirstHalfId() {
         return firstHalfId;
     }
-    
+
     public void setFirstHalfId(Long firstHalfId) {
         this.firstHalfId = firstHalfId;
     }
@@ -112,5 +113,22 @@ public class Game {
 
     public void setSecondHalfId(Long secondHalfId) {
         this.secondHalfId = secondHalfId;
+    }
+
+    public void parseFromMatchDTO(MatchDTO matchDTO) {
+        this.id = this.stringToLongId(matchDTO.getMatchId());
+        this.referee = matchDTO.getReferee();
+        this.kickoffTime = matchDTO.getMatchStartTime();
+        this.stadium = matchDTO.getStadium();
+        this.homeClubId = Long.parseLong(matchDTO.getHomeTeamId());
+        this.awayClubId = Long.parseLong(matchDTO.getAwayTeamId());
+    }
+
+    public long stringToLongId(String input) {
+        long result = 0;
+        for (int i = 0; i < input.length(); i++) {
+            result = result * 31 + input.charAt(i);
+        }
+        return Math.abs(result);
     }
 }
