@@ -11,6 +11,7 @@ const SearchBar = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const searchRef = useRef(null);
 
+
   const fetchData = useCallback(
     debounce(async (term) => {
       if (term.length < 2) {
@@ -19,27 +20,58 @@ const SearchBar = ({ isOpen, onClose }) => {
         setLoading(false);
         return;
       }
-  
+
       setLoading(true);
       try {
-        const [playerRes, clubRes] = await Promise.all([
-          axios.get(`/api/v1/player/search`, {
-            params: { name: term }
+        const results = await Promise.allSettled([
+          axios.get('/api/v1/player/search', {
+            params: { name: term },
           }),
-          axios.get(`/api/v1/club`, {
-            params: { name: term }
-          })
+          axios.get('/api/v1/player/search', {
+            params: { surname: term },
+          }),
+          axios.get('/api/v1/club', {
+            params: { name: term },
+          }),
         ]);
-  
-        setPlayers(Array.isArray(playerRes.data) ? playerRes.data : []);
-        setClubs(Array.isArray(clubRes.data) ? clubRes.data : []);
+
+        const [playerNameResult, playerSurnameResult, clubResult] = results;
+
+        let combinedPlayers = [];
+        let clubsData = [];
+
+        if (playerNameResult.status === 'fulfilled') {
+          const playersByName = Array.isArray(playerNameResult.value.data)
+            ? playerNameResult.value.data
+            : [];
+          combinedPlayers = [...combinedPlayers, ...playersByName];
+        } else {}
+
+        if (playerSurnameResult.status === 'fulfilled') {
+          const playersBySurname = Array.isArray(playerSurnameResult.value.data)
+            ? playerSurnameResult.value.data
+            : [];
+          combinedPlayers = [...combinedPlayers, ...playersBySurname];
+        } else {}
+
+        if (clubResult.status === 'fulfilled') {
+          clubsData = Array.isArray(clubResult.value.data) ? clubResult.value.data : [];
+        } else {}
+
+        const uniquePlayers = Array.from(
+          new Map(combinedPlayers.map((player) => [player.id, player])).values()
+        );
+
+        setPlayers(uniquePlayers);
+        setClubs(clubsData);
       } catch (error) {
-        console.error('Error fetching search results:', error);
+        console.error('Unexpected error fetching search results:', error);
         setPlayers([]);
         setClubs([]);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    }, 300),
+    }, 300), 
     []
   );
 
