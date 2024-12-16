@@ -15,7 +15,7 @@ public interface LeagueService {
 
     League createLeague(League league);
 
-    League updateLeague(League league);
+    void updateLeague(long homeTeamId,long awayTeamId,int homeTeamScore,int awayTeamScore,long leagueId);
 
     List<League_Club> getLeagueStandings(Long leagueId);
 

@@ -1,4 +1,3 @@
-import MatchCard from "./MatchCard";
 import LastMatchesCard from "./LastMatchesCard";
 import InjuryStatusCard from "./InjuryStatusCard";
 import { useQuery } from "react-query";
@@ -19,19 +18,25 @@ export default function Overview({ clubData, id }) {
     return response.data;
   };
 
-  const { data: playerFromClub, isLoading, error } = useQuery(
-    ["playerFromClub", id],
-    fetchPlayersFromClub
-  );
+  // Query for players
+  const {
+    data: playerFromClub,
+    isLoading: playersLoading,
+    error: playersError,
+  } = useQuery(["playerFromClub", id], fetchPlayersFromClub);
 
-  if (isLoading) {
-    console.log("Players are loading...");
+  if (playersLoading) {
+    console.log("Data is loading...");
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    console.error("Error fetching players:", error);
-    return <div>An error has occurred: {error.message}</div>;
+  if (playersError) {
+    console.error("Error fetching data:", playersError);
+    return (
+      <div>
+        An error has occurred: {playersError?.message}
+      </div>
+    );
   }
 
   if (!Array.isArray(playerFromClub)) {
@@ -53,8 +58,7 @@ export default function Overview({ clubData, id }) {
 
   return (
     <>
-      <MatchCard matchData={clubData?.nextGame || null} />
-      <LastMatchesCard matches={clubData?.lastGames || []} />
+      <LastMatchesCard id={id} />
       <InjuryStatusCard injuredPlayers={injuredPlayers} />
       <br />
       <br />
@@ -65,18 +69,8 @@ export default function Overview({ clubData, id }) {
 }
 
 Overview.propTypes = {
-    injuredPlayers: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            injury_history: PropTypes.arrayOf(
-                PropTypes.shape({
-                    date: PropTypes.string.isRequired,
-                    description: PropTypes.string.isRequired,
-                    severity: PropTypes.string.isRequired,
-                    gamesOut: PropTypes.number.isRequired,
-                })
-            ).isRequired
-        })
-    ).isRequired
-}
+  clubData: PropTypes.shape({
+    nextGame: PropTypes.object, // Optional, since you check for null
+  }),
+  id: PropTypes.string.isRequired,
+};

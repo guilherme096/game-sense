@@ -1,36 +1,43 @@
 package ies.gamesense.live_game_service.services;
 
-import java.util.*;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ies.gamesense.live_game_service.entities.GameStatistics;
 import ies.gamesense.live_game_service.entities.Match;
+import ies.gamesense.live_game_service.entities.MatchDTO;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class LiveServiceImpl implements LiveService {
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final MatchPersistenceProducer matchPersistenceProducer;
     private final MatchCacheService matchCacheService;
-    private final RedisTemplate<String , Match> redisTemplate;
+    private final RedisTemplate<String, Match> redisTemplate;
     private final Map<String, Long> scheduledRemovals = new ConcurrentHashMap<>();
 
-    public LiveServiceImpl(MatchPersistenceProducer matchPersistenceProducer, MatchCacheService matchCacheService,
+    public LiveServiceImpl(MatchCacheService matchCacheService,
             RedisTemplate<String, Match> redisTemplate) {
-        this.matchPersistenceProducer = matchPersistenceProducer;
         this.matchCacheService = matchCacheService;
         this.redisTemplate = redisTemplate;
     }
@@ -135,8 +142,9 @@ public class LiveServiceImpl implements LiveService {
             }
 
             if (event.get("event_type").equals("END")) {
+                this.endMatch(matchId);
                 match.endMatch();
-                this.matchPersistenceProducer.sendMatchForPersistence(match);
+                sendMatchForPersistence(match);
                 scheduledRemovals.put(matchId, System.currentTimeMillis() + 20000);
             }
 
@@ -150,8 +158,26 @@ public class LiveServiceImpl implements LiveService {
         } catch (Exception e) {
             System.err.println("Error processing event: " + record.value());
             e.printStackTrace();
-            throw e;
+
         }
+    }
+
+    public void sendMatchForPersistence(Match match) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        Map<String, Object> gameData = new HashMap<>();
+        gameData.put("homeTeamId", match.getHomeTeam().getId());
+        gameData.put("awayTeamId", match.getAwayTeam().getId());
+        gameData.put("homeTeamScore", match.getHomeTeam().getScore());
+        gameData.put("awayTeamScore", match.getAwayTeam().getScore());
+
+        String leagueServiceUrl = "http://league-service:8080/api/v1/league/update";
+        try {
+            restTemplate.put(leagueServiceUrl, gameData);
+        } catch (Exception e) {
+            System.err.println("Error calling league-service: " + e.getMessage());
+        }
+
     }
 
     @CachePut(value = "liveGames", keyGenerator = "customKeyGenerator")
@@ -182,7 +208,6 @@ public class LiveServiceImpl implements LiveService {
             }
         }
     }
-
 
     @Override
     @Cacheable(value = "liveGames", keyGenerator = "customKeyGenerator")
@@ -250,4 +275,33 @@ public class LiveServiceImpl implements LiveService {
         basicInfo.put("away_score", String.valueOf(game.getAwayTeam().getScore()));
         return basicInfo;
     }
+
+    @Override
+    public void endMatch(String id) throws IOException {
+        Match game = matchCacheService.getLiveById(id);
+        MatchDTO matchDTO = game.toDTO();
+
+        URL url = new URL("http://game-service:8080/api/v1/game/");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setDoOutput(true);
+        try {
+            DataOutputStream out = new DataOutputStream(con.getOutputStream());
+            out.writeBytes(objectMapper.writeValueAsString(matchDTO));
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception as needed
+            throw e;
+        }
+
+        int responseCode = con.getResponseCode();
+
+        System.out.println("POST Response Code :: " + responseCode);
+
+    }
+
 }

@@ -17,10 +17,10 @@ VALUES
 INSERT INTO league_club (league_id, club_id, matches_played, points, wins, draws, losses, goals_scored, goals_conceded, goal_difference, place)
 VALUES
 
-(1, 1, 38, 75, 23, 6, 9, 65, 40, 25, 1), 
-(1, 2, 38, 72, 21, 9, 8, 70, 45, 25, 2), 
-(1, 3, 38, 68, 20, 8, 10, 60, 38, 22, 3),
-(1, 4, 38, 55, 15, 10, 13, 50, 45, 5, 4);
+(1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+(1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2),
+(1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3),
+(1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4);
 
 -- Players Table
 INSERT INTO player (club_id, name, surname, age, height, weight, position, country, country_flag, jersey_number, is_injured)

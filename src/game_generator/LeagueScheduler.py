@@ -256,20 +256,24 @@ def main():
     teams = [serialize_team(club) for club in clubs]
     print("------------------------------------")
 
-    scheduler = LeagueScheduler(teams)
-
     def signal_handler(sig, frame):
         print("\nTerminating game producers...")
         scheduler.terminate_producers()
         sys.exit(0)
 
-    signal.signal(signal.SIGINT, signal_handler)
-
     while True:
+        print(
+            "--------------------------------------------------- New Round ---------------------------------------------------"
+        )
+        signal.signal(signal.SIGINT, signal_handler)
+
+        scheduler = LeagueScheduler(teams)
         try:
             scheduler.start_game_producers()
 
             scheduler.wait_for_producers()
+
+            scheduler.terminate_producers()
 
         except Exception as e:
             print(f"Error in league scheduling: {e}")

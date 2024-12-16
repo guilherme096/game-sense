@@ -2,6 +2,7 @@ import React from 'react';
 import PageTemplate from "./PageTemplate";
 import GameCard from "../components/Home/YourTeamCard";
 import LiveGame from "../components/Home/LiveGame";
+import LastGames from "../components/Home/LastGames";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -29,6 +30,12 @@ const fetchUserInfo = async () => {
         throw error; // Propagate error to react-query
     }
 };
+
+const fetchLastGames = async () => {
+    const res = await axios.get("/api/v1/game/");
+    return res.data;
+};
+
 
 function Home() {
     // Fetch live games
@@ -74,9 +81,21 @@ function Home() {
           })
         : [];
 
+
+    const { data: lastGames, isLoading: isLoadingLastGames, error: errorLastGames } = useQuery("lastGames", fetchLastGames)
+
+    if (isLoadingLastGames) {
+        return <p>Loading...</p>;
+    }
+
+    if (errorLastGames) {
+        return <p>Error fetching data</p>;
+    }
+
     return (
         <PageTemplate>
             <div className="w-full flex flex-col p-4">
+                <LastGames matches={lastGames} />
                 {/* Your Teams Section */}
                 <h1 className="text-2xl font-semibold">Favorite Team</h1>
                 <div className="divider mt-0"></div>
@@ -92,7 +111,7 @@ function Home() {
                             return null; 
                         }
                         return (
-                            <Link to={`/game/${gameId}`} key={gameId} className="-mt-3">
+                            <Link to={`/live/${gameId}`} key={gameId} className="-mt-3">
                                 <GameCard game={g} />
                             </Link>
                         );
@@ -102,30 +121,20 @@ function Home() {
                 )}
 
                 {/* Other Games Section */}
-                <h1 className="text-2xl font-semibold mt-6">Other Games</h1>
+                <h1 className="text-2xl font-semibold mt-6">Other Live Games</h1>
                 <div className="divider mt-0"></div>
-                {isLoading ? (
-                    <p>Loading...</p>
-                ) : error ? (
-                    <p>No current games.</p>
-                ) : otherGames.length > 0 ? (
-                    otherGames.map((g) => {
-                        const gameId = g.match_id || g.id;
-                        if (!gameId) {
-                            console.warn("Game ID is undefined for game:", g);
-                            return null; // Skip rendering if gameId is undefined
+                {games &&
+                    games.map((g, key) => {
+                        if (!g.home_team.stared && !g.away_team.stared) {
+                            return (
+                                <Link to={"/live/" + g.match_id} key={key}>
+                                    <div className="-mt-3">
+                                        <LiveGame key={g.match_id} game={g} />
+                                    </div>
+                                </Link>
+                            );
                         }
-                        return (
-                            <Link to={`/game/${gameId}`} key={gameId}>
-                                <div className="-mt-3">
-                                    <LiveGame game={g} />
-                                </div>
-                            </Link>
-                        );
-                    })
-                ) : (
-                    <p>No current games.</p>
-                )}
+                    })}
             </div>
         </PageTemplate>
     );

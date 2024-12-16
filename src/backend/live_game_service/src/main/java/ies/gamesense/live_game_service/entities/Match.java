@@ -148,7 +148,6 @@ public class Match implements Serializable {
         this.minute = minute;
     }
 
-
     public Map<String, String> getBasicInfo() {
         if (basicInfo.isEmpty()) {
             basicInfo.put("match_id", this.matchId);
@@ -178,5 +177,26 @@ public class Match implements Serializable {
                 ", gameStatistics=" + gameStatistics +
 
                 '}';
+    }
+
+    public MatchDTO toDTO() {
+        List<EventDTO> eventDTOS = new ArrayList<>();
+        for (Map<String, String> event : this.events) {
+            eventDTOS.add(
+                    new EventDTO(event.get("type"), Integer.parseInt(event.get("minute")), event.get("playerName")));
+        }
+        return new MatchDTO(this.matchId, this.homeTeam.getId(), this.homeTeam.getName(), this.homeTeam.getImage(),
+                this.homeTeam.getScore(), this.awayTeam.getId(), this.awayTeam.getName(), this.awayTeam.getImage(),
+                this.matchStartTime, this.basicInfo, eventDTOS, this.currentMvp, this.topStats, this.referee,
+                this.stadium, this.minute,
+                this.ended);
+    }
+
+    public long stringToLongId(String input) {
+        long result = 0;
+        for (int i = 0; i < input.length(); i++) {
+            result = result * 31 + input.charAt(i);
+        }
+        return Math.abs(result);
     }
 }
