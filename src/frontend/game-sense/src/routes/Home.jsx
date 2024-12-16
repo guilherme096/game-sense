@@ -1,12 +1,18 @@
 import PageTemplate from "./PageTemplate";
 import GameCard from "../components/Home/YourTeamCard";
 import LiveGame from "../components/Home/LiveGame";
+import LastGames from "../components/Home/LastGames";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
 const fetchGames = async () => {
     const res = await axios.get("/api/v1/live/");
+    return res.data;
+};
+
+const fetchLastGames = async () => {
+    const res = await axios.get("/api/v1/game/");
     return res.data;
 };
 
@@ -18,10 +24,22 @@ function Home() {
     } = useQuery("games", fetchGames, {
         refetchInterval: 10000,
     });
+
+    const { data: lastGames, isLoading: isLoadingLastGames, error: errorLastGames } = useQuery("lastGames", fetchLastGames)
+
+    if (isLoadingLastGames) {
+        return <p>Loading...</p>;
+    }
+
+    if (errorLastGames) {
+        return <p>Error fetching data</p>;
+    }
+
     return (
         <PageTemplate>
             <div className="w-full flex flex-col p-4">
-                <h1 className="text-2xl font-semibold">Your Teams</h1>
+                <LastGames matches={lastGames} />
+                <h1 className="text-2xl font-semibold">Your Team's Games</h1>
                 <div className="divider mt-0"></div>
                 {games &&
                     games.map((g, key) => {
@@ -35,13 +53,13 @@ function Home() {
                     })}
                 {error && <p>Error fetching data</p>}
                 {isLoading && <p>Loading...</p>}
-                <h1 className="text-2xl font-semibold mt-6">Other Games</h1>
+                <h1 className="text-2xl font-semibold mt-6">Other Live Games</h1>
                 <div className="divider mt-0"></div>
                 {games &&
                     games.map((g, key) => {
                         if (!g.home_team.stared && !g.away_team.stared) {
                             return (
-                                <Link to={"/game/" + g.match_id} key={key}>
+                                <Link to={"/live/" + g.match_id} key={key}>
                                     <div className="-mt-3">
                                         <LiveGame key={g.match_id} game={g} />
                                     </div>

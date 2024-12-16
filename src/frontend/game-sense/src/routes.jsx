@@ -1,8 +1,8 @@
 import Home from "./routes/Home";
-import Template from "./routes/PageTemplate";
 import LeaguePageBase from "./routes/LeaguePageBase";
 import PlayerPageBase from "./routes/PlayerPageBase";
 import Game from "./routes/Game";
+import GamesPage from "./routes/GamesPage";
 import Login from "./routes/Login";
 import Register from "./routes/Register";
 import Profile from "./routes/Profile";
@@ -24,6 +24,18 @@ export const routesList = [
     },
 
     {
+        path: "/gamesPage",
+        element: (
+          <>
+            <Helmet>
+              <title>GameSense - Template</title>
+            </Helmet>
+            <GamesPage />
+          </>
+        ),
+    },
+
+    {
         path: "/leaguePage",
         element: (
           <>
@@ -36,15 +48,27 @@ export const routesList = [
     },
 
     {
-        path: "/game/:id",
+        path: "/live/:id",
         element: (
           <>
             <Helmet>
               <title>GameSense - Game</title>
             </Helmet>
-            <Game />
+            <Game isLive={true} />
           </>
         ),
+    },
+
+    {
+      path: "/game/:id",
+      element: (
+        <>
+          <Helmet>
+            <title>GameSense - Game</title>
+          </Helmet>
+          <Game isLive={false} />
+        </>
+      ),
     },
 
     {
