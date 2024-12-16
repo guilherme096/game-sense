@@ -1,3 +1,5 @@
+use gamesense_db;
+
 -- League Table
 INSERT INTO league (name, logo)
 VALUES 
