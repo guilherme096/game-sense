@@ -7,6 +7,8 @@ import { Menu, Transition } from '@headlessui/react';
 import PremiumModal from './PremiumModal';
 import axios from 'axios';
 import { UserContext } from './UserProvider.jsx';
+import SearchBar from './SearchBar';
+
 
 function Header() {
     const { isPremium, setIsPremium, isLoading } = useContext(UserContext);
@@ -80,40 +82,32 @@ function Header() {
 
             <div className="flex items-center relative">
                 {/* Search Box */}
-                <div
-                    ref={searchRef}
-                    className={`absolute right-0 transform transition-all duration-500 ease-in-out ${
-                        isSearchOpen ? 'w-56 opacity-100' : 'w-0 opacity-0'
-                    }`}
-                >
-                    <input
-                        type="text"
-                        placeholder="Search..."
-                        className="input input-bordered w-full -m-1"
-                        style={{ borderRadius: "1.25rem" }}
+                <div className="flex items-center relative">
+                    <SearchBar 
+                        isOpen={isSearchOpen} 
+                        onClose={() => setIsSearchOpen(false)} 
                     />
-                </div>
-                {/* Search Icon */}
-                <button
-                    ref={buttonRef}
-                    className="btn btn-ghost btn-circle z-10 relative"
-                    onClick={toggleSearch}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-7 w-7"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                    <button
+                        ref={buttonRef}
+                        className="btn btn-ghost btn-circle z-10 relative"
+                        onClick={toggleSearch}
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                    </svg>
-                </button>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-7 w-7"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                            />
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             {/* Premium Section */}
