@@ -7,25 +7,20 @@ import { Menu, Transition } from '@headlessui/react';
 import PremiumModal from './PremiumModal';
 import axios from 'axios';
 import { UserContext } from './UserProvider.jsx';
+import SearchBar from './SearchBar';
 
 function Header() {
     const { isPremium, setIsPremium, isLoading } = useContext(UserContext);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const searchRef = useRef(null);
-    const buttonRef = useRef(null);
+    const containerRef = useRef(null); 
 
     const toggleSearch = () => {
         setIsSearchOpen((prev) => !prev);
     };
 
     const handleClickOutside = (event) => {
-        if (
-            searchRef.current &&
-            !searchRef.current.contains(event.target) &&
-            buttonRef.current &&
-            !buttonRef.current.contains(event.target)
-        ) {
+        if (containerRef.current && !containerRef.current.contains(event.target)) {
             setIsSearchOpen(false);
         }
     };
@@ -64,7 +59,7 @@ function Header() {
                 window.location.reload();
             }
         } catch (error) {
-            console.error('Error canceling premium:', error);
+            console.error('Error upgrading to premium:', error);
         }
     };
 
@@ -78,25 +73,14 @@ function Header() {
                 </Link>
             </div>
 
-            <div className="flex items-center relative">
+            <div className="flex items-center relative" ref={containerRef}>
                 {/* Search Box */}
-                <div
-                    ref={searchRef}
-                    className={`absolute right-0 transform transition-all duration-500 ease-in-out ${
-                        isSearchOpen ? 'w-56 opacity-100' : 'w-0 opacity-0'
-                    }`}
-                >
-                    <input
-                        type="text"
-                        placeholder="Search..."
-                        className="input input-bordered w-full -m-1"
-                        style={{ borderRadius: "1.25rem" }}
-                    />
-                </div>
-                {/* Search Icon */}
+                <SearchBar 
+                    isOpen={isSearchOpen} 
+                    onClose={() => setIsSearchOpen(false)} 
+                />
                 <button
-                    ref={buttonRef}
-                    className="btn btn-ghost btn-circle z-10 relative"
+                    className="btn btn-ghost btn-circle z-96 relative"
                     onClick={toggleSearch}
                 >
                     <svg

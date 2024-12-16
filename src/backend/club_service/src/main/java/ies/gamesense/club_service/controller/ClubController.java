@@ -48,12 +48,12 @@ public class ClubController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(params = "name")
+    @GetMapping("/search") 
     @Operation(summary = "Search Clubs by Name")
-    public ResponseEntity<List<Club>> getClubsByName(@RequestParam String name) {
+    public ResponseEntity<List<Club>> searchClubsByName(@RequestParam String name) {
         List<Club> clubs = clubService.getClubsByName(name);
         if (clubs.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(clubs, HttpStatus.OK);
     }
@@ -95,11 +95,5 @@ public class ClubController {
         Optional<Game> game = clubService.getNextGameByClubId(id);
         return game.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @GetMapping("/hello")
-    @Operation(summary = "Hello endpoint for testing")
-    public ResponseEntity<String> hello() {
-        return new ResponseEntity<>("Hello from Club Service!", HttpStatus.OK);
     }
 }

@@ -24,5 +24,5 @@ public interface PlayerService {
 
     List<Injury> getPlayerInjuries(Long id);
 
-    List<Player> searchPlayers(String name, Integer age, String position);
+    List<Player> searchPlayers(String name, Integer age, String position, String surname);
 }
