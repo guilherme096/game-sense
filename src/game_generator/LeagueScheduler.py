@@ -251,7 +251,7 @@ def serialize_team(team):
 
 def main():
     # Create teams with proper Team objects
-    sleep(1)
+    sleep(40)
     clubs = get_league_clubs()
     teams = [serialize_team(club) for club in clubs]
     print("------------------------------------")
