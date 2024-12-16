@@ -97,7 +97,7 @@ const SearchBar = ({ isOpen, onClose }) => {
           <button
             onClick={() => setFilter('all')}
             className={`btn-sm flex justify-center items-center flex-1 px-4 py-2 text-sm rounded-full ${
-              filter === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
+              filter === 'all' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'
             }`}
           >
             All
@@ -105,7 +105,7 @@ const SearchBar = ({ isOpen, onClose }) => {
           <button
             onClick={() => setFilter('players')}
             className={`btn-sm flex justify-center items-center flex-1 px-4 py-2 text-sm rounded-full ${
-              filter === 'players' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
+              filter === 'players' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'
             }`}
           >
             Players
@@ -113,7 +113,7 @@ const SearchBar = ({ isOpen, onClose }) => {
           <button
             onClick={() => setFilter('clubs')}
             className={`btn-sm flex justify-center items-center flex-1 px-4 py-2 text-sm rounded-full ${
-              filter === 'clubs' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
+              filter === 'clubs' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'
             }`}
           >
             Clubs
@@ -124,7 +124,7 @@ const SearchBar = ({ isOpen, onClose }) => {
           {loading ? (
             <div className="p-4 text-center text-gray-500">Loading...</div>
           ) : searchTerm.length < 2 ? (
-            <div className="p-4 text-center text-gray-500">Type at least 2 characters to search</div>
+            <div className="p-4 text-center text-gray-500">Type 2 characters to search</div>
           ) : getFilteredResults().length === 0 ? (
             <div className="p-4 text-center text-gray-500">No results found</div>
           ) : (
