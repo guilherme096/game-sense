@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import { useState } from "react";
 import axios from "axios";
 import Timer from "../Timer.jsx";
+import { useNavigate } from "react-router-dom";
 
 const fetchGame = async (id) => {
     const response = await axios.get("/api/v1/live/" + id + "/basicInfo", {
@@ -21,6 +22,8 @@ const fetchGame = async (id) => {
 export default function ScoreBoard({ id }) {
     const [team1Stared, setTeam1Stared] = useState(false); // State for Team 1 star
     const [team2Stared, setTeam2Stared] = useState(false); // State for Team 2 star
+
+    const navigate = useNavigate();
 
     const {
         data: game,
@@ -70,7 +73,8 @@ export default function ScoreBoard({ id }) {
                                 className="w-6 h-6 mr-2"
                             />
                         </button>
-                        <div className="w-24 h-24 bg-base-200 rounded-lg flex items-center justify-center overflow-hidden">
+                        <div className="w-24 h-24 bg-base-200 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer"
+                            onClick={() => navigate(`/club/${game.home_team_id}`)}>
                             {logo1 ? (
                                 <img
                                     className="w-full h-full object-contain p-2"
@@ -82,9 +86,8 @@ export default function ScoreBoard({ id }) {
                             )}
                         </div>
                     </div>
-                    <div className="text-center my-2 ml-8">{name1}</div>
+                    <div className="text-center my-2 ml-8 cursor-pointer" onClick={() => navigate(`/club/${game.home_team_id}`)}>{name1}</div>
                 </div>
-
                 <div className="h-fit flex flex-col align-middle items-center">
                     <div className="h-24 flex-col items-center align-middle flex justify-center">
                         <div className="w-fit h-fit text-4xl">
@@ -101,7 +104,8 @@ export default function ScoreBoard({ id }) {
 
                 <div>
                     <div className="flex flex-row items-center">
-                        <div className="w-24 h-24 bg-base-200 rounded-lg flex items-center justify-center overflow-hidden">
+                        <div className="w-24 h-24 bg-base-200 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer"
+                            onClick={() => navigate(`/club/${game.away_team_id}`)}>
                             {logo2 ? (
                                 <img
                                     className="w-full h-full object-contain p-2"
@@ -122,7 +126,7 @@ export default function ScoreBoard({ id }) {
                             />
                         </button>
                     </div>
-                    <div className="text-center my-2 mr-8">{name2}</div>
+                    <div className="text-center my-2 mr-8 cursor-pointer" onClick={() => navigate(`/club/${game.away_team_id}`)}>{name2}</div>
                 </div>
             </div>
         </div>
