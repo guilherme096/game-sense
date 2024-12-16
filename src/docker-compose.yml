@@ -2,7 +2,7 @@ services:
   nginx:
     build:
       context: ./frontend/game-sense/
-    image: nginx:latest
+    image: nginx:alpine
     container_name: nginx
     ports:
       - "${HOST_PORT}:${CONTAINER_PORT}"
@@ -201,15 +201,6 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
       - zookeeper
-    networks:
-      - app-network
-
-  kafdrop:
-    image: obsidiandynamics/kafdrop:4.0.2
-    environment:
-      KAFKA_BROKERCONNECT: kafka:${KAFKA_INTERNAL_PORT}
-    ports:
-      - ${KAFDROP_EXTERNAL_PORT}:${KAFDROP_EXTERNAL_PORT}
     networks:
       - app-network
 
