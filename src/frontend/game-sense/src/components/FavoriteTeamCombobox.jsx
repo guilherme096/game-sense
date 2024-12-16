@@ -53,7 +53,7 @@ export default function FavoriteTeamCombobox({ selectedTeam, onTeamChange }) {
                                 key={club.id}
                                 className={({ active }) =>
                                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                        active ? 'bg-[#21A179] text-white' : 'text-gray-900'
+                                        active ? 'bg-[#333D4D] text-white' : 'text-gray-900'
                                     }`
                                 }
                                 value={club.name}

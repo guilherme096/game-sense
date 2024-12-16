@@ -269,7 +269,7 @@ function Profile() {
                 <div className="fixed inset-0 flex items-center justify-center p-4">
                     <Dialog.Panel className="w-full max-w-md rounded-lg bg-white p-6">
                         <Dialog.Title className="text-lg font-bold mb-4">
-                            Select Favorite Team
+                            Change Favorite Team
                         </Dialog.Title>
                         <FavoriteTeamCombobox 
                             selectedTeam={selectedTeamTemp || favoriteTeam} 
