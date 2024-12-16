@@ -74,7 +74,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<Player> searchPlayers(String name, Integer age, String position) {
-        return playerRepository.findPlayersByCriteria(name, age, position);
+    public List<Player> searchPlayers(String name, Integer age, String position, String surname) {
+        return playerRepository.findPlayersByCriteria(name, age, position, surname);
     }
 }

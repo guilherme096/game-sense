@@ -15,10 +15,13 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     @Query("SELECT p FROM Player p WHERE "
             + "(:name IS NULL OR p.name LIKE %:name%) AND "
             + "(:age IS NULL OR p.age = :age) AND "
-            + "(:position IS NULL OR p.position LIKE %:position%)")
+            + "(:position IS NULL OR p.position LIKE %:position%) AND"
+            + "(:surname IS NULL OR p.surname LIKE %:surname%)"
+            )
     List<Player> findPlayersByCriteria(@Param("name") String name,
                                        @Param("age") Integer age,
-                                       @Param("position") String position);
+                                       @Param("position") String position,
+                                       @Param("surname") String surname);
 
 
 }

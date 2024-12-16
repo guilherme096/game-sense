@@ -2,7 +2,7 @@ services:
   nginx:
     build:
       context: ./frontend/game-sense/
-    image: nginx:latest
+    image: nginx:alpine
     container_name: nginx
     ports:
       - "${HOST_PORT}:${CONTAINER_PORT}"
@@ -28,7 +28,7 @@ services:
   management-service:
     build:
       context: backend/management_service
-    image: management_service-image  
+    image: management_service-image
     depends_on:
       users_db:
         condition: service_healthy
@@ -112,7 +112,6 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
-
   sql_db:
     image: mysql:8.0
     container_name: sql_db
@@ -126,12 +125,21 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}" ]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD}",
+        ]
       interval: 10s
       retries: 5
       start_period: 30s
       timeout: 10s
-
 
   users_db:
     image: mysql:8.0
@@ -146,7 +154,17 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD}",
+        ]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -158,7 +176,7 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -186,16 +204,6 @@ services:
     networks:
       - app-network
 
-
-  kafdrop:
-    image: obsidiandynamics/kafdrop:4.0.2
-    environment:
-      KAFKA_BROKERCONNECT: kafka:${KAFKA_INTERNAL_PORT}
-    ports:
-      - ${KAFDROP_EXTERNAL_PORT}:${KAFDROP_EXTERNAL_PORT}
-    networks:
-      - app-network
-
   game-generator:
     build:
       context: game_generator
@@ -203,6 +211,8 @@ services:
     depends_on:
       - kafka
       - live-game-service
+      - league-service
+      - club-service
     networks:
       - app-network
 
