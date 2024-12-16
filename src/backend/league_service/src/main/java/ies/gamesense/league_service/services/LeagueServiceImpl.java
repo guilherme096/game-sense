@@ -92,6 +92,23 @@ public class LeagueServiceImpl implements LeagueService {
         leagueClubRepository.save(homeTeam);
         leagueClubRepository.save(awayTeam);
 
+        // sort league standings
+        List<League_Club> leagueClubs = leagueClubRepository.findByLeagueId(leagueId);
+        leagueClubs.sort((a, b) -> {
+            if (a.getPoints() != b.getPoints()) {
+                return b.getPoints() - a.getPoints();
+            } else if (a.getGoal_difference() != b.getGoal_difference()) {
+                return b.getGoal_difference() - a.getGoal_difference();
+            } else {
+                return b.getGoalsScored() - a.getGoalsScored();
+            }
+        });
+
+        for (int i = 0; i < leagueClubs.size(); i++) {
+            leagueClubs.get(i).setPlace(i + 1);
+            leagueClubRepository.save(leagueClubs.get(i));
+        }
+
         return;
     }
 
