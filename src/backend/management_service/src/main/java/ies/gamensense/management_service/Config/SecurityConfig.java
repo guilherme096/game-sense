@@ -29,7 +29,8 @@ public class SecurityConfig {
                     "/api/v1/management/logout", 
                     "/api/v1/management/user-info",
                     "/api/v1/management/become-premium",
-                    "/api/v1/management/cancel-premium"
+                    "/api/v1/management/cancel-premium",
+                    "/api/v1/management/update-favorite-team"
                     ).permitAll()
                 .anyRequest().authenticated()
             )
