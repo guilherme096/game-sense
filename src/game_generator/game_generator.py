@@ -4,10 +4,11 @@ from models import Game, Stats, Team, Winner, Player
 from game_serializator import serialize_game
 import logging
 from math import log
+import time
 
 
 def generate_seed(home_team: Team, away_team: Team):
-    return hash(home_team.id + away_team.id)
+    return hash((home_team.id + away_team.id) * time.time())
 
 
 def generate_winner(home_team: Team, away_team: Team, seed: int) -> Winner:
