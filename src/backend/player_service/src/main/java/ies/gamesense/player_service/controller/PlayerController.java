@@ -128,7 +128,7 @@ public class PlayerController {
             @RequestParam(required = false) String position) {
         List<Player> players = playerService.searchPlayers(name, age, position, surname);
         if (players.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
         }
         return ResponseEntity.ok(players);
     }

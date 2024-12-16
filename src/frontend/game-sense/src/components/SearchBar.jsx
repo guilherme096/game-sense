@@ -19,7 +19,7 @@ const SearchBar = ({ isOpen, onClose }) => {
         setLoading(false);
         return;
       }
-
+  
       setLoading(true);
       try {
         const results = await Promise.allSettled([
@@ -33,43 +33,34 @@ const SearchBar = ({ isOpen, onClose }) => {
             params: { name: term },
           }),
         ]);
-
+  
         const [playerNameResult, playerSurnameResult, clubResult] = results;
-
+  
         let combinedPlayers = [];
         let clubsData = [];
-
+  
         if (playerNameResult.status === 'fulfilled') {
           const playersByName = Array.isArray(playerNameResult.value.data)
             ? playerNameResult.value.data
             : [];
           combinedPlayers = [...combinedPlayers, ...playersByName];
-        } else {
-          // Optionally, handle the error or notify the user
-          console.error('Error fetching players by name:', playerNameResult.reason);
-        }
-
+        } else {}
+  
         if (playerSurnameResult.status === 'fulfilled') {
           const playersBySurname = Array.isArray(playerSurnameResult.value.data)
             ? playerSurnameResult.value.data
             : [];
           combinedPlayers = [...combinedPlayers, ...playersBySurname];
-        } else {
-          // Optionally, handle the error or notify the user
-          console.error('Error fetching players by surname:', playerSurnameResult.reason);
-        }
-
+        } else {}
+  
         if (clubResult.status === 'fulfilled') {
           clubsData = Array.isArray(clubResult.value.data) ? clubResult.value.data : [];
-        } else {
-          // Optionally, handle the error or notify the user
-          console.error('Error fetching clubs:', clubResult.reason);
-        }
-
+        } else {}
+  
         const uniquePlayers = Array.from(
           new Map(combinedPlayers.map((player) => [player.id, player])).values()
         );
-
+  
         setPlayers(uniquePlayers);
         setClubs(clubsData);
       } catch (error) {
@@ -82,6 +73,7 @@ const SearchBar = ({ isOpen, onClose }) => {
     }, 300), 
     []
   );
+  
 
   useEffect(() => {
     if (isOpen) {

@@ -53,7 +53,7 @@ public class ClubController {
     public ResponseEntity<List<Club>> searchClubsByName(@RequestParam String name) {
         List<Club> clubs = clubService.getClubsByName(name);
         if (clubs.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(clubs, HttpStatus.OK);
     }
