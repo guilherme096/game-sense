@@ -38,11 +38,13 @@ export default function ScoreBoard({ id }) {
         return <div>Error: {error.message}</div>;
     }
 
-    const team1 = game.home_team;
-    const team2 = game.away_team;
+    const name1 = game.home_team;
+    const name2 = game.away_team;
     const minute = game.minute;
     const score1 = game.home_score;
     const score2 = game.away_score;
+    const logo1 = game.home_team_image;
+    const logo2 = game.away_team_image;
 
     return (
         <div className="scoreboard-container">
@@ -69,18 +71,18 @@ export default function ScoreBoard({ id }) {
                             />
                         </button>
                         <div className="w-24 h-24 bg-base-200 rounded-lg flex items-center justify-center overflow-hidden">
-                            {team1.image ? (
+                            {logo1 ? (
                                 <img
                                     className="w-full h-full object-contain p-2"
-                                    src={team1.image}
-                                    alt={team1.name}
+                                    src={logo1}
+                                    alt={name1}
                                 />
                             ) : (
-                                <span className="text-sm text-gray-500">{team1.name}</span>
+                                <span className="text-sm text-gray-500">{name1}</span>
                             )}
                         </div>
                     </div>
-                    <div className="text-center my-2 ml-8">{team1.name}</div>
+                    <div className="text-center my-2 ml-8">{name1}</div>
                 </div>
 
                 <div className="h-fit flex flex-col align-middle items-center">
@@ -100,14 +102,14 @@ export default function ScoreBoard({ id }) {
                 <div>
                     <div className="flex flex-row items-center">
                         <div className="w-24 h-24 bg-base-200 rounded-lg flex items-center justify-center overflow-hidden">
-                            {team2.image ? (
+                            {logo2 ? (
                                 <img
                                     className="w-full h-full object-contain p-2"
-                                    src={team2.image}
-                                    alt={team2.name}
+                                    src={logo2}
+                                    alt={name2}
                                 />
                             ) : (
-                                <span className="text-sm text-gray-500">{team2.name}</span>
+                                <span className="text-sm text-gray-500">{name2}</span>
                             )}
                         </div>
                         <button onClick={() => setTeam2Stared(!team2Stared)}>
@@ -120,7 +122,7 @@ export default function ScoreBoard({ id }) {
                             />
                         </button>
                     </div>
-                    <div className="text-center my-2 mr-8">{team2.name}</div>
+                    <div className="text-center my-2 mr-8">{name2}</div>
                 </div>
             </div>
         </div>
