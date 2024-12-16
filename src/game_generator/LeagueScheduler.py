@@ -109,12 +109,17 @@ class LeagueScheduler:
         print(self.schedule)
 
         # Schedule matches in pairs
-        for i in range(0, len(self.schedule), 2):
+        for i in range(0, len(self.schedule), 4):
             match1 = self.schedule[i]
             match2 = self.schedule[i + 1]
+            match3 = self.schedule[i + 2]
+            match4 = self.schedule[i + 3]
+
 
             home_team1, away_team1 = match1
             home_team2, away_team2 = match2
+            home_team3, away_team3 = match3
+            home_team4, away_team4 = match4
 
             print(
                 f"Round {i//2 + 1}: "
@@ -125,11 +130,17 @@ class LeagueScheduler:
             # Start producers for both matches
             process1 = run_producer(home_team1, away_team1)
             process2 = run_producer(home_team2, away_team2)
+            process3 = run_producer(home_team3, away_team3)
+            process4 = run_producer(home_team4, away_team4)
 
             if process1:
                 self.processes.append(process1)
             if process2:
                 self.processes.append(process2)
+            if process3:
+                self.processes.append(process3)
+            if process4:
+                self.processes.append(process4)
 
             time.sleep(1.5 * 60)
 
@@ -195,9 +206,7 @@ def get_league_clubs():
 
     return clubs
 
-
 def serialize_team(team):
-    # teams: Manchester United, Liverpool, Chelsea
     bias = 0
     form = 0
     squad_quality = 0
@@ -205,13 +214,14 @@ def serialize_team(team):
     defense_strength = 0
     image = ""
 
-    if team["name"] == "Manchester United":
+    if team["name"] == "Manchester United" or team["name"] == "Man United":
         bias = 3
         form = 4
         squad_quality = 9
         attack_strength = 8
         defense_strength = 7
         image = "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/400px-Manchester_United_FC_crest.svg.png"
+
     elif team["name"] == "Liverpool":
         bias = 3
         form = 5
@@ -219,6 +229,7 @@ def serialize_team(team):
         attack_strength = 8
         defense_strength = 8
         image = "https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png"
+
     elif team["name"] == "Chelsea":
         bias = 3
         form = 4
@@ -228,12 +239,133 @@ def serialize_team(team):
         image = "https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/1200px-Chelsea_FC.svg.png"
 
     elif team["name"] == "Aston Villa":
-        bias = 3
-        form = 4
+        bias = 2
+        form = 3
         squad_quality = 7
         attack_strength = 7
         defense_strength = 6
-        image = "https://upload.wikimedia.org/wikipedia/en/thumb/9/9a/Aston_Villa_FC_new_crest.svg/272px-Aston_Villa_FC_new_crest.svg.png?20240602000855"
+        image = "https://worldvectorlogo.com/pt/logo/aston-villa"
+
+    elif team["name"] == "Lixa":
+        bias = 1
+        form = 2
+        squad_quality = 3
+        attack_strength = 3
+        defense_strength = 3
+        image = "https://static.wikia.nocookie.net/logopedia/images/b/b0/FC_Lixa_%282014-2020%29.png/revision/latest?cb=20220922040330"
+
+    elif team["name"] == "Vitória de Santarém":
+        bias = 1
+        form = 2
+        squad_quality = 3
+        attack_strength = 3
+        defense_strength = 3
+        image = "https://www.zerozero.pt/equipa/vc-santarem/108742"
+
+    elif team["name"] == "Vizela":
+        bias = 1
+        form = 2
+        squad_quality = 3
+        attack_strength = 3
+        defense_strength = 3
+        image = "http://escudosfutebolbotao.blogspot.com/2021/04/vizela.html"
+
+    elif team["name"] == "Uniao de Leiria":
+        bias = 1
+        form = 2
+        squad_quality = 3
+        attack_strength = 3
+        defense_strength = 3
+        image = "https://pt.wikipedia.org/wiki/Ficheiro:Uni%C3%A3o_Leiria.png"
+
+    elif team["name"] == "Real Madrid":
+        bias = 4
+        form = 5
+        squad_quality = 10
+        attack_strength = 9
+        defense_strength = 9
+        image = "https://logodownload.org/wp-content/uploads/2016/03/real-madrid-logo-1-1.png"
+
+    elif team["name"] == "Al Nassr":
+        bias = 2
+        form = 3
+        squad_quality = 7
+        attack_strength = 7
+        defense_strength = 6
+        image = "https://upload.wikimedia.org/wikipedia/en/0/04/Al_Nassr_FC_Logo.png"  # Updated to direct image link
+
+    elif team["name"] == "Barcelona":
+        bias = 4
+        form = 5
+        squad_quality = 10
+        attack_strength = 9
+        defense_strength = 9
+        image = "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg"
+
+    elif team["name"] == "Wolves":
+        bias = 2
+        form = 3
+        squad_quality = 6
+        attack_strength = 6
+        defense_strength = 6
+        image = "https://seeklogo.com/vector-logo/236301/wolves"
+
+    elif team["name"] == "Manchester City" or team["name"] == "Man. City":
+        bias = 4
+        form = 5
+        squad_quality = 10
+        attack_strength = 10
+        defense_strength = 9
+        image = "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg"
+
+    elif team["name"] == "Porto":
+        bias = 3
+        form = 4
+        squad_quality = 9
+        attack_strength = 8
+        defense_strength = 8
+        image = "https://logos-world.net/porto-logo/"
+
+    elif team["name"] == "Benfica":
+        bias = 3
+        form = 4
+        squad_quality = 9
+        attack_strength = 8
+        defense_strength = 8
+        image = "https://seeklogo.com/free-vector-logos/benfica"
+
+    elif team["name"] == "Sporting":
+        bias = 3
+        form = 4
+        squad_quality = 8
+        attack_strength = 7
+        defense_strength = 7
+        image = "https://logodownload.org/wp-content/uploads/2019/03/sporting-clube-de-portugal-logo-escudo.png"
+
+    elif team["name"] == "Juventus":
+        bias = 4
+        form = 5
+        squad_quality = 9
+        attack_strength = 8
+        defense_strength = 8
+        image = "https://seeklogo.com/images/F/fc-juventus-logo-A48B34A764-seeklogo.com.png"
+
+    elif team["name"] == "Athletic Madrid" or team["name"] == "Ath. Madrid" or team["name"] == "Atletico Madrid":
+        bias = 3
+        form = 4
+        squad_quality = 8
+        attack_strength = 7
+        defense_strength = 8
+        image = "https://cdn.worldvectorlogo.com/logos/atletico-madrid-1.svg"
+
+    else:
+        # Default values for unknown teams
+        bias = 1
+        form = 2
+        squad_quality = 3
+        attack_strength = 3
+        defense_strength = 3
+        image = team.get("image_url", "")
 
     return Team(
         id=team["id"],
