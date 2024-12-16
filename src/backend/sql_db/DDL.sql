@@ -2,7 +2,6 @@ CREATE TABLE IF NOT EXISTS league(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     logo VARCHAR(254) NOT NULL
--- clear league table
 );
 
 CREATE TABLE IF NOT EXISTS club(
@@ -48,7 +47,7 @@ CREATE TABLE IF NOT EXISTS player (
 );
 
 CREATE TABLE IF NOT EXISTS team_stats (
-    team_stat_id BIGINT NOT NULL AUTO_INCREMENT,
+    team_stat_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     club_id BIGINT NOT NULL,
     possession INT NOT NULL,
     shots INT NOT NULL,
@@ -58,45 +57,43 @@ CREATE TABLE IF NOT EXISTS team_stats (
     corners INT NOT NULL,
     offsides INT NOT NULL,
     interceptions INT NOT NULL,
-    total_goals INT NOT NULL,
-    PRIMARY KEY (team_stat_id),
     FOREIGN KEY (club_id) REFERENCES club(id)
 );
 
 CREATE TABLE IF NOT EXISTS half (
     half_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    home_club_stats BIGINT NOT NULL,
-    away_club_stats BIGINT NOT NULL,
+    home_club_stats BIGINT,
+    away_club_stats BIGINT,
     FOREIGN KEY (home_club_stats) REFERENCES team_stats(team_stat_id),
     FOREIGN KEY (away_club_stats) REFERENCES team_stats(team_stat_id)
-);
-
-CREATE TABLE IF NOT EXISTS top_stats (
-    stat_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    player_id BIGINT NOT NULL,
-    name VARCHAR(50) NOT NULL,
-    value INT NOT NULL,
-    FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS game (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     referee VARCHAR(50) NOT NULL,
-    kickoff_time TIMESTAMP NOT NULL,
+    kickoff_time VARCHAR(254) NOT NULL,
     stadium VARCHAR(50) NOT NULL,
-    minute_played INT NOT NULL,
     home_club_id BIGINT NOT NULL,
     away_club_id BIGINT NOT NULL,
-    mvp BIGINT NOT NULL,
     first_half BIGINT,
     second_half BIGINT,
-    top_stat BIGINT,
     FOREIGN KEY (first_half) REFERENCES half(half_id),
     FOREIGN KEY (second_half) REFERENCES half(half_id),
-    FOREIGN KEY (top_stat) REFERENCES top_stats(stat_id),
-    FOREIGN KEY (mvp) REFERENCES player(id),
     FOREIGN KEY (away_club_id) REFERENCES club(id),
-    FOREIGN KEY (home_club_id) REFERENCES club(id)
+    FOREIGN KEY (home_club_id) REFERENCES club(id),
+    CONSTRAINT check_home_away_club_id CHECK (home_club_id != away_club_id)
+);
+
+CREATE TABLE IF NOT EXISTS game_events (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    game_id BIGINT NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    minute INT NOT NULL,
+    player_id BIGINT NOT NULL,
+    event_club_id BIGINT NOT NULL,
+    FOREIGN KEY (game_id) REFERENCES game(id),
+    FOREIGN KEY (player_id) REFERENCES player(id),
+    FOREIGN KEY (event_club_id) REFERENCES club(id)
 );
 
 CREATE TABLE IF NOT EXISTS player_game_stats (
@@ -124,3 +121,12 @@ CREATE TABLE IF NOT EXISTS injury (
     games_out INT NOT NULL,
     FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
 );
+
+
+CREATE INDEX idx_league_club_league_id ON league_club(league_id);
+CREATE INDEX idx_league_club_club_id ON league_club(club_id);
+CREATE INDEX idx_game_home_club_id ON game(home_club_id);
+CREATE INDEX idx_game_away_club_id ON game(away_club_id);
+CREATE INDEX idx_player_game_stats_player_id ON player_game_stats(player_id);
+CREATE INDEX idx_player_game_stats_game_id ON player_game_stats(game_id);
+
