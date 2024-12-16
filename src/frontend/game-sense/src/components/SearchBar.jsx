@@ -14,7 +14,7 @@ const SearchBar = ({ isOpen, onClose }) => {
 
   const fetchData = useCallback(
     debounce(async (term) => {
-      if (term.length < 2) {
+      if (term.length < 3) {
         setPlayers([]);
         setClubs([]);
         setLoading(false);
@@ -118,7 +118,7 @@ const SearchBar = ({ isOpen, onClose }) => {
         return [
           ...players.map(player => ({
             id: player.id,
-            name: `${player.name} ${player.surname}`, // Assuming player has surname
+            name: `${player.name} ${player.surname}`,
             type: 'player',
             link: `/player/${player.id}`
           })),
@@ -179,8 +179,8 @@ const SearchBar = ({ isOpen, onClose }) => {
         <div className="max-h-64 overflow-y-auto">
           {loading ? (
             <div className="p-4 text-center text-gray-500">Loading...</div>
-          ) : searchTerm.length < 2 ? (
-            <div className="p-4 text-center text-gray-500">Type 2 characters to search</div>
+          ) : searchTerm.length < 3 ? (
+            <div className="p-4 text-center text-gray-500">Type 3 letters to search</div>
           ) : getFilteredResults().length === 0 ? (
             <div className="p-4 text-center text-gray-500">No results found</div>
           ) : (
