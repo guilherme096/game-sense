@@ -13,7 +13,7 @@ function Header() {
     const { isPremium, setIsPremium, isLoading } = useContext(UserContext);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const containerRef = useRef(null); // Shared ref for search button and search bar
+    const containerRef = useRef(null); 
 
     const toggleSearch = () => {
         setIsSearchOpen((prev) => !prev);

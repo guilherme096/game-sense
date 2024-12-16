@@ -80,7 +80,7 @@ const SearchBar = ({ isOpen, onClose }) => {
       fetchData(searchTerm);
     } else {
       fetchData.cancel();
-      setSearchTerm(''); // Optionally clear the search term when closing
+      setSearchTerm(''); 
     }
 
     return () => {
@@ -93,7 +93,7 @@ const SearchBar = ({ isOpen, onClose }) => {
       case 'players':
         return players.map(player => ({
           id: player.id,
-          name: `${player.name} ${player.surname}`, // Assuming player has surname
+          name: `${player.name} ${player.surname}`,
           type: 'player',
           link: `/player/${player.id}`
         }));
