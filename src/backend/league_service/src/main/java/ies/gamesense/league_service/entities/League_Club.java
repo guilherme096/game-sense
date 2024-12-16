@@ -70,8 +70,13 @@ public class League_Club {
     public League getLeague() {
         return league;
     }
+
     public void setLeague(League league) {
         this.league = league;
+    }
+
+    public Long getLeagueId() {
+        return league.getId();
     }
 
     public Long getClub_id() {

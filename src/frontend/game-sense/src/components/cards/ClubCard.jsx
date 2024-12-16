@@ -5,7 +5,6 @@ import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { useQuery } from "react-query";
 import axios from "axios";
 import PropTypes from "prop-types";
-import Club from "../../routes/Club";
 
 export default function ClubCard({ clubData, leagueClubData}) {
   const [isFollowed, setIsFollowed] = useState(clubData.starred);
@@ -13,6 +12,10 @@ export default function ClubCard({ clubData, leagueClubData}) {
   const handleFollowClick = () => {
     setIsFollowed((prev) => !prev);
   };
+
+  console.log("Club Data:", clubData);
+  console.log("League Club Data:", leagueClubData);
+  console.log("leagueId:", leagueClubData.leagueId);
 
   // Fetch league information
   const fetchLeagueInformation = async () => {
@@ -28,7 +31,10 @@ export default function ClubCard({ clubData, leagueClubData}) {
     return response.data;
   };
 
-  const {data: league,isLoadingLeague, errorLeague} = useQuery(["leagueInformation", leagueClubData.leagueId], fetchLeagueInformation, { enabled: !!leagueClubData.leagueId});
+  const {data: league,isLoading: isLoadingLeague, error: errorLeague} = useQuery(
+    ["leagueInformation", leagueClubData.leagueId],
+     fetchLeagueInformation, 
+     { enabled: !!leagueClubData.leagueId});
 
   if (isLoadingLeague) {
     console.log("League data is loading...");
@@ -37,11 +43,14 @@ export default function ClubCard({ clubData, leagueClubData}) {
 
   if (errorLeague || !league) {
     console.error("Error fetching league data:", errorLeague);
+    const errorMessage =
+        errorLeague?.response?.data?.message || // API-specific error message
+        errorLeague?.message || // Generic Axios error message
+        "Unknown error"; // Fallback message
     return (
-      <div>
-        An error has occurred while fetching league data:{" "}
-        {errorLeague?.message || "Unknown error"}
-      </div>
+        <div>
+            An error has occurred while fetching league data: {errorMessage}
+        </div>
     );
   }
 
