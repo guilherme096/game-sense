@@ -73,7 +73,7 @@ def generate_yellow_card_events(
     player_yellow_count = {}  # Track yellow cards for players across all teams
 
     for team in teams:
-        n_yellow_cards = random.randint(0, 6)
+        n_yellow_cards = random.randint(0, 5)
         for _ in range(n_yellow_cards):
             while True:
                 player = team.starting_squad[random.randint(0, len(team.starting_squad) - 1)]
