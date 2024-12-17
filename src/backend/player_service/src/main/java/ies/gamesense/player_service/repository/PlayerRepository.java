@@ -1,19 +1,27 @@
 package ies.gamesense.player_service.repository;
 
+import ies.gamesense.player_service.model.Player;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import ies.gamesense.player_service.model.Player;
+import java.util.List;
 
 @Repository
-public interface PlayerRepository extends JpaRepository<Player, Long>, JpaSpecificationExecutor<Player>{
-    Iterable<Player> findByNameAndClub(String name, String club);
-    Iterable<Player> findByName(String name);
-    Iterable<Player> findByClub(String club);
-    Iterable<Player> findByGoals(int goals);
-    Iterable<Player> findByAssists(int assists);
-    Iterable<Player> findByFouls(int fouls);
-    Iterable<Player> findByYellowCards(int yellowCards);
-    Iterable<Player> findByRedCards(int redCards);
+public interface PlayerRepository extends JpaRepository<Player, Long> {
+    List<Player> findByClubId(Long clubId);
+
+    @Query("SELECT p FROM Player p WHERE "
+            + "(:name IS NULL OR p.name LIKE %:name%) AND "
+            + "(:age IS NULL OR p.age = :age) AND "
+            + "(:position IS NULL OR p.position LIKE %:position%) AND"
+            + "(:surname IS NULL OR p.surname LIKE %:surname%)"
+            )
+    List<Player> findPlayersByCriteria(@Param("name") String name,
+                                       @Param("age") Integer age,
+                                       @Param("position") String position,
+                                       @Param("surname") String surname);
+
+
 }

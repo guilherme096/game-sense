@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="gamesense_db@localhost" uuid="0f4b23c8-2898-4e8a-8f80-5b1d93c856a8">
+    <data-source source="LOCAL" name="gamesense_db@172.18.0.6" uuid="0f4b23c8-2898-4e8a-8f80-5b1d93c856a8">
       <driver-ref>mysql_aurora</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mariadb://localhost:3306/gamesense_db</jdbc-url>
+      <jdbc-url>jdbc:mariadb://172.18.0.3:3306/gamesense_db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

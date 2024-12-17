@@ -1,17 +1,18 @@
 import Home from "./routes/Home";
-import Template from "./routes/PageTemplate";
 import LeaguePageBase from "./routes/LeaguePageBase";
 import PlayerPageBase from "./routes/PlayerPageBase";
 import Game from "./routes/Game";
+import GamesPage from "./routes/GamesPage";
 import Login from "./routes/Login";
 import Register from "./routes/Register";
 import Profile from "./routes/Profile";
 import Club from "./routes/Club";
+import { RequireAuth } from "./routes/RequireAuth";
 import { Helmet } from 'react-helmet';
 
 export const routesList = [
     {
-        path: "/",
+        path: "/home",
         element: (
           <>
             <Helmet>
@@ -23,13 +24,13 @@ export const routesList = [
     },
 
     {
-        path: "/template",
+        path: "/gamesPage",
         element: (
           <>
             <Helmet>
               <title>GameSense - Template</title>
             </Helmet>
-            <Template />
+            <GamesPage />
           </>
         ),
     },
@@ -47,19 +48,31 @@ export const routesList = [
     },
 
     {
-        path: "/game/:id",
+        path: "/live/:id",
         element: (
           <>
             <Helmet>
               <title>GameSense - Game</title>
             </Helmet>
-            <Game />
+            <Game isLive={true} />
           </>
         ),
     },
 
     {
-        path: "/playerPage",
+      path: "/game/:id",
+      element: (
+        <>
+          <Helmet>
+            <title>GameSense - Game</title>
+          </Helmet>
+          <Game isLive={false} />
+        </>
+      ),
+    },
+
+    {
+        path: "/player/:id",
         element: (
           <>
             <Helmet>
@@ -71,7 +84,7 @@ export const routesList = [
     },
 
     {
-        path: "/login",
+        path: "/",
         element: (
           <>
             <Helmet>
@@ -97,17 +110,19 @@ export const routesList = [
     {
         path: "/profile",
         element: (
+          <RequireAuth>
           <>
             <Helmet>
               <title>GameSense - Profile</title>
             </Helmet>
             <Profile />
           </>
+          </RequireAuth>
         ),
     },
 
     {
-        path: "/club",
+        path: "/club/:id",
         element: (
           <>
             <Helmet>

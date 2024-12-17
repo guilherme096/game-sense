@@ -7,13 +7,12 @@ import ies.gamesense.live_game_service.entities.GameStatistics;
 import ies.gamesense.live_game_service.entities.Match;
 
 public interface LiveService {
+
     List<Match> getLiveGames();
 
     Match getLiveById(String id);
 
-    void createLive(Match live);
-
-    GameStatistics getGameStatistics(String id);
+    Map<Integer, GameStatistics> getGameStatistics(String id);
 
     boolean existsNewEvent(String id, Long lastEventId);
 
@@ -22,4 +21,8 @@ public interface LiveService {
     String getCurrentMVP(String id);
 
     List<String> getTopStats(String id);
+
+    Map<String, String> getBasicInfo(String id);
+
+    void endMatch(String id) throws Exception;
 }
