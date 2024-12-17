@@ -127,6 +127,21 @@ def generate_substitution_events(game: Game, in_players, out_players) -> list[Su
     in_player_ids = set()
     out_player_ids = set()
 
+    # Define the position compatibility map
+    position_compatibility = {
+        1:[1],
+        2:[2,3],
+        3:[2,3],
+        4:[4,5],
+        5:[4,5],
+        6:[6,8,10],
+        8:[6,8,10],
+        10:[6,8,10],
+        7:[7,9,11],
+        9:[7,9,11],
+        11:[7,9,11]
+    }
+
     for team in teams:
         n_substitutions = random.randint(0, 3)
 
@@ -154,13 +169,24 @@ def generate_substitution_events(game: Game, in_players, out_players) -> list[Su
                     attempts += 1
                     continue
 
-                # Check position compatibility
-                position_match = any(
-                    pos in player_out.positions
-                    for pos in player_in.positions
-                )
+                # Check position compatibility using the position compatibility map
+                positions_in = player_in.positions  # This can be a list for player_in
+                positions_out = player_out.positions  # Can be a list for player_out
 
-                if not position_match:
+                # Iterate over the list of positions_out if there are multiple positions
+                compatible = False
+                for pos_out in positions_out:
+                    compatible_positions = position_compatibility.get(pos_out, set())
+
+                    # Check if any of the positions_in match the compatible positions
+                    for pos_in in positions_in:
+                        if pos_in in compatible_positions:
+                            compatible = True
+                            break
+                    if compatible:
+                        break
+
+                if not compatible:
                     attempts += 1
                     continue
 
@@ -186,6 +212,7 @@ def generate_substitution_events(game: Game, in_players, out_players) -> list[Su
                 break
 
     return substitutions
+
 
 def generate_injury_events(
     game: Game, minutes_used: set[int], in_players, out_players
