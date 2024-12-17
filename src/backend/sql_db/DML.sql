@@ -8,24 +8,24 @@ VALUES
 -- Club Table
 INSERT INTO club (name, country, starred, logo, country_flag)
 VALUES
-    ('Man United', 'England', FALSE, 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/640px-Manchester_United_FC_crest.svg.png', ''),
-    ('Liverpool', 'England', FALSE, 'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png', ''),
-    ('Chelsea', 'England', FALSE, 'https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/1200px-Chelsea_FC.svg.png', ''),
-    ('Aston Villa', 'England', FALSE, 'https://upload.wikimedia.org/wikipedia/pt/2/29/Aston_Villa_FC_2024_logo.png', ''),
-    ('FC Lixa', 'Portugal', TRUE, 'https://www.zerozero.pt/img/logos/equipas/3595_imgbank.png', ''),
-    ('VC Santarem', 'Portugal', FALSE, 'https://www.zerozero.pt/img/logos/equipas/107853_imgbank_1729874648.png', ''),
-    ('Vizela', 'Portugal', FALSE, 'https://i.pinimg.com/originals/a1/b0/cc/a1b0ccd8981605b592f8d755666ffa28.png', ''),
-    ('Uniao de Leiria', 'Portugal', FALSE, 'https://www.uniaodeleiria.pt/wp-content/uploads/2023/12/cropped-cropped-UDL-redondo.png', ''),
-    ('Real Madrid', 'Spain', FALSE, 'https://logodownload.org/wp-content/uploads/2016/03/real-madrid-logo-1-1.png', 'spain_flag.png'),
-    ('Al Nassr', 'Saudi Arabia', FALSE, 'https://upload.wikimedia.org/wikipedia/pt/6/65/Al-Nassr_Football_Club.png', ''),
-    ('Barcelona', 'Spain', FALSE, 'https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/800px-FC_Barcelona_%28crest%29.svg.png', 'spain_flag.png'),
-    ('Wolves', 'England', FALSE, 'https://seeklogo.com/images/W/wolves-logo-54BADC5EB5-seeklogo.com.png', ''),
-    ('Man City', 'England', FALSE, 'https://cdn.freebiesupply.com/images/large/2x/manchester-city-logo-png-transparent.png', ''),
-    ('FC Porto', 'Portugal', FALSE, 'https://upload.wikimedia.org/wikipedia/pt/c/c5/F.C._Porto_logo.png', ''),
-    ('SL Benfica', 'Portugal', FALSE, 'https://upload.wikimedia.org/wikipedia/sco/thumb/a/a2/SL_Benfica_logo.svg/1200px-SL_Benfica_logo.svg.png', ''),
-    ('Sporting CP', 'Portugal', FALSE, 'https://logodownload.org/wp-content/uploads/2019/03/sporting-clube-de-portugal-logo-escudo.png', ''),
-    ('Juventus', 'Italy', FALSE, 'https://seeklogo.com/images/F/fc-juventus-logo-A48B34A764-seeklogo.com.png', ''),
-    ('Ath Madrid', 'Spain', FALSE, 'https://upload.wikimedia.org/wikipedia/pt/thumb/c/c1/Atletico_Madrid_logo.svg/1200px-Atletico_Madrid_logo.svg.png', 'spain_flag.png');
+    ('Man United', 'England', FALSE, 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/640px-Manchester_United_FC_crest.svg.png', 'https://cdn.britannica.com/44/344-050-94536674/Flag-England.jpg'),
+    ('Liverpool', 'England', FALSE, 'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png', 'https://cdn.britannica.com/44/344-050-94536674/Flag-England.jpg'),
+    ('Chelsea', 'England', FALSE, 'https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/1200px-Chelsea_FC.svg.png', 'https://cdn.britannica.com/44/344-050-94536674/Flag-England.jpg'),
+    ('Aston Villa', 'England', FALSE, 'https://upload.wikimedia.org/wikipedia/pt/2/29/Aston_Villa_FC_2024_logo.png', 'https://cdn.britannica.com/44/344-050-94536674/Flag-England.jpg'),
+    ('FC Lixa', 'Portugal', TRUE, 'https://www.zerozero.pt/img/logos/equipas/3595_imgbank.png', 'flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png'),
+    ('VC Santarem', 'Portugal', FALSE, 'https://www.zerozero.pt/img/logos/equipas/107853_imgbank_1729874648.png', 'flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png'),
+    ('Vizela', 'Portugal', FALSE, 'https://i.pinimg.com/originals/a1/b0/cc/a1b0ccd8981605b592f8d755666ffa28.png', 'flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png'),
+    ('Uniao de Leiria', 'Portugal', FALSE, 'https://www.uniaodeleiria.pt/wp-content/uploads/2023/12/cropped-cropped-UDL-redondo.png', 'flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png'),
+    ('Real Madrid', 'Spain', FALSE, 'https://logodownload.org/wp-content/uploads/2016/03/real-madrid-logo-1-1.png', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg'),
+    ('Al Nassr', 'Saudi Arabia', FALSE, 'https://upload.wikimedia.org/wikipedia/pt/6/65/Al-Nassr_Football_Club.png', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/1280px-Flag_of_Saudi_Arabia.svg.png'),
+    ('Barcelona', 'Spain', FALSE, 'https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/800px-FC_Barcelona_%28crest%29.svg.png', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg'),
+    ('Wolves', 'England', FALSE, 'https://seeklogo.com/images/W/wolves-logo-54BADC5EB5-seeklogo.com.png', 'https://cdn.britannica.com/44/344-050-94536674/Flag-England.jpg'),
+    ('Man City', 'England', FALSE, 'https://cdn.freebiesupply.com/images/large/2x/manchester-city-logo-png-transparent.png', 'https://cdn.britannica.com/44/344-050-94536674/Flag-England.jpg'),
+    ('FC Porto', 'Portugal', FALSE, 'https://upload.wikimedia.org/wikipedia/pt/c/c5/F.C._Porto_logo.png', 'flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png'),
+    ('SL Benfica', 'Portugal', FALSE, 'https://upload.wikimedia.org/wikipedia/sco/thumb/a/a2/SL_Benfica_logo.svg/1200px-SL_Benfica_logo.svg.png', 'flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png'),
+    ('Sporting CP', 'Portugal', FALSE, 'https://logodownload.org/wp-content/uploads/2019/03/sporting-clube-de-portugal-logo-escudo.png', 'flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png'),
+    ('Juventus', 'Italy', FALSE, 'https://seeklogo.com/images/F/fc-juventus-logo-A48B34A764-seeklogo.com.png', 'https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/220px-Flag_of_Italy.svg.png'),
+    ('Ath Madrid', 'Spain', FALSE, 'https://upload.wikimedia.org/wikipedia/pt/thumb/c/c1/Atletico_Madrid_logo.svg/1200px-Atletico_Madrid_logo.svg.png', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg');
 
 -- League_Club Table
 INSERT INTO league_club (league_id, club_id, matches_played, points, wins, draws, losses, goals_scored, goals_conceded, goal_difference, place)
@@ -62,20 +62,20 @@ VALUES
 (18, 'Reinildo', 'Mandava', 30, 1.80, 74, 3, 'Mozambique', 'mozambique_flag.png', 23, FALSE),
 (18, 'Jose Maria', 'Gimenez', 29, 1.85, 80, 4, 'Uruguay', 'uruguay_flag.png', 2, FALSE),
 (18, 'Stefan', 'Savic', 33, 1.87, 81, 5, 'Montenegro', 'montenegro_flag.png', 15, FALSE),
-(18, 'Mario', 'Hermoso', 29, 1.84, 73, 5, 'Spain', 'spain_flag.png', 22, FALSE),
+(18, 'Mario', 'Hermoso', 29, 1.84, 73, 5, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 22, FALSE),
 
 -- Midfielders
-(18, 'Koke', 'Resurreccion', 32, 1.76, 74, 6, 'Spain', 'spain_flag.png', 6, FALSE),
+(18, 'Koke', 'Resurreccion', 32, 1.76, 74, 6, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 6, FALSE),
 (18, 'Rodrigo', 'De Paul', 30, 1.80, 70, 8, 'Argentina', 'argentina_flag.png', 5, FALSE),
-(18, 'Marcos', 'Llorente', 29, 1.84, 74, 8, 'Spain', 'spain_flag.png', 14, FALSE),
-(18, 'Saul', 'Niguez', 29, 1.84, 76, 8, 'Spain', 'spain_flag.png', 8, FALSE),
+(18, 'Marcos', 'Llorente', 29, 1.84, 74, 8, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 14, FALSE),
+(18, 'Saul', 'Niguez', 29, 1.84, 76, 8, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 8, FALSE),
 (18, 'Thomas', 'Lemar', 29, 1.70, 62, 10, 'France', 'france_flag.png', 11, FALSE),
 
 -- Forwards
 (18, 'Antoine', 'Griezmann', 33, 1.76, 73, 7, 'France', 'france_flag.png', 7, FALSE),
 (18, 'Angel', 'Correa', 29, 1.71, 68, 7, 'Argentina', 'argentina_flag.png', 10, FALSE),
 (18, 'Memphis', 'Depay', 30, 1.76, 78, 9, 'Netherlands', 'netherlands_flag.png', 9, FALSE),
-(18, 'Alvaro', 'Morata', 32, 1.90, 85, 9, 'Spain', 'spain_flag.png', 19, FALSE),
+(18, 'Alvaro', 'Morata', 32, 1.90, 85, 9, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 19, FALSE),
 (18, 'Yannick', 'Carrasco', 31, 1.81, 73, 11, 'Belgium', 'belgium_flag.png', 21, FALSE),
 (18, 'Matheus', 'Cunha', 25, 1.84, 76, 11, 'Brazil', 'brazil_flag.png', 20, FALSE);
 
@@ -84,20 +84,20 @@ VALUES
 INSERT INTO player (club_id, name, surname, age, height, weight, position, country, country_flag, jersey_number, is_injured)
 VALUES
 -- Goalkeepers
-(17, 'Mattia', 'Perin', 32, 1.88, 77, 1, 'Italy', 'italy_flag.png', 1, FALSE),
-(17, 'Carlo', 'Pinsoglio', 34, 1.91, 80, 1, 'Italy', 'italy_flag.png', 23, FALSE),
+(17, 'Mattia', 'Perin', 32, 1.88, 77, 1, 'Italy', 'https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/220px-Flag_of_Italy.svg.png', 1, FALSE),
+(17, 'Carlo', 'Pinsoglio', 34, 1.91, 80, 1, 'Italy', 'https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/220px-Flag_of_Italy.svg.png', 23, FALSE),
 
 -- Defenders
 (17, 'Danilo', 'Luiz da Silva', 33, 1.84, 78, 2, 'Brazil', 'brazil_flag.png', 6, FALSE),
-(17, 'Andrea', 'Cambiaso', 24, 1.81, 75, 3, 'Italy', 'italy_flag.png', 27, FALSE),
+(17, 'Andrea', 'Cambiaso', 24, 1.81, 75, 3, 'Italy', 'https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/220px-Flag_of_Italy.svg.png', 27, FALSE),
 (17, 'Gleison', 'Bremer', 27, 1.88, 80, 4, 'Brazil', 'brazil_flag.png', 3, FALSE),
-(17, 'Federico', 'Gatti', 26, 1.90, 82, 5, 'Italy', 'italy_flag.png', 4, FALSE),
+(17, 'Federico', 'Gatti', 26, 1.90, 82, 5, 'Italy', 'https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/220px-Flag_of_Italy.svg.png', 4, FALSE),
 (17, 'Pierre', 'Kalulu', 24, 1.82, 73, 2, 'France', 'france_flag.png', 15, FALSE),
 
 -- Midfielders
-(17, 'Manuel', 'Locatelli', 26, 1.85, 75, 6, 'Italy', 'italy_flag.png', 5, FALSE),
+(17, 'Manuel', 'Locatelli', 26, 1.85, 75, 6, 'Italy', 'https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/220px-Flag_of_Italy.svg.png', 5, FALSE),
 (17, 'Weston', 'McKennie', 26, 1.83, 84, 8, 'USA', 'usa_flag.png', 16, FALSE),
-(17, 'Nicolo', 'Fagioli', 23, 1.78, 70, 8, 'Italy', 'italy_flag.png', 21, FALSE),
+(17, 'Nicolo', 'Fagioli', 23, 1.78, 70, 8, 'Italy', 'https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/220px-Flag_of_Italy.svg.png', 21, FALSE),
 (17, 'Khephren', 'Thuram', 23, 1.92, 80, 6, 'France', 'france_flag.png', 19, FALSE),
 (17, 'Douglas', 'Luiz', 26, 1.75, 66, 8, 'Brazil', 'brazil_flag.png', 26, FALSE),
 
@@ -120,7 +120,7 @@ VALUES
 
 -- Defenders
 (16, 'Matheus', 'Reis', 29, 1.83, 78, 3, 'Brazil', 'brazil_flag.png', 2, FALSE),
-(16, 'Ivan', 'Fresneda', 20, 1.82, 78, 2, 'Spain', 'spain_flag.png', 22, FALSE),
+(16, 'Ivan', 'Fresneda', 20, 1.82, 78, 2, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 22, FALSE),
 (16, 'Goncalo', 'Inacio', 23, 1.86, 81, 4, 'Portugal', 'portugal_flag.png', 25, FALSE),
 (16, 'Ousmane', 'Diomande', 21, 1.90, 80, 5, 'Ivory Coast', 'ivory_coast_flag.png', 26, FALSE),
 (16, 'Jeremiah', 'St. Juste', 28, 1.84, 76, 5, 'Netherlands', 'netherlands_flag.png', 3, FALSE),
@@ -150,7 +150,7 @@ VALUES
 
 -- Defenders
 (15, 'Alexander', 'Bah', 26, 1.83, 76, 2, 'Denmark', 'denmark_flag.png', 6, FALSE),
-(15, 'Juan', 'Bernat', 31, 1.70, 67, 3, 'Spain', 'spain_flag.png', 14, FALSE),
+(15, 'Juan', 'Bernat', 31, 1.70, 67, 3, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 14, FALSE),
 (15, 'Nicolas', 'Otamendi', 36, 1.83, 81, 4, 'Argentina', 'argentina_flag.png', 30, FALSE),
 (15, 'Antonio', 'Silva', 21, 1.87, 79, 5, 'Portugal', 'portugal_flag.png', 66, FALSE),
 (15, 'David', 'Jurasek', 23, 1.83, 75, 3, 'Czech Republic', 'czech_republic_flag.png', 3, FALSE),
@@ -181,7 +181,7 @@ VALUES
 -- Defenders
 (14, 'Joao', 'Mario', 24, 1.78, 66, 2, 'Portugal', 'portugal_flag.png', 23, FALSE),
 (14, 'Francisco', 'Moura', 25, 1.81, 76, 3, 'Portugal', 'portugal_flag.png', 74, FALSE),
-(14, 'Ivan', 'Marcano', 37, 1.89, 77, 4, 'Spain', 'spain_flag.png', 5, FALSE),
+(14, 'Ivan', 'Marcano', 37, 1.89, 77, 4, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 5, FALSE),
 (14, 'Ze', 'Pedro', 27, 1.87, 80, 5, 'Portugal', 'portugal_flag.png', 97, FALSE),
 (14, 'Tiago', 'Djalo', 24, 1.90, 85, 5, 'Portugal', 'portugal_flag.png', 3, FALSE),
 
@@ -194,8 +194,8 @@ VALUES
 -- Forwards
 (14, 'Pepê', 'Azevedo', 27, 1.75, 69, 7, 'Brazil', 'brazil_flag.png', 11, FALSE),
 (14, 'Wenderson', 'Galeno', 27, 1.79, 69, 7, 'Brazil', 'brazil_flag.png', 13, FALSE),
-(14, 'Samu', 'Omorodion', 20, 1.93, 90, 9, 'Spain', 'spain_flag.png', 9, FALSE),
-(14, 'Fran', 'Navarro', 26, 1.79, 74, 9, 'Spain', 'spain_flag.png', 21, FALSE),
+(14, 'Samu', 'Omorodion', 20, 1.93, 90, 9, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 9, FALSE),
+(14, 'Fran', 'Navarro', 26, 1.79, 74, 9, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 21, FALSE),
 (14, 'Goncalo', 'Borges', 23, 1.84, 76, 11, 'Portugal', 'portugal_flag.png', 70, FALSE),
 (14, 'Daniel', 'Loader', 24, 1.82, 77, 11, 'England', '', 19, FALSE);
 
@@ -217,7 +217,7 @@ VALUES
 (13, 'Manuel', 'Akanji', 29, 1.87, 91, 5, 'Switzerland', 'switzerland_flag.png', 25, FALSE),
 
 -- Midfielders
-(13, 'Rodrigo', 'Hernandez Cascante', 28, 1.91, 82, 6, 'Spain', 'spain_flag.png', 16, FALSE),
+(13, 'Rodrigo', 'Hernandez Cascante', 28, 1.91, 82, 6, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 16, FALSE),
 (13, 'Mateo', 'Kovačic', 30, 1.77, 78, 8, 'Croatia', 'croatia_flag.png', 8, FALSE),
 (13, 'Phil', 'Foden', 24, 1.71, 70, 8, 'England', '', 47, FALSE),
 (13, 'Kevin', 'De Bruyne', 33, 1.81, 70, 10, 'Belgium', 'belgium_flag.png', 17, TRUE),
@@ -235,14 +235,14 @@ VALUES
 INSERT INTO player (club_id, name, surname, age, height, weight, position, country, country_flag, jersey_number, is_injured)
 VALUES
 -- Goalkeepers
-(12, 'Jose', 'Sa', 31, 1.92, 84, 1, 'Portugal', '', 1, FALSE),
+(12, 'Jose', 'Sa', 31, 1.92, 84, 1, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 1, FALSE),
 (12, 'Daniel', 'Bentley', 31, 1.88, 73, 1, 'England', '', 25, FALSE),
 
 -- Defenders
 (12, 'Matt', 'Doherty', 32, 1.85, 80, 2, 'Ireland', 'ireland_flag.png', 2, FALSE),
-(12, 'Nelson', 'Semedo', 30, 1.77, 69, 2, 'Portugal', '', 22, FALSE),
+(12, 'Nelson', 'Semedo', 30, 1.77, 69, 2, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 22, FALSE),
 (12, 'Rayan', 'Aït-Nouri', 23, 1.80, 70, 3, 'Algeria', 'algeria_flag.png', 3, FALSE),
-(12, 'Toti', 'Gomes', 25, 1.87, 72, 4, 'Portugal', '', 24, FALSE),
+(12, 'Toti', 'Gomes', 25, 1.87, 72, 4, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 24, FALSE),
 (12, 'Craig', 'Dawson', 34, 1.88, 82, 5, 'England', '', 15, FALSE),
 (12, 'Santiago', 'Bueno', 26, 1.90, 76, 5, 'Uruguay', 'uruguay_flag.png', 4, FALSE),
 
@@ -255,42 +255,42 @@ VALUES
 
 -- Forwards
 (12, 'Hwang', 'Hee-Chan', 28, 1.77, 77, 7, 'South Korea', 'south_korea_flag.png', 11, FALSE),
-(12, 'Goncalo', 'Guedes', 27, 1.79, 68, 7, 'Portugal', '', 29, FALSE),
+(12, 'Goncalo', 'Guedes', 27, 1.79, 68, 7, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 29, FALSE),
 (12, 'Matheus', 'Cunha', 25, 1.83, 76, 9, 'Brazil', 'brazil_flag.png', 10, FALSE),
 (12, 'Sasa', 'Kalajdzic', 27, 2.00, 90, 9, 'Austria', 'austria_flag.png', 18, FALSE),
 (12, 'Jorgen', 'Strand Larsen', 24, 1.93, 79, 9, 'Norway', 'norway_flag.png', 9, FALSE),
-(12, 'Carlos', 'Forbs', 20, 1.69, 62, 11, 'Portugal', '', 26, FALSE);
+(12, 'Carlos', 'Forbs', 20, 1.69, 62, 11, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 26, FALSE);
 
 
 -- Players Table for Vitoria Clube de Santarem
 INSERT INTO player (club_id, name, surname, age, height, weight, position, country, country_flag, jersey_number, is_injured)
 VALUES
 -- Goalkeepers
-(6, 'Miguel', 'Silva', 25, 1.87, 80, 1, 'Portugal', '', 1, FALSE),
-(6, 'Joao', 'Costa', 28, 1.90, 83, 1, 'Portugal', '', 13, FALSE),
+(6, 'Miguel', 'Silva', 25, 1.87, 80, 1, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 1, FALSE),
+(6, 'Joao', 'Costa', 28, 1.90, 83, 1, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 13, FALSE),
 
 -- Defenders
-(6, 'Rui', 'Almeida', 27, 1.81, 75, 2, 'Portugal', '', 2, FALSE),
-(6, 'Filipe', 'Sousa', 24, 1.79, 72, 3, 'Portugal', '', 3, FALSE),
-(6, 'Tiago', 'Pereira', 29, 1.85, 78, 4, 'Portugal', '', 4, FALSE),
-(6, 'Andre', 'Fernandes', 30, 1.88, 80, 5, 'Portugal', '', 5, FALSE),
-(6, 'Carlos', 'Vaz', 26, 1.82, 76, 5, 'Portugal', '', 14, FALSE),
-(6, 'Pedro', 'Matos', 22, 1.83, 73, 2, 'Portugal', '', 21, FALSE),
+(6, 'Rui', 'Almeida', 27, 1.81, 75, 2, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 2, FALSE),
+(6, 'Filipe', 'Sousa', 24, 1.79, 72, 3, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 3, FALSE),
+(6, 'Tiago', 'Pereira', 29, 1.85, 78, 4, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 4, FALSE),
+(6, 'Andre', 'Fernandes', 30, 1.88, 80, 5, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 5, FALSE),
+(6, 'Carlos', 'Vaz', 26, 1.82, 76, 5, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 14, FALSE),
+(6, 'Pedro', 'Matos', 22, 1.83, 73, 2, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 21, FALSE),
 
 -- Midfielders
-(6, 'Diogo', 'Lopes', 28, 1.80, 74, 6, 'Portugal', '', 6, FALSE),
-(6, 'Joao', 'Martins', 25, 1.75, 71, 8, 'Portugal', '', 8, FALSE),
-(6, 'Goncalo', 'Amaral', 23, 1.78, 70, 8, 'Portugal', '', 20, FALSE),
-(6, 'Guilherme', 'Rosa', 27, 1.79, 72, 10, 'Portugal', '', 10, FALSE),
+(6, 'Diogo', 'Lopes', 28, 1.80, 74, 6, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 6, FALSE),
+(6, 'Joao', 'Martins', 25, 1.75, 71, 8, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 8, FALSE),
+(6, 'Goncalo', 'Amaral', 23, 1.78, 70, 8, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 20, FALSE),
+(6, 'Guilherme', 'Rosa', 27, 1.79, 72, 10, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 10, FALSE),
 
 -- Forwards
-(6, 'Nuno', 'Silva', 24, 1.76, 70, 7, 'Portugal', '', 7, FALSE),
-(6, 'Vasco', 'Costa', 29, 1.80, 73, 7, 'Portugal', '', 11, FALSE),
-(6, 'Luis', 'Oliveira', 30, 1.85, 76, 9, 'Portugal', '', 9, FALSE),
-(6, 'David', 'Barros', 22, 1.83, 75, 9, 'Portugal', '', 19, FALSE),
-(6, 'Eduardo', 'Gomes', 28, 1.78, 72, 11, 'Portugal', '', 18, FALSE),
-(6, 'Fernando', 'Ramos', 24, 1.79, 71, 11, 'Portugal', '', 17, FALSE),
-(6, 'Jorge', 'Rodrigues', 26, 1.81, 75, 11, 'Portugal', '', 16, FALSE);
+(6, 'Nuno', 'Silva', 24, 1.76, 70, 7, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 7, FALSE),
+(6, 'Vasco', 'Costa', 29, 1.80, 73, 7, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 11, FALSE),
+(6, 'Luis', 'Oliveira', 30, 1.85, 76, 9, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 9, FALSE),
+(6, 'David', 'Barros', 22, 1.83, 75, 9, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 19, FALSE),
+(6, 'Eduardo', 'Gomes', 28, 1.78, 72, 11, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 18, FALSE),
+(6, 'Fernando', 'Ramos', 24, 1.79, 71, 11, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 17, FALSE),
+(6, 'Jorge', 'Rodrigues', 26, 1.81, 75, 11, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 16, FALSE);
 
 
 
@@ -308,7 +308,7 @@ VALUES
 (4, 'Ian', 'Maatsen', 22, 1.67, 65, 3, 'Netherlands', 'netherlands_flag.png', 22, FALSE),
 (4, 'Ezri', 'Konsa', 27, 1.83, 77, 4, 'England', '', 4, FALSE),
 (4, 'Diego', 'Carlos', 31, 1.85, 79, 5, 'Brazil', 'brazil_flag.png', 3, FALSE),
-(4, 'Pau', 'Torres', 27, 1.91, 80, 5, 'Spain', 'spain_flag.png', 14, FALSE),
+(4, 'Pau', 'Torres', 27, 1.91, 80, 5, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 14, FALSE),
 
 -- Midfielders
 (4, 'Boubacar', 'Kamara', 25, 1.84, 68, 6, 'France', 'france_flag.png', 44, FALSE),
@@ -329,14 +329,14 @@ VALUES
 INSERT INTO player (club_id, name, surname, age, height, weight, position, country, country_flag, jersey_number, is_injured)
 VALUES
 -- Goalkeepers
-(3, 'Robert', 'Sanchez', 27, 1.97, 90, 1, 'Spain', 'spain_flag.png', 1, FALSE),
+(3, 'Robert', 'Sanchez', 27, 1.97, 90, 1, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 1, FALSE),
 (3, 'Marcus', 'Bettinelli', 32, 1.94, 90, 1, 'England', '', 13, FALSE),
 
 -- Defenders
 (3, 'Reece', 'James', 25, 1.82, 82, 2, 'England', '', 24, FALSE),
 (3, 'Malo', 'Gusto', 21, 1.79, 70, 2, 'France', 'france_flag.png', 27, FALSE),
 (3, 'Ben', 'Chilwell', 28, 1.81, 77, 3, 'England', '', 21, FALSE),
-(3, 'Marc', 'Cucurella', 26, 1.72, 66, 3, 'Spain', 'spain_flag.png', 3, FALSE),
+(3, 'Marc', 'Cucurella', 26, 1.72, 66, 3, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 3, FALSE),
 (3, 'Axel', 'Disasi', 26, 1.90, 86, 4, 'France', 'france_flag.png', 2, FALSE),
 (3, 'Benoît', 'Badiashile', 23, 1.94, 75, 5, 'France', 'france_flag.png', 5, FALSE),
 (3, 'Levi', 'Colwill', 21, 1.87, 83, 5, 'England', '', 6, FALSE),
@@ -360,30 +360,30 @@ INSERT INTO player (club_id, name, surname, age, height, weight, position, count
 VALUES
 -- Goalkeepers
 (11, 'Marc-Andre', 'ter Stegen', 32, 1.87, 85, 1, 'Germany', 'germany_flag.png', 1, FALSE),
-(11, 'Inaki', 'Pena', 25, 1.84, 77, 1, 'Spain', 'spain_flag.png', 13, FALSE),
+(11, 'Inaki', 'Pena', 25, 1.84, 77, 1, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 13, FALSE),
 
 -- Defenders
 (11, 'Jules', 'Kounde', 26, 1.78, 70, 2, 'France', 'france_flag.png', 23, FALSE),
-(11, 'Sergi', 'Roberto', 32, 1.78, 68, 2, 'Spain', 'spain_flag.png', 20, FALSE),
-(11, 'Alejandro', 'Balde', 21, 1.75, 69, 3, 'Spain', 'spain_flag.png', 3, FALSE),
-(11, 'Marcos', 'Alonso', 34, 1.89, 85, 3, 'Spain', 'spain_flag.png', 17, FALSE),
+(11, 'Sergi', 'Roberto', 32, 1.78, 68, 2, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 20, FALSE),
+(11, 'Alejandro', 'Balde', 21, 1.75, 69, 3, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 3, FALSE),
+(11, 'Marcos', 'Alonso', 34, 1.89, 85, 3, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 17, FALSE),
 (11, 'Ronald', 'Araujo', 25, 1.88, 79, 4, 'Uruguay', 'uruguay_flag.png', 4, FALSE),
 (11, 'Andreas', 'Christensen', 28, 1.87, 82, 5, 'Denmark', 'denmark_flag.png', 15, FALSE),
-(11, 'Inigo', 'Martinez', 33, 1.82, 81, 5, 'Spain', 'spain_flag.png', 5, FALSE),
+(11, 'Inigo', 'Martinez', 33, 1.82, 81, 5, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 5, FALSE),
 
 -- Midfielders
-(11, 'Oriol', 'Romeu', 33, 1.83, 83, 6, 'Spain', 'spain_flag.png', 18, FALSE),
+(11, 'Oriol', 'Romeu', 33, 1.83, 83, 6, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 18, FALSE),
 (11, 'Frenkie', 'de Jong', 27, 1.80, 74, 8, 'Netherlands', 'netherlands_flag.png', 21, FALSE),
-(11, 'Gavi', NULL, 20, 1.73, 70, 8, 'Spain', 'spain_flag.png', 6, FALSE),
-(11, 'Pedri', NULL, 22, 1.74, 65, 10, 'Spain', 'spain_flag.png', 8, FALSE),
+(11, 'Gavi', NULL, 20, 1.73, 70, 8, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 6, FALSE),
+(11, 'Pedri', NULL, 22, 1.74, 65, 10, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 8, FALSE),
 (11, 'İlkay', 'Gundogan', 34, 1.80, 79, 10, 'Germany', 'germany_flag.png', 22, FALSE),
 
 -- Forwards
 (11, 'Raphinha', NULL, 28, 1.76, 68, 7, 'Brazil', 'brazil_flag.png', 11, FALSE),
-(11, 'Ferran', 'Torres', 24, 1.84, 77, 7, 'Spain', 'spain_flag.png', 7, FALSE),
-(11, 'Lamine', 'Yamal', 17, 1.80, 65, 7, 'Spain', 'spain_flag.png', 27, FALSE),
+(11, 'Ferran', 'Torres', 24, 1.84, 77, 7, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 7, FALSE),
+(11, 'Lamine', 'Yamal', 17, 1.80, 65, 7, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 27, FALSE),
 (11, 'Robert', 'Lewandowski', 36, 1.85, 81, 9, 'Poland', 'poland_flag.png', 9, FALSE),
-(11, 'Joao', 'Felix', 25, 1.80, 70, 11, 'Portugal', '', 14, FALSE);
+(11, 'Joao', 'Felix', 25, 1.80, 70, 11, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 14, FALSE);
 
 
 -- Players Table for Manchester United FC
@@ -394,7 +394,7 @@ VALUES
 (1, 'Altay', 'Bayındır', 26, 1.98, 88, 1, 'Turkey', 'turkey_flag.png', 1, FALSE),
 
 -- Defenders
-(1, 'Diogo', 'Dalot', 25, 1.83, 76, 2, 'Portugal', '', 20, FALSE),
+(1, 'Diogo', 'Dalot', 25, 1.83, 76, 2, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 20, FALSE),
 (1, 'Noussair', 'Mazraoui', 27, 1.83, 63, 2, 'Morocco', 'morocco_flag.png', 3, FALSE),
 (1, 'Luke', 'Shaw', 29, 1.85, 75, 3, 'England', '', 23, FALSE),
 (1, 'Tyrell', 'Malacia', 25, 1.69, 67, 3, 'Netherlands', 'netherlands_flag.png', 12, FALSE),
@@ -405,7 +405,7 @@ VALUES
 -- Midfielders
 (1, 'Casemiro', NULL, 32, 1.85, 84, 6, 'Brazil', 'brazil_flag.png', 18, FALSE),
 (1, 'Manuel', 'Ugarte', 23, 1.82, 83, 6, 'Uruguay', 'uruguay_flag.png', 25, FALSE),
-(1, 'Bruno', 'Fernandes', 30, 1.79, 69, 8, 'Portugal', '', 8, FALSE),
+(1, 'Bruno', 'Fernandes', 30, 1.79, 69, 8, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 8, FALSE),
 (1, 'Mason', 'Mount', 25, 1.81, 70, 8, 'England', '', 7, FALSE),
 (1, 'Christian', 'Eriksen', 32, 1.82, 76, 8, 'Denmark', 'denmark_flag.png', 14, FALSE),
 
@@ -428,19 +428,19 @@ VALUES
 (10, 'Sultan', 'Al-Ghannam', 30, 1.73, 67, 2, 'Saudi Arabia', 'https://www.google.com/imgres?q=saudi%20arabia%20flag&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F0d%2FFlag_of_Saudi_Arabia.svg%2F1280px-Flag_of_Saudi_Arabia.svg.png&imgrefurl=https%3A%2F%2Fpt.m.wikipedia.org%2Fwiki%2FFicheiro%3AFlag_of_Saudi_Arabia.svg&docid=28AYD-CgnqG8zM&tbnid=inBFH9e1aElxkM&vet=12ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA..i&w=1280&h=854&hcb=2&ved=2ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA', 2, FALSE),
 (10, 'Nawaf', 'Boushal', 25, 1.74, 64, 2, 'Saudi Arabia', 'https://www.google.com/imgres?q=saudi%20arabia%20flag&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F0d%2FFlag_of_Saudi_Arabia.svg%2F1280px-Flag_of_Saudi_Arabia.svg.png&imgrefurl=https%3A%2F%2Fpt.m.wikipedia.org%2Fwiki%2FFicheiro%3AFlag_of_Saudi_Arabia.svg&docid=28AYD-CgnqG8zM&tbnid=inBFH9e1aElxkM&vet=12ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA..i&w=1280&h=854&hcb=2&ved=2ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA', 12, FALSE),
 (10, 'Ali', 'Lajami', 28, 1.78, 76, 4, 'Saudi Arabia', 'https://www.google.com/imgres?q=saudi%20arabia%20flag&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F0d%2FFlag_of_Saudi_Arabia.svg%2F1280px-Flag_of_Saudi_Arabia.svg.png&imgrefurl=https%3A%2F%2Fpt.m.wikipedia.org%2Fwiki%2FFicheiro%3AFlag_of_Saudi_Arabia.svg&docid=28AYD-CgnqG8zM&tbnid=inBFH9e1aElxkM&vet=12ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA..i&w=1280&h=854&hcb=2&ved=2ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA', 78, FALSE),
-(10, 'Aymeric', 'Laporte', 30, 1.89, 86, 5, 'Spain', 'spain_flag.png', 27, FALSE),
+(10, 'Aymeric', 'Laporte', 30, 1.89, 86, 5, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 27, FALSE),
 (10, 'Mohammed', 'Al-Fatil', 32, 1.80, 71, 5, 'Saudi Arabia', 'https://www.google.com/imgres?q=saudi%20arabia%20flag&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F0d%2FFlag_of_Saudi_Arabia.svg%2F1280px-Flag_of_Saudi_Arabia.svg.png&imgrefurl=https%3A%2F%2Fpt.m.wikipedia.org%2Fwiki%2FFicheiro%3AFlag_of_Saudi_Arabia.svg&docid=28AYD-CgnqG8zM&tbnid=inBFH9e1aElxkM&vet=12ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA..i&w=1280&h=854&hcb=2&ved=2ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA', 4, FALSE),
 (10, 'Mohamed', 'Simakan', 24, 1.87, 82, 4, 'France', 'france_flag.png', 3, FALSE),
 
 -- Midfielders
 (10, 'Marcelo', 'Brozovic', 32, 1.81, 68, 6, 'Croatia', 'croatia_flag.png', 11, FALSE),
 (10, 'Abdullah', 'Al-Khaibari', 28, 1.75, 68, 6, 'Saudi Arabia', 'https://www.google.com/imgres?q=saudi%20arabia%20flag&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F0d%2FFlag_of_Saudi_Arabia.svg%2F1280px-Flag_of_Saudi_Arabia.svg.png&imgrefurl=https%3A%2F%2Fpt.m.wikipedia.org%2Fwiki%2FFicheiro%3AFlag_of_Saudi_Arabia.svg&docid=28AYD-CgnqG8zM&tbnid=inBFH9e1aElxkM&vet=12ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA..i&w=1280&h=854&hcb=2&ved=2ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA', 17, FALSE),
-(10, 'Otavio', NULL, 29, 1.72, 65, 8, 'Portugal', '', 25, FALSE),
+(10, 'Otavio', NULL, 29, 1.72, 65, 8, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 25, FALSE),
 (10, 'Sami', 'Al-Najei', 27, 1.76, 67, 10, 'Saudi Arabia', 'https://www.google.com/imgres?q=saudi%20arabia%20flag&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F0d%2FFlag_of_Saudi_Arabia.svg%2F1280px-Flag_of_Saudi_Arabia.svg.png&imgrefurl=https%3A%2F%2Fpt.m.wikipedia.org%2Fwiki%2FFicheiro%3AFlag_of_Saudi_Arabia.svg&docid=28AYD-CgnqG8zM&tbnid=inBFH9e1aElxkM&vet=12ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA..i&w=1280&h=854&hcb=2&ved=2ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA', 14, FALSE),
 (10, 'Anderson', 'Talisca', 30, 1.91, 80, 10, 'Brazil', 'brazil_flag.png', 94, FALSE),
 
 -- Forwards
-(10, 'Cristiano', 'Ronaldo', 39, 1.87, 83, 9, 'Portugal', '', 7, FALSE),
+(10, 'Cristiano', 'Ronaldo', 39, 1.87, 83, 9, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 7, FALSE),
 (10, 'Sadio', 'Mane', 32, 1.75, 69, 7, 'Senegal', 'senegal_flag.png', 10, FALSE),
 (10, 'Angelo', NULL, 19, 1.80, 78, 7, 'Brazil', 'brazil_flag.png', 20, FALSE),
 (10, 'Abdulrahman', 'Ghareeb', 27, 1.65, 60, 11, 'Saudi Arabia', 'https://www.google.com/imgres?q=saudi%20arabia%20flag&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F0d%2FFlag_of_Saudi_Arabia.svg%2F1280px-Flag_of_Saudi_Arabia.svg.png&imgrefurl=https%3A%2F%2Fpt.m.wikipedia.org%2Fwiki%2FFicheiro%3AFlag_of_Saudi_Arabia.svg&docid=28AYD-CgnqG8zM&tbnid=inBFH9e1aElxkM&vet=12ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA..i&w=1280&h=854&hcb=2&ved=2ahUKEwimgOXdta2KAxUyRfEDHVw6LAYQM3oECBwQAA', 29, FALSE),
@@ -452,56 +452,56 @@ VALUES
 INSERT INTO player (club_id, name, surname, age, height, weight, position, country, country_flag, jersey_number, is_injured)
 VALUES
 -- Goalkeepers
-(8, 'Fabio', 'Ferreira', 26, 1.88, 80, 1, 'Portugal', '', 29, FALSE),
+(8, 'Fabio', 'Ferreira', 26, 1.88, 80, 1, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 29, FALSE),
 (8, 'Pawel', 'Kieszek', 40, 1.88, 84, 1, 'Poland', 'poland_flag.png', 1, FALSE),
 
 -- Defenders
-(8, 'Tiago', 'Ferreira', 31, 1.83, 75, 4, 'Portugal', '', 23, FALSE),
-(8, 'Marco', 'Baixinho', 35, 1.85, 78, 5, 'Portugal', '', 6, FALSE),
-(8, 'Bura', 'Silva', 35, 1.90, 82, 5, 'Portugal', '', 4, FALSE),
+(8, 'Tiago', 'Ferreira', 31, 1.83, 75, 4, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 23, FALSE),
+(8, 'Marco', 'Baixinho', 35, 1.85, 78, 5, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 6, FALSE),
+(8, 'Bura', 'Silva', 35, 1.90, 82, 5, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 4, FALSE),
 (8, 'Victor', 'Rofino', 22, 1.85, 77, 4, 'Brazil', 'brazil_flag.png', 5, FALSE),
-(8, 'Ze', 'Vitor', 22, 1.87, 79, 5, 'Portugal', '', 14, FALSE),
-(8, 'Joao', 'Dias', 36, 1.80, 74, 2, 'Portugal', '', 2, FALSE),
-(8, 'Joao', 'Goncalves', 25, 1.78, 70, 3, 'Portugal', '', 3, FALSE),
+(8, 'Ze', 'Vitor', 22, 1.87, 79, 5, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 14, FALSE),
+(8, 'Joao', 'Dias', 36, 1.80, 74, 2, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 2, FALSE),
+(8, 'Joao', 'Goncalves', 25, 1.78, 70, 3, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 3, FALSE),
 
 -- Midfielders
-(8, 'Diogo', 'Amado', 34, 1.80, 75, 6, 'Portugal', '', 8, FALSE),
-(8, 'Afonso', 'Valente', 24, 1.76, 70, 8, 'Portugal', '', 20, FALSE),
-(8, 'Jorge', 'Teixeira', 29, 1.82, 74, 8, 'Portugal', '', 21, FALSE),
+(8, 'Diogo', 'Amado', 34, 1.80, 75, 6, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 8, FALSE),
+(8, 'Afonso', 'Valente', 24, 1.76, 70, 8, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 20, FALSE),
+(8, 'Jorge', 'Teixeira', 29, 1.82, 74, 8, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 21, FALSE),
 (8, 'Vladyslav', 'Kobylianskyi', 25, 1.80, 72, 10, 'Ukraine', 'ukraine_flag.png', 10, FALSE),
-(8, 'Sergio', 'Ribeiro', 28, 1.75, 68, 7, 'Portugal', '', 7, FALSE),
+(8, 'Sergio', 'Ribeiro', 28, 1.75, 68, 7, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 7, FALSE),
 
 -- Forwards
-(8, 'Joao', 'Resende', 22, 1.83, 75, 9, 'Portugal', '', 9, FALSE),
+(8, 'Joao', 'Resende', 22, 1.83, 75, 9, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 9, FALSE),
 (8, 'Brayan', 'Rochez', 31, 1.83, 80, 9, 'Honduras', 'honduras_flag.png', 11, FALSE),
 (8, 'Lucho', 'Vega', 27, 1.78, 72, 11, 'Argentina', 'argentina_flag.png', 17, FALSE),
-(8, 'Joao', 'Roldao', 25, 1.80, 73, 11, 'Portugal', '', 19, FALSE),
-(8, 'Rui', 'Gomes', 26, 1.77, 70, 7, 'Portugal', '', 22, FALSE);
+(8, 'Joao', 'Roldao', 25, 1.80, 73, 11, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 19, FALSE),
+(8, 'Rui', 'Gomes', 26, 1.77, 70, 7, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 22, FALSE);
 
 
 -- Players Table
 INSERT INTO player (club_id, name, surname, age, height, weight, position, country, country_flag, jersey_number, is_injured)
 VALUES
 -- Lixa Players
-(5, 'Nico', 'Silva', 27, 1.80, 75, 1, 'Portugal', '', 1, FALSE),
-(5, 'Tiago', 'Moreira', 36, 1.78, 72, 2, 'Portugal', '', 6, FALSE),
-(5, 'Ivo', 'Magalhaes', 24, 1.75, 70, 2, 'Portugal', '', 2, FALSE),
-(5, 'Fabio', 'Teixeira', 26, 1.82, 74, 4, 'Portugal', '', 5, FALSE),
-(5, 'Raul', 'Babo', 35, 1.85, 76, 5, 'Portugal', '', 15, FALSE),
+(5, 'Nico', 'Silva', 27, 1.80, 75, 1, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 1, FALSE),
+(5, 'Tiago', 'Moreira', 36, 1.78, 72, 2, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 6, FALSE),
+(5, 'Ivo', 'Magalhaes', 24, 1.75, 70, 2, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 2, FALSE),
+(5, 'Fabio', 'Teixeira', 26, 1.82, 74, 4, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 5, FALSE),
+(5, 'Raul', 'Babo', 35, 1.85, 76, 5, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 15, FALSE),
 (5, 'Matheus', 'Carioca', 28, 1.77, 73, 3, 'Brazil', 'brazil_flag.png', 63, FALSE),
-(5, 'To', 'Jo', 34, 1.80, 75, 6, 'Portugal', '', 4, FALSE),
-(5, 'Pedro', 'Pinto', 23, 1.78, 72, 8, 'Portugal', '', 8, FALSE),
-(5, 'Dani', 'Pacheco', 20, 1.76, 70, 8, 'Portugal', '', 27, FALSE),
-(5, 'Mauro', 'Silva', 36, 1.79, 74, 10, 'Portugal', '', 70, FALSE),
+(5, 'To', 'Jo', 34, 1.80, 75, 6, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 4, FALSE),
+(5, 'Pedro', 'Pinto', 23, 1.78, 72, 8, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 8, FALSE),
+(5, 'Dani', 'Pacheco', 20, 1.76, 70, 8, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 27, FALSE),
+(5, 'Mauro', 'Silva', 36, 1.79, 74, 10, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 70, FALSE),
 (5, 'John', 'Abraham', 27, 1.81, 75, 7, 'Nigeria', 'nigeria_flag.png', 7, FALSE),
 (5, 'Henrique', 'Teixeira', 28, 1.83, 77, 9, 'Portugal', 'nigeria_flag.png', 11, FALSE),
-(5, 'Ze', 'Bruno', 21, 1.80, 74, 11, 'Portugal', '', 10, FALSE),
-(5, 'Paulo', 'Lopes', 18, 1.75, 70, 11, 'Portugal', '', 77, FALSE),
-(5, 'Leonardo', 'Silva', 19, 1.78, 72, 8, 'Portugal', '', 79, FALSE),
-(5, 'David', 'Ribeiro', 19, 1.76, 71, 2, 'Portugal', '', 66, FALSE),
-(5, 'Gil', 'Araujo', 19, 1.74, 70, 3, 'Portugal', '', 71, FALSE),
-(5, 'Hugo', 'Queiroz', 18, 1.77, 72, 8, 'Portugal', '', 13, FALSE),
-(5, 'Marco', 'Pereira', 23, 1.80, 75, 1, 'Portugal', '', 17, FALSE);
+(5, 'Ze', 'Bruno', 21, 1.80, 74, 11, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 10, FALSE),
+(5, 'Paulo', 'Lopes', 18, 1.75, 70, 11, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 77, FALSE),
+(5, 'Leonardo', 'Silva', 19, 1.78, 72, 8, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 79, FALSE),
+(5, 'David', 'Ribeiro', 19, 1.76, 71, 2, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 66, FALSE),
+(5, 'Gil', 'Araujo', 19, 1.74, 70, 3, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 71, FALSE),
+(5, 'Hugo', 'Queiroz', 18, 1.77, 72, 8, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 13, FALSE),
+(5, 'Marco', 'Pereira', 23, 1.80, 75, 1, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 17, FALSE);
 
 
 INSERT INTO player (club_id, name, surname, age, height, weight, position, country, country_flag, jersey_number, is_injured)
@@ -529,7 +529,7 @@ VALUES
 -- Forwards
 (2, 'Mohamed', 'Salah', 32, 1.75, 71, 7, 'Egypt', 'egypt_flag.png', 11, FALSE),
 (2, 'Luis', 'Diaz', 27, 1.80, 65, 7, 'Colombia', 'colombia_flag.png', 7, FALSE),
-(2, 'Diogo', 'Jota', 28, 1.78, 70, 9, 'Portugal', '', 20, FALSE),
+(2, 'Diogo', 'Jota', 28, 1.78, 70, 9, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 20, FALSE),
 (2, 'Darwin', 'Nunez', 25, 1.87, 81, 9, 'Uruguay', 'uruguay_flag.png', 9, FALSE),
 (2, 'Cody', 'Gakpo', 25, 1.93, 76, 11, 'Netherlands', 'netherlands_flag.png', 18, FALSE);
 
@@ -542,10 +542,10 @@ VALUES
 (9, 'Andriy', 'Lunin', 25, 1.91, 80, 1, 'Ukraine', 'ukraine_flag.png', 13, FALSE),
 
 -- Defenders
-(9, 'Dani', 'Carvajal', 32, 1.73, 73, 2, 'Spain', 'spain_flag.png', 2, FALSE),
-(9, 'Lucas', 'Vazquez', 33, 1.73, 70, 2, 'Spain', 'spain_flag.png', 17, FALSE),
+(9, 'Dani', 'Carvajal', 32, 1.73, 73, 2, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 2, FALSE),
+(9, 'Lucas', 'Vazquez', 33, 1.73, 70, 2, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 17, FALSE),
 (9, 'Ferland', 'Mendy', 29, 1.80, 73, 3, 'France', 'france_flag.png', 23, FALSE),
-(9, 'Fran', 'Garcia', 25, 1.67, 69, 3, 'Spain', 'spain_flag.png', 20, FALSE),
+(9, 'Fran', 'Garcia', 25, 1.67, 69, 3, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 20, FALSE),
 (9, 'Eder', 'Militao', 26, 1.86, 78, 4, 'Brazil', 'brazil_flag.png', 3, TRUE),
 (9, 'Antonio', 'Rudiger', 31, 1.90, 85, 4, 'Germany', 'germany_flag.png', 22, FALSE),
 (9, 'David', 'Alaba', 32, 1.80, 78, 5, 'Austria', 'austria_flag.png', 4, FALSE),
@@ -569,15 +569,15 @@ VALUES
 INSERT INTO player (club_id, name, surname, age, height, weight, position, country, country_flag, jersey_number, is_injured)
 VALUES
 -- Goalkeepers
-(7, 'Miguel', 'Morro', 24, 1.93, 82, 1, 'Spain', 'spain_flag.png', 13, FALSE),
-(7, 'Francesco', 'Ruberto', 31, 1.84, 80, 1, 'Italy', 'https://www.google.com/imgres?q=italy%20flag&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F0%2F03%2FFlag_of_Italy.svg%2F220px-Flag_of_Italy.svg.png&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FFlag_of_Italy&docid=jux9eKOMuj3rJM&tbnid=vLyJ_1XzpG_F3M&vet=12ahUKEwjMudjHta2KAxWPSvEDHTAnHJUQM3oECBoQAA..i&w=220&h=147&hcb=2&ved=2ahUKEwjMudjHta2KAxWPSvEDHTAnHJUQM3oECBoQAA', 1, FALSE),
+(7, 'Miguel', 'Morro', 24, 1.93, 82, 1, 'Spain', 'https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg', 13, FALSE),
+(7, 'Francesco', 'Ruberto', 31, 1.84, 80, 1, 'Italy', 'https://content.app-sources.com/s/39330979433008693/uploads/Country_Flags/Flag_of_Italy.svg-0896525.png?format=webp', 1, FALSE),
 
 -- Defenders
-(7, 'Anthony', 'Correia', 25, 1.85, 79, 2, 'Portugal', '', 41, FALSE),
-(7, 'Jorge', 'Xavier', 23, 1.86, 76, 2, 'Portugal', '', 77, FALSE),
+(7, 'Anthony', 'Correia', 25, 1.85, 79, 2, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 41, FALSE),
+(7, 'Jorge', 'Xavier', 23, 1.86, 76, 2, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 77, FALSE),
 (7, 'Orest', 'Lebedenko', 26, 1.74, 63, 3, 'Ukraine', 'ukraine_flag.png', 19, FALSE),
-(7, 'Joao', 'Reis', 32, 1.74, 66, 3, 'Portugal', '', 17, FALSE),
-(7, 'Mamadou', 'Mbaye', 26, 1.92, NULL, 4, 'Senegal', 'senegal_flag.png', 5, FALSE),
+(7, 'Joao', 'Reis', 32, 1.74, 66, 3, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 17, FALSE),
+(7, 'Mamadou', 'Mbaye', 26, 1.92, 80, 4, 'Senegal', 'senegal_flag.png', 5, FALSE),
 (7, 'Jean-Pierre', 'Rhyner', 28, 1.86, 75, 5, 'Peru', 'peru_flag.png', 4, FALSE),
 (7, 'Marco', 'Tol', 26, 1.89, 81, 5, 'Netherlands', 'netherlands_flag.png', 12, FALSE),
 
@@ -585,14 +585,14 @@ VALUES
 (7, 'Heinz', 'Morschel', 27, 1.90, 75, 6, 'Dominican Republic', 'dominican_republic_flag.png', 24, FALSE),
 (7, 'Aleksandar', 'Busnic', 26, 1.91, 76, 8, 'Serbia', 'serbia_flag.png', 22, FALSE),
 (7, 'Angel', 'Bastunov', 25, 1.83, 69, 8, 'Bulgaria', 'bulgaria_flag.png', 8, FALSE),
-(7, 'Rodrigo', 'Ramos', 20, 1.81, NULL, 8, 'Portugal', '', 21, FALSE),
-(7, 'Diogo', 'Nascimento', 22, 1.66, 61, 10, 'Portugal', '', 90, FALSE),
+(7, 'Rodrigo', 'Ramos', 20, 1.81, 80, 8, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 21, FALSE),
+(7, 'Diogo', 'Nascimento', 22, 1.66, 61, 10, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 90, FALSE),
 
 -- Forwards
-(7, 'Vivaldo', 'Semedo', 19, 1.92, NULL, 9, 'Portugal', '', 18, FALSE),
-(7, 'Rui', 'Machado', 25, 1.80, 70, 7, 'Portugal', '', 79, FALSE),
-(7, 'Kiko', 'Bondoso', 28, 1.70, 65, 7, 'Portugal', '', 10, FALSE),
-(7, 'Samu', 'Silva', 28, 1.78, 70, 11, 'Portugal', '', 20, FALSE),
+(7, 'Vivaldo', 'Semedo', 19, 1.92, 80, 9, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 18, FALSE),
+(7, 'Rui', 'Machado', 25, 1.80, 70, 7, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 79, FALSE),
+(7, 'Kiko', 'Bondoso', 28, 1.70, 65, 7, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 10, FALSE),
+(7, 'Samu', 'Silva', 28, 1.78, 70, 11, 'Portugal', ' flaghttps://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/1200px-Flag_of_Portugal.svg.png', 20, FALSE),
 (7, 'Alex', 'Mendez', 24, 1.78, 70, 11, 'United States', 'usa_flag.png', 19, FALSE);
 
 

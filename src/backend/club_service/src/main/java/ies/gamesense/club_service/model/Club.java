@@ -33,7 +33,7 @@ public class Club {
     private String country;
 
     @NotNull
-    @Column(name = "country_flag", nullable = false)
+    @Column(name = "country_flag", nullable = false, columnDefinition = "TEXT")
     private String countryFlag; // URL for country's flag
 
     @NotNull

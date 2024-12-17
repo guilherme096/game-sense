@@ -81,6 +81,12 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - app-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/player/health" ]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      timeout: 30s
 
   club-service:
     build:
@@ -96,6 +102,14 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - app-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/club/health" ]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      timeout: 30s
+
+        
 
   league-service:
     build:
@@ -209,10 +223,13 @@ services:
       context: game_generator
     image: game_generator-image
     depends_on:
-      - kafka
-      - live-game-service
-      - league-service
-      - club-service
+      sql_db:
+        condition: service_healthy
+      player-service:
+        condition: service_healthy
+      club-service:
+        condition: service_healthy
+
     networks:
       - app-network
 

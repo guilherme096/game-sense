@@ -7,16 +7,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const fetchEvents = async (id) => {
     const res = await axios.get("/api/v1/live/" + id + "/ping?lastEventId=0");
     return res.data;
 };
 
+
 const GameTimeline = ({ id }) => {
     const timelineRef = useRef(null);
     const [lineStyles, setLineStyles] = useState({ top: "100px", height: 0 });
     const [visibleEvents, setVisibleEvents] = useState([]); // Track which events are visible
+    const navigate = useNavigate();
 
     const {
         data: events = [],
@@ -44,6 +47,7 @@ const GameTimeline = ({ id }) => {
                     setTimeout(() => {
                         setVisibleEvents((prev) => [...prev, index]);
                     }, index * 300);
+
                 });
             }
         }
@@ -68,25 +72,25 @@ const GameTimeline = ({ id }) => {
                 {isLeft && (
                     event.event_type === "SUBSTITUTION" ? (
                         <div className="ml-4 flex-1">
-                            <span className="font-bold break-words inline-block">
+                            <span className="font-bold break-words inline-block cursor-pointer" onClick={() => navigate(`/player/${event.player_in_id}`)}>  
                                 {event.player_in}
                             </span>
-                            <span className="break-words inline-block ml-1">
+                            <span className="break-words inline-block ml-1 cursor-pointer" onClick={() => navigate(`/player/${event.player_out_id}`)}>
                                 ({event.player_out})
                             </span>
                         </div>
                     ) : event.event_type === "GOAL" ? (
                         <div className="ml-4 flex-1">
-                            <span className="font-bold break-words inline-block">
+                            <span className="font-bold break-words inline-block cursor-pointer" onClick={() => navigate(`/player/${event.scorer_id}`)}>
                                 {event.scorer}
                             </span>
-                            <span className="break-words inline-block ml-1">
+                            <span className="break-words inline-block ml-1 cursor-pointer" onClick={() => navigate(`/player/${event.assist_id}`)}>
                                 ({event.assist})
                             </span>
                         </div>
                     ) : (
                         <div className="ml-4 flex-1">
-                            <span className="break-words inline-block">
+                            <span className="break-words inline-block cursor-pointer" onClick={() => navigate(`/player/${event.player_id}`)}>
                                 {event.player}
                             </span>
                         </div>
@@ -97,6 +101,7 @@ const GameTimeline = ({ id }) => {
                     event.event_type === "GOAL" ? "text-green-200" : 
                     event.event_type === "RED_CARD" ? "text-red-500" : 
                     event.event_type === "YELLOW_CARD" ? "text-yellow-400" : 
+                    event.event_type === "SECOND_YELLOW_CARD" ? "text-yellow-400" :
                     event.event_type === "SUBSTITUTION" ? "text-blue-400" :
                     event.event_type === "auto-goal" ? "text-red-300" : 
                     ""
@@ -113,6 +118,9 @@ const GameTimeline = ({ id }) => {
                     {event.event_type === "YELLOW_CARD" && (
                         <FontAwesomeIcon icon={faSquare} className="h-5" />
                     )}
+                    {event.event_type === "SECOND_YELLOW_CARD" && (
+                        <FontAwesomeIcon icon={faSquare} className="h-5" />
+                    )}
                     {event.event_type === "AUTO-GOAL" && (
                         <FontAwesomeIcon icon={faFutbol} className="h-5" />
                     )}
@@ -121,25 +129,25 @@ const GameTimeline = ({ id }) => {
                 {!isLeft && (
                     event.event_type === "SUBSTITUTION" ? (
                         <div className="mr-4 flex-1">
-                            <span className="font-bold break-words inline-block">
+                            <span className="font-bold break-words inline-block cursor-pointer" onClick={() => navigate(`/player/${event.player_in_id}`)}>
                                 {event.player_in}
                             </span>
-                            <span className="break-words inline-block ml-1">
+                            <span className="break-words inline-block ml-1 cursor-pointer" onClick={() => navigate(`/player/${event.player_out_id}`)}>
                                 ({event.player_out})
                             </span>
                         </div>
                     ) : event.event_type === "GOAL" ? (
                         <div className="mr-4 flex-1">
-                            <span className="font-bold break-words inline-block">
+                            <span className="font-bold break-words inline-block cursor-pointer" onClick={() => navigate(`/player/${event.scorer_id}`)}>
                                 {event.scorer}
                             </span>
-                            <span className="break-words inline-block ml-1">
+                            <span className="break-words inline-block ml-1 cursor-pointer" onClick={() => navigate(`/player/${event.assist_id}`)}>
                                 ({event.assist})
                             </span>
                         </div>
                     ) : (
                         <div className="mr-4 flex-1">
-                            <span className="break-words inline-block">
+                            <span className="break-words inline-block cursor-pointer" onClick={() => navigate(`/player/${event.player_id}`)}>
                                 {event.player}
                             </span>
                         </div>

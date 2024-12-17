@@ -39,7 +39,7 @@ public class Player {
     @Column(name = "country", nullable = false)
     private String country;
 
-    @Column(name = "country_Flag", nullable = false)
+    @Column(name = "country_Flag", nullable = false, columnDefinition = "TEXT")
     private String countryFlag;
 
     @Column(name = "jersey_number", nullable = false)
