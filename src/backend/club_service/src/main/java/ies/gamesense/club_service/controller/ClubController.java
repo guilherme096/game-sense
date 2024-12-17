@@ -28,6 +28,11 @@ public class ClubController {
     @Autowired
     private ClubService clubService;
 
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
     @GetMapping("/")
     @Operation(summary = "Get all Clubs")
     public ResponseEntity<List<Club>> getAllClubs() {

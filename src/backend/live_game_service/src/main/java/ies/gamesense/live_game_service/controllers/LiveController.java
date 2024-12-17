@@ -25,6 +25,12 @@ public class LiveController {
     @Autowired
     private LiveService liveService;
 
+    @Operation(summary = "Health check")
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("OK");
+    }
+
     @Operation(summary = "Get all live games")
     @GetMapping("/")
     public List<Match> getLiveGames() {

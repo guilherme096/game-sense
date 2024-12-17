@@ -15,6 +15,8 @@ RUN mvn clean package -DskipTests
 # Stage 2: Serve
 FROM openjdk:17-jdk-alpine
 WORKDIR /app
+
+RUN apk add --no-cache curl
 COPY --from=build /app/target/player_service-0.0.1-SNAPSHOT.jar .
 
 CMD ["java", "-jar", "player_service-0.0.1-SNAPSHOT.jar"]
