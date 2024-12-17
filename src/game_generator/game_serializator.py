@@ -2,7 +2,7 @@ import json
 from datetime import datetime, timedelta
 from typing import List
 import uuid
-from models import Game, Event, Goal, YellowCard, RedCard, Substitution
+from models import Game, Event, Goal, YellowCard, RedCard, Substitution, SecondYellowCard
 
 GAMES_DIR = "./games/"
 GAME_REAL_DURATION = 1.5
@@ -83,6 +83,17 @@ def serialize_game_for_kafka(
             event_data = {
                 "game_id": str(match_id),
                 "event_type": "YELLOW_CARD",
+                "minute": str(event.minute),
+                "team": event_team,
+                "player": event.player.name,
+                "player_id": str(event.player.id),
+                "publish_timestamp": str(event_time.isoformat()),
+                "id": str(id),
+            }
+        elif isinstance(event, SecondYellowCard):
+            event_data = {
+                "game_id": str(match_id),
+                "event_type": "SECOND_YELLOW_CARD",
                 "minute": str(event.minute),
                 "team": event_team,
                 "player": event.player.name,

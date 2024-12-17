@@ -14,6 +14,7 @@ class EventType(Enum):
     RED_CARD = 3
     SUBSTITUTION = 4
     INJURY = 5
+    SECOND_YELLOW_CARD = 6
 
 
 class Player:
@@ -184,6 +185,14 @@ class YellowCard(Event):
 
     def __str__(self):
         return f"Yellow Card:\n Minute: {self.minute}\n Team: {self.team.name}\n Player: {self.player.name}\n Player ID: {self.player.id}"
+
+class SecondYellowCard(Event):
+    def __init__(self, minute: int, team: Team, player: Player):
+        super().__init__(EventType.SECOND_YELLOW_CARD, minute, team)
+        self.player = player
+
+    def __str__(self):
+        return f"Second Yellow Card:\n Minute: {self.minute}\n Team: {self.team.name}\n Player: {self.player.name}\n Player ID: {self.player.id}"
 
 
 class RedCard(Event):

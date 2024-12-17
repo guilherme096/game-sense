@@ -101,6 +101,7 @@ const GameTimeline = ({ id }) => {
                     event.event_type === "GOAL" ? "text-green-200" : 
                     event.event_type === "RED_CARD" ? "text-red-500" : 
                     event.event_type === "YELLOW_CARD" ? "text-yellow-400" : 
+                    event.event_type === "SECOND_YELLOW_CARD" ? "text-yellow-400" :
                     event.event_type === "SUBSTITUTION" ? "text-blue-400" :
                     event.event_type === "auto-goal" ? "text-red-300" : 
                     ""
@@ -115,6 +116,9 @@ const GameTimeline = ({ id }) => {
                         <FontAwesomeIcon icon={faSquare} className="h-5" />
                     )}
                     {event.event_type === "YELLOW_CARD" && (
+                        <FontAwesomeIcon icon={faSquare} className="h-5" />
+                    )}
+                    {event.event_type === "SECOND_YELLOW_CARD" && (
                         <FontAwesomeIcon icon={faSquare} className="h-5" />
                     )}
                     {event.event_type === "AUTO-GOAL" && (

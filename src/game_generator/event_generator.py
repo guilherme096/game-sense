@@ -6,6 +6,7 @@ from models import (
     Injury,
     YellowCard,
     RedCard,
+    SecondYellowCard,
     Substitution,
 )
 
@@ -26,6 +27,7 @@ def generate_events(game: Game):
     events[EventType.YELLOW_CARD] = generate_yellow_card_events(
         game, minutes_used, in_players, out_players
     )
+
     events[EventType.RED_CARD] = generate_red_card_events(
         game, minutes_used, in_players, out_players
     )
@@ -61,30 +63,46 @@ def generate_goal_events(
 
     return goals
 
-
 def generate_yellow_card_events(
-    game: Game, minutes_used: set[int], in_players, out_players
-) -> list[YellowCard]:
+        game: Game, minutes_used: set[int], in_players, out_players
+) -> list:
     teams = [game.home_team, game.away_team]
 
     yellow_cards = []
+    second_yellow_cards = []
+    player_yellow_count = {}  # Track yellow cards for players across all teams
 
     for team in teams:
         n_yellow_cards = random.randint(0, 6)
         for _ in range(n_yellow_cards):
             while True:
-                player = team.starting_squad[random.randint(1, 10)]
+                player = team.starting_squad[random.randint(0, len(team.starting_squad) - 1)]
                 minute = random.randint(2, 90)
 
                 if minute in minutes_used or player in out_players:
                     continue
 
-                yellow_card = YellowCard(minute, team, player)
-                yellow_cards.append(yellow_card)
+                # Increment yellow card count
+                if player not in player_yellow_count:
+                    player_yellow_count[player] = 1
+                    yellow_card = YellowCard(minute, team, player)
+                    yellow_cards.append(yellow_card)
+                    minutes_used.add(minute)
+                    break  # Yellow card issued
+                elif player_yellow_count[player] == 1:
+                    # Player receives a second yellow card
+                    second_yellow_card = SecondYellowCard(minute, team, player)
+                    red_card = RedCard(minute, team, player)
+                    second_yellow_cards.append(second_yellow_card)
+                    second_yellow_cards.append(red_card)
 
-                break
+                    # Add player to out_players to exclude them from future events
+                    out_players.add(player)
+                    minutes_used.add(minute)
+                    player_yellow_count[player] += 1
+                    break
 
-    return yellow_cards
+    return yellow_cards + second_yellow_cards
 
 
 def generate_red_card_events(
