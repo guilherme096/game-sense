@@ -61,17 +61,17 @@ export default function ClubCard({ clubData, leagueClubData}) {
       <div
         className="absolute"
         style={{
-          top: "65%",
+          top: "75%",
           left: "-5%",
           width: "200%",
           height: "400%",
-          transform: "rotate(160deg)",
+          transform: "rotate(165deg)",
           backgroundColor: "#333D4D",
           zIndex: 1,
         }}
       />
       <div className="flex flex-row w-full items-center justify-between z-10">
-        <div className="flex items-center pl-4">
+        <div className="flex items-center p-4">
           <img
             src={clubData.logo}
             alt={clubData.name}
@@ -80,7 +80,7 @@ export default function ClubCard({ clubData, leagueClubData}) {
         </div>
         <div className="flex flex-col text-black ml-4">
           <span className="text-xl font-bold">{clubData.name}</span>
-          <span className="text-sm text-gray-700">
+          <span className="text-sm text-gray-700 cursor-pointer" onClick={() => navigate(`/leaguePage`)}>
             {leagueClubData.place}º {leagueName}
             {clubData.countryFlag && (
               <img

@@ -4,6 +4,34 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import PropTypes from "prop-types";
 
+export function getPlayerString(position) {
+    switch (position) {
+        case 1:
+            return "Goalkeeper";
+        case 2:
+            return "Right Back";
+        case 3:
+            return "Left Back";
+        case 4:
+        case 5:
+            return "Center Back";
+        case 6:
+            return "Defensive Midfielder";
+        case 7:
+            return "Winger";
+        case 8:
+            return "Central Midfielder";
+        case 9:
+            return "Striker";
+        case 10:
+            return "Attacking Midfielder";
+        case 11:
+            return "Forward";
+        default:
+            return "Unknown";
+    }
+}
+
 function PlayerOverview({ playerData }) {
     const fetchPlayerMainStats = async () => {
         console.log("Fetching player main stats");
@@ -88,7 +116,7 @@ function PlayerOverview({ playerData }) {
         { label: "Height", value: `${playerData.height} m` },
         { label: "Weight", value: `${playerData.weight} kg` },
         { label: "Jersey", value: playerData.jerseyNumber },
-        { label: "Position", value: playerData.position },
+        { label: "Position", value: getPlayerString(playerData.position) },
         { label: "Country", value: playerData.country },
     ];
 
@@ -110,7 +138,7 @@ function PlayerOverview({ playerData }) {
         if (allStatsZero) {
             return (
                 <div className="text-center text-gray-500 py-4">
-                    No available data
+                    Player has not played any games yet
                 </div>
             );
         }

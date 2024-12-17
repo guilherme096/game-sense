@@ -21,7 +21,7 @@ public class Player {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "surname", nullable = false)
+    @Column(name = "surname")
     private String surname;
 
     @Column(name = "age", nullable = false)
@@ -34,7 +34,7 @@ public class Player {
     private int weight;
 
     @Column(name = "position", nullable = false)
-    private String position;
+    private int position;
 
     @Column(name = "country", nullable = false)
     private String country;
@@ -59,40 +59,13 @@ public class Player {
         this.age = age;
         this.height = height;
         this.weight = weight;
-        this.position = getPlayerString(position);
+        this.position = position;
         this.country = country;
         this.countryFlag = countryFlag;
         this.jerseyNumber = jerseyNumber;
         this.isInjured = isInjured;
     }
 
-    public String getPlayerString(int position) {
-        switch (position) {
-            case 1:
-                return "Goalkeeper";
-            case 2:
-                return "Right Back";
-            case 3:
-                return "Left Back";
-            case 4:
-                return "Center Back";
-            case 5:
-                return "Center Back";
-            case 6:
-                return "Defensive Midfielder";
-            case 7:
-                return "Winger";
-            case 8:
-                return "Central Midfielder";
-            case 9:
-                return "Striker";
-            case 10:
-                return "Attacking Midfielder";
-            case 11:
-                return "Forward";
-        }
-        return "Unknown";
-    }
 
     // Getters and Setters
     public Long getId() {
@@ -151,11 +124,11 @@ public class Player {
         this.weight = weight;
     }
 
-    public String getPosition() {
+    public int getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(int position) {
         this.position = position;
     }
 
