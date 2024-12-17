@@ -74,6 +74,8 @@ def serialize_game_for_kafka(
                 "team": event_team,
                 "scorer": event.scorer.name,
                 "assist": event.assist.name,
+                "assist_id": str(event.assist.id),
+                "scorer_id": str(event.scorer.id),
                 "publish_timestamp": str(event_time.isoformat()),
                 "id": str(id),
             }
@@ -84,6 +86,7 @@ def serialize_game_for_kafka(
                 "minute": str(event.minute),
                 "team": event_team,
                 "player": event.player.name,
+                "player_id": str(event.player.id),
                 "publish_timestamp": str(event_time.isoformat()),
                 "id": str(id),
             }
@@ -94,6 +97,7 @@ def serialize_game_for_kafka(
                 "minute": str(event.minute),
                 "team": event_team,
                 "player": event.player.name,
+                "player_id": str(event.player.id),
                 "publish_timestamp": str(event_time.isoformat()),
                 "id": str(id),
             }
@@ -104,7 +108,9 @@ def serialize_game_for_kafka(
                 "minute": str(event.minute),
                 "team": event_team,
                 "player_out": event.player_out.name,
+                "player_out_id": str(event.player_out.id),
                 "player_in": event.player_in.name,
+                "player_in_id": str(event.player_in.id),
                 "publish_timestamp": str(event_time.isoformat()),
                 "id": str(id),
             }

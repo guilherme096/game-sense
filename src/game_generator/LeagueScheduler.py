@@ -151,7 +151,7 @@ class LeagueScheduler:
 def get_club_data():
     # Fetch the list of clubs
     response = requests.get("http://nginx/api/v1/club/")
-    print(f"Get club data: {response.status_code}")
+    #print(f"Get club data: {response.status_code}")
 
     if response.status_code != 200:
         print(f"Error: Received non-200 status code: {response.status_code}")
@@ -168,7 +168,7 @@ def get_club_data():
 def fetch_players_for_club(club_id):
     response = requests.get(f"http://nginx/api/v1/player/club/{club_id}")
     try:
-        print(f"Get players for club {club_id}\n: {response.text}")
+        #print(f"Get players for club {club_id}\n: {response.text}")
         return response.json()
     except ValueError:
         print(f"Error decoding JSON from the response: {response.text}")
@@ -192,54 +192,54 @@ def create_team_from_api(club_data):
 
     # Assign players to the starting squad based on their positions
     if len(gks) >= 1:
-        starting_squad.append(Player(gks[0]['name'], [gks[0]['position']], 100))  # Pick the first GK
+        starting_squad.append(Player(gks[0]['name'], [gks[0]['position']], 100, gks[0]['id']))  # Pick the first GK
     else:
         # If no GK is available, randomly pick any player to fill the position (as a fallback)
-        starting_squad.append(Player(players_data[0]['name'], [1], 100))
+        starting_squad.append(Player(players_data[0]['name'], [1], 100, players_data[0]['id']))
 
     if len(rbs) >= 1:
-        starting_squad.append(Player(rbs[0]['name'], [rbs[0]['position']], 100))  # Pick the first RB
+        starting_squad.append(Player(rbs[0]['name'], [rbs[0]['position']], 100 , rbs[0]['id']))  # Pick the first RB
     else:
-        starting_squad.append(Player(players_data[0]['name'], [2], 100))
+        starting_squad.append(Player(players_data[0]['name'], [2], 100 , players_data[0]['id']))
 
     if len(lbs) >= 1:
-        starting_squad.append(Player(lbs[0]['name'], [lbs[0]['position']], 100))  # Pick the first LB
+        starting_squad.append(Player(lbs[0]['name'], [lbs[0]['position']], 100 , lbs[0]['id']))  # Pick the first LB
     else:
-        starting_squad.append(Player(players_data[0]['name'], [3], 100))
+        starting_squad.append(Player(players_data[0]['name'], [3], 100 , players_data[0]['id']))
 
     # Assign two center backs, if possible
     if len(cbs) >= 2:
-        starting_squad.append(Player(cbs[0]['name'], [cbs[0]['position']], 100))  # Pick first CB
-        starting_squad.append(Player(cbs[1]['name'], [cbs[1]['position']], 100))  # Pick second CB
+        starting_squad.append(Player(cbs[0]['name'], [cbs[0]['position']], 100 , cbs[0]['id']))  # Pick first CB
+        starting_squad.append(Player(cbs[1]['name'], [cbs[1]['position']], 100   , cbs[1]['id']))  # Pick second CB
     else:
         # If not enough CBs, fill with random players
-        starting_squad.append(Player(players_data[0]['name'], [4], 100))  # Fallback to position 4 or 5
-        starting_squad.append(Player(players_data[1]['name'], [5], 100))  # Fallback to position 4 or 5
+        starting_squad.append(Player(players_data[0]['name'], [4], 100 , players_data[0]['id']))  # Fallback to position 4 or 5
+        starting_squad.append(Player(players_data[1]['name'], [5], 100 , players_data[1]['id']))  # Fallback to position 4 or 5
 
     # Assign three midfielders
     if len(mfs) >= 3:
-        starting_squad.append(Player(mfs[0]['name'], [mfs[0]['position']], 100))
-        starting_squad.append(Player(mfs[1]['name'], [mfs[1]['position']], 100))
-        starting_squad.append(Player(mfs[2]['name'], [mfs[2]['position']], 100))
+        starting_squad.append(Player(mfs[0]['name'], [mfs[0]['position']], 100 , mfs[0]['id']))
+        starting_squad.append(Player(mfs[1]['name'], [mfs[1]['position']], 100 , mfs[1]['id']))
+        starting_squad.append(Player(mfs[2]['name'], [mfs[2]['position']], 100 , mfs[2]['id']))
     else:
         # If not enough midfielders, fill with random players
         while len(starting_squad) < 8:  # Ensure there are at least 8 players in the squad before forward allocation
             random_player = random.choice(players_data)
-            starting_squad.append(Player(random_player['name'], [random_player['position']], 100))
+            starting_squad.append(Player(random_player['name'], [random_player['position']], 100 , random_player['id']))
 
     # Assign three forwards
     if len(fws) >= 3:
-        starting_squad.append(Player(fws[0]['name'], [fws[0]['position']], 100))
-        starting_squad.append(Player(fws[1]['name'], [fws[1]['position']], 100))
-        starting_squad.append(Player(fws[2]['name'], [fws[2]['position']], 100))
+        starting_squad.append(Player(fws[0]['name'], [fws[0]['position']], 100 , fws[0]['id']))
+        starting_squad.append(Player(fws[1]['name'], [fws[1]['position']], 100 , fws[1]['id']))
+        starting_squad.append(Player(fws[2]['name'], [fws[2]['position']], 100 , fws[2]['id']))
     else:
         # If not enough forwards, fill with random players
         while len(starting_squad) < 11:  # Ensure there are exactly 11 players in the starting squad
             random_player = random.choice(players_data)
-            starting_squad.append(Player(random_player['name'], [random_player['position']], 100))
+            starting_squad.append(Player(random_player['name'], [random_player['position']], 100 , random_player['id']))
 
     # Assign the remaining players to the substitute squad
-    subs_squad = [Player(player['name'], [player['position']], 100) for player in players_data if player not in starting_squad]
+    subs_squad = [Player(player['name'], [player['position']], 100 , player['id']) for player in players_data if player not in starting_squad]
 
     # Hardcoded logic for team attributes based on the team name
     team_name = club_data['name']
@@ -268,10 +268,10 @@ def create_team_from_api(club_data):
         attack_strength = 6
         defense_strength = 6
     elif team_name == "FC Lixa":
-        bias = 5
+        bias = 7
         form = 5
         squad_quality = 10
-        attack_strength = 9
+        attack_strength = 10
         defense_strength = 6
     elif team_name == "Real Madrid":
         bias = 4
