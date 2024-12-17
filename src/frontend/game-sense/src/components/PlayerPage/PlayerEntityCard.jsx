@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 import { useQuery } from "react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function PlayerEntityCard({name1, name2, playerData }) {
+
+    const navigate = useNavigate();
 
     const fetchClub = async () => {
         console.log("Fetching club");
@@ -65,11 +68,12 @@ export default function PlayerEntityCard({name1, name2, playerData }) {
 
                 {/* Image */}
                 <div
-                    className="card-body w-8 p-4"
+                    className="card-body w-8 p-4 cursor-pointer "
                     style={{
                         zIndex: 2,
                         position: 'relative',
                     }}
+                    onClick={() => navigate(`/club/${playerData.clubId}`)}
                 >
                     <img style={{ width: '100%', height: '100%' }} src={club.logo} alt={club.name} />
                 </div>

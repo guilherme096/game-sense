@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import {getPlayerString} from "../PlayerPage/PlayerOverview.jsx";
 
 export default function SquadOverview({ clubData, id }) {
     const navigate = useNavigate();
@@ -52,9 +53,9 @@ export default function SquadOverview({ clubData, id }) {
                     <thead className="bg-gray-200">
                         <tr>
                             <th className="py-2 px-3 text-gray-700 font-semibold w-1/2">Name</th> {/* Larger width */}
-                            <th className="py-2 px-3 text-gray-700 font-semibold w-1/6">Age</th>
-                            <th className="py-2 px-3 text-gray-700 font-semibold w-1/6">Position</th>
-                            <th className="py-2 px-3 text-gray-700 font-semibold w-1/6">Jersey</th>
+                            <th className="py-2 px-3 text-gray-700 font-semibold w-1/10">Age</th>
+                            <th className="py-2 px-3 text-gray-700 font-semibold w-1/3">Position</th>
+                            <th className="py-2 px-3 text-gray-700 font-semibold w-1/10">Jersey</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,7 +74,7 @@ export default function SquadOverview({ clubData, id }) {
                                 {/* Player Age */}
                                 <td className="py-3 px-4 text-gray-700 text-sm w-1/6">{player.age}</td>
                                 {/* Player Position */}
-                                <td className="py-3 px-4 text-gray-700 text-sm w-1/6">{player.position}</td>
+                                <td className="py-3 px-4 text-gray-700 text-sm w-1/6">{getPlayerString(player.position)}</td>
                                 {/* Player Jersey Number */}
                                 <td className="py-3 px-4 text-gray-700 text-sm w-1/6">{player.jerseyNumber}</td>
                             </tr>

@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import PropTypes from "prop-types";
 
-function getPlayerString(position) {
+export function getPlayerString(position) {
     switch (position) {
         case 1:
             return "Goalkeeper";
