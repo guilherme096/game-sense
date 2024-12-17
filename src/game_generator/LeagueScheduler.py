@@ -247,11 +247,11 @@ def serialize_team(team):
         image = "https://worldvectorlogo.com/pt/logo/aston-villa"
 
     elif team["name"] == "Lixa":
-        bias = 1
-        form = 2
-        squad_quality = 3
-        attack_strength = 3
-        defense_strength = 3
+        bias = 4
+        form = 5
+        squad_quality = 10
+        attack_strength = 10
+        defense_strength = 5
         image = "https://static.wikia.nocookie.net/logopedia/images/b/b0/FC_Lixa_%282014-2020%29.png/revision/latest?cb=20220922040330"
 
     elif team["name"] == "Vitória de Santarém":

@@ -103,7 +103,7 @@ export default function LastMatchesCard({ id }) {
   }
 
   return (
-    <div className="bg-white shadow-lg rounded-lg m-5">
+    <div className="bg-white shadow-lg rounded-lg m-5 mt-1">
       <div className="bg-gray-700 text-white font-bold text-lg pl-3 p-2 rounded-t-lg">
         Last Matches
       </div>
