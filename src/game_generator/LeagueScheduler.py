@@ -149,14 +149,30 @@ class LeagueScheduler:
 
 
 def get_club_data():
-    # This function fetches the list of clubs
+    # Fetch the list of clubs
     response = requests.get("http://nginx/api/v1/club/")
-    return response.json()
+    print(f"Get club data: {response.status_code}")
+
+    if response.status_code != 200:
+        print(f"Error: Received non-200 status code: {response.status_code}")
+        print(f"Response content: {response.text}")
+        return []  # Return an empty list or handle accordingly
+
+    try:
+        return response.json()  # Attempt to parse as JSON
+    except ValueError:
+        print(f"Error decoding JSON: {response.text}")
+        return []  # Return an empty list if JSON decoding fails
+
 
 def fetch_players_for_club(club_id):
-    # Fetch the list of players for a given club using the club ID
     response = requests.get(f"http://nginx/api/v1/player/club/{club_id}")
-    return response.json()
+    try:
+        print(f"Get players for club {club_id}\n: {response.text}")
+        return response.json()
+    except ValueError:
+        print(f"Error decoding JSON from the response: {response.text}")
+        return []  # Return an empty list if JSON decoding fails
 
 
 def create_team_from_api(club_data):
