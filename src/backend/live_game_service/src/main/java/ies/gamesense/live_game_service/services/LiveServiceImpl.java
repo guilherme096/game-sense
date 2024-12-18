@@ -244,7 +244,7 @@ public class LiveServiceImpl implements LiveService {
         List<Map<String, String>> newEvents = new ArrayList<>();
         for (Map<String, String> event : game.getEvents()) {
             System.out.println("Checking event: " + event);
-            String eventId = event.get("id");
+            String eventId = event.get("event_index");
             if (eventId.compareTo(lastEventId.toString()) > 0) {
                 newEvents.add(event);
             }
