@@ -63,26 +63,6 @@ public class ClubController {
         return new ResponseEntity<>(clubs, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/star")
-    @Operation(summary = "Star a Club")
-    public ResponseEntity<Void> starClub(@PathVariable Long id) {
-        Club club = clubService.getClubById(id);
-        if (club != null) {
-            clubService.starClub(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @GetMapping("/{id}/players")
-    @Operation(summary = "Get Players of a Club")
-    public ResponseEntity<List<Player>> getPlayersByClubId(@PathVariable Long id) {
-        List<Player> players = clubService.getPlayersByClubId(id);
-        if (players.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(players, HttpStatus.OK);
-    }
 
     @GetMapping("/{id}/games/last")
     @Operation(summary = "Get Last Games of a Club")

@@ -46,9 +46,6 @@ public class Club {
     @Transient
     private List<Game> lastGames;
 
-    @Transient
-    private List<Player> players;
-
     public Club() {}
 
     public Club(String name, String country, String logo, String countryFlag, String league, boolean starred) {
@@ -91,10 +88,6 @@ public class Club {
         return lastGames;
     }
 
-    public List<Player> getPlayers() {
-        return players;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -127,10 +120,6 @@ public class Club {
         this.lastGames = lastGames;
     }
 
-    public void setPlayers(List<Player> players) {
-        this.players = players;
-    }
-
     @Override
     public String toString() {
         return "Club{" +
@@ -141,7 +130,6 @@ public class Club {
                 ", starred=" + starred +
                 ", nextGame=" + (nextGame != null ? nextGame.toString() : "null") +
                 ", lastGames=" + lastGames +
-                ", players=" + players +
                 '}';
     }
 
