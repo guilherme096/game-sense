@@ -197,13 +197,18 @@ services:
       - sh
       - -c
       - |
-        echo "Aguardando todos os serviços ficarem prontos..."
+        echo "Waiting for MySQL to be ready..."
         until mysqladmin ping -h sql_db -P 3306 --silent; do
-          echo "MySQL indisponível, aguardando..."
+          echo "MySQL is unavailable, waiting..."
           sleep 5
         done
-        echo "MySQL está pronto. Executando o script..."
-        mysql -h sql_db -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < /docker-entrypoint-initdb.d/init_data.sql
+        echo "MySQL is ready. Checking for existing data..."
+        if [ "$(mysql -h sql_db -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} -e "SELECT COUNT(*) FROM club;" -s --skip-column-names)" -eq "0" ]; then
+          echo "No data found in 'club'. Initializing database..."
+          mysql -h sql_db -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < /docker-entrypoint-initdb.d/init_data.sql
+        else
+          echo "Data already exists in 'club'. Skipping initialization."
+        fi
     networks:
       - app-network
 
