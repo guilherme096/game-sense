@@ -159,6 +159,11 @@ public class Match implements Serializable {
             basicInfo.put("minute", Integer.toString(this.minute));
             basicInfo.put("home_team_id", this.homeTeam.getId());
             basicInfo.put("away_team_id", this.awayTeam.getId());
+            basicInfo.put("referee", this.referee);
+            basicInfo.put("stadium", this.stadium);
+            basicInfo.put("currentMVP", this.currentMvp);
+            basicInfo.put("kickoffTime", this.matchStartTime);
+
             return basicInfo;
 
         }

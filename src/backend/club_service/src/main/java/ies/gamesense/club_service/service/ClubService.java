@@ -12,8 +12,6 @@ public interface ClubService {
     List<Club> getAllClubs();
     Club getClubById(Long id);
     List<Club> getClubsByName(String name);
-    void starClub(Long id);
-    List<Player> getPlayersByClubId(Long clubId);
     List<Game> getLastGamesByClubId(Long clubId);
     Optional<Game> getNextGameByClubId(Long clubId);
 }

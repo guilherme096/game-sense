@@ -175,7 +175,7 @@ services:
         ]
       interval: 10s
       retries: 5
-      start_period: 30s
+      start_period: 0s
       timeout: 10s
 
   data-init:
