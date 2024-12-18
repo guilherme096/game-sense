@@ -19,10 +19,12 @@ class LeagueScheduler:
         self.processes = []
         self.generate_full_schedule()
 
+
     def generate_full_schedule(self):
         if self.num_teams % 2 != 0:
             # If odd number of teams, add a dummy team for byes
-            dummy_team = Team(id=-1, name="BYE", bias=0, form=0, starting_squad=[], subs_squad=[], squad_quality=0, attack_strength=0, defense_strength=0, image="")
+            dummy_team = Team(id=-1, name="BYE", bias=0, form=0, starting_squad=[], subs_squad=[],
+                              squad_quality=0, attack_strength=0, defense_strength=0, image="")
             self.teams.append(dummy_team)
             self.num_teams += 1
             has_dummy = True
@@ -30,35 +32,78 @@ class LeagueScheduler:
             has_dummy = False
 
         rounds = self.num_teams - 1
-        matches_per_round = 4
+        matches_per_round = 4  # Limit to 4 matches per round
+
+        # Track number of games played by each team
+        games_played = {team.id: 0 for team in self.teams}
 
         team_ids = list(range(self.num_teams))
         schedule = []
 
         for round_number in range(rounds):
             round_matches = []
-            for i in range(matches_per_round):
-                home = team_ids[i]
-                away = team_ids[self.num_teams - 1 - i]
-                if has_dummy and (self.teams[home].id == -1 or self.teams[away].id == -1):
-                    continue  # Skip matches involving dummy team
-                # Alternate home and away to ensure fairness
-                if round_number % 2 == 0:
-                    match = (self.teams[home], self.teams[away])
-                else:
-                    match = (self.teams[away], self.teams[home])
-                round_matches.append(match)
-            schedule.append(round_matches)
-            # Rotate team positions for next round
-            team_ids = [team_ids[0]] + [team_ids[-1]] + team_ids[1:-1]
+            already_played = set()
+            available_teams = [(team_id, games_played[self.teams[team_id].id])
+                               for team_id in team_ids
+                               if team_id not in already_played]
 
-        # Duplicate the schedule for reverse fixtures (home and away swapped)
+            # Sort teams by number of games played (least to most)
+            available_teams.sort(key=lambda x: x[1])
+
+            while len(round_matches) < matches_per_round and len(available_teams) >= 2:
+                # Get team with fewest games played
+                home_id, _ = available_teams[0]
+
+                # Find suitable opponent (next team with fewest games that hasn't played)
+                for i in range(1, len(available_teams)):
+                    away_id, _ = available_teams[i]
+
+                    # Skip if involving dummy team
+                    if has_dummy and (self.teams[home_id].id == -1 or self.teams[away_id].id == -1):
+                        continue
+
+                    # Create match and update tracking
+                    if round_number % 2 == 0:
+                        match = (self.teams[home_id], self.teams[away_id])
+                    else:
+                        match = (self.teams[away_id], self.teams[home_id])
+
+                    round_matches.append(match)
+                    already_played.add(home_id)
+                    already_played.add(away_id)
+
+                    # Update games played count
+                    games_played[self.teams[home_id].id] += 1
+                    games_played[self.teams[away_id].id] += 1
+
+                    # Remove these teams from available list
+                    available_teams = [(team_id, games) for team_id, games in available_teams
+                                       if team_id not in [home_id, away_id]]
+                    break
+
+            schedule.append(round_matches)
+            # Rotate team positions for next round (excluding the first team)
+            team_ids = [team_ids[0]] + team_ids[-1:] + team_ids[1:-1]
+
+        # Generate reverse fixtures with balanced approach
         reverse_schedule = []
+        games_played = {team.id: 0 for team in self.teams}  # Reset counter for reverse fixtures
+
         for round_matches in schedule:
-            reverse_round = [(away, home) for (home, away) in round_matches]
+            reverse_round = []
+            for home, away in round_matches:
+                # Check if this match would create better balance
+                if games_played[home.id] <= games_played[away.id]:
+                    reverse_round.append((away, home))
+                else:
+                    reverse_round.append((home, away))
+                games_played[home.id] += 1
+                games_played[away.id] += 1
             reverse_schedule.append(reverse_round)
 
         self.schedule = schedule + reverse_schedule
+
+
 
     def validate_schedule(self):
         """
