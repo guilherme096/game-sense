@@ -10,7 +10,6 @@ const LoadingLogo = () => {
   };
 
   return (
-    // center in the middle of the screen
     <div className="flex flex-col justify-center items-center h-screen -mt-[75px]">
       <motion.img
         src={logo}

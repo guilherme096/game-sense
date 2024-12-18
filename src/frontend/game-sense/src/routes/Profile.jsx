@@ -35,18 +35,17 @@ function Profile() {
             const userResponse = await axios.get("/api/v1/management/user-info", {
                 withCredentials: true
             });
-
+    
             if (userResponse.status === 200) {
                 setUsername(userResponse.data.username);
                 setPremium(userResponse.data.premium);
                 setFavoriteTeam(userResponse.data.favouriteTeam);
-
-                // If there's a favorite team, fetch its image
+    
                 if (userResponse.data.favouriteTeam) {
-                    const clubResponse = await axios.get(`/api/v1/club`, {
+                    const clubResponse = await axios.get(`/api/v1/club/search`, {
                         params: { name: userResponse.data.favouriteTeam }
-                    });                    
-
+                    });                
+    
                     if (clubResponse.status === 200 && clubResponse.data.length > 0) {
                         setTeamImage(clubResponse.data[0].logo);
                     }
@@ -59,6 +58,7 @@ function Profile() {
             setLoading(false);
         }
     };
+    
 
     useEffect(() => {
         fetchUserData();
@@ -85,22 +85,22 @@ function Profile() {
     };
 
     const handleTeamSelect = (team) => {
-        setSelectedTeamTemp(team); // Store the selection temporarily
+        setSelectedTeamTemp(team);
     };
 
     const handleTeamConfirm = async () => {
         if (!selectedTeamTemp) return;
-
+    
         try {
             const response = await axios.put('/api/v1/management/update-favorite-team', 
                 { team: selectedTeamTemp },
                 { withCredentials: true }
             );
-
+    
             if (response.status === 200) {
                 setFavoriteTeam(selectedTeamTemp);
                 // Fetch new team image
-                const clubResponse = await axios.get(`/api/v1/club`, {
+                const clubResponse = await axios.get(`/api/v1/club/search`, {
                     params: { name: selectedTeamTemp }
                 });
                 
@@ -116,6 +116,7 @@ function Profile() {
             toast.error("Failed to update favorite team");
         }
     };
+    
 
     const refreshPage = () => {
         window.location.reload();

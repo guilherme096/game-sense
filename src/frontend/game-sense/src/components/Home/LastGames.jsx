@@ -13,10 +13,10 @@ const LastGames = ({ matches }) => {
           try {
             // Fetch home and away team logos
             const homeClubResponse = await axios.get(
-              `api/v1/club/${match.homeClubId}`
+              `api/v1/club/${match.homeClubId}`,
             );
             const awayClubResponse = await axios.get(
-              `api/v1/club/${match.awayClubId}`
+              `api/v1/club/${match.awayClubId}`,
             );
 
             const homeLogo = homeClubResponse.data.logo;
@@ -25,9 +25,12 @@ const LastGames = ({ matches }) => {
             const awayName = awayClubResponse.data.name;
 
             // Fetch events and calculate goals
-            const eventsResponse = await axios.get(
-              `api/v1/game/${match.id}/events`
-            );
+            //const eventsResponse = await axios.get(
+            //  `api/v1/game/${match.id}/events`
+            //);
+            const eventsResponse = {
+              data: [],
+            };
 
             const events = Array.isArray(eventsResponse.data)
               ? eventsResponse.data
@@ -35,12 +38,14 @@ const LastGames = ({ matches }) => {
 
             const homeGoals = events.filter(
               (event) =>
-                event.type === "Goal" && event.event_club_id === match.homeClubId
+                event.type === "Goal" &&
+                event.event_club_id === match.homeClubId,
             ).length;
 
             const awayGoals = events.filter(
               (event) =>
-                event.type === "Goal" && event.event_club_id === match.awayClubId
+                event.type === "Goal" &&
+                event.event_club_id === match.awayClubId,
             ).length;
 
             return {
@@ -55,7 +60,7 @@ const LastGames = ({ matches }) => {
             console.error("Error fetching match details:", error);
             return null;
           }
-        })
+        }),
       );
 
       setGameData(updatedMatches.filter((match) => match !== null));

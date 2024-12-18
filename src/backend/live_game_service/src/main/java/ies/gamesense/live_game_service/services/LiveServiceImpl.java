@@ -49,9 +49,12 @@ public class LiveServiceImpl implements LiveService {
         List<Match> liveGames = new ArrayList<>();
         if (keys != null) {
             keys.forEach(key -> {
-                Match match = redisTemplate.opsForValue().get(key);
-                if (match != null) {
-                    liveGames.add(match);
+                try {
+                    Match match = redisTemplate.opsForValue().get(key);
+                    if (match != null) {
+                        liveGames.add(match);
+                    }
+                } catch (Exception e) {
                 }
             });
         }
@@ -69,6 +72,8 @@ public class LiveServiceImpl implements LiveService {
 
         match.getHomeTeam().setScore(0);
         match.getAwayTeam().setScore(0);
+
+        System.out.println("basic info in liveserviceimp: " + match.getBasicInfo());
 
         updateMatch(match.getMatchId(), match);
         System.out.println("Match saved to Redis: " + match);
@@ -131,6 +136,10 @@ public class LiveServiceImpl implements LiveService {
             if (match.getEvents() == null) {
                 match.setEvents(new ArrayList<>());
             }
+
+            System.out.println("Minute: " + Integer.parseInt(event.get("minute")));
+            match.setMinute(Integer.parseInt(event.get("minute")));
+            System.out.println("Match minute: " + match.getMinute());
 
             if (event.get("event_type").equals("GOAL")) {
                 String team = event.get("team");
@@ -244,7 +253,7 @@ public class LiveServiceImpl implements LiveService {
         List<Map<String, String>> newEvents = new ArrayList<>();
         for (Map<String, String> event : game.getEvents()) {
             System.out.println("Checking event: " + event);
-            String eventId = event.get("id");
+            String eventId = event.get("event_index");
             if (eventId.compareTo(lastEventId.toString()) > 0) {
                 newEvents.add(event);
             }

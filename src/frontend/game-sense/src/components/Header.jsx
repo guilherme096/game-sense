@@ -73,14 +73,14 @@ function Header() {
                 </Link>
             </div>
 
-            <div className="flex items-center relative" ref={containerRef}>
+            <div className="flex items-center relative z-50" ref={containerRef}>
                 {/* Search Box */}
                 <SearchBar 
                     isOpen={isSearchOpen} 
                     onClose={() => setIsSearchOpen(false)} 
                 />
                 <button
-                    className="btn btn-ghost btn-circle z-96 relative"
+                    className="btn btn-ghost btn-circle z-50 relative"
                     onClick={toggleSearch}
                 >
                     <svg

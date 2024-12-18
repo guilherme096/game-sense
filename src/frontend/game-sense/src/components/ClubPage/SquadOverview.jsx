@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import {getPlayerString} from "../PlayerPage/PlayerOverview.jsx";
 
 export default function SquadOverview({ clubData, id }) {
     const navigate = useNavigate();
@@ -40,7 +41,7 @@ export default function SquadOverview({ clubData, id }) {
     }
 
     return (
-        <div className="bg-white shadow-lg rounded-lg m-5">
+        <div className="bg-white shadow-lg rounded-lg m-5 mt-1">
             {/* Card Header */}
             <div className="bg-gray-700 text-white font-bold text-lg p-3 rounded-t-lg">
                 Squad
@@ -51,10 +52,10 @@ export default function SquadOverview({ clubData, id }) {
                 <table className="w-full text-center border-collapse">
                     <thead className="bg-gray-200">
                         <tr>
-                            <th className="py-2 px-4 text-gray-700 font-semibold">Name</th>
-                            <th className="py-2 px-4 text-gray-700 font-semibold">Age</th>
-                            <th className="py-2 px-4 text-gray-700 font-semibold">Position</th>
-                            <th className="py-2 px-4 text-gray-700 font-semibold">Jersey</th>
+                            <th className="py-2 px-3 text-gray-700 font-semibold w-1/2">Name</th> {/* Larger width */}
+                            <th className="py-2 px-3 text-gray-700 font-semibold w-1/10">Age</th>
+                            <th className="py-2 px-3 text-gray-700 font-semibold w-1/3">Position</th>
+                            <th className="py-2 px-3 text-gray-700 font-semibold w-1/10">Jersey</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,19 +68,22 @@ export default function SquadOverview({ clubData, id }) {
                                 onClick={() => navigate(`/player/${player.id}`)} // Navigate to the player's page
                             >
                                 {/* Player Name */}
-                                <td className="py-3 px-4 text-black text-sm">{player.name}</td>
+                                <td className="py-3 px-4 text-black text-sm w-1/2">
+                                    {player.surname ? `${player.name[0]}. ${player.surname}` : player.name}
+                                </td>
                                 {/* Player Age */}
-                                <td className="py-3 px-4 text-gray-700 text-sm">{player.age}</td>
+                                <td className="py-3 px-4 text-gray-700 text-sm w-1/6">{player.age}</td>
                                 {/* Player Position */}
-                                <td className="py-3 px-4 text-gray-700 text-sm">{player.position}</td>
+                                <td className="py-3 px-4 text-gray-700 text-sm w-1/6">{getPlayerString(player.position)}</td>
                                 {/* Player Jersey Number */}
-                                <td className="py-3 px-4 text-gray-700 text-sm">{player.jerseyNumber}</td>
+                                <td className="py-3 px-4 text-gray-700 text-sm w-1/6">{player.jerseyNumber}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
         </div>
+
     );
 }
 

@@ -15,134 +15,137 @@ class LeagueScheduler:
     def __init__(self, teams):
         self.teams = teams
         self.num_teams = len(teams)
-        self.schedule = self.generate_schedule(3)
+        self.schedule = []
         self.processes = []
+        self.generate_full_schedule()
 
-    def generate_schedule(self, num_rounds):
+
+    def generate_full_schedule(self):
         if self.num_teams % 2 != 0:
-            raise ValueError("Number of teams must be even")
+            # If odd number of teams, add a dummy team for byes
+            dummy_team = Team(id=-1, name="BYE", bias=0, form=0, starting_squad=[], subs_squad=[],
+                              squad_quality=0, attack_strength=0, defense_strength=0, image="")
+            self.teams.append(dummy_team)
+            self.num_teams += 1
+            has_dummy = True
+        else:
+            has_dummy = False
 
-        base_schedule = self._create_base_schedule()
+        rounds = self.num_teams - 1
+        matches_per_round = 4  # Limit to 4 matches per round
 
-        random.shuffle(base_schedule)
+        # Track number of games played by each team
+        games_played = {team.id: 0 for team in self.teams}
 
-        full_schedule = []
-        matches_played = set()
+        team_ids = list(range(self.num_teams))
+        schedule = []
 
-        for i in range(len(self.teams)):
-            teams_in_journey = set()
+        for round_number in range(rounds):
+            round_matches = []
+            already_played = set()
+            available_teams = [(team_id, games_played[self.teams[team_id].id])
+                               for team_id in team_ids
+                               if team_id not in already_played]
 
-            for match in base_schedule:
-                home_team, away_team = match
+            # Sort teams by number of games played (least to most)
+            available_teams.sort(key=lambda x: x[1])
 
-                if (
-                    tuple(sorted([home_team, away_team], key=lambda x: x.name))
-                    in matches_played
-                ):
-                    continue
+            while len(round_matches) < matches_per_round and len(available_teams) >= 2:
+                # Get team with fewest games played
+                home_id, _ = available_teams[0]
 
-                if home_team in teams_in_journey or away_team in teams_in_journey:
-                    continue
+                # Find suitable opponent (next team with fewest games that hasn't played)
+                for i in range(1, len(available_teams)):
+                    away_id, _ = available_teams[i]
 
-                teams_in_journey.add(home_team)
-                teams_in_journey.add(away_team)
-                match_key = tuple(sorted([home_team, away_team], key=lambda x: x.name))
-                matches_played.add(match_key)
+                    # Skip if involving dummy team
+                    if has_dummy and (self.teams[home_id].id == -1 or self.teams[away_id].id == -1):
+                        continue
 
-                full_schedule.append((home_team, away_team))
+                    # Create match and update tracking
+                    if round_number % 2 == 0:
+                        match = (self.teams[home_id], self.teams[away_id])
+                    else:
+                        match = (self.teams[away_id], self.teams[home_id])
 
-        # repeat schedule but switch home and away teams
-        full_schedule += [
-            (away_team, home_team) for home_team, away_team in full_schedule
-        ]
+                    round_matches.append(match)
+                    already_played.add(home_id)
+                    already_played.add(away_id)
 
-        print("Full schedule:")
-        for match in full_schedule:
-            print(f"Match: {match[0].name} vs {match[1].name}")
+                    # Update games played count
+                    games_played[self.teams[home_id].id] += 1
+                    games_played[self.teams[away_id].id] += 1
 
-        return full_schedule
+                    # Remove these teams from available list
+                    available_teams = [(team_id, games) for team_id, games in available_teams
+                                       if team_id not in [home_id, away_id]]
+                    break
 
-    def _create_base_schedule(self):
-        # Create all possible matches
-        all_matches = list(itertools.permutations(self.teams, 2))
-        print("All matches:")
-        for match in all_matches:
-            print(f"Match: {match[0].name} vs {match[1].name}")
+            schedule.append(round_matches)
+            # Rotate team positions for next round (excluding the first team)
+            team_ids = [team_ids[0]] + team_ids[-1:] + team_ids[1:-1]
 
-        # Group matches to ensure variety
-        match_groups = {}
-        for match in all_matches:
-            # Sort the match to create a unique key
-            key = tuple(sorted(match, key=lambda x: x.name))
-            if match[0] not in match_groups and match[1] not in match_groups:
-                match_groups[(key, match[0], match[1])] = match
+        # Generate reverse fixtures with balanced approach
+        reverse_schedule = []
+        games_played = {team.id: 0 for team in self.teams}  # Reset counter for reverse fixtures
 
-        print("Match groups:")
-        for match in match_groups.values():
-            print(f"Match: {match[0].name} vs {match[1].name}")
+        for round_matches in schedule:
+            reverse_round = []
+            for home, away in round_matches:
+                # Check if this match would create better balance
+                if games_played[home.id] <= games_played[away.id]:
+                    reverse_round.append((away, home))
+                else:
+                    reverse_round.append((home, away))
+                games_played[home.id] += 1
+                games_played[away.id] += 1
+            reverse_schedule.append(reverse_round)
 
-        # Convert back to list of matches
-        return list(match_groups.values())
+        self.schedule = schedule + reverse_schedule
+
+
+
+    def validate_schedule(self):
+        """
+        Ensure that no team is scheduled to play more than one match in the same round.
+        Since the round-robin algorithm inherently ensures this, this function can be a sanity check.
+        """
+        for round_index, round_matches in enumerate(self.schedule):
+            scheduled_teams = set()
+            for match in round_matches:
+                home, away = match
+                if home in scheduled_teams or away in scheduled_teams:
+                    print(f"Conflict detected in round {round_index + 1}: {home.name} or {away.name} already scheduled.")
+                    return False
+                scheduled_teams.add(home)
+                scheduled_teams.add(away)
+        print("No conflicts detected in the schedule.")
+        return True
 
     def start_game_producers(self):
-        """
-        Start game producers for each match in pairs
-        """
-
         def run_producer(home_team, away_team):
-            """
-            Run a game producer subprocess
-            """
             try:
                 env = os.environ.copy()
                 env["HOME_TEAM"] = json.dumps(home_team.to_dict())
                 env["AWAY_TEAM"] = json.dumps(away_team.to_dict())
-
                 return subprocess.Popen(["python", "game_producer.py"], env=env)
             except Exception as e:
-                print(f"Error : {e}")
+                print(f"Error: {e}")
                 return None
 
-        # Reset processes
         self.processes = []
         print("Starting game producers...")
-        print(self.schedule)
 
-        # Schedule matches in pairs
-        for i in range(0, len(self.schedule), 4):
-            match1 = self.schedule[i]
-            match2 = self.schedule[i + 1]
-            match3 = self.schedule[i + 2]
-            match4 = self.schedule[i + 3]
-
-
-            home_team1, away_team1 = match1
-            home_team2, away_team2 = match2
-            home_team3, away_team3 = match3
-            home_team4, away_team4 = match4
-
-            print(
-                f"Round {i//2 + 1}: "
-                f"{home_team1.name} vs {away_team1.name}, "
-                f"{home_team2.name} vs {away_team2.name}"
-            )
-
-            # Start producers for both matches
-            process1 = run_producer(home_team1, away_team1)
-            process2 = run_producer(home_team2, away_team2)
-            process3 = run_producer(home_team3, away_team3)
-            process4 = run_producer(home_team4, away_team4)
-
-            if process1:
-                self.processes.append(process1)
-            if process2:
-                self.processes.append(process2)
-            if process3:
-                self.processes.append(process3)
-            if process4:
-                self.processes.append(process4)
-
-            time.sleep(1.5 * 60)
+        for round_index, round_matches in enumerate(self.schedule):
+            print(f"Starting Round {round_index + 1}")
+            for match in round_matches:
+                home_team, away_team = match
+                process = run_producer(home_team, away_team)
+                if process:
+                    self.processes.append(process)
+            # Wait for a specific time before starting the next round
+            # Adjust the sleep duration as needed
+            time.sleep(1.5 * 60)  # 1.5 minutes between rounds
 
     def wait_for_producers(self):
         """
@@ -162,230 +165,171 @@ class LeagueScheduler:
                 print(f"Error terminating process: {e}")
 
 
-def create_team_players(team_name, team_id):
-    """
-    Create sample players for a team based on the game generator example
-    """
-    # Sample player generation logic similar to game_generator.py
-    starting_squad = [
-        Player(f"{team_name} Goalkeeper", 1, 1),
-        Player(f"{team_name} Defender 1", [4, 5], 2),
-        Player(f"{team_name} Defender 2", [4, 5], 3),
-        Player(f"{team_name} Defender 3", 3, 4),
-        Player(f"{team_name} Midfielder 1", 6, 5),
-        Player(f"{team_name} Midfielder 2", 8, 6),
-        Player(f"{team_name} Midfielder 3", 10, 7),
-        Player(f"{team_name} Winger", 7, 8),
-        Player(f"{team_name} Striker", 9, 9),
-        Player(f"{team_name} Forward", 11, 10),
-        Player(f"{team_name} Defender 4", 2, 11),
-    ]
+def get_club_data():
+    # Fetch the list of clubs
+    response = requests.get("http://nginx/api/v1/club/")
+    # print(f"Get club data: {response.status_code}")
 
-    subs_squad = [
-        Player(f"{team_name} Sub Goalkeeper", 1, 12),
-        Player(f"{team_name} Sub Defender", [4, 5], 13),
-        Player(f"{team_name} Sub Midfielder", 6, 14),
-        Player(f"{team_name} Sub Winger", 7, 15),
-        Player(f"{team_name} Sub Striker", 9, 16),
-        Player(f"{team_name} Sub Defender 2", 2, 17),
-        Player(f"{team_name} Sub Fullback", 3, 18),
-    ]
+    if response.status_code != 200:
+        print(f"Error: Received non-200 status code: {response.status_code}")
+        print(f"Response content: {response.text}")
+        return []  # Return an empty list or handle accordingly
 
-    return starting_squad, subs_squad
+    try:
+        return response.json()  # Attempt to parse as JSON
+    except ValueError:
+        print(f"Error decoding JSON: {response.text}")
+        return []  # Return an empty list if JSON decoding fails
 
 
-def get_league_clubs():
-    league_clubs = requests.get(
-        "http://league-service:8080/api/v1/league/1/standings"
-    ).json()
-    ids = [club["club_id"] for club in league_clubs]
+def fetch_players_for_club(club_id):
+    response = requests.get(f"http://nginx/api/v1/player/club/{club_id}")
+    try:
+        # print(f"Get players for club {club_id}\n: {response.text}")
+        return response.json()
+    except ValueError:
+        print(f"Error decoding JSON from the response: {response.text}")
+        return []  # Return an empty list if JSON decoding fails
 
-    clubs = [
-        requests.get(f"http://club-service:8080/api/v1/club/{id}").json() for id in ids
-    ]
 
-    return clubs
+def create_team_from_api(club_data):
+    club_id = club_data['id']
+    players_data = fetch_players_for_club(club_id)
 
-def serialize_team(team):
-    bias = 0
-    form = 0
-    squad_quality = 0
-    attack_strength = 0
-    defense_strength = 0
-    image = ""
+    # Separate players by their position type
+    gks = [player for player in players_data if player['position'] == 1]  # Goalkeepers
+    rbs = [player for player in players_data if player['position'] == 2]  # Right Backs
+    lbs = [player for player in players_data if player['position'] == 3]  # Left Backs
+    cbs = [player for player in players_data if player['position'] in [4, 5]]  # Center Backs
+    mfs = [player for player in players_data if player['position'] in [6, 8, 10]]  # Midfielders
+    fws = [player for player in players_data if player['position'] in [7, 9, 11]]  # Forwards
 
-    if team["name"] == "Manchester United" or team["name"] == "Man United":
+    # Initialize the starting squad
+    starting_squad = []
+
+    # Assign players to the starting squad based on their positions
+    if len(gks) >= 1:
+        starting_squad.append(Player(gks[0]['name'], [gks[0]['position']], 100, gks[0]['id']))  # Pick the first GK
+    else:
+        # If no GK is available, randomly pick any player to fill the position (as a fallback)
+        starting_squad.append(Player(players_data[0]['name'], [1], 100, players_data[0]['id']))
+
+    if len(rbs) >= 1:
+        starting_squad.append(Player(rbs[0]['name'], [rbs[0]['position']], 100 , rbs[0]['id']))  # Pick the first RB
+    else:
+        starting_squad.append(Player(players_data[0]['name'], [2], 100 , players_data[0]['id']))
+
+    if len(lbs) >= 1:
+        starting_squad.append(Player(lbs[0]['name'], [lbs[0]['position']], 100 , lbs[0]['id']))  # Pick the first LB
+    else:
+        starting_squad.append(Player(players_data[0]['name'], [3], 100 , players_data[0]['id']))
+
+    # Assign two center backs, if possible
+    if len(cbs) >= 2:
+        starting_squad.append(Player(cbs[0]['name'], [cbs[0]['position']], 100 , cbs[0]['id']))  # Pick first CB
+        starting_squad.append(Player(cbs[1]['name'], [cbs[1]['position']], 100   , cbs[1]['id']))  # Pick second CB
+    else:
+        # If not enough CBs, fill with random players
+        starting_squad.append(Player(players_data[0]['name'], [4], 100 , players_data[0]['id']))  # Fallback to position 4 or 5
+        starting_squad.append(Player(players_data[1]['name'], [5], 100 , players_data[1]['id']))  # Fallback to position 4 or 5
+
+    # Assign three midfielders
+    if len(mfs) >= 3:
+        starting_squad.append(Player(mfs[0]['name'], [mfs[0]['position']], 100 , mfs[0]['id']))
+        starting_squad.append(Player(mfs[1]['name'], [mfs[1]['position']], 100 , mfs[1]['id']))
+        starting_squad.append(Player(mfs[2]['name'], [mfs[2]['position']], 100 , mfs[2]['id']))
+    else:
+        # If not enough midfielders, fill with random players
+        while len(starting_squad) < 8:  # Ensure there are at least 8 players in the squad before forward allocation
+            random_player = random.choice(players_data)
+            starting_squad.append(Player(random_player['name'], [random_player['position']], 100 , random_player['id']))
+
+    # Assign three forwards
+    if len(fws) >= 3:
+        starting_squad.append(Player(fws[0]['name'], [fws[0]['position']], 100 , fws[0]['id']))
+        starting_squad.append(Player(fws[1]['name'], [fws[1]['position']], 100 , fws[1]['id']))
+        starting_squad.append(Player(fws[2]['name'], [fws[2]['position']], 100 , fws[2]['id']))
+    else:
+        # If not enough forwards, fill with random players
+        while len(starting_squad) < 11:  # Ensure there are exactly 11 players in the starting squad
+            random_player = random.choice(players_data)
+            starting_squad.append(Player(random_player['name'], [random_player['position']], 100 , random_player['id']))
+
+    # Assign the remaining players to the substitute squad
+    subs_squad = [Player(player['name'], [player['position']], 100 , player['id']) for player in players_data if player not in starting_squad]
+
+    # Hardcoded logic for team attributes based on the team name
+    team_name = club_data['name']
+    if team_name == "Manchester United" or team_name == "Man United":
         bias = 3
         form = 4
         squad_quality = 9
         attack_strength = 8
         defense_strength = 7
-        image = "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/400px-Manchester_United_FC_crest.svg.png"
-
-    elif team["name"] == "Liverpool":
+    elif team_name == "Liverpool":
         bias = 3
         form = 5
         squad_quality = 9
         attack_strength = 8
         defense_strength = 8
-        image = "https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png"
-
-    elif team["name"] == "Chelsea":
+    elif team_name == "Chelsea":
         bias = 3
         form = 4
         squad_quality = 8
-        attack_strength = 8
+        attack_strength = 7
         defense_strength = 7
-        image = "https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/1200px-Chelsea_FC.svg.png"
-
-    elif team["name"] == "Aston Villa":
+    elif team_name == "Aston Villa":
         bias = 2
         form = 3
         squad_quality = 7
-        attack_strength = 7
-        defense_strength = 6
-        image = "https://worldvectorlogo.com/pt/logo/aston-villa"
-
-    elif team["name"] == "Lixa":
-        bias = 1
-        form = 2
-        squad_quality = 3
-        attack_strength = 3
-        defense_strength = 3
-        image = "https://static.wikia.nocookie.net/logopedia/images/b/b0/FC_Lixa_%282014-2020%29.png/revision/latest?cb=20220922040330"
-
-    elif team["name"] == "Vitória de Santarém":
-        bias = 1
-        form = 2
-        squad_quality = 3
-        attack_strength = 3
-        defense_strength = 3
-        image = "https://www.zerozero.pt/equipa/vc-santarem/108742"
-
-    elif team["name"] == "Vizela":
-        bias = 1
-        form = 2
-        squad_quality = 3
-        attack_strength = 3
-        defense_strength = 3
-        image = "http://escudosfutebolbotao.blogspot.com/2021/04/vizela.html"
-
-    elif team["name"] == "Uniao de Leiria":
-        bias = 1
-        form = 2
-        squad_quality = 3
-        attack_strength = 3
-        defense_strength = 3
-        image = "https://pt.wikipedia.org/wiki/Ficheiro:Uni%C3%A3o_Leiria.png"
-
-    elif team["name"] == "Real Madrid":
-        bias = 4
-        form = 5
-        squad_quality = 10
-        attack_strength = 9
-        defense_strength = 9
-        image = "https://logodownload.org/wp-content/uploads/2016/03/real-madrid-logo-1-1.png"
-
-    elif team["name"] == "Al Nassr":
-        bias = 2
-        form = 3
-        squad_quality = 7
-        attack_strength = 7
-        defense_strength = 6
-        image = "https://upload.wikimedia.org/wikipedia/en/0/04/Al_Nassr_FC_Logo.png"  # Updated to direct image link
-
-    elif team["name"] == "Barcelona":
-        bias = 4
-        form = 5
-        squad_quality = 10
-        attack_strength = 9
-        defense_strength = 9
-        image = "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg"
-
-    elif team["name"] == "Wolves":
-        bias = 2
-        form = 3
-        squad_quality = 6
         attack_strength = 6
         defense_strength = 6
-        image = "https://seeklogo.com/vector-logo/236301/wolves"
-
-    elif team["name"] == "Manchester City" or team["name"] == "Man. City":
-        bias = 4
+    elif team_name == "FC Lixa":
+        bias = 7
         form = 5
         squad_quality = 10
         attack_strength = 10
-        defense_strength = 9
-        image = "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg"
-
-    elif team["name"] == "Porto":
-        bias = 3
-        form = 4
-        squad_quality = 9
-        attack_strength = 8
-        defense_strength = 8
-        image = "https://logos-world.net/porto-logo/"
-
-    elif team["name"] == "Benfica":
-        bias = 3
-        form = 4
-        squad_quality = 9
-        attack_strength = 8
-        defense_strength = 8
-        image = "https://seeklogo.com/free-vector-logos/benfica"
-
-    elif team["name"] == "Sporting":
-        bias = 3
-        form = 4
-        squad_quality = 8
-        attack_strength = 7
-        defense_strength = 7
-        image = "https://logodownload.org/wp-content/uploads/2019/03/sporting-clube-de-portugal-logo-escudo.png"
-
-    elif team["name"] == "Juventus":
+        defense_strength = 6
+    elif team_name == "Real Madrid":
         bias = 4
         form = 5
-        squad_quality = 9
-        attack_strength = 8
-        defense_strength = 8
-        image = "https://seeklogo.com/images/F/fc-juventus-logo-A48B34A764-seeklogo.com.png"
-
-    elif team["name"] == "Athletic Madrid" or team["name"] == "Ath. Madrid" or team["name"] == "Atletico Madrid":
-        bias = 3
-        form = 4
-        squad_quality = 8
-        attack_strength = 7
-        defense_strength = 8
-        image = "https://cdn.worldvectorlogo.com/logos/atletico-madrid-1.svg"
-
+        squad_quality = 10
+        attack_strength = 9
+        defense_strength = 9
+    elif team_name == "Barcelona":
+        bias = 4
+        form = 5
+        squad_quality = 10
+        attack_strength = 9
+        defense_strength = 9
     else:
-        # Default values for unknown teams
+        # Default values for unknown or lower-tier teams
         bias = 1
         form = 2
-        squad_quality = 3
-        attack_strength = 3
-        defense_strength = 3
-        image = team.get("image_url", "")
+        squad_quality = 5
+        attack_strength = 5
+        defense_strength = 5
 
+    # Create and return the Team object
     return Team(
-        id=team["id"],
-        name=team["name"],
+        id=club_data['id'],
+        name=club_data['name'],
         bias=bias,
         form=form,
-        starting_squad=create_team_players(team["name"], team["id"])[0],
-        subs_squad=create_team_players(team["name"], team["id"])[1],
+        starting_squad=starting_squad,
+        subs_squad=subs_squad,
         squad_quality=squad_quality,
         attack_strength=attack_strength,
         defense_strength=defense_strength,
-        image=image,
+        image=club_data['logo']
     )
 
 
 def main():
     # Create teams with proper Team objects
-    sleep(120)
-    clubs = get_league_clubs()
-    teams = [serialize_team(club) for club in clubs]
+    clubs = get_club_data()
+    teams = [create_team_from_api(club) for club in clubs]
+
     print("------------------------------------")
 
     def signal_handler(sig, frame):
@@ -393,24 +337,25 @@ def main():
         scheduler.terminate_producers()
         sys.exit(0)
 
+    signal.signal(signal.SIGINT, signal_handler)
+
     while True:
         print(
             "--------------------------------------------------- New Round ---------------------------------------------------"
         )
-        signal.signal(signal.SIGINT, signal_handler)
-
         scheduler = LeagueScheduler(teams)
-        try:
-            scheduler.start_game_producers()
-
-            scheduler.wait_for_producers()
-
+        if scheduler.validate_schedule():
+            try:
+                scheduler.start_game_producers()
+                scheduler.wait_for_producers()
+                scheduler.terminate_producers()
+            except Exception as e:
+                print(f"Error in league scheduling: {e}")
+                scheduler.terminate_producers()
+        else:
+            print("Invalid schedule detected. Regenerating...")
             scheduler.terminate_producers()
-
-        except Exception as e:
-            print(f"Error in league scheduling: {e}")
-            scheduler.terminate_producers()
-
+            scheduler = LeagueScheduler(teams)  # Attempt to regenerate
 
 if __name__ == "__main__":
     main()

@@ -2,7 +2,15 @@ import json
 from datetime import datetime, timedelta
 from typing import List
 import uuid
-from models import Game, Event, Goal, YellowCard, RedCard, Substitution
+from models import (
+    Game,
+    Event,
+    Goal,
+    YellowCard,
+    RedCard,
+    Substitution,
+    SecondYellowCard,
+)
 
 GAMES_DIR = "./games/"
 GAME_REAL_DURATION = 1.5
@@ -37,6 +45,8 @@ def serialize_game_for_kafka(
             "home_score": game.home_score,
             "away_score": game.away_score,
         },
+        "referee": game.referee,
+        "stadium": game.stadium,
         "match_stats": {
             "home_team_stats": [stat.__dict__() for stat in game.home_team.stats],
             "away_team_stats": [stat.__dict__() for stat in game.away_team.stats],
@@ -74,6 +84,8 @@ def serialize_game_for_kafka(
                 "team": event_team,
                 "scorer": event.scorer.name,
                 "assist": event.assist.name,
+                "assist_id": str(event.assist.id),
+                "scorer_id": str(event.scorer.id),
                 "publish_timestamp": str(event_time.isoformat()),
                 "id": str(id),
             }
@@ -84,6 +96,18 @@ def serialize_game_for_kafka(
                 "minute": str(event.minute),
                 "team": event_team,
                 "player": event.player.name,
+                "player_id": str(event.player.id),
+                "publish_timestamp": str(event_time.isoformat()),
+                "id": str(id),
+            }
+        elif isinstance(event, SecondYellowCard):
+            event_data = {
+                "game_id": str(match_id),
+                "event_type": "SECOND_YELLOW_CARD",
+                "minute": str(event.minute),
+                "team": event_team,
+                "player": event.player.name,
+                "player_id": str(event.player.id),
                 "publish_timestamp": str(event_time.isoformat()),
                 "id": str(id),
             }
@@ -94,6 +118,7 @@ def serialize_game_for_kafka(
                 "minute": str(event.minute),
                 "team": event_team,
                 "player": event.player.name,
+                "player_id": str(event.player.id),
                 "publish_timestamp": str(event_time.isoformat()),
                 "id": str(id),
             }
@@ -104,7 +129,9 @@ def serialize_game_for_kafka(
                 "minute": str(event.minute),
                 "team": event_team,
                 "player_out": event.player_out.name,
+                "player_out_id": str(event.player_out.id),
                 "player_in": event.player_in.name,
+                "player_in_id": str(event.player_in.id),
                 "publish_timestamp": str(event_time.isoformat()),
                 "id": str(id),
             }

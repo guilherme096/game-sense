@@ -19,48 +19,56 @@ const SearchBar = ({ isOpen, onClose }) => {
         setLoading(false);
         return;
       }
-  
+
       setLoading(true);
       try {
         const results = await Promise.allSettled([
           axios.get('/api/v1/player/search', {
-            params: { name: term }, 
+            params: { name: term },
           }),
           axios.get('/api/v1/player/search', {
             params: { surname: term },
           }),
-          axios.get('/api/v1/club/search', {
-            params: { name: term },
+          axios.get('/api/v1/club/search', { 
+            params: { name: term }, 
           }),
         ]);
-  
+
         const [playerNameResult, playerSurnameResult, clubResult] = results;
-  
+        console.log("Club result:", clubResult);
+
         let combinedPlayers = [];
         let clubsData = [];
-  
+
         if (playerNameResult.status === 'fulfilled') {
           const playersByName = Array.isArray(playerNameResult.value.data)
             ? playerNameResult.value.data
             : [];
           combinedPlayers = [...combinedPlayers, ...playersByName];
-        } else {}
-  
+        } else {
+          console.error('Error fetching players by name:', playerNameResult.reason);
+        }
+
         if (playerSurnameResult.status === 'fulfilled') {
           const playersBySurname = Array.isArray(playerSurnameResult.value.data)
             ? playerSurnameResult.value.data
             : [];
           combinedPlayers = [...combinedPlayers, ...playersBySurname];
-        } else {}
-  
+        } else {
+          console.error('Error fetching players by surname:', playerSurnameResult.reason);
+        }
+
         if (clubResult.status === 'fulfilled') {
           clubsData = Array.isArray(clubResult.value.data) ? clubResult.value.data : [];
-        } else {}
-  
+        } else {
+          console.error('Error fetching clubs:', clubResult.reason);
+        }
+
+        // Remove duplicate players based on 'id'
         const uniquePlayers = Array.from(
           new Map(combinedPlayers.map((player) => [player.id, player])).values()
         );
-  
+
         setPlayers(uniquePlayers);
         setClubs(clubsData);
       } catch (error) {
@@ -70,10 +78,9 @@ const SearchBar = ({ isOpen, onClose }) => {
       } finally {
         setLoading(false);
       }
-    }, 300), 
+    }, 300),
     []
   );
-  
 
   useEffect(() => {
     if (isOpen) {
@@ -81,6 +88,8 @@ const SearchBar = ({ isOpen, onClose }) => {
     } else {
       fetchData.cancel();
       setSearchTerm(''); 
+      setPlayers([]);
+      setClubs([]);
     }
 
     return () => {

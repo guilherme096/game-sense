@@ -47,7 +47,7 @@ function PlayerPageBase() {
         <>
             <PageTemplate>
                 {/* Entity Card */}
-                <PlayerEntityCard name1={player.name} name2={player.surname} playerData={player}/>
+                <PlayerEntityCard name1={player.name} name2={player.surname} playerData={player} />
                 {/* Horizontal Tab */}
                 <HorizontalTab
                     color_back="bg-gray-700"

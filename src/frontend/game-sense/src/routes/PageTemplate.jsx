@@ -7,7 +7,7 @@ function PageTemplate({ children }) {
         <>
             <div className="h-screen">
                 <Header />
-                        <div className="h-full overflow-scroll">{children}<div className="h-20 w-full"></div></div>    
+                    <div className="h-full overflow-scrol">{children}<div className="h-20 w-full"></div></div>    
                 <Navbar />
             </div>
         </>
