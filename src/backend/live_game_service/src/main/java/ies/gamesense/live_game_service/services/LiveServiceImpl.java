@@ -49,9 +49,12 @@ public class LiveServiceImpl implements LiveService {
         List<Match> liveGames = new ArrayList<>();
         if (keys != null) {
             keys.forEach(key -> {
-                Match match = redisTemplate.opsForValue().get(key);
-                if (match != null) {
-                    liveGames.add(match);
+                try {
+                    Match match = redisTemplate.opsForValue().get(key);
+                    if (match != null) {
+                        liveGames.add(match);
+                    }
+                } catch (Exception e) {
                 }
             });
         }

@@ -162,6 +162,7 @@ public class Match implements Serializable {
         basicInfo.put("stadium", this.stadium);
         basicInfo.put("currentMVP", this.currentMvp);
         basicInfo.put("kickoffTime", this.matchStartTime);
+        basicInfo.put("ended", Boolean.toString(this.ended));
 
         return basicInfo;
     }
