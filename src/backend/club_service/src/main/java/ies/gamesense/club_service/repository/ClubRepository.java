@@ -8,5 +8,5 @@ import ies.gamesense.club_service.model.Club;
 
 @Repository
 public interface ClubRepository extends JpaRepository<Club, Long> {
-    List<Club> findByNameIgnoreCase(String name);
+    List<Club> findByNameContainingIgnoreCase(String name);
 }
