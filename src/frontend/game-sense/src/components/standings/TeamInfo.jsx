@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function TeamInfo({ team, index }) {
   const navigate = useNavigate();
+
   const fetchClubInfo = async () => {
     const response = await axios.get(`/api/v1/club/${team.club_id}`, {
       headers: {
@@ -17,13 +18,35 @@ export default function TeamInfo({ team, index }) {
     });
     return response.data;
   };
+
+  const fetchUserInfo = async () => {
+    try {
+      const response = await axios.get('/api/v1/management/user-info', {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      return null;
+    }
+  };
+
   const {
     data: clubInfo,
     isLoading: isClubInfoLoading,
     error: clubInfoError,
   } = useQuery(["clubInfo", team.club_id], fetchClubInfo, {
-    enabled: !!team.club_id, // Ensure the query runs only if clubId exists
+    enabled: !!team.club_id,
   });
+
+  const {
+    data: userInfo,
+    isLoading: isUserInfoLoading,
+  } = useQuery("userInfo", fetchUserInfo);
+
   if (isClubInfoLoading) {
     return (
       <tr>
@@ -33,6 +56,7 @@ export default function TeamInfo({ team, index }) {
       </tr>
     );
   }
+
   if (clubInfoError) {
     console.error("Error fetching club info:", clubInfoError);
     return (
@@ -44,10 +68,14 @@ export default function TeamInfo({ team, index }) {
     );
   }
 
+  // Check if this club is the user's favourite team
+  const isFavouriteTeam = clubInfo?.name === userInfo?.favouriteTeam;
+
   return (
     <tr
-      className={` cursor-pointer border-b ${index % 2 !== 0 ? 'bg-gray-50' : 'bg-white'} 
-      ${clubInfo?.starred ? 'bg-yellow-300' : ''}`}
+      className={`cursor-pointer border-b 
+        ${index % 2 !== 0 ? 'bg-gray-50' : 'bg-white'} 
+        ${isFavouriteTeam ? 'bg-yellow-300' : ''}`}
       onClick={() => navigate(`/club/${team.club_id}`)}
     >
       {/* Position */}
@@ -75,7 +103,7 @@ export default function TeamInfo({ team, index }) {
       {/* Club Name */}
       <td className="px-2 mr-10 py-2 font-medium">
         {clubInfo?.name || "Unknown Club"}{' '}
-        {clubInfo?.starred && (
+        {isFavouriteTeam && (
           <FontAwesomeIcon icon={faStar} className="text-yellow-500 ml-2" />
         )}
       </td>

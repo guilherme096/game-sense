@@ -2,7 +2,6 @@ import TeamInfo from './TeamInfo';
 import PropTypes from "prop-types";
 
 export default function TeamTable({ standings }) {
-  console.log("team table component");
   return (
     <div>
       <div className="overflow-x-auto rounded-xl">
