@@ -15,120 +15,92 @@ class LeagueScheduler:
     def __init__(self, teams):
         self.teams = teams
         self.num_teams = len(teams)
-        self.schedule = self.generate_schedule(3)
+        self.schedule = []
         self.processes = []
+        self.generate_full_schedule()
 
-    def generate_schedule(self, num_rounds):
+    def generate_full_schedule(self):
         if self.num_teams % 2 != 0:
-            raise ValueError("Number of teams must be even")
+            # If odd number of teams, add a dummy team for byes
+            dummy_team = Team(id=-1, name="BYE", bias=0, form=0, starting_squad=[], subs_squad=[], squad_quality=0, attack_strength=0, defense_strength=0, image="")
+            self.teams.append(dummy_team)
+            self.num_teams += 1
+            has_dummy = True
+        else:
+            has_dummy = False
 
-        base_schedule = self._create_base_schedule()
+        rounds = self.num_teams - 1
+        matches_per_round = 4
 
-        random.shuffle(base_schedule)
+        team_ids = list(range(self.num_teams))
+        schedule = []
 
-        full_schedule = []
-        matches_played = set()
+        for round_number in range(rounds):
+            round_matches = []
+            for i in range(matches_per_round):
+                home = team_ids[i]
+                away = team_ids[self.num_teams - 1 - i]
+                if has_dummy and (self.teams[home].id == -1 or self.teams[away].id == -1):
+                    continue  # Skip matches involving dummy team
+                # Alternate home and away to ensure fairness
+                if round_number % 2 == 0:
+                    match = (self.teams[home], self.teams[away])
+                else:
+                    match = (self.teams[away], self.teams[home])
+                round_matches.append(match)
+            schedule.append(round_matches)
+            # Rotate team positions for next round
+            team_ids = [team_ids[0]] + [team_ids[-1]] + team_ids[1:-1]
 
-        for i in range(len(self.teams)):
-            teams_in_journey = set()
+        # Duplicate the schedule for reverse fixtures (home and away swapped)
+        reverse_schedule = []
+        for round_matches in schedule:
+            reverse_round = [(away, home) for (home, away) in round_matches]
+            reverse_schedule.append(reverse_round)
 
-            for match in base_schedule:
-                home_team, away_team = match
+        self.schedule = schedule + reverse_schedule
 
-                if (
-                    tuple(sorted([home_team, away_team], key=lambda x: x.name))
-                    in matches_played
-                ):
-                    continue
-
-                if home_team in teams_in_journey or away_team in teams_in_journey:
-                    continue
-
-                teams_in_journey.add(home_team)
-                teams_in_journey.add(away_team)
-                match_key = tuple(sorted([home_team, away_team], key=lambda x: x.name))
-                matches_played.add(match_key)
-
-                full_schedule.append((home_team, away_team))
-
-        # repeat schedule but switch home and away teams
-        full_schedule += [
-            (away_team, home_team) for home_team, away_team in full_schedule
-        ]
-
-        print("Full schedule:")
-        for match in full_schedule:
-            print(f"Match: {match[0].name} vs {match[1].name}")
-
-        return full_schedule
-
-    def _create_base_schedule(self):
-        # Create all possible matches
-        all_matches = list(itertools.permutations(self.teams, 2))
-        print("All matches:")
-        for match in all_matches:
-            print(f"Match: {match[0].name} vs {match[1].name}")
-
-        # Group matches to ensure variety
-        match_groups = {}
-        for match in all_matches:
-            # Sort the match to create a unique key
-            key = tuple(sorted(match, key=lambda x: x.name))
-            if match[0] not in match_groups and match[1] not in match_groups:
-                match_groups[(key, match[0], match[1])] = match
-
-        print("Match groups:")
-        for match in match_groups.values():
-            print(f"Match: {match[0].name} vs {match[1].name}")
-
-        # Convert back to list of matches
-        return list(match_groups.values())
+    def validate_schedule(self):
+        """
+        Ensure that no team is scheduled to play more than one match in the same round.
+        Since the round-robin algorithm inherently ensures this, this function can be a sanity check.
+        """
+        for round_index, round_matches in enumerate(self.schedule):
+            scheduled_teams = set()
+            for match in round_matches:
+                home, away = match
+                if home in scheduled_teams or away in scheduled_teams:
+                    print(f"Conflict detected in round {round_index + 1}: {home.name} or {away.name} already scheduled.")
+                    return False
+                scheduled_teams.add(home)
+                scheduled_teams.add(away)
+        print("No conflicts detected in the schedule.")
+        return True
 
     def start_game_producers(self):
-        """
-        Start game producers for each match in pairs
-        """
-
         def run_producer(home_team, away_team):
-            """
-            Run a game producer subprocess
-            """
             try:
                 env = os.environ.copy()
                 env["HOME_TEAM"] = json.dumps(home_team.to_dict())
                 env["AWAY_TEAM"] = json.dumps(away_team.to_dict())
-
                 return subprocess.Popen(["python", "game_producer.py"], env=env)
             except Exception as e:
-                print(f"Error : {e}")
+                print(f"Error: {e}")
                 return None
 
-        # Reset processes
         self.processes = []
         print("Starting game producers...")
-        print(self.schedule)
 
-        # Schedule matches in pairs
-        for i in range(0, len(self.schedule), 4):
-            match1, match2, match3, match4 = self.schedule[i:i+4]
-
-            home_team1, away_team1 = match1
-            home_team2, away_team2 = match2
-            home_team3, away_team3 = match3
-            home_team4, away_team4 = match4
-
-            process1 = run_producer(home_team1, away_team1)
-            process2 = run_producer(home_team2, away_team2)
-            process3 = run_producer(home_team3, away_team3)
-            process4 = run_producer(home_team4, away_team4)
-
-            # Add processes to the list
-            if process1: self.processes.append(process1)
-            if process2: self.processes.append(process2)
-            if process3: self.processes.append(process3)
-            if process4: self.processes.append(process4)
-
-            time.sleep(1.5 * 60)
+        for round_index, round_matches in enumerate(self.schedule):
+            print(f"Starting Round {round_index + 1}")
+            for match in round_matches:
+                home_team, away_team = match
+                process = run_producer(home_team, away_team)
+                if process:
+                    self.processes.append(process)
+            # Wait for a specific time before starting the next round
+            # Adjust the sleep duration as needed
+            time.sleep(1.5 * 60)  # 1.5 minutes between rounds
 
     def wait_for_producers(self):
         """
@@ -320,24 +292,25 @@ def main():
         scheduler.terminate_producers()
         sys.exit(0)
 
+    signal.signal(signal.SIGINT, signal_handler)
+
     while True:
         print(
             "--------------------------------------------------- New Round ---------------------------------------------------"
         )
-        signal.signal(signal.SIGINT, signal_handler)
-
         scheduler = LeagueScheduler(teams)
-        try:
-            scheduler.start_game_producers()
-
-            scheduler.wait_for_producers()
-
+        if scheduler.validate_schedule():
+            try:
+                scheduler.start_game_producers()
+                scheduler.wait_for_producers()
+                scheduler.terminate_producers()
+            except Exception as e:
+                print(f"Error in league scheduling: {e}")
+                scheduler.terminate_producers()
+        else:
+            print("Invalid schedule detected. Regenerating...")
             scheduler.terminate_producers()
-
-        except Exception as e:
-            print(f"Error in league scheduling: {e}")
-            scheduler.terminate_producers()
-
+            scheduler = LeagueScheduler(teams)  # Attempt to regenerate
 
 if __name__ == "__main__":
     main()
