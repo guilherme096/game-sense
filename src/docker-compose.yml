@@ -85,7 +85,7 @@ services:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/player/health" ]
       interval: 10s
       retries: 5
-      start_period: 10s
+      start_period: 5s
       timeout: 30s
 
   club-service:
@@ -106,7 +106,7 @@ services:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/club/health" ]
       interval: 10s
       retries: 5
-      start_period: 10s
+      start_period: 5s
       timeout: 30s
 
         
@@ -152,7 +152,7 @@ services:
         ]
       interval: 10s
       retries: 5
-      start_period: 30s
+      start_period: 0s
       timeout: 10s
 
   users_db:

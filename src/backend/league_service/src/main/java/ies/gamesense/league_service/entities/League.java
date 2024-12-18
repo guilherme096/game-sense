@@ -18,9 +18,6 @@ public class League {
     @Column(name = "logo", nullable = false)
     private String logo;
 
-    @OneToMany(mappedBy = "league", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonManagedReference
-    private Set<League_Club> leagueClubs;
 
     public League() {
     }
