@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import logo from "../../public/icon-logo.png";
 import React from 'react';
 
-const LoadingLogo = () => {
+const LoadingGames = () => {
   const dotStyle = {
     position: 'relative',
     animation: 'blink 3s infinite',
@@ -10,7 +10,7 @@ const LoadingLogo = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen -mt-[75px]">
+    <div className="flex flex-col justify-center items-center">
       <motion.img
         src={logo}
         alt="Logo"
@@ -39,4 +39,4 @@ const LoadingLogo = () => {
   );
 }
 
-export default LoadingLogo;
+export default LoadingGames;
