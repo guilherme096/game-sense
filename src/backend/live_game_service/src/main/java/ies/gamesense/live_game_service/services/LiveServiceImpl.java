@@ -70,7 +70,7 @@ public class LiveServiceImpl implements LiveService {
         match.getHomeTeam().setScore(0);
         match.getAwayTeam().setScore(0);
 
-        match.getBasicInfo();
+        System.out.println("basic info in liveserviceimp: " + match.getBasicInfo());
 
         updateMatch(match.getMatchId(), match);
         System.out.println("Match saved to Redis: " + match);

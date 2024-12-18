@@ -151,7 +151,7 @@ class LeagueScheduler:
 def get_club_data():
     # Fetch the list of clubs
     response = requests.get("http://nginx/api/v1/club/")
-    print(f"Get club data: {response.status_code}")
+    # print(f"Get club data: {response.status_code}")
 
     if response.status_code != 200:
         print(f"Error: Received non-200 status code: {response.status_code}")
@@ -168,7 +168,7 @@ def get_club_data():
 def fetch_players_for_club(club_id):
     response = requests.get(f"http://nginx/api/v1/player/club/{club_id}")
     try:
-        print(f"Get players for club {club_id}\n: {response.text}")
+        # print(f"Get players for club {club_id}\n: {response.text}")
         return response.json()
     except ValueError:
         print(f"Error decoding JSON from the response: {response.text}")

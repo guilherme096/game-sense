@@ -182,7 +182,7 @@ public class Match implements Serializable {
                 ", awayTeam=" + awayTeam +
                 ", matchStartTime='" + matchStartTime + '\'' +
                 ", gameStatistics=" + gameStatistics +
-
+                ", basicInfo=" + basicInfo +
                 '}';
     }
 

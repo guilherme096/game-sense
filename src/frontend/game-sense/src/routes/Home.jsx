@@ -32,7 +32,7 @@ const fetchUserInfo = async () => {
 };
 
 const fetchLastGames = async () => {
-    const res = await axios.get("/api/v1/game/");
+    //const res = await axios.get("/api/v1/game/");
     return res.data;
 };
 
