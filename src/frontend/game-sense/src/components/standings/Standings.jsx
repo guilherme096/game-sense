@@ -35,17 +35,11 @@ export default function Standings({ showHeader = true }) {
     // sort by team.place
     const sortedStandings = standings.sort((a, b) => a.place - b.place);
 
-    const changeTeam = (
-        <button className="text-gray-400 font-medium text-base">
-            Change Favorite Team
-        </button>
-    );
-
     // Render the component
     return (
         <div className="container mx-auto px-4">
             {showHeader ? (
-                <GeneralCard title="Standings" button={changeTeam}>
+                <GeneralCard title="Standings" button="">
                     <TeamTable standings={sortedStandings} />
                 </GeneralCard>
             ) : (
