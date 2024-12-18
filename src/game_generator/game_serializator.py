@@ -45,6 +45,8 @@ def serialize_game_for_kafka(
             "home_score": game.home_score,
             "away_score": game.away_score,
         },
+        "referee": game.referee,
+        "stadium": game.stadium,
         "match_stats": {
             "home_team_stats": [stat.__dict__() for stat in game.home_team.stats],
             "away_team_stats": [stat.__dict__() for stat in game.away_team.stats],

@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import ies.gamesense.club_service.model.Club;
-import ies.gamesense.club_service.model.Player;
 import ies.gamesense.club_service.model.Game;
 import ies.gamesense.club_service.service.ClubService;
 
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -57,32 +55,10 @@ public class ClubController {
     @Operation(summary = "Search Clubs by Name")
     public ResponseEntity<List<Club>> searchClubsByName(@RequestParam String name) {
         List<Club> clubs = clubService.getClubsByName(name);
-        if (clubs.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
         return new ResponseEntity<>(clubs, HttpStatus.OK);
     }
+    
 
-    @PutMapping("/{id}/star")
-    @Operation(summary = "Star a Club")
-    public ResponseEntity<Void> starClub(@PathVariable Long id) {
-        Club club = clubService.getClubById(id);
-        if (club != null) {
-            clubService.starClub(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @GetMapping("/{id}/players")
-    @Operation(summary = "Get Players of a Club")
-    public ResponseEntity<List<Player>> getPlayersByClubId(@PathVariable Long id) {
-        List<Player> players = clubService.getPlayersByClubId(id);
-        if (players.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(players, HttpStatus.OK);
-    }
 
     @GetMapping("/{id}/games/last")
     @Operation(summary = "Get Last Games of a Club")

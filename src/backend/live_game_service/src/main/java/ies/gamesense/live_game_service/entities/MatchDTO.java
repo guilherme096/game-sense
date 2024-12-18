@@ -146,4 +146,67 @@ public class MatchDTO {
         this.stadium = stadium;
     }
 
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public boolean isEnded() {
+        return ended;
+    }
+
+    public void setEnded(boolean ended) {
+        this.ended = ended;
+    }
+
+    public List<EventDTO> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<EventDTO> events) {
+        this.events = events;
+    }
+
+    public String getCurrentMvp() {
+        return currentMvp;
+    }
+
+    public void setCurrentMvp(String currentMvp) {
+        this.currentMvp = currentMvp;
+    }
+
+    public List<String> getTopStats() {
+        return topStats;
+    }
+
+    public void setTopStats(List<String> topStats) {
+        this.topStats = topStats;
+    }
+
+    @Override
+    public String toString() {
+        return "MatchDTO{" +
+                "matchId='" + matchId + '\'' +
+                ", homeTeamId='" + homeTeamId + '\'' +
+                ", homeTeamName='" + homeTeamName + '\'' +
+                ", homeTeamImage='" + homeTeamImage + '\'' +
+                ", homeTeamScore=" + homeTeamScore +
+                ", awayTeamId='" + awayTeamId + '\'' +
+                ", awayTeamName='" + awayTeamName + '\'' +
+                ", awayTeamImage='" + awayTeamImage + '\'' +
+                ", matchStartTime='" + matchStartTime + '\'' +
+                ", basicInfo=" + basicInfo +
+                ", events=" + events +
+                ", currentMvp=" + currentMvp +
+                ", topStats=" + topStats +
+                ", referee='" + referee + '\'' +
+                ", stadium='" + stadium + '\'' +
+                ", minute=" + minute +
+                ", ended=" + ended +
+                '}';
+    }
+
 }

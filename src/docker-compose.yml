@@ -39,6 +39,12 @@ services:
       USERS_DATABASE: ${USERS_DATABASE}
       USERS_USER: ${USERS_USER}
       USERS_PASSWORD: ${USERS_PASSWORD}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/management/health" ]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 30s
 
   live-game-service:
     build:
@@ -51,6 +57,12 @@ services:
       - app-network
     env_file:
       - .env
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/live-game/health" ]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 30s
 
   game-service:
     build:
@@ -66,6 +78,12 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - app-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/game/health" ]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 30s
 
   player-service:
     build:
@@ -85,7 +103,7 @@ services:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/player/health" ]
       interval: 10s
       retries: 5
-      start_period: 10s
+      start_period: 5s
       timeout: 30s
 
   club-service:
@@ -106,11 +124,10 @@ services:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/club/health" ]
       interval: 10s
       retries: 5
-      start_period: 10s
+      start_period: 5s
       timeout: 30s
 
         
-
   league-service:
     build:
       context: backend/league_service
@@ -125,6 +142,12 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/league/health" ]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 30s
 
   sql_db:
     image: mysql:8.0
@@ -152,8 +175,43 @@ services:
         ]
       interval: 10s
       retries: 5
-      start_period: 30s
+      start_period: 0s
       timeout: 10s
+
+  data-init:
+    image: mysql:8.0
+    depends_on:
+      sql_db:
+        condition: service_healthy
+      game-service:
+        condition: service_healthy
+      player-service:
+        condition: service_healthy
+      club-service:
+        condition: service_healthy
+      league-service:
+        condition: service_healthy
+    volumes:
+      - ./backend/sql_db:/docker-entrypoint-initdb.d
+    entrypoint:
+      - sh
+      - -c
+      - |
+        echo "Waiting for MySQL to be ready..."
+        until mysqladmin ping -h sql_db -P 3306 --silent; do
+          echo "MySQL is unavailable, waiting..."
+          sleep 5
+        done
+        echo "MySQL is ready. Checking for existing data..."
+        if [ "$(mysql -h sql_db -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} -e "SELECT COUNT(*) FROM club;" -s --skip-column-names)" -eq "0" ]; then
+          echo "No data found in 'club'. Initializing database..."
+          mysql -h sql_db -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < /docker-entrypoint-initdb.d/init_data.sql
+        else
+          echo "Data already exists in 'club'. Skipping initialization."
+        fi
+    networks:
+      - app-network
+
 
   users_db:
     image: mysql:8.0

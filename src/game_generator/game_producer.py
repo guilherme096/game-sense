@@ -137,6 +137,8 @@ def main():
         "home_team": game_data.get("home_team"),
         "away_team": game_data.get("away_team"),
         "match_start_time": game_data.get("match_start_time"),
+        "referee": game_data.get("referee"),
+        "stadium": game_data.get("stadium"),
     }
     mathc_stats = {
         "match_id": game_data.get("match_id"),
