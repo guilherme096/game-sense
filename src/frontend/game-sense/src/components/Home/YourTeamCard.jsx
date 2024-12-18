@@ -1,11 +1,13 @@
 import { faFutbol } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Timer from "../Timer";
+import { formatKickoff } from "../GamePage/MatchInformationCard";
+
 function GameCard({ game }) {
     return (
         <div className="flex flex-col w-full p-5 py-6 bg-[#333D4D] rounded-lg drop-shadow-lg justify-center items-center">
             <div className="w-full text-center text-xs text-neutral-300">
-                {game.match_start_time}
+                {formatKickoff(game.match_start_time)}
             </div>
             <div className="flex flex-row w-full text-neutral-300 items-center justify-between px-10">
                 <div className="w-20 h-fit  flex flex-col items-center justify-center overflow-show">

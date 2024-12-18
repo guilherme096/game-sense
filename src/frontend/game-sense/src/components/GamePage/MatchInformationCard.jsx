@@ -2,9 +2,7 @@ import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo, faFlagCheckered, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
-const MatchInformationCard = ({ kickoff, referee, stadium }) => {
-    
-    const formatKickoff = (timestamp) => {
+export const formatKickoff = (timestamp) => {
         const date = new Date(timestamp);
         const formattedDate = date.toLocaleDateString('en-GB'); // "dd/mm/yyyy"
         const formattedTime = date.toLocaleTimeString('en-GB', {
@@ -13,6 +11,9 @@ const MatchInformationCard = ({ kickoff, referee, stadium }) => {
         }); // "hh:mm"
         return `${formattedDate.split('/').slice(0, 2).join('/')} ${formattedTime}`; // "dd/mm/yy hh:mm"
     };
+
+const MatchInformationCard = ({ kickoff, referee, stadium }) => {
+    
 
 
     return (
