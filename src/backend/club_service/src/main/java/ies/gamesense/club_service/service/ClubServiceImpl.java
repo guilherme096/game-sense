@@ -47,7 +47,7 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public List<Club> getClubsByName(String name) {
-        return (List<Club>) clubRepository.findByName(name);
+        return clubRepository.findByNameIgnoreCase(name);
     }
 
     @Override
