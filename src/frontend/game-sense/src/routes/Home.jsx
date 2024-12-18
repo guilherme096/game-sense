@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 import PageTemplate from "./PageTemplate";
 import GameCard from "../components/Home/YourTeamCard";
 import LiveGame from "../components/Home/LiveGame";
 import LastGames from "../components/Home/LastGames";
-import LoadingGames from '../components/LoadingGames';
+import LoadingGames from "../components/LoadingGames";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -11,22 +11,24 @@ import { Link } from "react-router-dom";
 const fetchGames = async () => {
     try {
         const res = await axios.get("/api/v1/live/", { withCredentials: true });
-        console.log("Fetched Games:", res.data); 
+        console.log("Fetched Games:", res.data);
         return res.data;
     } catch (error) {
         console.error("Error fetching games:", error);
-        throw error; 
+        throw error;
     }
 };
 
 const fetchUserInfo = async () => {
     try {
-        const res = await axios.get("/api/v1/management/user-info", { withCredentials: true });
+        const res = await axios.get("/api/v1/management/user-info", {
+            withCredentials: true,
+        });
         console.log("User Info:", res.data);
         return res.data;
     } catch (error) {
         console.error("Error fetching user info:", error);
-        throw error; 
+        throw error;
     }
 };
 
@@ -41,7 +43,7 @@ function Home() {
         isLoading: isLoadingGames,
         error: errorGames,
     } = useQuery("games", fetchGames, {
-        refetchInterval: 10000, 
+        refetchInterval: 10000,
     });
 
     const {
@@ -59,22 +61,31 @@ function Home() {
 
     const yourTeamGames = games
         ? games.filter((g) => {
-              const homeTeamName = g.home_team?.name?.trim().toLowerCase();
-              const awayTeamName = g.away_team?.name?.trim().toLowerCase();
-              return homeTeamName === normalizedFavTeam || awayTeamName === normalizedFavTeam;
-          })
+            const homeTeamName = g.home_team?.name?.trim().toLowerCase();
+            const awayTeamName = g.away_team?.name?.trim().toLowerCase();
+            return (
+                homeTeamName === normalizedFavTeam ||
+                awayTeamName === normalizedFavTeam
+            );
+        })
         : [];
 
     const otherGames = games
         ? games.filter((g) => {
-              const homeTeamName = g.home_team?.name?.trim().toLowerCase();
-              const awayTeamName = g.away_team?.name?.trim().toLowerCase();
-              return !(homeTeamName === normalizedFavTeam || awayTeamName === normalizedFavTeam);
-          })
+            const homeTeamName = g.home_team?.trim().toLowerCase();
+            const awayTeamName = g.away_team?.trim().toLowerCase();
+            return !(
+                homeTeamName === normalizedFavTeam ||
+                awayTeamName === normalizedFavTeam
+            );
+        })
         : [];
 
-
-    const { data: lastGames, isLoading: isLoadingLastGames, error: errorLastGames } = useQuery("lastGames", fetchLastGames)
+    const {
+        data: lastGames,
+        isLoading: isLoadingLastGames,
+        error: errorLastGames,
+    } = useQuery("lastGames", fetchLastGames);
 
     if (isLoadingLastGames) {
         return <p>Loading...</p>;
@@ -99,7 +110,7 @@ function Home() {
                             const gameId = g.match_id || g.id;
                             if (!gameId) {
                                 console.warn("Game ID is undefined for game:", g);
-                                return null; 
+                                return null;
                             }
                             return (
                                 <Link to={`/live/${gameId}`} key={gameId} className="-mt-3">
@@ -122,7 +133,7 @@ function Home() {
                         const gameId = g.match_id || g.id;
                         if (!gameId) {
                             console.warn("Game ID is undefined for game:", g);
-                            return null; 
+                            return null;
                         }
                         return (
                             <Link to={`/live/${gameId}`} key={gameId}>
