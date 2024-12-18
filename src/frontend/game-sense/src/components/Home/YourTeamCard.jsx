@@ -13,29 +13,27 @@ function YourTeamCard({ game }) {
                         {game.home_team.image ? (
                             <img
                                 className="w-full h-full object-contain"
-                                src={game.home_team.image}
-                                alt={game.home_team.name}
+                                src={game.home_team_image}
+                                alt={game.home_team}
                             />
                         ) : (
-                            <span className="text-sm text-gray-500">
-                                {game.home_team.name}
-                            </span>
+                            <span className="text-sm text-gray-500">{game.home_team}</span>
                         )}
                     </div>
                     <div className="text-md font-bold mt-2 text-white text-nowrap">
-                        {game.home_team.name}
+                        {game.home_team}
                     </div>
                 </div>
                 <div className="flex flex-col mt-4 items-center">
                     <div className="row flex">
                         <div className="text-white font-bold text-3xl pr-3">
-                            {game.home_team.score}
+                            {game.home_score}
                         </div>
 
                         <div className="text-white font-bold text-3xl">:</div>
 
                         <div className="text-white font-bold text-3xl pl-3">
-                            {game.away_team.score}
+                            {game.away_score}
                         </div>
                     </div>
                     <div className="text-green-500 font-bold text-md mt-2">
@@ -44,20 +42,18 @@ function YourTeamCard({ game }) {
                 </div>
                 <div className="w-24 h-24 flex flex-col items-center justify-center">
                     <div className="w-24 h-24 rounded-lg flex items-center justify-center overflow-hidden">
-                        {game.away_team.image ? (
+                        {game.away_team_image ? (
                             <img
                                 className="w-full h-full object-contain"
-                                src={game.away_team.image}
-                                alt={game.away_team.name}
+                                src={game.away_team_image}
+                                alt={game.away_team}
                             />
                         ) : (
-                            <span className="text-sm text-gray-500">
-                                {game.away_team.name}
-                            </span>
+                            <span className="text-sm text-gray-500">{game.away_team}</span>
                         )}
                     </div>
                     <div className="text-md font-bold mt-2 text-white text-nowrap">
-                        {game.away_team.name}
+                        {game.away_team}
                     </div>
                 </div>
             </div>

@@ -2,6 +2,8 @@ package ies.gamesense.live_game_service.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +35,15 @@ public class LiveController {
 
     @Operation(summary = "Get all live games")
     @GetMapping("/")
-    public List<Match> getLiveGames() {
-        return liveService.getLiveGames();
+    public List<Map<String, String>> getLiveGames() {
+        List<Match> matches = liveService.getLiveGames();
+        List<Map<String, String>> basicInfo = new ArrayList<>();
+
+        for (Match match : matches) {
+            basicInfo.add(liveService.getBasicInfo(match.getMatchId()));
+        }
+
+        return basicInfo;
     }
 
     @Operation(summary = "Get live game by id")
@@ -44,6 +53,8 @@ public class LiveController {
         if (game == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+
+        // return only the game without the events squad and stats
         return ResponseEntity.ok(game);
     }
 

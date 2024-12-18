@@ -21,7 +21,7 @@ const GameTimeline = ({ id }) => {
     const [lineStyles, setLineStyles] = useState({ top: "100px", height: 0 });
     const [visibleEvents, setVisibleEvents] = useState([]); // Track which events are visible
     const [events, setEvents] = useState([]);
-    const [lastEventId, setLastEventId] = useState(0);
+    const [lastEventId, setLastEventId] = useState(-1);
 
     const navigate = useNavigate();
 
@@ -36,16 +36,33 @@ const GameTimeline = ({ id }) => {
             refetchInterval: 10000,
             onSuccess: (fetchedEvents) => {
                 if (fetchedEvents && fetchedEvents.length > 0) {
-                    setEvents((prevEvents) => [...prevEvents, ...fetchedEvents]); // Append new events
-                    const newLastEventId =
-                        fetchedEvents[fetchedEvents.length - 1].event_index;
-                    console.log(newLastEventId);
-                    setLastEventId(newLastEventId);
+                    setEvents((prevEvents) => {
+                        // Only add events we don't already have
+                        const newEventIds = new Set(
+                            fetchedEvents.map((e) => e.event_index),
+                        );
+                        const filteredPrevEvents = prevEvents.filter(
+                            (e) => !newEventIds.has(e.event_index),
+                        );
+                        return [...filteredPrevEvents, ...fetchedEvents];
+                    });
                 }
             },
         },
     );
     console.log(events);
+
+    useEffect(() => {
+        console.log("Current events:", events);
+        console.log("Visible events:", visibleEvents);
+    }, [events, visibleEvents]);
+
+    useEffect(() => {
+        if (newEvents.length > 0) {
+            const newLastEventId = newEvents[newEvents.length - 1].event_index;
+            setLastEventId(newLastEventId);
+        }
+    }, [newEvents]);
 
     useEffect(() => {
         if (timelineRef.current && events.length > 0) {
@@ -212,7 +229,7 @@ const GameTimeline = ({ id }) => {
 
     return (
         <>
-            {events.length > 0 ? (
+            {events && events.length > 0 ? (
                 <div
                     className={`relative w-full bg-[#196146] text-white p-4 text-sm rounded-md ${events.length > 0 ? "min-h-[100px]" : "min-h-[70px]"
                         }`}

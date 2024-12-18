@@ -134,6 +134,10 @@ public class LiveServiceImpl implements LiveService {
                 match.setEvents(new ArrayList<>());
             }
 
+            System.out.println("Minute: " + Integer.parseInt(event.get("minute")));
+            match.setMinute(Integer.parseInt(event.get("minute")));
+            System.out.println("Match minute: " + match.getMinute());
+
             if (event.get("event_type").equals("GOAL")) {
                 String team = event.get("team");
                 if (team.equals("home")) {
