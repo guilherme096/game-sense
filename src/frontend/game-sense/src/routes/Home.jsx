@@ -88,9 +88,6 @@ function Home() {
         return <p>Loading...</p>;
     }
 
-    if (errorLastGames) {
-        return <p>Error fetching data</p>;
-    }
 
     return (
         <PageTemplate>
