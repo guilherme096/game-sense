@@ -3,6 +3,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo, faFlagCheckered, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 const MatchInformationCard = ({ kickoff, referee, stadium }) => {
+    
+    const formatKickoff = (timestamp) => {
+        const date = new Date(timestamp);
+        const formattedDate = date.toLocaleDateString('en-GB'); // "dd/mm/yyyy"
+        const formattedTime = date.toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        }); // "hh:mm"
+        return `${formattedDate.split('/').slice(0, 2).join('/')} ${formattedTime}`; // "dd/mm/yy hh:mm"
+    };
+
+
     return (
         <div className="card-compact rounded-xl bg-base-100 shadow-md">
             <div className="card-body">
@@ -13,7 +25,7 @@ const MatchInformationCard = ({ kickoff, referee, stadium }) => {
                         <FontAwesomeIcon icon={faCircleInfo} className="text-gray-400 h-5" />
                         <div>
                             <p className="font-bold text-md">Kickoff</p>
-                            <p className="text-lg">{kickoff}</p>
+                            <p className="text-lg">{formatKickoff(kickoff)}</p>
                         </div>
                     </div>
 

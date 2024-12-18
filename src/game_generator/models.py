@@ -157,8 +157,12 @@ class Game:
         self.home_score: int = 0
         self.away_score: int = 0
 
+        self.referee: str = ""
+        self.stadium: str = ""
+
+
     def __str__(self):
-        return f"Game:\n Seed: {self.seed}\n Home Team: {self.home_team}\n Away Team: {self.away_team}\n Winner: {self.winner}\n Home Score: {self.home_score}\n Away Score: {self.away_score}\n"
+        return f"Game:\n Seed: {self.seed}\n Home Team: {self.home_team}\n Away Team: {self.away_team}\n Winner: {self.winner}\n Home Score: {self.home_score}\n Away Score: {self.away_score}\n Referee: {self.referee}\n Stadium: {self.stadium}\n"
 
 
 class Event:

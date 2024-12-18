@@ -230,6 +230,13 @@ def generate_stats(
 
 def generate_game(home_team: Team, away_team: Team, seed: int):
     game = Game(seed, home_team, away_team)
+
+    referees = ["Clement Turpin", "Szymon Marciniak", "Slavko Vincic", "Daniele Orsato", "Stephanie Frappart", "Istvan Kovacs", "Halil Umut Meler", "Michael Oliver", "Francois Letexier", "Artur Soares Dias", "Danny Makkelie", "Jesus Gil Manzano", "Daniel Siebert", "Anthony Taylor", "Carlos del Cerro Grande", "Ovidiu Hategan", "Bjorn Kuipers", "Felix Brych", "Antonio Mateu Lahoz", "Sergei Karasev", "William Collum", "Orel Grinfeld", "Andreas Ekberg", "Sandro Schärer", "Benoît Bastien", "Serdar Gözübüyük", "Anastasios Sidiropoulos", "Ivan Kružliak", "Bobby Madden", "Ali Palabıyık", "Glenn Nyberg", "Lawrence Visser", "Srdjan Jovanovic", "Davide Massa", "Ovidiu Hațegan", "Paweł Raczkowski", "Craig Pawson", "John Beaton", "Robert Madden", "Viktor Kassai", "Martin Atkinson", "Gianluca Rocchi", "Damir Skomina", "Mark Clattenburg", "Howard Webb", "Pierluigi Collina", "Markus Merk", "Björn Kuipers", "Nicola Rizzoli", "Pedro Proença"]
+    stadiums = ["Santiago Bernabéu Stadium", "Tottenham Hotspur Stadium", "Wembley Stadium", "Signal Iduna Park", "Allianz Arena", "Estadio Azteca", "Anfield", "Old Trafford", "Maracanã Stadium", "San Siro Stadium", "La Bombonera", "Soccer City", "Camp Nou", "Celtic Park", "Wanda Metropolitano", "Stade Vélodrome", "Mestalla Stadium", "Estádio da Luz", "Ibrox Stadium", "Azadi Stadium", "Narendra Modi Stadium", "Rungrado 1st of May Stadium", "Michigan Stadium", "Beaver Stadium", "Ohio Stadium", "Neyland Stadium", "Tiger Stadium", "Kyle Field", "Darrell K Royal–Texas Memorial Stadium", "Melbourne Cricket Ground", "Bukit Jalil National Stadium", "Rose Bowl Stadium", "Ben Hill Griffin Stadium", "Jordan–Hare Stadium", "Memorial Stadium", "Cotton Bowl Stadium", "MetLife Stadium", "Croke Park", "Twickenham Stadium", "FedExField", "Lambeau Field", "AT&T Stadium", "Beijing National Stadium", "Luzhniki Stadium", "Stade de France", "Estadio Monumental", "Estadio do Dragão", "Emirates Stadium", "Stamford Bridge", "Estadio Olímpico Metropolitano"]
+
+    game.referee = random.choice(referees)
+    game.stadium = random.choice(stadiums)
+
     winner = generate_winner(home_team, away_team, seed)
     logging.debug(f"Winner: {winner}")
 
@@ -250,9 +257,8 @@ def generate_game(home_team: Team, away_team: Team, seed: int):
     game.home_team = home_team
     game.away_team = away_team
 
-    logging.debug(f"Game: {game}")
-    logging.debug(f"Home team: {home_team}")
-    logging.debug(f"Away team: {away_team}")
+
+    print(f"Game: {game}")
 
     return game
 
