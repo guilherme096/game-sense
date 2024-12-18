@@ -24,6 +24,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no henriqueft04@deti-ies-02 << 'EOF'
             cd /home/henriqueft04/ies-24-25-group-project-102
-            git pull origin dev
-            ./deploy.sh
+            git pull origin deployment
+            ./deploy.sh > /home/henriqueft04/deploy.log 2>&1
           EOF
