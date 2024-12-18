@@ -18,7 +18,6 @@ public class League {
     @Column(name = "logo", nullable = false)
     private String logo;
 
-
     public League() {
     }
 
