@@ -28,7 +28,7 @@ const fetchUserInfo = async () => {
         return res.data;
     } catch (error) {
         console.error("Error fetching user info:", error);
-        throw error;
+        return null;
     }
 };
 
@@ -39,47 +39,54 @@ const fetchLastGames = async () => {
 
 function Home() {
     const {
-        data: games,
+        data: games = [],
         isLoading: isLoadingGames,
         error: errorGames,
     } = useQuery("games", fetchGames, {
         refetchInterval: 10000,
+        retry: 3,
     });
 
     const {
         data: userInfo,
         isLoading: isLoadingUser,
-        error: errorUser,
-    } = useQuery("userInfo", fetchUserInfo);
+    } = useQuery("userInfo", fetchUserInfo, {
+        useErrorBoundary: false,
+        retry: false, 
+    });
 
-    const isLoading = isLoadingGames || isLoadingUser;
-    const error = errorGames || errorUser;
-
-    const favoriteTeamName = userInfo?.favouriteTeam || null;
-
+    const favoriteTeamName = userInfo?.favouriteTeam;
     const normalizedFavTeam = favoriteTeamName?.trim().toLowerCase();
 
-    const yourTeamGames = games
-        ? games.filter((g) => {
+    const [yourTeamGames, otherGames] = React.useMemo(() => {
+        if (!games || !Array.isArray(games)) {
+            return [[], []];
+        }
+
+        if (!normalizedFavTeam) {
+            return [[], games];
+        }
+
+        const favorites = games.filter((g) => {
             const homeTeamName = g.home_team?.name?.trim().toLowerCase();
             const awayTeamName = g.away_team?.name?.trim().toLowerCase();
             return (
                 homeTeamName === normalizedFavTeam ||
                 awayTeamName === normalizedFavTeam
             );
-        })
-        : [];
+        });
 
-    const otherGames = games
-        ? games.filter((g) => {
-            const homeTeamName = g.home_team?.trim().toLowerCase();
-            const awayTeamName = g.away_team?.trim().toLowerCase();
-            return !(
-                homeTeamName === normalizedFavTeam ||
-                awayTeamName === normalizedFavTeam
+        const others = games.filter((g) => {
+            const homeTeamName = g.home_team?.name?.trim().toLowerCase();
+            const awayTeamName = g.away_team?.name?.trim().toLowerCase();
+            return (
+                homeTeamName !== normalizedFavTeam &&
+                awayTeamName !== normalizedFavTeam
             );
-        })
-        : [];
+        });
+
+        return [favorites, others];
+    }, [games, normalizedFavTeam]);
 
     const {
         data: lastGames,
@@ -101,7 +108,7 @@ function Home() {
                 {/* Last Games Section */}
                 <LastGames matches={lastGames} />
 
-                {/* Favorite Team Section */}
+                {/* Favorite Team Section - only shown if we have user info and favorite team games */}
                 {!isLoadingUser && favoriteTeamName && yourTeamGames.length > 0 && (
                     <>
                         <h1 className="text-2xl font-semibold mt-6">Favorite Team</h1>
@@ -124,10 +131,10 @@ function Home() {
                 {/* Other Games Section */}
                 <h1 className="text-2xl font-semibold mt-6">Live Games</h1>
                 <div className="divider mt-0"></div>
-                {isLoading ? (
+                {isLoadingGames ? (
                     <LoadingGames />
-                ) : error ? (
-                    <p>Error fetching other live games.</p>
+                ) : errorGames ? (
+                    <p>Error fetching live games.</p>
                 ) : otherGames.length > 0 ? (
                     otherGames.map((g) => {
                         const gameId = g.match_id || g.id;
