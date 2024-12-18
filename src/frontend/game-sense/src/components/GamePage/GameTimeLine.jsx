@@ -9,25 +9,42 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const fetchEvents = async (id) => {
-    const res = await axios.get("/api/v1/live/" + id + "/ping?lastEventId=0");
+const fetchEvents = async (id, lastEventId) => {
+    const res = await axios.get(
+        "/api/v1/live/" + id + "/ping?" + new URLSearchParams({ lastEventId }),
+    );
     return res.data;
 };
-
 
 const GameTimeline = ({ id }) => {
     const timelineRef = useRef(null);
     const [lineStyles, setLineStyles] = useState({ top: "100px", height: 0 });
     const [visibleEvents, setVisibleEvents] = useState([]); // Track which events are visible
+    const [events, setEvents] = useState([]);
+    const [lastEventId, setLastEventId] = useState(0);
+
     const navigate = useNavigate();
 
     const {
-        data: events = [],
+        data: newEvents = [],
         isLoading,
         error,
-    } = useQuery("events", () => fetchEvents(id), {
-        refetchInterval: 10000,
-    });
+    } = useQuery(
+        ["events", id, lastEventId],
+        () => fetchEvents(id, lastEventId),
+        {
+            refetchInterval: 10000,
+            onSuccess: (fetchedEvents) => {
+                if (fetchedEvents && fetchedEvents.length > 0) {
+                    setEvents((prevEvents) => [...prevEvents, ...fetchedEvents]); // Append new events
+                    const newLastEventId =
+                        fetchedEvents[fetchedEvents.length - 1].event_index;
+                    console.log(newLastEventId);
+                    setLastEventId(newLastEventId);
+                }
+            },
+        },
+    );
     console.log(events);
 
     useEffect(() => {
@@ -47,7 +64,6 @@ const GameTimeline = ({ id }) => {
                     setTimeout(() => {
                         setVisibleEvents((prev) => [...prev, index]);
                     }, index * 300);
-
                 });
             }
         }
@@ -62,50 +78,73 @@ const GameTimeline = ({ id }) => {
     }
 
     const renderEventBlock = (event, team) => {
-    const isLeft = team === "home";
+        const isLeft = team === "home";
 
-    return (
-        <div className={`flex items-center w-1/2 ${isLeft
+        return (
+            <div
+                className={`flex items-center w-1/2 ${isLeft
                         ? "pr-4 justify-end text-right"
                         : "pl-4 justify-start text-left"
-                    }`}>
-                {isLeft && (
-                    event.event_type === "SUBSTITUTION" ? (
+                    }`}
+            >
+                {isLeft &&
+                    (event.event_type === "SUBSTITUTION" ? (
                         <div className="ml-4 flex-1">
-                            <span className="font-bold break-words inline-block cursor-pointer" onClick={() => navigate(`/player/${event.player_in_id}`)}>  
+                            <span
+                                className="font-bold break-words inline-block cursor-pointer"
+                                onClick={() => navigate(`/player/${event.player_in_id}`)}
+                            >
                                 {event.player_in}
                             </span>
-                            <span className="break-words inline-block ml-1 cursor-pointer" onClick={() => navigate(`/player/${event.player_out_id}`)}>
+                            <span
+                                className="break-words inline-block ml-1 cursor-pointer"
+                                onClick={() => navigate(`/player/${event.player_out_id}`)}
+                            >
                                 ({event.player_out})
                             </span>
                         </div>
                     ) : event.event_type === "GOAL" ? (
                         <div className="ml-4 flex-1">
-                            <span className="font-bold break-words inline-block cursor-pointer" onClick={() => navigate(`/player/${event.scorer_id}`)}>
+                            <span
+                                className="font-bold break-words inline-block cursor-pointer"
+                                onClick={() => navigate(`/player/${event.scorer_id}`)}
+                            >
                                 {event.scorer}
                             </span>
-                            <span className="break-words inline-block ml-1 cursor-pointer" onClick={() => navigate(`/player/${event.assist_id}`)}>
+                            <span
+                                className="break-words inline-block ml-1 cursor-pointer"
+                                onClick={() => navigate(`/player/${event.assist_id}`)}
+                            >
                                 ({event.assist})
                             </span>
                         </div>
                     ) : (
                         <div className="ml-4 flex-1">
-                            <span className="break-words inline-block cursor-pointer" onClick={() => navigate(`/player/${event.player_id}`)}>
+                            <span
+                                className="break-words inline-block cursor-pointer"
+                                onClick={() => navigate(`/player/${event.player_id}`)}
+                            >
                                 {event.player}
                             </span>
                         </div>
-                    )
-                )}
+                    ))}
 
-                <div className={`px-4 flex items-center justify-center ${
-                    event.event_type === "GOAL" ? "text-green-200" : 
-                    event.event_type === "RED_CARD" ? "text-red-500" : 
-                    event.event_type === "YELLOW_CARD" ? "text-yellow-400" : 
-                    event.event_type === "SECOND_YELLOW_CARD" ? "text-yellow-400" :
-                    event.event_type === "SUBSTITUTION" ? "text-blue-400" :
-                    event.event_type === "auto-goal" ? "text-red-300" : 
-                    ""
-                }`}>
+                <div
+                    className={`px-4 flex items-center justify-center ${event.event_type === "GOAL"
+                            ? "text-green-200"
+                            : event.event_type === "RED_CARD"
+                                ? "text-red-500"
+                                : event.event_type === "YELLOW_CARD"
+                                    ? "text-yellow-400"
+                                    : event.event_type === "SECOND_YELLOW_CARD"
+                                        ? "text-yellow-400"
+                                        : event.event_type === "SUBSTITUTION"
+                                            ? "text-blue-400"
+                                            : event.event_type === "auto-goal"
+                                                ? "text-red-300"
+                                                : ""
+                        }`}
+                >
                     {event.event_type === "GOAL" && (
                         <FontAwesomeIcon icon={faFutbol} className="h-5" />
                     )}
@@ -126,43 +165,59 @@ const GameTimeline = ({ id }) => {
                     )}
                 </div>
 
-                {!isLeft && (
-                    event.event_type === "SUBSTITUTION" ? (
+                {!isLeft &&
+                    (event.event_type === "SUBSTITUTION" ? (
                         <div className="mr-4 flex-1">
-                            <span className="font-bold break-words inline-block cursor-pointer" onClick={() => navigate(`/player/${event.player_in_id}`)}>
+                            <span
+                                className="font-bold break-words inline-block cursor-pointer"
+                                onClick={() => navigate(`/player/${event.player_in_id}`)}
+                            >
                                 {event.player_in}
                             </span>
-                            <span className="break-words inline-block ml-1 cursor-pointer" onClick={() => navigate(`/player/${event.player_out_id}`)}>
+                            <span
+                                className="break-words inline-block ml-1 cursor-pointer"
+                                onClick={() => navigate(`/player/${event.player_out_id}`)}
+                            >
                                 ({event.player_out})
                             </span>
                         </div>
                     ) : event.event_type === "GOAL" ? (
                         <div className="mr-4 flex-1">
-                            <span className="font-bold break-words inline-block cursor-pointer" onClick={() => navigate(`/player/${event.scorer_id}`)}>
+                            <span
+                                className="font-bold break-words inline-block cursor-pointer"
+                                onClick={() => navigate(`/player/${event.scorer_id}`)}
+                            >
                                 {event.scorer}
                             </span>
-                            <span className="break-words inline-block ml-1 cursor-pointer" onClick={() => navigate(`/player/${event.assist_id}`)}>
+                            <span
+                                className="break-words inline-block ml-1 cursor-pointer"
+                                onClick={() => navigate(`/player/${event.assist_id}`)}
+                            >
                                 ({event.assist})
                             </span>
                         </div>
                     ) : (
                         <div className="mr-4 flex-1">
-                            <span className="break-words inline-block cursor-pointer" onClick={() => navigate(`/player/${event.player_id}`)}>
+                            <span
+                                className="break-words inline-block cursor-pointer"
+                                onClick={() => navigate(`/player/${event.player_id}`)}
+                            >
                                 {event.player}
                             </span>
                         </div>
-                    )
-                )}
+                    ))}
             </div>
         );
     };
 
-
     return (
         <>
             {events.length > 0 ? (
-                <div className={`relative w-full bg-[#196146] text-white p-4 text-sm rounded-md ${events.length > 0 ? "min-h-[100px]" : "min-h-[70px]"
-                }`} ref={timelineRef}>
+                <div
+                    className={`relative w-full bg-[#196146] text-white p-4 text-sm rounded-md ${events.length > 0 ? "min-h-[100px]" : "min-h-[70px]"
+                        }`}
+                    ref={timelineRef}
+                >
                     {/* Vertical Line */}
                     {events.length > 0 && (
                         <div
@@ -179,11 +234,16 @@ const GameTimeline = ({ id }) => {
                         <p className="text-center text-white">No events to display.</p>
                     ) : (
                         events.map((event, index) => (
-                            <div key={index} className={`relative flex w-full items-center my-8 transition-opacity duration-300 ease-in-out ${visibleEvents.includes(index) ? "opacity-100" : "opacity-0"
-                                    } ${event.team === "home" ? "justify-start" : "justify-end"}`}>
+                            <div
+                                key={index}
+                                className={`relative flex w-full items-center my-8 transition-opacity duration-300 ease-in-out ${visibleEvents.includes(index) ? "opacity-100" : "opacity-0"
+                                    } ${event.team === "home" ? "justify-start" : "justify-end"}`}
+                            >
                                 {renderEventBlock(event, event.team)}
                                 <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center">
-                                    <div className="w-6 h-6 text-xs bg-white text-green-800 font-extrabold rounded-full event-dot flex items-center justify-center">{event.minute}'</div> 
+                                    <div className="w-6 h-6 text-xs bg-white text-green-800 font-extrabold rounded-full event-dot flex items-center justify-center">
+                                        {event.minute}'
+                                    </div>
                                 </div>
                             </div>
                         ))

@@ -70,6 +70,7 @@ def process_events(events, stats):
     for event in events:
         print(event)
 
+    event_index = 0
     for event in events:
         # Parse the publish_timestamp from the event
         publish_timestamp = datetime.fromisoformat(
@@ -99,9 +100,11 @@ def process_events(events, stats):
             publish_game_stat(mathc_stats)
 
         # Publish the event
+        event["event_index"] = event_index
         print(f"Publishing event: {event}")
         publish_game_event(event)
         current_time = datetime.now(pytz.utc)  # Update current time
+        event_index += 1
 
 
 def publish_game_info(game, stats):

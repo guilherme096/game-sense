@@ -2,7 +2,15 @@ import json
 from datetime import datetime, timedelta
 from typing import List
 import uuid
-from models import Game, Event, Goal, YellowCard, RedCard, Substitution, SecondYellowCard
+from models import (
+    Game,
+    Event,
+    Goal,
+    YellowCard,
+    RedCard,
+    Substitution,
+    SecondYellowCard,
+)
 
 GAMES_DIR = "./games/"
 GAME_REAL_DURATION = 1.5
