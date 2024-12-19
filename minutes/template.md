@@ -1,21 +1,19 @@
-# Meeting
+# Reunião _
+#### Data: _ /_ / _
+#### Hora: _ : _  -  _ : _
+#### Prensenças:
 
-#### Date: _ /_ / \_
-
-#### Time: _ : _ - _ : _
-
-#### Attendees:
-
-## Order of Business
-
+## Ordem de Trabalhos
 1.
 2.
 3.
 
-## Notes
 
+## Apontamentos
 1.
 2.
 3.
 
-**Next meeting:**
+### Próxima Reunião
+1.
+2.

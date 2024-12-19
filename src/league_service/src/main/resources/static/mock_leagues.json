@@ -1,0 +1,30 @@
+{
+  "id": 1,
+  "name": "Premier League",
+  "standings": [
+    {
+      "club": {
+        "id": 1,
+        "name": "Manchester United",
+        "country": "England",
+        "starred": true
+      },
+      "points": 65,
+      "matchesPlayed": 30,
+      "goalsScored": 50,
+      "goalsConceded": 30
+    },
+    {
+      "club": {
+        "id": 2,
+        "name": "Liverpool FC",
+        "country": "England",
+        "starred": false
+      },
+      "points": 60,
+      "matchesPlayed": 30,
+      "goalsScored": 55,
+      "goalsConceded": 25
+    }
+  ]
+}
