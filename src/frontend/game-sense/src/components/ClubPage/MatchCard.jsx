@@ -7,6 +7,15 @@ export default function MatchCard({ matchData }) {
     // Add any logic for handling the button click here
   };
 
+  // Check if matchData is valid
+  if (!matchData || Object.keys(matchData).length === 0) {
+    return (
+      <div className="shadow-lg rounded-lg m-5 p-4 bg-white text-center text-gray-500">
+        No available data
+      </div>
+    );
+  }
+
   return (
     <div className="shadow-lg rounded-lg m-5">
       {/* Card Header */}
@@ -56,12 +65,12 @@ export default function MatchCard({ matchData }) {
 }
 
 MatchCard.propTypes = {
-    matchData: PropTypes.shape({
-      league: PropTypes.string.isRequired,
-      homeTeam: PropTypes.string.isRequired,
-      homeTeamLogo: PropTypes.string.isRequired,
-      awayTeam: PropTypes.string.isRequired,
-      awayTeamLogo: PropTypes.string.isRequired,
-      date: PropTypes.string.isRequired,
-    }).isRequired,
-}
+  matchData: PropTypes.shape({
+    league: PropTypes.string.isRequired,
+    homeTeam: PropTypes.string.isRequired,
+    homeTeamLogo: PropTypes.string.isRequired,
+    awayTeam: PropTypes.string.isRequired,
+    awayTeamLogo: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+  }),
+};

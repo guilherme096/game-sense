@@ -30,7 +30,7 @@ export default function Overview({ id }) {
             <div className="p-4 pt-0">
                 <GameTimeline id={id} />
             </div>
-            <div className="row flex space-x-3">
+            <div className="row flex space-x-3 mb-44">
                 {/* Left Side - Match Information */}
                 <div className="col w-1/2 pl-4">
                     {isLoading ? (

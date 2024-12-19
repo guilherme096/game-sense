@@ -1,6 +1,12 @@
 package ies.gamesense.league_service.entities;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
 
 @Entity
 @IdClass(LeagueClubId.class)
@@ -9,11 +15,12 @@ public class League_Club {
     @Id
     @ManyToOne
     @JoinColumn(name = "league_id", nullable = false)
+    @JsonBackReference
     private League league;
 
     @Id
     @Column(name = "club_id", nullable = false)
-    private int club_id;
+    private Long club_id;
 
     @Column(name = "matches_played", nullable = false)
     private int matchesPlayed;
@@ -45,7 +52,7 @@ public class League_Club {
     public League_Club() {
     }
 
-    public League_Club(League league, int club_id, int matchesPlayed, int wins, int goalsScored, int goalsConceded, int losses, int goal_difference, int place, int points, int draws) {
+    public League_Club(League league, Long club_id, int matchesPlayed, int wins, int goalsScored, int goalsConceded, int losses, int goal_difference, int place, int points, int draws) {
         this.league = league;
         this.club_id = club_id;
         this.matchesPlayed = matchesPlayed;
@@ -68,11 +75,15 @@ public class League_Club {
         this.league = league;
     }
 
-    public int getClub_id() {
+    public Long getLeagueId() {
+        return league.getId();
+    }
+
+    public Long getClub_id() {
         return club_id;
     }
 
-    public void setClub_id(int club_id) {
+    public void setClub_id(Long club_id) {
         this.club_id = club_id;
     }
 

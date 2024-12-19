@@ -1,13 +1,14 @@
 import random
 from event_generator import generate_events
 from models import Game, Stats, Team, Winner, Player
-from game_serializator import save_game_to_file
+from game_serializator import serialize_game
 import logging
 from math import log
+import time
 
 
 def generate_seed(home_team: Team, away_team: Team):
-    return hash(home_team.id + away_team.id)
+    return hash((home_team.id + away_team.id) * time.time())
 
 
 def generate_winner(home_team: Team, away_team: Team, seed: int) -> Winner:
@@ -120,22 +121,21 @@ def generate_goals(home_team: Team, away_team: Team, seed: int, winner: Winner):
     return goals
 
 
-def generate_stats(winner: Team, loser: Team, winner_score: int, loser_score: int):
+def generate_stats(
+    winner: Team, loser: Team, winner_score: int, loser_score: int, seed: int
+):
     random.seed(seed)
     activations = [random.randrange(5, 10) * 0.1, random.randrange(3, 8) * 0.1]
 
-    w_attack_strength = (winner.attack_strength / 10) * \
-        ((winner.form / 5) * 0.5)
+    w_attack_strength = (winner.attack_strength / 10) * ((winner.form / 5) * 0.5)
 
     l_attack_strength = (loser.attack_strength / 10) * ((loser.form / 5) * 0.5)
 
     activations[0] = (w_attack_strength * activations[0]) / 0.4
     activations[1] = (l_attack_strength * activations[1]) / 0.8
 
-    w_activations = [max(random.randrange(4, 10) * activations[0], 1)
-                     for _ in range(8)]
-    l_activations = [max(random.randrange(4, 10) * activations[1], 1)
-                     for _ in range(8)]
+    w_activations = [max(random.randrange(4, 10) * activations[0], 1) for _ in range(8)]
+    l_activations = [max(random.randrange(4, 10) * activations[1], 1) for _ in range(8)]
 
     w_possession = max(round(w_activations[0] * 10), 30)
 
@@ -230,6 +230,13 @@ def generate_stats(winner: Team, loser: Team, winner_score: int, loser_score: in
 
 def generate_game(home_team: Team, away_team: Team, seed: int):
     game = Game(seed, home_team, away_team)
+
+    referees = ["Clement Turpin", "Szymon Marciniak", "Slavko Vincic", "Daniele Orsato", "Stephanie Frappart", "Istvan Kovacs", "Halil Umut Meler", "Michael Oliver", "Francois Letexier", "Artur Soares Dias", "Danny Makkelie", "Jesus Gil Manzano", "Daniel Siebert", "Anthony Taylor", "Carlos del Cerro Grande", "Ovidiu Hategan", "Bjorn Kuipers", "Felix Brych", "Antonio Mateu Lahoz", "Sergei Karasev", "William Collum", "Orel Grinfeld", "Andreas Ekberg", "Sandro Schärer", "Benoît Bastien", "Serdar Gözübüyük", "Anastasios Sidiropoulos", "Ivan Kružliak", "Bobby Madden", "Ali Palabıyık", "Glenn Nyberg", "Lawrence Visser", "Srdjan Jovanovic", "Davide Massa", "Ovidiu Hațegan", "Paweł Raczkowski", "Craig Pawson", "John Beaton", "Robert Madden", "Viktor Kassai", "Martin Atkinson", "Gianluca Rocchi", "Damir Skomina", "Mark Clattenburg", "Howard Webb", "Pierluigi Collina", "Markus Merk", "Björn Kuipers", "Nicola Rizzoli", "Pedro Proença"]
+    stadiums = ["Santiago Bernabéu Stadium", "Tottenham Hotspur Stadium", "Wembley Stadium", "Signal Iduna Park", "Allianz Arena", "Estadio Azteca", "Anfield", "Old Trafford", "Maracanã Stadium", "San Siro Stadium", "La Bombonera", "Soccer City", "Camp Nou", "Celtic Park", "Wanda Metropolitano", "Stade Vélodrome", "Mestalla Stadium", "Estádio da Luz", "Ibrox Stadium", "Azadi Stadium", "Narendra Modi Stadium", "Rungrado 1st of May Stadium", "Michigan Stadium", "Beaver Stadium", "Ohio Stadium", "Neyland Stadium", "Tiger Stadium", "Kyle Field", "Darrell K Royal–Texas Memorial Stadium", "Melbourne Cricket Ground", "Bukit Jalil National Stadium", "Rose Bowl Stadium", "Ben Hill Griffin Stadium", "Jordan–Hare Stadium", "Memorial Stadium", "Cotton Bowl Stadium", "MetLife Stadium", "Croke Park", "Twickenham Stadium", "FedExField", "Lambeau Field", "AT&T Stadium", "Beijing National Stadium", "Luzhniki Stadium", "Stade de France", "Estadio Monumental", "Estadio do Dragão", "Emirates Stadium", "Stamford Bridge", "Estadio Olímpico Metropolitano"]
+
+    game.referee = random.choice(referees)
+    game.stadium = random.choice(stadiums)
+
     winner = generate_winner(home_team, away_team, seed)
     logging.debug(f"Winner: {winner}")
 
@@ -241,7 +248,8 @@ def generate_game(home_team: Team, away_team: Team, seed: int):
     game.away_score = away_goals
 
     w_stats, l_stats = generate_stats(
-        home_team, away_team, home_goals, away_goals)
+        home_team, away_team, home_goals, away_goals, seed
+    )
 
     home_team.set_stats(w_stats)
     away_team.set_stats(l_stats)
@@ -249,67 +257,20 @@ def generate_game(home_team: Team, away_team: Team, seed: int):
     game.home_team = home_team
     game.away_team = away_team
 
-    logging.debug(f"Game: {game}")
-    logging.debug(f"Home team: {home_team}")
-    logging.debug(f"Away team: {away_team}")
+
+    print(f"Game: {game}")
 
     return game
 
 
-if __name__ == "__main__":
-    team1 = Team("1", "SCP", 3, 5, [], [], 9, 9, 8, "bla")
-    team2 = Team("2", "SLB", 3, 4, [], [], 9, 8, 8, "bla")
-
-    team1.starting_squad = [
-        Player("Adan", 1, 1),
-        Player("Coates", [4, 5], 2),
-        Player("Neto", [4, 5], 3),
-        Player("Porro", 3, 4),
-        Player("Palhinha", 6, 5),
-        Player("Nuno Santos", 11, 6),
-        Player("Pote", 6, 7),
-        Player("Jovane", 7, 8),
-        Player("Paulinho", 9, 9),
-        Player("Matheus Nunes", 11, 10),
-        Player("Feddal", [4, 5], 11),
-    ]
-
-    team1.subs_squad = [
-        Player("Max", 1, 12),
-        Player("Inacio", [4, 5], 13),
-        Player("Tabata", 6, 14),
-        Player("Vietto", 7, 15),
-        Player("Sporar", 9, 16),
-        Player("João Pereira", 2, 17),
-        Player("Antunes", 3, 18),
-    ]
-
-    team2.starting_squad = [
-        Player("Vlachodimos", 1, 1),
-        Player("Lucas Verissimo", [4, 5], 2),
-        Player("Otamendi", [4, 5], 3),
-        Player("Gilberto", 3, 4),
-        Player("Weigl", 6, 5),
-        Player("Rafa", 11, 6),
-        Player("Everton", 11, 7),
-        Player("Waldschmidt", 7, 8),
-        Player("Darwin", 9, 9),
-        Player("Grimaldo", 3, 10),
-        Player("Diogo", 11, 11),
-    ]
-
-    team2.subs_squad = [
-        Player("Helton", 1, 12),
-        Player("Vertonghen", [4, 5], 13),
-        Player("Pizzi", 6, 14),
-        Player("Chiquinho", 7, 15),
-        Player("Seferovic", 9, 16),
-        Player("Nuno Tavares", 3, 17),
-        Player("Gabriel", 6, 18),
-    ]
+def main(home_team: Team, away_team: Team):
+    team1 = home_team
+    team2 = away_team
 
     seed = generate_seed(team1, team2)
     game = generate_game(team1, team2, seed)
     events = generate_events(game)
 
-    save_game_to_file(game, events)
+    serialized_game = serialize_game(game, events)
+
+    return serialized_game

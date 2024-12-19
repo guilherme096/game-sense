@@ -14,17 +14,31 @@ class EventType(Enum):
     RED_CARD = 3
     SUBSTITUTION = 4
     INJURY = 5
+    SECOND_YELLOW_CARD = 6
 
 
 class Player:
-    def __init__(self, name: str, positions: list | int, quality: int):
+    def __init__(self, name: str, positions: list | int, quality: int, id: int):
         self.name = name
         self.positions = positions if isinstance(
             positions, list) else [positions]
         self.quality = quality
+        self.id = id
 
     def __str__(self):
-        return f"Player: {self.name}\n Position: {self.positions}\n Quality: {self.quality}"
+        return f"Player: {self.name}\n Position: {self.positions}\n Quality: {self.quality}, ID: {self.id}"
+
+    def to_dict(self):
+        return {"name": self.name, "positions": self.positions, "quality": self.quality, "id": self.id}
+
+    @staticmethod
+    def from_dict(data):
+        return Player(
+            name=data["name"],
+            positions=data["positions"],
+            quality=data["quality"],
+            id=data["id"],
+        )
 
 
 class Stats:
@@ -50,6 +64,18 @@ class Stats:
 
     def __str__(self):
         return f"Stats:\n Possession: {self.possession}\n Shots: {self.shots}\n Passes Acc: {self.passes_acc}\n Tackles: {self.tackles}\n Fouls: {self.fouls}\n Corners: {self.corners}\n Offsides: {self.offsides}\n Interceptions: {self.interceptions}"
+
+    def __dict__(self):
+        return {
+            "Possession": self.possession,
+            "Shots": self.shots,
+            "Passes Acc": self.passes_acc,
+            "Tackles": self.tackles,
+            "Fouls": self.fouls,
+            "Corners": self.corners,
+            "Offsides": self.offsides,
+            "Interceptions": self.interceptions,
+        }
 
 
 class Team:
@@ -87,6 +113,39 @@ class Team:
             stats_print += f"{stat}\n"
         return f"{self.name}\n Bias: {self.bias}\n Form: {self.form}\n Squad: {self.squad}\n Squad Quality: {self.squad_quality}\n Attack Strength: {self.attack_strength}\n Defense Strength: {self.defense_strength}\n Stats: {stats_print}"
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "bias": self.bias,
+            "form": self.form,
+            "squad": [player.to_dict() for player in self.squad],
+            "starting_squad": [player.to_dict() for player in self.starting_squad],
+            "subs_squad": [player.to_dict() for player in self.subs_squad],
+            "squad_quality": self.squad_quality,
+            "attack_strength": self.attack_strength,
+            "defense_strength": self.defense_strength,
+            "image": self.image,
+        }
+
+    @staticmethod
+    def from_dict(data):
+        return Team(
+            id=data["id"],
+            name=data["name"],
+            bias=data["bias"],
+            form=data["form"],
+            starting_squad=[
+                Player.from_dict(player) for player in data["starting_squad"]
+            ],
+            subs_squad=[Player.from_dict(player)
+                        for player in data["subs_squad"]],
+            squad_quality=data["squad_quality"],
+            attack_strength=data["attack_strength"],
+            defense_strength=data["defense_strength"],
+            image=data["image"],
+        )
+
 
 class Game:
     def __init__(self, seed: int, home_team: Team, away_team: Team):
@@ -98,8 +157,12 @@ class Game:
         self.home_score: int = 0
         self.away_score: int = 0
 
+        self.referee: str = ""
+        self.stadium: str = ""
+
+
     def __str__(self):
-        return f"Game:\n Seed: {self.seed}\n Home Team: {self.home_team}\n Away Team: {self.away_team}\n Winner: {self.winner}\n Home Score: {self.home_score}\n Away Score: {self.away_score}\n"
+        return f"Game:\n Seed: {self.seed}\n Home Team: {self.home_team}\n Away Team: {self.away_team}\n Winner: {self.winner}\n Home Score: {self.home_score}\n Away Score: {self.away_score}\n Referee: {self.referee}\n Stadium: {self.stadium}\n"
 
 
 class Event:
@@ -116,7 +179,7 @@ class Goal(Event):
         self.assist = assist
 
     def __str__(self):
-        return f"Goal:\n Minute: {self.minute}\n Team: {self.team.name}\n Scorer: {self.scorer.name}\n Assist: {self.assist.name}"
+        return f"Goal:\n Minute: {self.minute}\n Team: {self.team.name}\n Scorer: {self.scorer.name}\n Scorer ID: {self.scorer.id}\n Assist: {self.assist.name}\n Assist ID: {self.assist.id}"
 
 
 class YellowCard(Event):
@@ -125,7 +188,15 @@ class YellowCard(Event):
         self.player = player
 
     def __str__(self):
-        return f"Yellow Card:\n Minute: {self.minute}\n Team: {self.team.name}\n Player: {self.player.name}"
+        return f"Yellow Card:\n Minute: {self.minute}\n Team: {self.team.name}\n Player: {self.player.name}\n Player ID: {self.player.id}"
+
+class SecondYellowCard(Event):
+    def __init__(self, minute: int, team: Team, player: Player):
+        super().__init__(EventType.SECOND_YELLOW_CARD, minute, team)
+        self.player = player
+
+    def __str__(self):
+        return f"Second Yellow Card:\n Minute: {self.minute}\n Team: {self.team.name}\n Player: {self.player.name}\n Player ID: {self.player.id}"
 
 
 class RedCard(Event):
@@ -134,7 +205,7 @@ class RedCard(Event):
         self.player = player
 
     def __str__(self):
-        return f"Red Card:\n Minute: {self.minute}\n Team: {self.team.name}\n Player: {self.player.name}"
+        return f"Red Card:\n Minute: {self.minute}\n Team: {self.team.name}\n Player: {self.player.name} \n Player ID: {self.player.id}"
 
 
 class Substitution(Event):
@@ -144,7 +215,7 @@ class Substitution(Event):
         self.player_in = player_in
 
     def __str__(self):
-        return f"Substitution:\n Minute: {self.minute}\n Team: {self.team.name}\n Player Out: {self.player_out.name}\n Player In: {self.player_in.name}"
+        return f"Substitution:\n Minute: {self.minute}\n Team: {self.team.name}\n Player Out: {self.player_out.name}\n Player Out ID: {self.player_out.id}\n Player In: {self.player_in.name}\n Player In ID: {self.player_in.id}"
 
 
 class Injury(Event):
@@ -153,4 +224,4 @@ class Injury(Event):
         self.player = player
 
     def __str__(self):
-        return f"Injury:\n Minute: {self.minute}\n Team: {self.team}\n Player: {self.player}"
+        return f"Injury:\n Minute: {self.minute}\n Team: {self.team}\n Player: {self.player} \n Player ID: {self.player.id}"

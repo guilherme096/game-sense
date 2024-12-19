@@ -2,7 +2,10 @@ package ies.gamesense.live_game_service.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +27,23 @@ public class LiveController {
     @Autowired
     private LiveService liveService;
 
+    @Operation(summary = "Health check")
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("OK");
+    }
+
     @Operation(summary = "Get all live games")
     @GetMapping("/")
-    public List<Match> getLiveGames() {
-        return liveService.getLiveGames();
+    public List<Map<String, String>> getLiveGames() {
+        List<Match> matches = liveService.getLiveGames();
+        List<Map<String, String>> basicInfo = new ArrayList<>();
 
+        for (Match match : matches) {
+            basicInfo.add(liveService.getBasicInfo(match.getMatchId()));
+        }
+
+        return basicInfo;
     }
 
     @Operation(summary = "Get live game by id")
@@ -38,17 +53,30 @@ public class LiveController {
         if (game == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+
+        // return only the game without the events squad and stats
         return ResponseEntity.ok(game);
     }
 
     @Operation(summary = "Get game statistics by game id")
-    @GetMapping("/{id}/statistics")
-    public ResponseEntity<GameStatistics> getGameStatistics(@PathVariable("id") String id) {
-        GameStatistics stats = liveService.getGameStatistics(id);
+    @GetMapping("/{id}/statistics/ping")
+    public ResponseEntity<Map<Integer, GameStatistics>> getGameStatistics(@PathVariable("id") String id,
+            @RequestParam("lastHalf") Integer lastEventId) {
+        Map<Integer, GameStatistics> stats = liveService.getGameStatistics(id);
+        System.out.println("stats: " + stats);
         if (stats == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok(stats);
+
+        if (lastEventId == null) {
+            return ResponseEntity.badRequest().body(null);
+        } else {
+            GameStatistics lastStats = stats.get(lastEventId);
+            if (lastStats == null) {
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+            }
+            return ResponseEntity.ok(stats);
+        }
     }
 
     @Operation(summary = "Get new events for live game")
@@ -82,4 +110,15 @@ public class LiveController {
         }
         return ResponseEntity.ok(topStats);
     }
+
+    @Operation(summary = "Get game basic info (score,teams,id,minute)")
+    @GetMapping("/{id}/basicInfo")
+    public ResponseEntity<Map<String, String>> getBasicInfo(@PathVariable("id") String id) {
+        Map<String, String> basicInfo = liveService.getBasicInfo(id);
+        if (basicInfo == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(basicInfo);
+    }
+
 }

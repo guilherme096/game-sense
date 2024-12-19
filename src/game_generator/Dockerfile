@@ -21,7 +21,7 @@ WORKDIR /app
 
 COPY pyproject.toml poetry.lock /app/
 COPY . /app
-RUN poetry install --no-dev
+RUN poetry install --only main
 
-CMD ["poetry", "run", "python", "game_producer.py"]
+CMD ["poetry", "run", "python", "LeagueScheduler.py"]
 

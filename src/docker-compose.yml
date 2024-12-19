@@ -1,67 +1,140 @@
 services:
   nginx:
-    image: nginx:latest
+    build:
+      context: ./frontend/game-sense/
+    image: nginx:alpine
     container_name: nginx
     ports:
       - "${HOST_PORT}:${CONTAINER_PORT}"
-    volumes:
-      - ${NGINX_HTML_PATH}
-      - ${NGINX_CONF_PATH}
     depends_on:
       - club-service
       - live-game-service
       - player-service
       - league-service
+      - game-service
       - kafka
-    networks:
-      - app-network
-
-  club-service:
-    build:
-      context: backend/club_service
-    image: club_service-image
-    depends_on:
-      - sql_db
-      - redis_db
-      - kafka
+      - management-service
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      USERS_DATABASE: ${USERS_DATABASE}
+      USERS_USER: ${USERS_USER}
+      USERS_PASSWORD: ${USERS_PASSWORD}
     networks:
       - app-network
+
+  management-service:
+    build:
+      context: backend/management_service
+    image: management_service-image
+    depends_on:
+      users_db:
+        condition: service_healthy
+    networks:
+      - app-network
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      USERS_DATABASE: ${USERS_DATABASE}
+      USERS_USER: ${USERS_USER}
+      USERS_PASSWORD: ${USERS_PASSWORD}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/management/health" ]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 30s
 
   live-game-service:
     build:
       context: backend/live_game_service
     image: live_game_service-image
     depends_on:
-      - sql_db
-      - redis_db
-      - kafka
+      redis_db:
+        condition: service_healthy
     networks:
       - app-network
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/live-game/health" ]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 30s
+
+  game-service:
+    build:
+      context: backend/game_service
+    image: game_service-image
+    depends_on:
+      sql_db:
+        condition: service_healthy
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/game/health" ]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 30s
 
   player-service:
     build:
       context: backend/player_service
     image: player_service-image
     depends_on:
-      - sql_db
-      - redis_db
-      - kafka
+      sql_db:
+        condition: service_healthy
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - app-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/player/health" ]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 30s
 
+  club-service:
+    build:
+      context: backend/club_service
+    image: club_service-image
+    depends_on:
+      sql_db:
+        condition: service_healthy
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/club/health" ]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 30s
+
+        
   league-service:
     build:
       context: backend/league_service
     image: league_service-image
     depends_on:
-      - sql_db
-      - redis_db
-      - kafka
+      sql_db:
+        condition: service_healthy
     networks:
       - app-network
     environment:
@@ -69,6 +142,12 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/league/health" ]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 30s
 
   sql_db:
     image: mysql:8.0
@@ -82,12 +161,98 @@ services:
       - db-data:/var/lib/mysql
     networks:
       - app-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD}",
+        ]
+      interval: 10s
+      retries: 5
+      start_period: 0s
+      timeout: 10s
+
+  data-init:
+    image: mysql:8.0
+    depends_on:
+      sql_db:
+        condition: service_healthy
+      game-service:
+        condition: service_healthy
+      player-service:
+        condition: service_healthy
+      club-service:
+        condition: service_healthy
+      league-service:
+        condition: service_healthy
+    volumes:
+      - ./backend/sql_db:/docker-entrypoint-initdb.d
+    entrypoint:
+      - sh
+      - -c
+      - |
+        echo "Waiting for MySQL to be ready..."
+        until mysqladmin ping -h sql_db -P 3306 --silent; do
+          echo "MySQL is unavailable, waiting..."
+          sleep 5
+        done
+        echo "MySQL is ready. Checking for existing data..."
+        if [ "$(mysql -h sql_db -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} -e "SELECT COUNT(*) FROM club;" -s --skip-column-names)" -eq "0" ]; then
+          echo "No data found in 'club'. Initializing database..."
+          mysql -h sql_db -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < /docker-entrypoint-initdb.d/init_data.sql
+        else
+          echo "Data already exists in 'club'. Skipping initialization."
+        fi
+    networks:
+      - app-network
+
+
+  users_db:
+    image: mysql:8.0
+    container_name: users_db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${USERS_DATABASE}
+      MYSQL_USER: ${USERS_USER}
+      MYSQL_PASSWORD: ${USERS_PASSWORD}
+    volumes:
+      - users-db-data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD}",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   redis_db:
     image: redis:latest
     container_name: redis_db
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.4
@@ -111,27 +276,24 @@ services:
     networks:
       - app-network
 
-  kafdrop:
-    image: obsidiandynamics/kafdrop:4.0.2
-    environment:
-      KAFKA_BROKERCONNECT: kafka:${KAFKA_INTERNAL_PORT}
-    ports:
-      - ${KAFDROP_EXTERNAL_PORT}:${KAFDROP_EXTERNAL_PORT}
-    networks:
-      - app-network
-
   game-generator:
     build:
       context: game_generator
     image: game_generator-image
     depends_on:
-      - kafka
-      - live-game-service
+      sql_db:
+        condition: service_healthy
+      player-service:
+        condition: service_healthy
+      club-service:
+        condition: service_healthy
+
     networks:
       - app-network
 
 volumes:
   db-data:
+  users-db-data:
 
 networks:
   app-network:

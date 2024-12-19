@@ -6,6 +6,7 @@ from models import (
     Injury,
     YellowCard,
     RedCard,
+    SecondYellowCard,
     Substitution,
 )
 
@@ -26,6 +27,7 @@ def generate_events(game: Game):
     events[EventType.YELLOW_CARD] = generate_yellow_card_events(
         game, minutes_used, in_players, out_players
     )
+
     events[EventType.RED_CARD] = generate_red_card_events(
         game, minutes_used, in_players, out_players
     )
@@ -61,30 +63,46 @@ def generate_goal_events(
 
     return goals
 
-
 def generate_yellow_card_events(
-    game: Game, minutes_used: set[int], in_players, out_players
-) -> list[YellowCard]:
+        game: Game, minutes_used: set[int], in_players, out_players
+) -> list:
     teams = [game.home_team, game.away_team]
 
     yellow_cards = []
+    second_yellow_cards = []
+    player_yellow_count = {}  # Track yellow cards for players across all teams
 
     for team in teams:
-        n_yellow_cards = random.randint(0, 6)
+        n_yellow_cards = random.randint(0, 5)
         for _ in range(n_yellow_cards):
             while True:
-                player = team.starting_squad[random.randint(1, 10)]
+                player = team.starting_squad[random.randint(0, len(team.starting_squad) - 1)]
                 minute = random.randint(2, 90)
 
                 if minute in minutes_used or player in out_players:
                     continue
 
-                yellow_card = YellowCard(minute, team, player)
-                yellow_cards.append(yellow_card)
+                # Increment yellow card count
+                if player not in player_yellow_count:
+                    player_yellow_count[player] = 1
+                    yellow_card = YellowCard(minute, team, player)
+                    yellow_cards.append(yellow_card)
+                    minutes_used.add(minute)
+                    break  # Yellow card issued
+                elif player_yellow_count[player] == 1:
+                    # Player receives a second yellow card
+                    second_yellow_card = SecondYellowCard(minute, team, player)
+                    red_card = RedCard(minute, team, player)
+                    second_yellow_cards.append(second_yellow_card)
+                    second_yellow_cards.append(red_card)
 
-                break
+                    # Add player to out_players to exclude them from future events
+                    out_players.add(player)
+                    minutes_used.add(minute)
+                    player_yellow_count[player] += 1
+                    break
 
-    return yellow_cards
+    return yellow_cards + second_yellow_cards
 
 
 def generate_red_card_events(
@@ -119,50 +137,96 @@ def generate_red_card_events(
 
     return red_cards
 
-
-def generate_substitution_events(
-    game: Game, in_players, out_players
-) -> list[Substitution]:
+def generate_substitution_events(game: Game, in_players, out_players) -> list[Substitution]:
     teams = [game.home_team, game.away_team]
 
     substitutions = []
     subd_off = set()
+    in_player_ids = set()
+    out_player_ids = set()
+
+    # Define the position compatibility map
+    position_compatibility = {
+        1:[1],
+        2:[2,3],
+        3:[2,3],
+        4:[4,5],
+        5:[4,5],
+        6:[6,8,10],
+        8:[6,8,10],
+        10:[6,8,10],
+        7:[7,9,11],
+        9:[7,9,11],
+        11:[7,9,11]
+    }
 
     for team in teams:
         n_substitutions = random.randint(0, 3)
+
+        # Copy lists to avoid modifying originals
+        available_subs = team.subs_squad.copy()
+        available_starters = team.starting_squad.copy()
+
         for _ in range(n_substitutions):
-            while True:
-                player_in = team.subs_squad[random.randint(
-                    1, len(team.subs_squad) - 1)]
-                if player_in in in_players or player_in in subd_off:
-                    continue
-                same_position_in_field = []
-                for player in team.starting_squad:
-                    for position in player.positions:
-                        if position in player_in.positions:
-                            same_position_in_field.append(player)
+            if not available_subs or not available_starters:
+                break
 
-                if same_position_in_field == []:
-                    continue
-                player_out = same_position_in_field[
-                    random.randint(0, len(same_position_in_field) - 1)
-                ]
+            # Try to find a valid substitution
+            substitution_found = False
+            attempts = 0
+            max_attempts = len(available_subs) * len(available_starters)
 
-                if player_out in out_players:
+            while not substitution_found and attempts < max_attempts:
+                player_in = random.choice(available_subs)
+                player_out = random.choice(available_starters)
+
+                # Check conditions using player IDs
+                if (player_in.id == player_out.id or
+                        player_in.id in in_player_ids or
+                        player_out.id in out_player_ids):
+                    attempts += 1
                     continue
+
+                # Check position compatibility using the position compatibility map
+                positions_in = player_in.positions  # This can be a list for player_in
+                positions_out = player_out.positions  # Can be a list for player_out
+
+                # Iterate over the list of positions_out if there are multiple positions
+                compatible = False
+                for pos_out in positions_out:
+                    compatible_positions = position_compatibility.get(pos_out, set())
+
+                    # Check if any of the positions_in match the compatible positions
+                    for pos_in in positions_in:
+                        if pos_in in compatible_positions:
+                            compatible = True
+                            break
+                    if compatible:
+                        break
+
+                if not compatible:
+                    attempts += 1
+                    continue
+
+                # Create substitution
                 minute = random.randint(2, 90)
+                substitution = Substitution(minute, team, player_in, player_out)
 
-                if player_in == player_out:
-                    continue
-
-                substitution = Substitution(
-                    minute, team, player_in, player_out)
                 substitutions.append(substitution)
+
+                # Update tracking sets using player IDs
+                in_player_ids.add(player_in.id)
+                out_player_ids.add(player_out.id)
                 subd_off.add(player_out)
 
-                in_players.add(player_in)
-                out_players.add(player_out)
+                # Remove used players
+                available_subs.remove(player_in)
+                available_starters.remove(player_out)
 
+                substitution_found = True
+
+            # If no valid substitution found after many attempts, skip
+            if not substitution_found:
                 break
 
     return substitutions

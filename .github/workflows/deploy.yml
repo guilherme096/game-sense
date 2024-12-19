@@ -1,0 +1,29 @@
+name: Deploy to VM
+
+on:
+  push:
+    branches:
+      - ve
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Fazer o checkout do código
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # Step 3: Deploy via SSH na VM
+      - name: Deploy to VM
+        run: |
+          ssh -o StrictHostKeyChecking=no henriqueft04@deti-ies-02 << 'EOF'
+            cd /home/henriqueft04/ies-24-25-group-project-102
+            git pull origin deployment
+            ./deploy.sh > /home/henriqueft04/deploy.log 2>&1
+          EOF
